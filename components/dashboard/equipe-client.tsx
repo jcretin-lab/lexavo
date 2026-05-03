@@ -122,13 +122,6 @@ export function EquipeClient({ membres: initialMembres, maxMembresInvitables, ca
                     )}
                   </div>
                 </div>
-                <button
-                  onClick={() => supprimer(membre.id, membre.email)}
-                  disabled={deletingId === membre.id}
-                  className="text-xs text-red-500 hover:text-red-700 font-medium disabled:opacity-40 transition-colors px-2 py-1 rounded hover:bg-red-50"
-                >
-                  {deletingId === membre.id ? '…' : 'Supprimer'}
-                </button>
               </div>
             ))
           )}
@@ -163,10 +156,7 @@ export function EquipeClient({ membres: initialMembres, maxMembresInvitables, ca
       ) : (
         <div className="bg-gray-50 rounded-2xl border border-gray-200 p-6 text-center">
           <p className="text-sm text-gray-500">
-            Vous avez atteint la limite de {maxMembresInvitables} membre{maxMembresInvitables > 1 ? 's' : ''} invité{maxMembresInvitables > 1 ? 's' : ''}.
-          </p>
-          <p className="text-xs text-gray-400 mt-1">
-            Supprimez un membre pour libérer une place.
+            Vous avez atteint la limite de {maxMembresInvitables} membre{maxMembresInvitables > 1 ? 's' : ''} invité{maxMembresInvitables > 1 ? 's' : ''} pour le Plan Cabinet.
           </p>
         </div>
       )}
