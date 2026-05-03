@@ -70,7 +70,10 @@ export default function LoginPage() {
         router.refresh()
       }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Une erreur est survenue'
+      let msg = err instanceof Error ? err.message : 'Une erreur est survenue'
+      if (msg.toLowerCase().includes('invalid login credentials')) {
+        msg = "L'email ou le mot de passe saisi est incorrect."
+      }
       setError(msg)
     } finally {
       setLoading(false)
