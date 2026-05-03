@@ -30,9 +30,10 @@ export async function updateSession(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Routes publiques
-  const publicRoutes = ['/', '/login']
+  const publicRoutes = ['/', '/login', '/update-password']
   const isPublic = publicRoutes.includes(pathname)
     || pathname.startsWith('/api/')
+    || pathname.startsWith('/auth/')
     || pathname.startsWith('/preview/')
 
   if (!user && !isPublic) {
