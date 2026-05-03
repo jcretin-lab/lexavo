@@ -16,7 +16,11 @@ export async function POST() {
     .eq('user_id', user.id)
     .maybeSingle()
 
-  await sendBienvenue(user.email, cabinet?.nom ?? undefined)
+  // Mo4 — Gérer l'échec de sendBienvenue explicitement
+  const result = await sendBienvenue(user.email, cabinet?.nom ?? undefined)
+  if (!result.ok) {
+    console.error('[bienvenue] Échec envoi email :', result.error)
+  }
 
-  return NextResponse.json({ ok: true })
+  return NextResponse.json({ ok: result.ok })
 }

@@ -1,17 +1,13 @@
 import { Resend } from 'resend'
+import { NOM_PAR_PLAN, PRIX_PAR_PLAN } from '@/types'
 
 function getResend() {
   return new Resend(process.env.RESEND_API_KEY)
 }
 
 const FROM = process.env.RESEND_FROM_EMAIL ?? 'Lexavo <onboarding@resend.dev>'
-const ADMIN_EMAIL = 'jcretin@gmail.com'
-
-const PLAN_LABEL: Record<string, { nom: string; prix: string }> = {
-  essentiel: { nom: 'Découverte', prix: '49 €/mois' },
-  pro:       { nom: 'Actif',      prix: '69 €/mois' },
-  cabinet:   { nom: 'Cabinet',    prix: '149 €/mois' },
-}
+// M4 — ADMIN_EMAIL en variable d'environnement
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'contact@lexavo.fr'
 
 function layout(content: string): string {
   return `
@@ -35,6 +31,7 @@ export async function send(to: string, subject: string, html: string): Promise<{
     console.error(`[email] Erreur envoi à ${to} :`, JSON.stringify(error))
     return { ok: false, error: JSON.stringify(error) }
   }
+  void data
   return { ok: true }
 }
 
@@ -75,12 +72,16 @@ export async function sendNotifInscription(email: string) {
 }
 
 // ── 3. Confirmation d'abonnement ─────────────────────────────────────────────
+// Mo3 — Noms de plans harmonisés avec types/index.ts
 export async function sendConfirmationAbonnement(email: string, planId: string) {
-  const plan = PLAN_LABEL[planId] ?? { nom: planId, prix: '' }
+  const planKey = planId as keyof typeof PRIX_PAR_PLAN
+  const nomPlan = NOM_PAR_PLAN[planId as keyof typeof NOM_PAR_PLAN] ?? planId
+  const prixPlan = planKey in PRIX_PAR_PLAN ? PRIX_PAR_PLAN[planKey] : ''
+
   const html = layout(`
     <p style="font-size:16px;font-weight:600;margin-bottom:16px;">Votre abonnement est activé ✓</p>
     <p style="font-size:14px;color:#444;line-height:1.7;margin-bottom:16px;">
-      Merci pour votre confiance. Votre plan <strong>${plan.nom}</strong>${plan.prix ? ` (${plan.prix})` : ''} est maintenant actif.
+      Merci pour votre confiance. Votre plan <strong>${nomPlan}</strong>${prixPlan ? ` (${prixPlan})` : ''} est maintenant actif.
     </p>
     <p style="font-size:14px;color:#444;line-height:1.7;margin-bottom:24px;">
       Vous pouvez dès maintenant générer du contenu et programmer vos publications sur Facebook${planId !== 'essentiel' ? ' et LinkedIn' : ''}.
@@ -90,7 +91,7 @@ export async function sendConfirmationAbonnement(email: string, planId: string) 
       Pour gérer votre abonnement, rendez-vous dans Paramètres → Abonnement.
     </p>
   `)
-  return send(email, `Votre abonnement ${plan.nom} est activé — Lexavo`, html)
+  return send(email, `Votre abonnement ${nomPlan} est activé — Lexavo`, html)
 }
 
 // ── 4. Rappel expiration LinkedIn ────────────────────────────────────────────

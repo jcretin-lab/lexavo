@@ -10,11 +10,13 @@ const supabaseAdmin = createClient(
 
 export async function GET(request: NextRequest) {
   const cronSecret = process.env.CRON_SECRET
-  if (cronSecret) {
-    const auth = request.headers.get('authorization')
-    if (auth !== `Bearer ${cronSecret}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+  if (!cronSecret) {
+    console.error('[cron/linkedin-reminder] CRON_SECRET non configuré — endpoint bloqué')
+    return NextResponse.json({ error: 'CRON_SECRET non configuré' }, { status: 500 })
+  }
+  const auth = request.headers.get('authorization')
+  if (auth !== `Bearer ${cronSecret}`) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   // Cabinets dont linkedin_connected_at est entre 52 et 54 jours (J-7 avant expiration à 60j)

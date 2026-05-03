@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 
 export async function POST(request: NextRequest) {
   try {
-    const { reseau, url } = await request.json()
+    const { reseau, url, facebook_page_url } = await request.json()
 
     if (!reseau || !url) {
       return NextResponse.json({ error: 'Paramètres manquants.' }, { status: 400 })
@@ -14,7 +14,14 @@ export async function POST(request: NextRequest) {
     }
 
     if (!url.startsWith('https://')) {
-      return NextResponse.json({ error: "L'URL doit commencer par https://" }, { status: 400 })
+      return NextResponse.json({ error: "L'URL webhook doit commencer par https://" }, { status: 400 })
+    }
+
+    // C3 — Pour Facebook, l'URL de la page est obligatoire
+    if (reseau === 'facebook') {
+      if (!facebook_page_url || !facebook_page_url.startsWith('https://')) {
+        return NextResponse.json({ error: "L'URL de votre page Facebook doit commencer par https://" }, { status: 400 })
+      }
     }
 
     const supabase = await createClient()
@@ -38,9 +45,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'LinkedIn disponible à partir du plan Actif.' }, { status: 403 })
     }
 
+    // C3 — Stocker l'URL réelle de la page Facebook dans facebook_connected
     const updates: Record<string, unknown> =
       reseau === 'facebook'
-        ? { make_webhook_facebook: url, facebook_connected: 'connected' }
+        ? { make_webhook_facebook: url, facebook_connected: facebook_page_url }
         : { make_webhook_linkedin: url, linkedin_connected: true, linkedin_connected_at: new Date().toISOString() }
 
     const { error: updateError } = await supabase

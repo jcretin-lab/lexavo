@@ -5,7 +5,38 @@ function esc(str: string): string {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 }
 
+// M2 — Rate limiting en mémoire (5 requêtes / heure / IP)
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
+const MAX_REQUESTS = 5
+const WINDOW_MS = 60 * 60 * 1000
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now()
+  const entry = rateLimitMap.get(ip)
+
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + WINDOW_MS })
+    return true
+  }
+
+  if (entry.count >= MAX_REQUESTS) return false
+  entry.count++
+  return true
+}
+
 export async function POST(request: NextRequest) {
+  // M2 — Vérification du rate limit
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    ?? request.headers.get('x-real-ip')
+    ?? 'unknown'
+
+  if (!checkRateLimit(ip)) {
+    return NextResponse.json(
+      { error: 'Trop de messages envoyés. Réessayez dans une heure.' },
+      { status: 429 }
+    )
+  }
+
   const { nom, email, cabinet, sujet, message, privacy } = await request.json()
 
   if (!nom || !email || !message || !privacy) {
@@ -14,10 +45,11 @@ export async function POST(request: NextRequest) {
 
   const resend = new Resend(process.env.RESEND_API_KEY)
   const fromEmail = process.env.RESEND_FROM_EMAIL ?? 'Lexavo <onboarding@resend.dev>'
+  const adminEmail = process.env.ADMIN_EMAIL ?? 'contact@lexavo.fr'
 
-  const { data, error } = await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: fromEmail,
-    to: 'jcretin@gmail.com',
+    to: adminEmail,
     replyTo: email,
     subject: `[Contact Lexavo] ${esc(sujet)} — ${esc(nom)}`,
     html: `

@@ -24,6 +24,13 @@ const MAX_MEMBRES_PAR_PLAN: Record<string, number> = {
 }
 
 export async function POST(request: NextRequest) {
+  // C2 — Validation anticipée du webhook secret
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
+  if (!webhookSecret || !webhookSecret.startsWith('whsec_') || webhookSecret === 'whsec_à_configurer') {
+    console.error('[stripe/webhook] STRIPE_WEBHOOK_SECRET invalide ou non configuré. Configurez-le dans Stripe Dashboard → Developers → Webhooks.')
+    return NextResponse.json({ error: 'Webhook Stripe non configuré côté serveur' }, { status: 500 })
+  }
+
   const body = await request.text()
   const signature = request.headers.get('stripe-signature')
 
@@ -33,8 +40,9 @@ export async function POST(request: NextRequest) {
 
   let event: Stripe.Event
   try {
-    event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET!)
-  } catch {
+    event = stripe.webhooks.constructEvent(body, signature, webhookSecret)
+  } catch (err) {
+    console.error('[stripe/webhook] Signature invalide :', err instanceof Error ? err.message : err)
     return NextResponse.json({ error: 'Signature invalide' }, { status: 400 })
   }
 
@@ -54,7 +62,6 @@ export async function POST(request: NextRequest) {
           })
           .eq('id', cabinetId)
 
-        // Email de confirmation au client
         const email = session.customer_details?.email ?? session.customer_email
         if (email) {
           sendConfirmationAbonnement(email, plan).catch(err =>
@@ -86,23 +93,26 @@ export async function POST(request: NextRequest) {
       break
     }
 
+    // M5 — Récupérer l'email AVANT de downgrader le plan
     case 'customer.subscription.deleted': {
       const sub = event.data.object as Stripe.Subscription
       const cabinetId = sub.metadata?.cabinet_id
 
       if (cabinetId) {
-        await supabaseAdmin
-          .from('cabinets')
-          .update({ plan: 'essentiel', stripe_subscription_id: null, max_membres: 1 })
-          .eq('id', cabinetId)
-
-        // Récupérer l'email de l'utilisateur pour lui envoyer l'email de résiliation
+        // 1. Récupérer user_id AVANT le downgrade
         const { data: cabinet } = await supabaseAdmin
           .from('cabinets')
           .select('user_id')
           .eq('id', cabinetId)
           .single()
 
+        // 2. Downgrader le plan
+        await supabaseAdmin
+          .from('cabinets')
+          .update({ plan: 'essentiel', stripe_subscription_id: null, max_membres: 1 })
+          .eq('id', cabinetId)
+
+        // 3. Envoyer l'email de résiliation
         if (cabinet?.user_id) {
           const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(cabinet.user_id)
           if (user?.email) {

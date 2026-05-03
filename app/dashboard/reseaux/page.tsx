@@ -23,6 +23,7 @@ export default async function ReseauxPage() {
     <ReseauxClient
       plan={cabinet.plan}
       fbWebhook={(cab.make_webhook_facebook as string) || ''}
+      fbPageUrl={(cabinet.facebook_connected as string) || ''}
       liWebhook={(cab.make_webhook_linkedin as string) || ''}
       fbActive={!!cabinet.facebook_connected}
     />

@@ -5,8 +5,13 @@ import { createClient } from '@/lib/supabase/server'
 import { type GenerationContent } from '@/types'
 import { sendQuotaAtteint } from '@/lib/email'
 
+export const maxDuration = 120
+
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! })
+
+// M1 — Verrou par cabinet pour éviter la race condition sur le quota trial
+const inProgress = new Set<string>()
 
 export async function POST(request: NextRequest) {
   console.log('[generate] Requête reçue')
@@ -27,7 +32,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Cabinet introuvable' }, { status: 404 })
   }
 
-  // Vérifier le quota uniquement pour le plan trial (3 essais gratuits)
+  // M1 — Bloquer les requêtes simultanées pour le même cabinet
+  if (inProgress.has(cabinet.id)) {
+    return NextResponse.json({ error: 'Une génération est déjà en cours. Veuillez patienter.' }, { status: 429 })
+  }
+
   if (cabinet.plan === 'trial') {
     const { count: totalCount } = await supabase
       .from('generations')
@@ -44,9 +53,6 @@ export async function POST(request: NextRequest) {
       )
     }
   }
-
-  // Les plans payants (essentiel, pro, cabinet) ont des générations illimitées
-  // Note : seul le plan pro et cabinet ont accès à cette route (contrôlé côté UI)
 
   const body = await request.json()
   const { specialite, theme, ton, date_publication } = body
@@ -159,83 +165,103 @@ Champs supplémentaires :
   "prompt_image": "string (prompt DALL-E 3 en anglais décrivant une scène abstraite ou un objet symbolique lié au thème juridique et à la spécialité. Le prompt doit évoquer visuellement le sujet sans montrer de personnes ni de texte. Utiliser des métaphores visuelles (ex: pour le divorce → deux anneaux dorés séparés sur fond épuré, pour le droit du travail → un bureau élégant avec des documents, pour le droit immobilier → une clé dorée sur un plan architectural). Maximum 50 mots.)"
 }`
 
+  inProgress.add(cabinet.id)
   let content: GenerationContent | null = null
-  for (let attempt = 0; attempt < 2; attempt++) {
+
+  try {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const message = await anthropic.messages.create({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 6000,
+          system: systemPrompt,
+          messages: [{ role: 'user', content: userPrompt }],
+        })
+
+        const rawText = message.content[0].type === 'text' ? message.content[0].text : ''
+        const cleaned = rawText.replace(/^```json\n?/, '').replace(/\n?```$/, '').trim()
+        content = JSON.parse(cleaned) as GenerationContent
+        break
+      } catch (err) {
+        console.error(`[generate] Tentative ${attempt + 1} échouée :`, err)
+        if (attempt === 1) {
+          return NextResponse.json({ error: 'Erreur lors de la génération du contenu. Réessayez.' }, { status: 500 })
+        }
+      }
+    }
+
+    if (!content) {
+      return NextResponse.json({ error: 'Contenu non généré' }, { status: 500 })
+    }
+
+    // M1 — Re-vérification atomique du quota trial juste avant l'insertion
+    if (cabinet.plan === 'trial') {
+      const { count: finalCount } = await supabase
+        .from('generations')
+        .select('id', { count: 'exact', head: true })
+        .eq('cabinet_id', cabinet.id)
+
+      if ((finalCount ?? 0) >= 3) {
+        return NextResponse.json(
+          { error: 'Vos 3 générations d\'essai sont épuisées. Abonnez-vous pour continuer.', trial_exhausted: true },
+          { status: 402 }
+        )
+      }
+    }
+
+    let imageUrl: string | null = null
     try {
-      const message = await anthropic.messages.create({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 6000,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: userPrompt }],
+      const imageResponse = await openai.images.generate({
+        model: 'dall-e-3',
+        prompt: content.prompt_image +
+          ' Professional French law firm atmosphere, clean and sophisticated minimal design, navy blue and white color scheme with subtle gold accents, soft natural lighting, high-end corporate photography style, no text, no people, no faces, wide format 16:9, sharp focus with shallow depth of field, premium quality, photorealistic, suitable for luxury French law firm marketing material',
+        size: '1792x1024',
+        quality: 'standard',
+        n: 1,
       })
 
-      const rawText = message.content[0].type === 'text' ? message.content[0].text : ''
-      const cleaned = rawText.replace(/^```json\n?/, '').replace(/\n?```$/, '').trim()
-      content = JSON.parse(cleaned) as GenerationContent
-      break
+      const tempUrl = imageResponse.data?.[0]?.url
+      if (tempUrl) {
+        const imgResp = await fetch(tempUrl)
+        const imgBuffer = await imgResp.arrayBuffer()
+        const fileName = `${cabinet.id}/${Date.now()}.png`
+
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('images')
+          .upload(fileName, imgBuffer, { contentType: 'image/png', upsert: false })
+
+        if (!uploadError && uploadData) {
+          const { data: urlData } = supabase.storage.from('images').getPublicUrl(fileName)
+          imageUrl = urlData.publicUrl
+        }
+      }
     } catch (err) {
-      console.error(`[generate] Tentative ${attempt + 1} échouée :`, err)
-      if (attempt === 1) {
-        return NextResponse.json({ error: 'Erreur lors de la génération du contenu. Réessayez.' }, { status: 500 })
-      }
+      console.error('[generate] Erreur DALL-E :', err)
+      imageUrl = null
     }
-  }
 
-  if (!content) {
-    return NextResponse.json({ error: 'Contenu non généré' }, { status: 500 })
-  }
+    const { data: generation, error: dbError } = await supabase
+      .from('generations')
+      .insert({
+        cabinet_id: cabinet.id,
+        theme,
+        specialite,
+        article_blog: content.article_blog,
+        posts_linkedin: content.posts_linkedin,
+        faq: content.faq,
+        image_url: imageUrl,
+        statut: 'brouillon',
+        date_publication: date_publication || null,
+      })
+      .select()
+      .single()
 
-  // Appel DALL-E 3
-  let imageUrl: string | null = null
-  try {
-    const imageResponse = await openai.images.generate({
-      model: 'dall-e-3',
-      prompt: content.prompt_image +
-        ' Professional French law firm atmosphere, clean and sophisticated minimal design, navy blue and white color scheme with subtle gold accents, soft natural lighting, high-end corporate photography style, no text, no people, no faces, wide format 16:9, sharp focus with shallow depth of field, premium quality, photorealistic, suitable for luxury French law firm marketing material',
-      size: '1792x1024',
-      quality: 'standard',
-      n: 1,
-    })
-
-    const tempUrl = imageResponse.data?.[0]?.url
-    if (tempUrl) {
-      const imgResp = await fetch(tempUrl)
-      const imgBuffer = await imgResp.arrayBuffer()
-      const fileName = `${cabinet.id}/${Date.now()}.png`
-
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('images')
-        .upload(fileName, imgBuffer, { contentType: 'image/png', upsert: false })
-
-      if (!uploadError && uploadData) {
-        const { data: urlData } = supabase.storage.from('images').getPublicUrl(fileName)
-        imageUrl = urlData.publicUrl
-      }
+    if (dbError) {
+      return NextResponse.json({ error: 'Erreur lors de la sauvegarde' }, { status: 500 })
     }
-  } catch (err) {
-    console.error('[generate] Erreur DALL-E :', err)
-    imageUrl = null
+
+    return NextResponse.json({ generation, content, image_url: imageUrl })
+  } finally {
+    inProgress.delete(cabinet.id)
   }
-
-  const { data: generation, error: dbError } = await supabase
-    .from('generations')
-    .insert({
-      cabinet_id: cabinet.id,
-      theme,
-      specialite,
-      article_blog: content.article_blog,
-      posts_linkedin: content.posts_linkedin,
-      faq: content.faq,
-      image_url: imageUrl,
-      statut: 'brouillon',
-      date_publication: date_publication || null,
-    })
-    .select()
-    .single()
-
-  if (dbError) {
-    return NextResponse.json({ error: 'Erreur lors de la sauvegarde' }, { status: 500 })
-  }
-
-  return NextResponse.json({ generation, content, image_url: imageUrl })
 }
