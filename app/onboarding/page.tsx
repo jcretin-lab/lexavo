@@ -101,13 +101,11 @@ function OnboardingContent() {
             .update({ user_id: user.id, statut: 'actif', nom })
             .eq('id', inviteId)
 
-          // Appliquer le plan du cabinet admin au nouveau cabinet
-          if (cabinetAdmin?.plan && cabinetAdmin.plan !== 'trial') {
-            await supabase
-              .from('cabinets')
-              .update({ plan: cabinetAdmin.plan })
-              .eq('id', cabinet.id)
-          }
+          // Les membres invités reçoivent toujours 'pro', jamais 'cabinet' ni 'trial'
+          await supabase
+            .from('cabinets')
+            .update({ plan: 'pro', max_membres: 1 })
+            .eq('id', cabinet.id)
         }
       }
 

@@ -20,6 +20,15 @@ export default async function EquipePage() {
 
   if (!cabinet) redirect('/onboarding')
 
+  // Les membres invités (role='membre') n'ont pas accès à la gestion d'équipe
+  const { data: membreRecord } = await supabase
+    .from('membres')
+    .select('role')
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  if (membreRecord?.role === 'membre') redirect('/dashboard')
+
   // Seul le plan Cabinet peut accéder à cette page
   if (cabinet.plan !== 'cabinet') {
     return (

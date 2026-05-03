@@ -25,7 +25,7 @@ const steps = [
           className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold"
           style={{ background: '#1877F2', color: '#fff' }}
         >
-          Ouvrir le scénario Lexavo →
+          Ouvrir le scénario Lexavo<br />et passer à l&apos;étape suivante →
         </a>
       </div>
     ),
@@ -33,52 +33,40 @@ const steps = [
   {
     titre: 'Connectez votre Facebook',
     contenu: (
-      <div className="space-y-3">
-        {[
-          'Cliquez sur le module Facebook dans votre scénario',
-          'Cliquez « Create a connection »',
-          'Choisissez votre profil Facebook ou votre page cabinet',
-          'Cliquez « Save »',
-          'Cliquez sur le premier module rouge (Webhooks) en haut à gauche',
-          'Dans la barre qui apparaît, sélectionnez « My gateway... »',
-          'Une URL apparaît en dessous → Copiez-la → Sauvegardez et fermez',
-        ].map((item, i) => (
-          <div key={i} className="flex items-start gap-3">
-            <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5" style={{ background: 'var(--navy-700)', color: 'var(--white)', fontFamily: 'var(--font-jetbrains-mono)' }}>
-              {i + 1}
-            </span>
-            <span>{item}</span>
-          </div>
-        ))}
+      <div className="space-y-2">
+        <img
+          src="/guide-facebook-step2.jpg"
+          alt="Connectez votre Facebook — étape 2"
+          style={{ width: '100%', height: 'auto', maxWidth: '900px', display: 'block', margin: '0 auto', borderRadius: '8px', boxShadow: '0 2px 16px rgba(0,0,0,0.10)' }}
+        />
+        <a
+          href="/guide-facebook-step2.jpg"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display: 'block', textAlign: 'center', fontSize: '0.75rem', color: 'var(--ink-400)', textDecoration: 'none' }}
+        >
+          Voir en taille réelle →
+        </a>
       </div>
     ),
   },
   {
     titre: 'Activez et collez votre lien',
     contenu: (
-      <div className="space-y-4">
-        <div className="space-y-3">
-          {[
-            'En bas de votre scénario Make.com, activez « Immediately as data arrives »',
-            'Cliquez sur la disquette à côté pour sauvegarder',
-            'Fermez la fenêtre',
-            'Revenez sur lexavo.fr → Dashboard → Réseaux',
-            'Collez l\'URL copiée dans le champ prévu sous ce guide',
-            'Cliquez « Enregistrer »',
-          ].map((item, i) => (
-            <div key={i} className="flex items-start gap-3">
-              <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5" style={{ background: 'var(--navy-700)', color: 'var(--white)', fontFamily: 'var(--font-jetbrains-mono)' }}>
-                {i + 1}
-              </span>
-              <span>{item}</span>
-            </div>
-          ))}
-        </div>
-        <div className="rounded-xl p-4 text-center" style={{ background: 'var(--success-50)', border: '1px solid #cfe6da' }}>
-          <p className="font-semibold" style={{ color: 'var(--success)' }}>
-            🎉 L&apos;automatisation est réglée une bonne fois pour toutes !
-          </p>
-        </div>
+      <div className="space-y-2">
+        <img
+          src="/guide-facebook-step3.jpg"
+          alt="Activez et collez votre lien — étape 3"
+          style={{ width: '100%', height: 'auto', maxWidth: '900px', display: 'block', margin: '0 auto', borderRadius: '8px', boxShadow: '0 2px 16px rgba(0,0,0,0.10)' }}
+        />
+        <a
+          href="/guide-facebook-step3.jpg"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display: 'block', textAlign: 'center', fontSize: '0.75rem', color: 'var(--ink-400)', textDecoration: 'none' }}
+        >
+          Voir en taille réelle →
+        </a>
       </div>
     ),
   },

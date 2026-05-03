@@ -86,7 +86,7 @@ export function GuideWizard({ reseau, steps }: Props) {
         </div>
 
         {/* Carte étape */}
-        <div className="rounded-2xl p-8 mb-6" style={{ background: 'var(--white)', border: '1px solid var(--ink-200)', boxShadow: 'var(--shadow)' }}>
+        <div className="rounded-2xl p-4 sm:p-8 mb-6" style={{ background: 'var(--white)', border: '1px solid var(--ink-200)', boxShadow: 'var(--shadow)' }}>
           <h1 style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.5rem, 4vw, 2rem)', color: 'var(--ink-900)', letterSpacing: '-0.015em', lineHeight: 1.15, marginBottom: step.sousTitre ? '0.5rem' : '1.5rem' }}>
             {step.titre}
           </h1>

@@ -22,27 +22,36 @@ export default async function ParametresPage({
 
   if (!cabinet) redirect('/onboarding')
 
+  // Vérifier si l'utilisateur est un membre invité
+  const { data: membreRecord } = await supabase
+    .from('membres')
+    .select('role')
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  const isMembre = membreRecord?.role === 'membre'
+
   const { paiement } = await searchParams
 
   return (
     <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-8">Paramètres</h1>
 
-      {paiement === 'success' && (
+      {!isMembre && paiement === 'success' && (
         <div className="mb-6 rounded-xl bg-green-50 border border-green-200 px-5 py-4">
           <p className="text-sm font-medium text-green-800">✓ Abonnement activé avec succès !</p>
           <p className="text-xs text-green-600 mt-0.5">Votre plan a été mis à jour.</p>
         </div>
       )}
-      {paiement === 'cancel' && (
+      {!isMembre && paiement === 'cancel' && (
         <div className="mb-6 rounded-xl bg-gray-50 border border-gray-200 px-5 py-4">
           <p className="text-sm text-gray-600">Paiement annulé. Votre plan n&apos;a pas été modifié.</p>
         </div>
       )}
 
       <div className="max-w-2xl space-y-6">
-        {/* Abonnement */}
-        <GestionAbonnement cabinet={cabinet} />
+        {/* Abonnement — masqué pour les membres invités */}
+        {!isMembre && <GestionAbonnement cabinet={cabinet} />}
 
         {/* Informations du cabinet */}
         <div className="bg-white rounded-2xl border border-gray-200 p-6">
