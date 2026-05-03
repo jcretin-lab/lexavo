@@ -341,7 +341,7 @@ export default function HomePage() {
             <Link href="/login" className="text-sm hidden sm:block transition-colors hover:text-[var(--ink-900)]" style={{ color: 'var(--ink-500)' }}>
               Se connecter
             </Link>
-            <Link href="/login" className="landing-nav-cta">
+            <Link href="/login?mode=signup" className="landing-nav-cta">
               Essai gratuit
             </Link>
           </div>
@@ -397,7 +397,7 @@ export default function HomePage() {
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-3 mb-10">
-              <Link href="/login" className="landing-cta-primary">
+              <Link href="/login?mode=signup" className="landing-cta-primary">
                 Commencer gratuitement →
               </Link>
               <a href="#comment" className="landing-cta-secondary">
@@ -714,7 +714,7 @@ export default function HomePage() {
             3 publications d&apos;essai offertes. Aucune carte bancaire requise.
           </p>
           <Link
-            href="/login"
+            href="/login?mode=signup"
             className="landing-cta-primary"
             style={{ fontSize: '1.0625rem', padding: '1.0625rem 2.25rem' }}
           >

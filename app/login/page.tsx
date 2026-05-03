@@ -1,16 +1,24 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const supabase = createClient()
 
-  const [mode, setMode] = useState<'login' | 'signup'>('login')
+  const [mode, setMode] = useState<'login' | 'signup'>(
+    searchParams.get('mode') === 'signup' ? 'signup' : 'login'
+  )
+
+  useEffect(() => {
+    setMode(searchParams.get('mode') === 'signup' ? 'signup' : 'login')
+  }, [searchParams])
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -112,18 +120,18 @@ export default function LoginPage() {
                   className="font-medium hover:underline"
                   style={{ color: 'var(--navy-700)' }}
                 >
-                  Créer un compte
+                  Essayer gratuitement →
                 </button>
               </>
             ) : (
               <>
-                Déjà inscrit ?{' '}
+                Déjà un compte ?{' '}
                 <button
                   onClick={() => { setMode('login'); setError('') }}
                   className="font-medium hover:underline"
                   style={{ color: 'var(--navy-700)' }}
                 >
-                  Se connecter
+                  Se connecter →
                 </button>
               </>
             )}
@@ -135,5 +143,17 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--paper)' }}>
+        <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: 'var(--navy-700)', borderTopColor: 'transparent' }} />
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   )
 }
