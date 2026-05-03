@@ -10,7 +10,7 @@ export function LandingPricing() {
 
   function choisirPlan(planId: string) {
     setLoadingPlan(planId)
-    router.push('/login')
+    router.push('/login?mode=signup')
   }
 
   return (
