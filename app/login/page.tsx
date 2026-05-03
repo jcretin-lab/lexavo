@@ -16,13 +16,25 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
+  const [inviteId, setInviteId] = useState<string | null>(null)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const m = params.get('mode')
-    if (m === 'signup') setMode('signup')
-    else if (m === 'reset') setMode('reset')
-    else setMode('login')
+    const inv = params.get('invite')
+    const em = params.get('email')
+
+    if (inv) {
+      setInviteId(inv)
+      setMode('signup')
+      if (em) setEmail(decodeURIComponent(em))
+    } else if (m === 'signup') {
+      setMode('signup')
+    } else if (m === 'reset') {
+      setMode('reset')
+    } else {
+      setMode('login')
+    }
   }, [])
 
   async function handleSubmit(e: React.FormEvent) {
@@ -49,7 +61,7 @@ export default function LoginPage() {
         if (!res.ok) throw new Error(data.error)
         const { error: loginError } = await supabase.auth.signInWithPassword({ email, password })
         if (loginError) throw loginError
-        router.push('/onboarding')
+        router.push(inviteId ? `/onboarding?invite=${inviteId}` : '/onboarding')
         router.refresh()
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
