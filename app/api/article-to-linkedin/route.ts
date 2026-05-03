@@ -61,6 +61,10 @@ RÈGLES DÉONTOLOGIQUES :
 - Obligatoire : appel à consultation en fin de post
 - Ton : professionnel et accessible
 
+RÈGLES TEMPORELLES :
+- Ne jamais mentionner une année pour désigner "aujourd'hui" ou "actuellement" — utiliser "actuellement", "en vigueur", "à ce jour"
+- Les années sont autorisées uniquement pour référencer un texte précis (ex : "la loi du 14 juin 2013") ou une date historique identifiable
+
 LES 3 POSTS DOIVENT AVOIR CES ANGLES DISTINCTS :
 - Post 1 : angle pédagogique (expliquer le concept clé de l'article)
 - Post 2 : angle cas pratique (situation concrète du justiciable)

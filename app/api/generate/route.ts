@@ -80,6 +80,12 @@ RÈGLES QUALITÉ JURIDIQUE :
 - Indiquer les délais légaux clés s'ils existent sur le sujet
 - Ne jamais inventer de jurisprudence ou de chiffres — si incertain, formuler avec "en général" ou "selon les cas"
 
+RÈGLES TEMPORELLES ABSOLUES :
+- Ne jamais mentionner une année (2024, 2025, 2026…) pour désigner "aujourd'hui" ou "actuellement" — utiliser des formulations intemporelles : "actuellement", "en vigueur", "depuis la loi de…", "à ce jour"
+- Les années sont autorisées uniquement pour référencer un texte précis (ex : "la loi du 14 juin 2013", "le décret de 2008") ou une date historique identifiable
+- Exemples interdits : "en 2024, la réglementation…", "depuis 2025…", "en cette année…"
+- Exemples autorisés : "la loi Macron de 2015 prévoit…", "depuis la réforme des retraites de 2023…"
+
 STRUCTURE ARTICLE IMPOSÉE :
 1. Introduction (2-3 phrases) : accroche + mot-clé principal + annonce du plan
 2. Contexte / définition du sujet
