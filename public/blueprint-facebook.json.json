@@ -1,0 +1,428 @@
+{
+    "name": "Facebook",
+    "flow": [
+        {
+            "id": 1,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 2925684,
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 0
+                },
+                "restore": {
+                    "parameters": {
+                        "hook": {
+                            "data": {
+                                "editable": "true"
+                            },
+                            "label": "Lexavo Facebook"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "type": "hook:gateway-webhook",
+                        "label": "Webhook",
+                        "required": true
+                    },
+                    {
+                        "name": "maxResults",
+                        "type": "number",
+                        "label": "Maximum number of results"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "cabinet_id",
+                        "type": "text"
+                    },
+                    {
+                        "name": "calendrier_id",
+                        "type": "text"
+                    },
+                    {
+                        "name": "reseau",
+                        "type": "text"
+                    },
+                    {
+                        "name": "texte",
+                        "type": "text"
+                    },
+                    {
+                        "name": "hashtags",
+                        "spec": {
+                            "type": "text"
+                        },
+                        "type": "array"
+                    },
+                    {
+                        "name": "image_url",
+                        "type": "text"
+                    },
+                    {
+                        "name": "date_programmee",
+                        "type": "text"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 2,
+            "module": "http:DownloadFile",
+            "version": 4,
+            "parameters": {
+                "authenticationType": "noAuth"
+            },
+            "mapper": {
+                "url": "{{1.image_url}}",
+                "shareCookies": false,
+                "stopOnHttpError": true
+            },
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "headers": {
+                            "mode": "chose"
+                        },
+                        "shareCookies": {
+                            "mode": "chose"
+                        },
+                        "queryParameters": {
+                            "mode": "chose"
+                        },
+                        "stopOnHttpError": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "authenticationType": {
+                            "label": "No authenticationUse when no credentials are required for the request."
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "authenticationType",
+                        "type": "select",
+                        "label": "Authentication type",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "noAuth",
+                                "apiKey",
+                                "basicAuth",
+                                "oAuth"
+                            ]
+                        }
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "url",
+                        "type": "url",
+                        "label": "URL",
+                        "required": true
+                    },
+                    {
+                        "name": "stopOnHttpError",
+                        "type": "boolean",
+                        "label": "Return error if HTTP request fails",
+                        "required": true
+                    },
+                    {
+                        "name": "shareCookies",
+                        "type": "boolean",
+                        "label": "Share cookies with other HTTP modules",
+                        "required": true
+                    },
+                    {
+                        "name": "headers",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "name",
+                                    "type": "text",
+                                    "label": "Name",
+                                    "required": true,
+                                    "validate": {
+                                        "pattern": "^[-!#$%&'*+.^_`|~0-9A-Za-z]+$"
+                                    }
+                                },
+                                {
+                                    "name": "value",
+                                    "type": "text",
+                                    "label": "Value"
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Header"
+                        },
+                        "type": "array",
+                        "label": "Headers"
+                    },
+                    {
+                        "name": "queryParameters",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "name",
+                                    "type": "text",
+                                    "label": "Name",
+                                    "required": true
+                                },
+                                {
+                                    "name": "value",
+                                    "type": "text",
+                                    "label": "Value"
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Parameter"
+                        },
+                        "type": "array",
+                        "label": "Query parameters"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 6,
+            "module": "facebook-pages:CreatePostWithPhotos",
+            "version": 6,
+            "parameters": {
+                "__IMTCONN__": 6979455
+            },
+            "filter": null,
+            "mapper": {
+                "photos": [
+                    {
+                        "url": "{{1.image_url}}",
+                        "type": "url"
+                    }
+                ],
+                "message": "{{1.texte}}",
+                "page_id": "276079968911666"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 749,
+                    "y": 3
+                },
+                "restore": {
+                    "expect": {
+                        "photos": {
+                            "mode": "chose",
+                            "items": [
+                                {
+                                    "type": {
+                                        "mode": "chose",
+                                        "label": "Use a photo URL"
+                                    }
+                                }
+                            ]
+                        },
+                        "page_id": {
+                            "mode": "chose",
+                            "label": "Supercœur (Paris)"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "facebook"
+                            },
+                            "label": "My Facebook connection (Julien Cretin)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:facebook",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "page_id",
+                        "type": "select",
+                        "label": "Page",
+                        "required": true
+                    },
+                    {
+                        "name": "photos",
+                        "spec": [
+                            {
+                                "name": "type",
+                                "type": "select",
+                                "label": "Image input type",
+                                "options": [
+                                    {
+                                        "label": "Map from previous module",
+                                        "value": "data",
+                                        "nested": [
+                                            {
+                                                "name": "fileName",
+                                                "type": "filename",
+                                                "label": "File name",
+                                                "required": true,
+                                                "semantic": "file:name"
+                                            },
+                                            {
+                                                "name": "data",
+                                                "type": "buffer",
+                                                "label": "Data",
+                                                "required": true,
+                                                "semantic": "file:data"
+                                            }
+                                        ],
+                                        "default": true
+                                    },
+                                    {
+                                        "label": "Use a photo URL",
+                                        "value": "url",
+                                        "nested": [
+                                            {
+                                                "name": "url",
+                                                "type": "url",
+                                                "label": "URL",
+                                                "required": true
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "required": true
+                            },
+                            {
+                                "name": "caption",
+                                "type": "text",
+                                "label": "Image caption"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Photos",
+                        "required": true,
+                        "validate": {
+                            "maxItems": 30,
+                            "minItems": 1
+                        }
+                    },
+                    {
+                        "name": "message",
+                        "type": "text",
+                        "label": "Post caption"
+                    },
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "label": "Publish date"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 5,
+            "module": "gateway:WebhookRespond",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "body": "{\"statut\": \"publie\", {{1.calendrier_id}}}",
+                "status": "200",
+                "headers": []
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1200,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "headers": {
+                            "mode": "chose"
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "name": "status",
+                        "type": "uinteger",
+                        "label": "Status",
+                        "required": true,
+                        "validate": {
+                            "min": 100
+                        }
+                    },
+                    {
+                        "name": "body",
+                        "type": "any",
+                        "label": "Body"
+                    },
+                    {
+                        "name": "headers",
+                        "spec": [
+                            {
+                                "name": "key",
+                                "type": "text",
+                                "label": "Key",
+                                "required": true,
+                                "validate": {
+                                    "max": 256
+                                }
+                            },
+                            {
+                                "name": "value",
+                                "type": "text",
+                                "label": "Value",
+                                "required": true,
+                                "validate": {
+                                    "max": 4096
+                                }
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Custom headers",
+                        "validate": {
+                            "maxItems": 16
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": true,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu1.make.com",
+        "notes": []
+    }
+}

@@ -1,0 +1,415 @@
+{
+    "name": "Linkedin",
+    "flow": [
+        {
+            "id": 1,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 2926764,
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 0
+                },
+                "restore": {
+                    "parameters": {
+                        "hook": {
+                            "data": {
+                                "editable": "true"
+                            },
+                            "label": "Lexavo Facebook"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "type": "hook:gateway-webhook",
+                        "label": "Webhook",
+                        "required": true
+                    },
+                    {
+                        "name": "maxResults",
+                        "type": "number",
+                        "label": "Maximum number of results"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "cabinet_id",
+                        "type": "text"
+                    },
+                    {
+                        "name": "calendrier_id",
+                        "type": "text"
+                    },
+                    {
+                        "name": "reseau",
+                        "type": "text"
+                    },
+                    {
+                        "name": "texte",
+                        "type": "text"
+                    },
+                    {
+                        "name": "hashtags",
+                        "spec": {
+                            "type": "text"
+                        },
+                        "type": "array"
+                    },
+                    {
+                        "name": "image_url",
+                        "type": "text"
+                    },
+                    {
+                        "name": "date_programmee",
+                        "type": "text"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 2,
+            "module": "http:DownloadFile",
+            "version": 4,
+            "parameters": {
+                "authenticationType": "noAuth"
+            },
+            "mapper": {
+                "url": "{{1.image_url}}",
+                "shareCookies": false,
+                "stopOnHttpError": true
+            },
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "headers": {
+                            "mode": "chose"
+                        },
+                        "shareCookies": {
+                            "mode": "chose"
+                        },
+                        "queryParameters": {
+                            "mode": "chose"
+                        },
+                        "stopOnHttpError": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "authenticationType": {
+                            "label": "No authenticationUse when no credentials are required for the request."
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "authenticationType",
+                        "type": "select",
+                        "label": "Authentication type",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "noAuth",
+                                "apiKey",
+                                "basicAuth",
+                                "oAuth"
+                            ]
+                        }
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "url",
+                        "type": "url",
+                        "label": "URL",
+                        "required": true
+                    },
+                    {
+                        "name": "stopOnHttpError",
+                        "type": "boolean",
+                        "label": "Return error if HTTP request fails",
+                        "required": true
+                    },
+                    {
+                        "name": "shareCookies",
+                        "type": "boolean",
+                        "label": "Share cookies with other HTTP modules",
+                        "required": true
+                    },
+                    {
+                        "name": "headers",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "name",
+                                    "type": "text",
+                                    "label": "Name",
+                                    "required": true,
+                                    "validate": {
+                                        "pattern": "^[-!#$%&'*+.^_`|~0-9A-Za-z]+$"
+                                    }
+                                },
+                                {
+                                    "name": "value",
+                                    "type": "text",
+                                    "label": "Value"
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Header"
+                        },
+                        "type": "array",
+                        "label": "Headers"
+                    },
+                    {
+                        "name": "queryParameters",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "name",
+                                    "type": "text",
+                                    "label": "Name",
+                                    "required": true
+                                },
+                                {
+                                    "name": "value",
+                                    "type": "text",
+                                    "label": "Value"
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Parameter"
+                        },
+                        "type": "array",
+                        "label": "Query parameters"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 6,
+            "module": "linkedin:ShareImage",
+            "version": 2,
+            "parameters": {
+                "__IMTCONN__": 6983513
+            },
+            "mapper": {
+                "url": "{{1.image_url}}",
+                "method": "link",
+                "content": "{{1.texte}}",
+                "visibility": "PUBLIC",
+                "feedDistribution": "MAIN_FEED",
+                "isReshareDisabledByAuthor": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": 647,
+                    "y": -33
+                },
+                "restore": {
+                    "expect": {
+                        "method": {
+                            "label": "Upload by link"
+                        },
+                        "visibility": {
+                            "mode": "chose",
+                            "label": "Anyone"
+                        },
+                        "feedDistribution": {
+                            "mode": "chose",
+                            "label": "Main feed"
+                        },
+                        "isReshareDisabledByAuthor": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "linkedin2"
+                            },
+                            "label": "My LinkedIn (OpenID Connect) connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:linkedin2,linkedin-openid",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "method",
+                        "type": "select",
+                        "label": "Choose Upload Method",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "upload",
+                                "link"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "type": "text",
+                        "label": "Title"
+                    },
+                    {
+                        "name": "altText",
+                        "type": "text",
+                        "label": "Alt Text"
+                    },
+                    {
+                        "name": "content",
+                        "type": "text",
+                        "label": "Content",
+                        "required": true
+                    },
+                    {
+                        "name": "visibility",
+                        "type": "select",
+                        "label": "Visibility",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "PUBLIC",
+                                "CONNECTIONS",
+                                "LOGGED_IN"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "feedDistribution",
+                        "type": "select",
+                        "label": "Feed Distribution",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "MAIN_FEED",
+                                "NONE"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "isReshareDisabledByAuthor",
+                        "type": "boolean",
+                        "label": "Is Reshare Disabled",
+                        "required": true
+                    },
+                    {
+                        "name": "url",
+                        "type": "text",
+                        "label": "Image URL",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 5,
+            "module": "gateway:WebhookRespond",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "body": "{\"statut\": \"publie\", {{1.calendrier_id}}}",
+                "status": "200",
+                "headers": []
+            },
+            "metadata": {
+                "designer": {
+                    "x": 958,
+                    "y": -10
+                },
+                "restore": {
+                    "expect": {
+                        "headers": {
+                            "mode": "chose"
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "name": "status",
+                        "type": "uinteger",
+                        "label": "Status",
+                        "required": true,
+                        "validate": {
+                            "min": 100
+                        }
+                    },
+                    {
+                        "name": "body",
+                        "type": "any",
+                        "label": "Body"
+                    },
+                    {
+                        "name": "headers",
+                        "spec": [
+                            {
+                                "name": "key",
+                                "type": "text",
+                                "label": "Key",
+                                "required": true,
+                                "validate": {
+                                    "max": 256
+                                }
+                            },
+                            {
+                                "name": "value",
+                                "type": "text",
+                                "label": "Value",
+                                "required": true,
+                                "validate": {
+                                    "max": 4096
+                                }
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Custom headers",
+                        "validate": {
+                            "maxItems": 16
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": true,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu1.make.com",
+        "notes": []
+    }
+}

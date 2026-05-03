@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl *)",
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(npm i *)",
+      "Bash(vercel --prod)",
+      "Bash(vercel ls *)",
+      "Bash(vercel *)",
+      "Bash(npm install *)",
+      "Bash(python3 -c ' *)",
+      "WebFetch(domain:www.notion.com)"
+    ]
+  }
+}
