@@ -368,7 +368,7 @@ export default function HomePage() {
                 letterSpacing: '-0.01em',
               }}
             >
-              Faîtes entendre{' '}
+              Publiez facilement pour faire entendre{' '}
               <span style={{ color: 'var(--navy-700)' }}>votre droit</span>
               <span style={{ color: 'var(--ocre-500)' }}>.</span>
             </p>
@@ -742,7 +742,7 @@ export default function HomePage() {
             </div>
             {/* Tagline */}
             <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.25rem, 2vw, 1.5rem)', color: 'var(--white)', lineHeight: 1.2, letterSpacing: '-0.015em' }}>
-              Faites entendre<br />
+              Publiez facilement pour faire entendre<br />
               <em>votre droit</em><span style={{ color: 'var(--ocre-500)' }}>.</span>
             </p>
             {/* Description */}

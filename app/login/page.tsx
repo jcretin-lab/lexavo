@@ -100,7 +100,7 @@ export default function LoginPage() {
           <h1 className="mb-1" style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '2.25rem', color: 'var(--navy-700)', letterSpacing: '-0.02em' }}>
             Lex<em>avo</em><span style={{ color: 'var(--ocre-500)' }}>.</span>
           </h1>
-          <p className="text-sm" style={{ color: 'var(--ink-500)' }}>Contenu juridique automatisé</p>
+          <p className="text-sm" style={{ color: 'var(--ink-500)' }}>Publiez facilement pour faire entendre votre droit.</p>
         </div>
 
         <div className="rounded-xl p-8" style={{ background: 'var(--white)', border: '1px solid var(--ink-200)', boxShadow: 'var(--shadow)' }}>

@@ -21,10 +21,10 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.lexavo.fr'),
   title: {
-    default: 'Lexavo — Contenu juridique automatisé pour avocats',
+    default: 'Lexavo — Publiez facilement pour faire entendre votre droit.',
     template: '%s | Lexavo',
   },
-  description: 'Lexavo génère vos articles SEO, posts Facebook et LinkedIn conformes à la déontologie du barreau. Publiez automatiquement en 3 minutes. Essai gratuit sans carte bancaire.',
+  description: 'Lexavo génère vos articles SEO, posts Facebook et LinkedIn conformes à la déontologie du barreau. Publiez facilement pour faire entendre votre droit. Essai gratuit sans carte bancaire.',
   keywords: ['avocat', 'contenu juridique', 'réseaux sociaux avocat', 'SEO cabinet avocat', 'publication automatique', 'Facebook LinkedIn avocat', 'marketing juridique', 'déontologie barreau'],
   authors: [{ name: 'Lexavo' }],
   creator: 'Lexavo',
@@ -33,13 +33,13 @@ export const metadata: Metadata = {
     locale: 'fr_FR',
     url: 'https://www.lexavo.fr',
     siteName: 'Lexavo',
-    title: 'Lexavo — Contenu juridique automatisé pour avocats',
-    description: 'Lexavo génère vos articles SEO, posts Facebook et LinkedIn conformes à la déontologie du barreau. Publiez automatiquement en 3 minutes. Essai gratuit.',
+    title: 'Lexavo — Publiez facilement pour faire entendre votre droit.',
+    description: 'Lexavo génère vos articles SEO, posts Facebook et LinkedIn conformes à la déontologie du barreau. Publiez facilement pour faire entendre votre droit. Essai gratuit.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Lexavo — Contenu juridique automatisé pour avocats',
-    description: 'Lexavo génère vos articles SEO, posts Facebook et LinkedIn conformes à la déontologie du barreau. Publiez automatiquement en 3 minutes.',
+    title: 'Lexavo — Publiez facilement pour faire entendre votre droit.',
+    description: 'Lexavo génère vos articles SEO, posts Facebook et LinkedIn conformes à la déontologie du barreau. Publiez facilement pour faire entendre votre droit.',
   },
   robots: {
     index: true,

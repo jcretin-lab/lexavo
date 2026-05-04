@@ -13,7 +13,7 @@ function layout(content: string): string {
   return `
     <div style="font-family: sans-serif; max-width: 520px; margin: 0 auto; padding: 32px 24px; color: #1a1a1a;">
       <h1 style="font-size: 24px; font-weight: bold; color: #1A3F7C; margin-bottom: 4px;">Lexavo</h1>
-      <p style="color: #888; font-size: 13px; margin-bottom: 32px; margin-top: 0;">Votre présence juridique sur Facebook &amp; LinkedIn</p>
+      <p style="color: #888; font-size: 13px; margin-bottom: 32px; margin-top: 0;">Publiez facilement pour faire entendre votre droit.</p>
       ${content}
       <hr style="margin: 32px 0; border: none; border-top: 1px solid #e5e7eb;" />
       <p style="font-size: 12px; color: #aaa; margin: 0;">Lexavo · lexavo.fr</p>
