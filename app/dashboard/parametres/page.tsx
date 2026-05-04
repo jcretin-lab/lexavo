@@ -2,6 +2,7 @@
 import { redirect } from 'next/navigation'
 import { GestionAbonnement } from '@/components/dashboard/gestion-abonnement'
 import { ChangeEmailForm } from '@/components/dashboard/change-email-form'
+import { DeleteAccountButton } from '@/components/dashboard/delete-account-button'
 
 export default async function ParametresPage({
   searchParams,
@@ -73,6 +74,15 @@ export default async function ParametresPage({
 
         {/* Compte */}
         <ChangeEmailForm currentEmail={user.email ?? ''} />
+
+        {/* Suppression du compte */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-6">
+          <h2 className="font-semibold text-gray-900 mb-1">Supprimer mon compte</h2>
+          <p className="text-sm text-gray-500 mb-4">
+            Supprime définitivement votre compte, vos données et résilie votre abonnement.
+          </p>
+          <DeleteAccountButton />
+        </div>
       </div>
     </div>
   )
