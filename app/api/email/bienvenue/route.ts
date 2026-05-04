@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { sendBienvenue } from '@/lib/email'
+import { sendBienvenue, sendNotifNouveauClient } from '@/lib/email'
 
 export async function POST() {
   const supabase = await createClient()
@@ -12,7 +12,7 @@ export async function POST() {
 
   const { data: cabinet } = await supabase
     .from('cabinets')
-    .select('nom')
+    .select('nom, ville, barreau, plan')
     .eq('user_id', user.id)
     .maybeSingle()
 
@@ -20,6 +20,17 @@ export async function POST() {
   const result = await sendBienvenue(user.email, cabinet?.nom ?? undefined)
   if (!result.ok) {
     console.error('[bienvenue] Échec envoi email :', result.error)
+  }
+
+  // Notification admin avec toutes les infos du cabinet
+  if (cabinet?.nom) {
+    sendNotifNouveauClient({
+      email: user.email,
+      nom: cabinet.nom,
+      plan: cabinet.plan ?? 'trial',
+      ville: cabinet.ville ?? '',
+      barreau: cabinet.barreau ?? '',
+    }).catch(err => console.error('[bienvenue] Échec notif admin :', err))
   }
 
   return NextResponse.json({ ok: result.ok })

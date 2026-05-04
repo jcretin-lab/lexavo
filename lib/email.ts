@@ -59,7 +59,7 @@ export async function sendBienvenue(email: string, nomCabinet?: string) {
   return send(email, salutation, html)
 }
 
-// ── 2. Notification admin — nouvelle inscription ────────────────────────────
+// ── 2. Notification admin — nouvelle inscription (signup) ───────────────────
 export async function sendNotifInscription(email: string) {
   const html = layout(`
     <p style="font-size:16px;font-weight:600;margin-bottom:16px;">Nouvelle inscription</p>
@@ -69,6 +69,31 @@ export async function sendNotifInscription(email: string) {
     </table>
   `)
   return send(ADMIN_EMAIL, `Nouvelle inscription Lexavo — ${email}`, html)
+}
+
+// ── 2b. Notification admin — nouveau client après onboarding ─────────────────
+export async function sendNotifNouveauClient(data: {
+  email: string
+  nom: string
+  plan: string
+  ville: string
+  barreau: string
+}) {
+  const { email, nom, plan, ville, barreau } = data
+  const nomPlan = NOM_PAR_PLAN[plan as keyof typeof NOM_PAR_PLAN] ?? plan
+  const dateStr = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })
+  const html = layout(`
+    <p style="font-size:16px;font-weight:600;margin-bottom:16px;">Nouveau client inscrit sur Lexavo</p>
+    <table style="font-size:14px;color:#444;border-collapse:collapse;width:100%;">
+      <tr><td style="padding:7px 20px 7px 0;color:#888;white-space:nowrap;">Cabinet</td><td style="font-weight:600;">${nom}</td></tr>
+      <tr><td style="padding:7px 20px 7px 0;color:#888;">Email</td><td><a href="mailto:${email}" style="color:#1A3F7C;">${email}</a></td></tr>
+      <tr><td style="padding:7px 20px 7px 0;color:#888;">Plan souscrit</td><td>${nomPlan}</td></tr>
+      <tr><td style="padding:7px 20px 7px 0;color:#888;">Date d'inscription</td><td>${dateStr}</td></tr>
+      <tr><td style="padding:7px 20px 7px 0;color:#888;">Ville</td><td>${ville}</td></tr>
+      <tr><td style="padding:7px 20px 7px 0;color:#888;">Barreau</td><td>${barreau}</td></tr>
+    </table>
+  `)
+  return send(ADMIN_EMAIL, `Nouveau client Lexavo — ${nom}`, html)
 }
 
 // ── 3. Confirmation d'abonnement ─────────────────────────────────────────────
