@@ -67,34 +67,39 @@ export async function POST(request: NextRequest) {
       ? texte + '\n\n' + hashtags.map((h: string) => `#${h.replace('#', '')}`).join(' ')
       : texte
 
-    const payload = {
-      texte: contenu,
-      image_url: image_url ?? null,
-      scheduled_date: scheduled_date ?? null,
-      cabinet_id: cabinet.id,
-      generation_id: generation_id ?? null,
-      post_index: post_index ?? 0,
-      facebook_page_url: cabinet.facebook_connected,
-      reseau: reseau ?? 'facebook',
+    const isScheduled = !!scheduled_date && new Date(scheduled_date) > new Date()
+
+    if (!isScheduled) {
+      // Publication immédiate : on appelle Make tout de suite
+      const payload = {
+        texte: contenu,
+        image_url: image_url ?? null,
+        scheduled_date: null,
+        cabinet_id: cabinet.id,
+        generation_id: generation_id ?? null,
+        post_index: post_index ?? 0,
+        facebook_page_url: cabinet.facebook_connected,
+        reseau: reseau ?? 'facebook',
+      }
+
+      const makeRes = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      console.log('[api/publish] Réponse Make.com :', makeRes.status)
+      if (!makeRes.ok) {
+        const body = await makeRes.text()
+        console.error('[api/publish] Erreur Make.com :', makeRes.status, body)
+        return NextResponse.json(
+          { error: `Erreur lors de la publication (${makeRes.status}). Vérifiez que le scénario Make est actif.` },
+          { status: 502 }
+        )
+      }
     }
 
-    const makeRes = await fetch(webhookUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    })
-
-    console.log('[api/publish] Réponse Make.com :', makeRes.status)
-    if (!makeRes.ok) {
-      const body = await makeRes.text()
-      console.error('[api/publish] Erreur Make.com :', makeRes.status, body)
-      return NextResponse.json(
-        { error: `Erreur lors de la publication (${makeRes.status}). Vérifiez que le scénario Make est actif.` },
-        { status: 502 }
-      )
-    }
-
-    const statut = scheduled_date ? 'en_attente' : 'publie'
+    const statut = isScheduled ? 'en_attente' : 'publie'
     await supabase.from('calendrier').insert({
       cabinet_id: cabinet.id,
       generation_id: generation_id ?? null,
@@ -105,7 +110,7 @@ export async function POST(request: NextRequest) {
       statut,
     })
 
-    if (generation_id && scheduled_date) {
+    if (generation_id && isScheduled) {
       await supabase
         .from('generations')
         .update({ statut: 'programme', date_publication: scheduled_date })
