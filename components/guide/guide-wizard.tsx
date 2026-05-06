@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 
 export interface GuideStep {
@@ -15,39 +14,8 @@ interface Props {
 }
 
 export function GuideWizard({ reseau, steps }: Props) {
-  const [current, setCurrent] = useState(0)
-  const [webhookUrl, setWebhookUrl] = useState('')
-  const [webhookStatus, setWebhookStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
-  const [webhookError, setWebhookError] = useState('')
-
-  const total = steps.length
-  const step = steps[current]
-  const isFirst = current === 0
-  const isLast = current === total - 1
+  const step = steps[0]
   const couleur = reseau === 'facebook' ? '#1877F2' : '#0A66C2'
-
-  async function handleWebhookSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setWebhookStatus('loading')
-    setWebhookError('')
-    try {
-      const res = await fetch('/api/update-webhook', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reseau, url: webhookUrl }),
-      })
-      const data = await res.json()
-      if (!res.ok) {
-        setWebhookError(data.error || 'Erreur lors de la sauvegarde.')
-        setWebhookStatus('error')
-      } else {
-        setWebhookStatus('success')
-      }
-    } catch {
-      setWebhookError('Erreur réseau. Réessayez.')
-      setWebhookStatus('error')
-    }
-  }
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--paper)' }}>
@@ -57,15 +25,6 @@ export function GuideWizard({ reseau, steps }: Props) {
           <Link href="/" style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', color: 'var(--navy-700)', letterSpacing: '-0.02em', textDecoration: 'none' }}>
             Lex<em>avo</em><span style={{ color: 'var(--ocre-500)' }}>.</span>
           </Link>
-          <span className="text-xs font-medium" style={{ color: 'var(--ink-400)', fontFamily: 'var(--font-jetbrains-mono)', letterSpacing: '0.08em' }}>
-            ÉTAPE {current + 1} / {total}
-          </span>
-        </div>
-        <div className="h-1 w-full" style={{ background: 'var(--ink-100)' }}>
-          <div
-            className="h-1 transition-all duration-500"
-            style={{ width: `${((current + 1) / total) * 100}%`, background: 'var(--navy-700)' }}
-          />
         </div>
       </header>
 
@@ -86,7 +45,7 @@ export function GuideWizard({ reseau, steps }: Props) {
         </div>
 
         {/* Carte étape */}
-        <div className="rounded-2xl p-4 sm:p-8 mb-6" style={{ background: 'var(--white)', border: '1px solid var(--ink-200)', boxShadow: 'var(--shadow)' }}>
+        <div className="rounded-2xl p-4 sm:p-8" style={{ background: 'var(--white)', border: '1px solid var(--ink-200)', boxShadow: 'var(--shadow)' }}>
           <h1 style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.5rem, 4vw, 2rem)', color: 'var(--ink-900)', letterSpacing: '-0.015em', lineHeight: 1.15, marginBottom: step.sousTitre ? '0.5rem' : '1.5rem' }}>
             {step.titre}
           </h1>
@@ -96,91 +55,6 @@ export function GuideWizard({ reseau, steps }: Props) {
           <div className="space-y-4 text-sm leading-relaxed" style={{ color: 'var(--ink-700)' }}>
             {step.contenu}
           </div>
-        </div>
-
-        {/* Navigation */}
-        <div className="flex items-center justify-between gap-3">
-          <button
-            onClick={() => setCurrent(c => c - 1)}
-            disabled={isFirst}
-            className="px-5 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-30"
-            style={{ background: 'var(--white)', border: '1px solid var(--ink-200)', color: 'var(--ink-700)' }}
-          >
-            ← Étape précédente
-          </button>
-
-          {isLast ? (
-            <span className="text-xs" style={{ color: 'var(--ink-400)' }}>Collez votre URL ci-dessous ↓</span>
-          ) : (
-            <button
-              onClick={() => setCurrent(c => c + 1)}
-              className="px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors"
-              style={{ background: 'var(--navy-700)', color: 'var(--white)' }}
-            >
-              Étape suivante →
-            </button>
-          )}
-        </div>
-
-        {/* Dots navigation */}
-        <div className="flex justify-center gap-2 mt-8">
-          {steps.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              className="rounded-full transition-all"
-              style={{
-                width: i === current ? '24px' : '8px',
-                height: '8px',
-                background: i === current ? 'var(--navy-700)' : 'var(--ink-200)',
-              }}
-              aria-label={`Aller à l'étape ${i + 1}`}
-            />
-          ))}
-        </div>
-
-        {/* Formulaire webhook */}
-        <div className="mt-12 rounded-2xl p-8" style={{ background: 'var(--white)', border: '1px solid var(--ink-200)', boxShadow: 'var(--shadow)' }}>
-          {webhookStatus === 'success' ? (
-            <div className="text-center space-y-5">
-              <p className="text-base font-semibold" style={{ color: 'var(--success)' }}>
-                ✓ Publication automatique activée !
-              </p>
-              <Link
-                href="/dashboard"
-                className="inline-flex items-center gap-1 px-6 py-2.5 rounded-lg text-sm font-semibold"
-                style={{ background: 'var(--navy-700)', color: 'var(--white)', textDecoration: 'none' }}
-              >
-                Retourner au dashboard →
-              </Link>
-            </div>
-          ) : (
-            <form onSubmit={handleWebhookSubmit} className="space-y-4">
-              <h2 style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', color: 'var(--ink-900)', marginBottom: '1rem' }}>
-                Collez votre URL webhook ici
-              </h2>
-              <input
-                type="url"
-                value={webhookUrl}
-                onChange={e => setWebhookUrl(e.target.value)}
-                placeholder="https://hook.make.com/..."
-                required
-                className="w-full px-4 py-3 rounded-xl text-sm"
-                style={{ border: '1px solid var(--ink-200)', color: 'var(--ink-900)', background: 'var(--paper)', outline: 'none', fontFamily: 'var(--font-jetbrains-mono)' }}
-              />
-              {webhookStatus === 'error' && webhookError && (
-                <p className="text-sm" style={{ color: '#c0392b' }}>{webhookError}</p>
-              )}
-              <button
-                type="submit"
-                disabled={webhookStatus === 'loading' || !webhookUrl}
-                className="w-full px-6 py-3 rounded-xl text-sm font-semibold disabled:opacity-50 transition-opacity"
-                style={{ background: 'var(--navy-700)', color: 'var(--white)' }}
-              >
-                {webhookStatus === 'loading' ? 'Enregistrement...' : 'Enregistrer et activer'}
-              </button>
-            </form>
-          )}
         </div>
       </main>
 

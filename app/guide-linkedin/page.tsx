@@ -11,7 +11,7 @@ const steps = [
     titre: 'Activez la publication automatique sur LinkedIn',
     sousTitre: 'Une configuration unique de 5 minutes. Tout est automatique ensuite.',
     contenu: (
-      <div className="space-y-5">
+      <div className="space-y-8">
         <video
           src="/guide-linkedin-intro.mp4"
           controls
@@ -28,6 +28,11 @@ const steps = [
         >
           Ouvrir le scénario Lexavo LinkedIn →
         </a>
+        <div className="rounded-xl p-4" style={{ background: 'var(--warning-50)', border: '1px solid #efd6a8' }}>
+          <p className="text-sm" style={{ color: 'var(--ink-700)' }}>
+            ⚠️ Votre connexion LinkedIn dure 60 jours. Lexavo vous enverra un email de rappel avant expiration.
+          </p>
+        </div>
       </div>
     ),
   },

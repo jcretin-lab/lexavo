@@ -11,7 +11,7 @@ const steps = [
     titre: 'Activez la publication automatique sur Facebook',
     sousTitre: 'Une configuration unique de 5 minutes. Tout est automatique ensuite.',
     contenu: (
-      <div className="space-y-5">
+      <div className="space-y-8">
         <video
           src="/guide-facebook-intro.mp4"
           controls
