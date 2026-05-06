@@ -11,7 +11,7 @@ const steps = [
     titre: 'Activez la publication automatique sur LinkedIn',
     sousTitre: 'Une configuration unique de 5 minutes. Tout est automatique ensuite.',
     contenu: (
-      <div className="space-y-12">
+      <div className="space-y-16">
         <video
           src="/guide-linkedin-intro.mp4"
           controls
