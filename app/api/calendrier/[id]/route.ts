@@ -17,7 +17,7 @@ export async function PATCH(
 
     const { data: cabinet } = await supabase
       .from('cabinets')
-      .select('id, facebook_connected, make_webhook_facebook, make_webhook_linkedin')
+      .select('id, facebook_connected, linkedin_connected, make_webhook_facebook, make_webhook_linkedin')
       .eq('user_id', user.id)
       .single()
 
@@ -26,10 +26,6 @@ export async function PATCH(
     const body = await request.json()
 
     if (body.publish === true) {
-      if (!cabinet.facebook_connected) {
-        return NextResponse.json({ error: 'Facebook non connecté. Connectez votre page depuis Réseaux sociaux.' }, { status: 400 })
-      }
-
       const { data: entry } = await supabase
         .from('calendrier')
         .select('contenu, image_url, generation_id, reseau')
@@ -42,6 +38,14 @@ export async function PATCH(
       const entryReseau = (entry as Record<string, unknown>).reseau ?? 'facebook'
       const cab = cabinet as Record<string, unknown>
       const isLinkedin = entryReseau === 'linkedin'
+
+      if (isLinkedin && !cab.linkedin_connected) {
+        return NextResponse.json({ error: 'LinkedIn non connecté. Connectez votre profil depuis Réseaux sociaux.' }, { status: 400 })
+      }
+      if (!isLinkedin && !cab.facebook_connected) {
+        return NextResponse.json({ error: 'Facebook non connecté. Connectez votre page depuis Réseaux sociaux.' }, { status: 400 })
+      }
+
       const webhookUrl = isLinkedin
         ? ((cab.make_webhook_linkedin as string) || DEFAULT_WEBHOOK_LINKEDIN)
         : ((cab.make_webhook_facebook as string) || DEFAULT_WEBHOOK_FACEBOOK)

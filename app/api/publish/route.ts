@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 
     const { data: cabinet, error: cabErr } = await supabase
       .from('cabinets')
-      .select('id, facebook_connected, make_webhook_facebook, make_webhook_linkedin')
+      .select('id, facebook_connected, linkedin_connected, make_webhook_facebook, make_webhook_linkedin')
       .eq('user_id', user.id)
       .single()
 
@@ -35,6 +35,21 @@ export async function POST(request: NextRequest) {
     const cab = cabinet as Record<string, unknown>
     const isLinkedin = reseau === 'linkedin'
 
+    if (isLinkedin && !cab.linkedin_connected) {
+      console.log('[api/publish] linkedin non connecté')
+      return NextResponse.json(
+        { error: 'LinkedIn non connecté. Connectez votre profil depuis Réseaux sociaux.' },
+        { status: 400 }
+      )
+    }
+    if (!isLinkedin && !cab.facebook_connected) {
+      console.log('[api/publish] facebook non connecté')
+      return NextResponse.json(
+        { error: 'Facebook non connecté. Connectez votre page depuis Réseaux sociaux.' },
+        { status: 400 }
+      )
+    }
+
     const webhookUrl = isLinkedin
       ? ((cab.make_webhook_linkedin as string) || DEFAULT_WEBHOOK_LINKEDIN)
       : ((cab.make_webhook_facebook as string) || DEFAULT_WEBHOOK_FACEBOOK)
@@ -44,14 +59,6 @@ export async function POST(request: NextRequest) {
     if (!webhookUrl) {
       return NextResponse.json(
         { error: `Webhook ${isLinkedin ? 'LinkedIn' : 'Facebook'} non configuré.` },
-        { status: 400 }
-      )
-    }
-
-    if (!cabinet.facebook_connected) {
-      console.log('[api/publish] facebook non connecté')
-      return NextResponse.json(
-        { error: 'Facebook non connecté. Connectez votre page depuis Réseaux sociaux.' },
         { status: 400 }
       )
     }

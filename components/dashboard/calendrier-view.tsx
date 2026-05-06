@@ -11,10 +11,12 @@ interface CalendrierPost {
   statut: 'en_attente' | 'publie'
   image_url?: string | null
   generation_id?: string | null
+  reseau?: 'facebook' | 'linkedin' | null
 }
 
 interface Props {
   posts: CalendrierPost[]
+  facebookConnected: boolean
   linkedinConnected: boolean
 }
 
@@ -40,7 +42,7 @@ function sameDay(a: Date, b: Date) {
     a.getDate() === b.getDate()
 }
 
-export function CalendrierView({ posts: initialPosts, linkedinConnected }: Props) {
+export function CalendrierView({ posts: initialPosts, facebookConnected, linkedinConnected }: Props) {
   const [posts, setPosts] = useState<CalendrierPost[]>(initialPosts)
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedPost, setSelectedPost] = useState<CalendrierPost | null>(null)
@@ -174,12 +176,12 @@ export function CalendrierView({ posts: initialPosts, linkedinConnected }: Props
 
   return (
     <div>
-      {/* Alerte Facebook */}
-      {!linkedinConnected && (
+      {/* Alerte aucun réseau connecté */}
+      {!facebookConnected && !linkedinConnected && (
         <div className="mb-6 rounded-xl bg-amber-50 border border-amber-200 px-5 py-4 flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-amber-800">Facebook non connecté</p>
-            <p className="text-xs text-amber-600 mt-0.5">Connectez votre page Facebook pour programmer vos posts.</p>
+            <p className="text-sm font-medium text-amber-800">Aucun réseau social connecté</p>
+            <p className="text-xs text-amber-600 mt-0.5">Connectez Facebook ou LinkedIn pour programmer vos posts.</p>
           </div>
           <a href="/dashboard/reseaux" className="text-xs font-semibold text-amber-700 hover:underline flex-shrink-0">
             Configurer →
@@ -336,15 +338,22 @@ export function CalendrierView({ posts: initialPosts, linkedinConnected }: Props
                       Changer la date
                     </button>
                   )}
-                  {selectedPost.statut === 'en_attente' && linkedinConnected && (
-                    <button
-                      onClick={publishNow}
-                      disabled={publishing}
-                      className="text-xs font-semibold text-white bg-[#1877F2] hover:bg-[#0d65d9] px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50"
-                    >
-                      {publishing ? 'Envoi…' : 'Publier maintenant'}
-                    </button>
-                  )}
+                  {selectedPost.statut === 'en_attente' && (() => {
+                    const isLinkedin = selectedPost.reseau === 'linkedin'
+                    const reseauConnecte = isLinkedin ? linkedinConnected : facebookConnected
+                    if (!reseauConnecte) return null
+                    return (
+                      <button
+                        onClick={publishNow}
+                        disabled={publishing}
+                        className={`text-xs font-semibold text-white px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
+                          isLinkedin ? 'bg-[#0A66C2] hover:bg-[#084e96]' : 'bg-[#1877F2] hover:bg-[#0d65d9]'
+                        }`}
+                      >
+                        {publishing ? 'Envoi…' : `Publier sur ${isLinkedin ? 'LinkedIn' : 'Facebook'}`}
+                      </button>
+                    )
+                  })()}
                   <button
                     onClick={() => { setModalMode('confirmDelete'); setActionError('') }}
                     className="text-xs font-semibold text-red-600 hover:text-red-700 border border-red-200 hover:border-red-300 px-3 py-1.5 rounded-lg transition-colors ml-auto"
