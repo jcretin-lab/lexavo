@@ -17,7 +17,7 @@ const steps = [
           controls
           preload="metadata"
           playsInline
-          style={{ width: '100%', height: 'auto', maxWidth: '900px', display: 'block', margin: '0 auto', borderRadius: '8px', boxShadow: '0 2px 16px rgba(0,0,0,0.10)' }}
+          style={{ width: '100%', height: 'auto', maxWidth: '900px', display: 'block', marginInline: 'auto', borderRadius: '8px', boxShadow: '0 2px 16px rgba(0,0,0,0.10)' }}
         />
         <a
           href="https://eu1.make.com/public/shared-scenario/jCmAcfuEorC/linkedin"
