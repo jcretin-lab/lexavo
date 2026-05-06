@@ -41,7 +41,18 @@ export function GenerationDetail({ generation, plan, facebookConnected, linkedin
   const [publishingIndex, setPublishingIndex] = useState<number | null>(null)
   const [successMessages, setSuccessMessages] = useState<Record<number, Reseau>>({})
   const [schedulingIndex, setSchedulingIndex] = useState<number | null>(null)
+  const [scheduleDate, setScheduleDate] = useState('')
   const [publishError, setPublishError] = useState('')
+
+  function startScheduling(index: number) {
+    setSchedulingIndex(index)
+    setScheduleDate('')
+  }
+
+  function cancelScheduling() {
+    setSchedulingIndex(null)
+    setScheduleDate('')
+  }
 
   const [selectedNetwork, setSelectedNetwork] = useState<Record<number, Reseau>>({})
   const canLinkedin = plan === 'pro' || plan === 'cabinet'
@@ -427,25 +438,34 @@ export function GenerationDetail({ generation, plan, facebookConnected, linkedin
                                     <div className="flex items-center gap-2">
                                       <input
                                         type="datetime-local"
+                                        value={scheduleDate}
                                         min={new Date().toISOString().slice(0, 16)}
                                         autoFocus
                                         className="text-xs border border-gray-300 rounded-lg px-2 py-1.5 focus:outline-none focus:border-blue-400"
-                                        onChange={e => {
-                                          if (e.target.value) {
-                                            publier(post, i, new Date(e.target.value).toISOString())
-                                          }
-                                        }}
+                                        onChange={e => setScheduleDate(e.target.value)}
                                       />
                                       <button
-                                        onClick={() => setSchedulingIndex(null)}
-                                        className="text-xs text-gray-400 hover:text-gray-600"
+                                        onClick={() => {
+                                          if (scheduleDate) {
+                                            publier(post, i, new Date(scheduleDate).toISOString())
+                                          }
+                                        }}
+                                        disabled={isPublishing || !scheduleDate}
+                                        className="text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                                      >
+                                        {isPublishing ? 'Envoi…' : 'Programmer'}
+                                      </button>
+                                      <button
+                                        onClick={cancelScheduling}
+                                        disabled={isPublishing}
+                                        className="text-xs text-gray-400 hover:text-gray-600 disabled:opacity-40"
                                       >
                                         Annuler
                                       </button>
                                     </div>
                                   ) : (
                                     <button
-                                      onClick={() => setSchedulingIndex(i)}
+                                      onClick={() => startScheduling(i)}
                                       disabled={isPublishing}
                                       className="text-xs font-semibold text-gray-600 border border-gray-300 hover:border-gray-400 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                                     >
