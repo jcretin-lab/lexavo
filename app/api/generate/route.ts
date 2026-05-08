@@ -168,7 +168,7 @@ Champs supplémentaires :
     { "question": "string", "reponse": "string" },
     { "question": "string", "reponse": "string" }
   ],
-  "prompt_image": "string (prompt DALL-E 3 en anglais décrivant une vraie photographie réaliste prise dans un environnement réel lié au thème juridique. Privilégier des scènes documentaires authentiques (ex: pour le divorce → des alliances posées sur une table en bois usée près d'une fenêtre, pour le droit du travail → un dossier ouvert sur un bureau moderne avec un café, pour le droit immobilier → un trousseau de clés sur le seuil d'une vraie maison, pour le droit pénal → un couloir de palais de justice avec lumière naturelle). Aucun texte ni lettre lisible nulle part dans l'image. Aucune personne ni visage. Maximum 50 mots.)"
+  "prompt_image": "string (prompt DALL-E 3 en anglais décrivant une scène simple, humaine et naturelle liée au thème juridique. INCLURE une ou plusieurs personnes en situation du quotidien (de dos, de profil, mains, ou en plan large pour éviter les visages identifiables). Exemples : pour le divorce → un parent qui prend la main de son enfant en se promenant, pour le droit du travail → quelqu'un assis à son bureau qui regarde par la fenêtre, pour le droit immobilier → un couple qui visite une pièce vide. Composition simple, pas dramatique. Aucun texte visible. Si du texte apparaît malgré tout (panneau, livre, document), il doit être en français uniquement, jamais en anglais. Maximum 50 mots.)"
 }`
 
   inProgress.add(cabinet.id)
@@ -220,7 +220,7 @@ Champs supplémentaires :
       const imageResponse = await openai.images.generate({
         model: 'dall-e-3',
         prompt: content.prompt_image +
-          ' Realistic documentary photography, shot on a 35mm full-frame camera with a 50mm lens at f/2.8, natural window light, true-to-life colors and textures, authentic everyday environment, visible material details (wood grain, paper texture, fabric weave), shallow depth of field, no studio lighting, no marketing styling, no glossy retouching, absolutely no text and no readable letters or signage anywhere in the image, no people, no faces, wide format 16:9, looks like a real candid photograph, not a stock image',
+          ' Simple natural human photograph, soft everyday daylight, calm and human atmosphere, true-to-life neutral colors, ordinary real-world setting (a home, an office, a street in France), one or several people present but no clearly identifiable faces (from behind, partial profile, hands, wide shot), composition kept simple and not cinematic, no dramatic angles, no marketing styling. STRICTLY NO TEXT and NO LETTERS visible in the image. If any text accidentally appears on a sign, paper or book, it MUST be written in French only, NEVER in English, no English words anywhere. Wide format 16:9, looks like a sincere everyday French photograph.',
         size: '1792x1024',
         quality: 'standard',
         n: 1,
