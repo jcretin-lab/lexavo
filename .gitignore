@@ -42,3 +42,7 @@ next-env.d.ts
 
 .vercel
 .env*.local
+
+# claude code local artefacts
+.claude/scheduled_tasks.lock
+.claude/settings.local.json
