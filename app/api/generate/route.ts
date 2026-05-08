@@ -120,7 +120,16 @@ CONTEXTE DU CABINET :
 - Thème : ${theme}
 - Ton souhaité : ${ton}`
 
-  const userPrompt = `Génère UNIQUEMENT un objet JSON valide, sans markdown, sans texte avant ou après.
+  // Prompt 1 — petit appel Claude (max_tokens=200) qui ne génère QUE le prompt_image.
+  // Lancé en parallèle du gros appel pour démarrer DALL-E dès que possible.
+  const imagePromptUserPrompt = `Génère UNIQUEMENT un objet JSON valide contenant ce seul champ, sans markdown ni texte autour.
+
+{
+  "prompt_image": "string (prompt DALL-E 3 en anglais décrivant une scène simple, humaine et naturelle liée au thème juridique. INCLURE une ou plusieurs personnes en situation du quotidien (de dos, de profil, mains, ou en plan large pour éviter les visages identifiables). Exemples : pour le divorce → un parent qui prend la main de son enfant en se promenant, pour le droit du travail → quelqu'un assis à son bureau qui regarde par la fenêtre, pour le droit immobilier → un couple qui visite une pièce vide. Composition simple, pas dramatique. Aucun texte visible. Si du texte apparaît malgré tout, il doit être en français uniquement, jamais en anglais. Maximum 50 mots.)"
+}`
+
+  // Prompt 2 — gros appel Claude pour article + posts + FAQ (sans le prompt_image).
+  const contentUserPrompt = `Génère UNIQUEMENT un objet JSON valide, sans markdown, sans texte avant ou après.
 
 RÈGLES POUR article_blog.contenu (HTML rendu dans un navigateur) :
 Structure obligatoire :
@@ -167,26 +176,89 @@ Champs supplémentaires :
     { "question": "string", "reponse": "string" },
     { "question": "string", "reponse": "string" },
     { "question": "string", "reponse": "string" }
-  ],
-  "prompt_image": "string (prompt DALL-E 3 en anglais décrivant une scène simple, humaine et naturelle liée au thème juridique. INCLURE une ou plusieurs personnes en situation du quotidien (de dos, de profil, mains, ou en plan large pour éviter les visages identifiables). Exemples : pour le divorce → un parent qui prend la main de son enfant en se promenant, pour le droit du travail → quelqu'un assis à son bureau qui regarde par la fenêtre, pour le droit immobilier → un couple qui visite une pièce vide. Composition simple, pas dramatique. Aucun texte visible. Si du texte apparaît malgré tout (panneau, livre, document), il doit être en français uniquement, jamais en anglais. Maximum 50 mots.)"
+  ]
 }`
 
+  const DALLE_STYLE_SUFFIX =
+    ' Simple natural human photograph, soft everyday daylight, calm and human atmosphere, true-to-life neutral colors, ordinary real-world setting (a home, an office, a street in France), one or several people present but no clearly identifiable faces (from behind, partial profile, hands, wide shot), composition kept simple and not cinematic, no dramatic angles, no marketing styling. STRICTLY NO TEXT and NO LETTERS visible in the image. If any text accidentally appears on a sign, paper or book, it MUST be written in French only, NEVER in English, no English words anywhere. Wide format 16:9, looks like a sincere everyday French photograph.'
+  const FALLBACK_IMAGE_PROMPT = `A simple realistic photograph illustrating ${specialite} in everyday French context, with one person from behind in a calm domestic or office scene.`
+
+  // Helper pour upload image dans Supabase Storage
+  const cabinetId = cabinet.id
+  async function uploadImageFromUrl(tempUrl: string): Promise<string | null> {
+    const imgResp = await fetch(tempUrl)
+    const imgBuffer = await imgResp.arrayBuffer()
+    const fileName = `${cabinetId}/${Date.now()}.png`
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('images')
+      .upload(fileName, imgBuffer, { contentType: 'image/png', upsert: false })
+    if (uploadError || !uploadData) return null
+    const { data: urlData } = supabase.storage.from('images').getPublicUrl(fileName)
+    return urlData.publicUrl
+  }
+
   inProgress.add(cabinet.id)
-  let content: GenerationContent | null = null
 
   try {
+    // Lance les 2 appels Claude en parallèle.
+    const imagePromptCall = anthropic.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 200,
+      system: systemPrompt,
+      messages: [{ role: 'user', content: imagePromptUserPrompt }],
+    })
+    const contentCall = anthropic.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 6000,
+      system: systemPrompt,
+      messages: [{ role: 'user', content: contentUserPrompt }],
+    })
+
+    // Dès que le prompt_image est dispo (rapide), démarre DALL-E en parallèle
+    // de la grosse génération de contenu. Fallback si l'appel ou le parse échoue.
+    const imageUrlPromise: Promise<string | null> = (async () => {
+      let imagePrompt = FALLBACK_IMAGE_PROMPT
+      try {
+        const imageMsg = await imagePromptCall
+        const rawImg = imageMsg.content[0].type === 'text' ? imageMsg.content[0].text : ''
+        const cleanedImg = rawImg.replace(/^```json\n?/, '').replace(/\n?```$/, '').trim()
+        const parsed = JSON.parse(cleanedImg) as { prompt_image?: string }
+        if (parsed.prompt_image) imagePrompt = parsed.prompt_image
+      } catch (err) {
+        console.error('[generate] prompt_image parse failed, fallback générique :', err)
+      }
+
+      try {
+        const imageResponse = await openai.images.generate({
+          model: 'dall-e-3',
+          prompt: imagePrompt + DALLE_STYLE_SUFFIX,
+          size: '1792x1024',
+          quality: 'standard',
+          n: 1,
+        })
+        const tempUrl = imageResponse.data?.[0]?.url
+        return tempUrl ? await uploadImageFromUrl(tempUrl) : null
+      } catch (err) {
+        console.error('[generate] Erreur DALL-E :', err)
+        return null
+      }
+    })()
+
+    // Parse du contenu principal avec retry (1 réessai en cas de JSON invalide).
+    type ContentSansImage = Omit<GenerationContent, 'prompt_image'>
+    let content: ContentSansImage | null = null
+
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
-        const message = await anthropic.messages.create({
+        const message = attempt === 0 ? await contentCall : await anthropic.messages.create({
           model: 'claude-sonnet-4-6',
           max_tokens: 6000,
           system: systemPrompt,
-          messages: [{ role: 'user', content: userPrompt }],
+          messages: [{ role: 'user', content: contentUserPrompt }],
         })
-
         const rawText = message.content[0].type === 'text' ? message.content[0].text : ''
         const cleaned = rawText.replace(/^```json\n?/, '').replace(/\n?```$/, '').trim()
-        content = JSON.parse(cleaned) as GenerationContent
+        content = JSON.parse(cleaned) as ContentSansImage
         break
       } catch (err) {
         console.error(`[generate] Tentative ${attempt + 1} échouée :`, err)
@@ -215,36 +287,8 @@ Champs supplémentaires :
       }
     }
 
-    let imageUrl: string | null = null
-    try {
-      const imageResponse = await openai.images.generate({
-        model: 'dall-e-3',
-        prompt: content.prompt_image +
-          ' Simple natural human photograph, soft everyday daylight, calm and human atmosphere, true-to-life neutral colors, ordinary real-world setting (a home, an office, a street in France), one or several people present but no clearly identifiable faces (from behind, partial profile, hands, wide shot), composition kept simple and not cinematic, no dramatic angles, no marketing styling. STRICTLY NO TEXT and NO LETTERS visible in the image. If any text accidentally appears on a sign, paper or book, it MUST be written in French only, NEVER in English, no English words anywhere. Wide format 16:9, looks like a sincere everyday French photograph.',
-        size: '1792x1024',
-        quality: 'standard',
-        n: 1,
-      })
-
-      const tempUrl = imageResponse.data?.[0]?.url
-      if (tempUrl) {
-        const imgResp = await fetch(tempUrl)
-        const imgBuffer = await imgResp.arrayBuffer()
-        const fileName = `${cabinet.id}/${Date.now()}.png`
-
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('images')
-          .upload(fileName, imgBuffer, { contentType: 'image/png', upsert: false })
-
-        if (!uploadError && uploadData) {
-          const { data: urlData } = supabase.storage.from('images').getPublicUrl(fileName)
-          imageUrl = urlData.publicUrl
-        }
-      }
-    } catch (err) {
-      console.error('[generate] Erreur DALL-E :', err)
-      imageUrl = null
-    }
+    // Attend la fin de la génération d'image (déjà lancée en parallèle).
+    const imageUrl = await imageUrlPromise
 
     const { data: generation, error: dbError } = await supabase
       .from('generations')
