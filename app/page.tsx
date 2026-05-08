@@ -12,8 +12,8 @@ const PUBLICATION_ITEMS = [
   {
     num: '02',
     icon: '◈',
-    titre: '3 posts prêts à publier sur vos réseaux sociaux',
-    desc: 'Trois angles différents, prêts à publier ou à programmer sur vos réseaux (LinkedIn, Facebook, Instagram...).',
+    titre: '3 posts prêts à publier sur LinkedIn et Facebook',
+    desc: 'Trois angles différents, optimisés pour LinkedIn (clients professionnels) et Facebook (clients particuliers).',
   },
   {
     num: '03',
@@ -43,7 +43,7 @@ const STEPS = [
   {
     num: '03',
     titre: 'Publiez quand vous voulez',
-    desc: 'Immédiatement ou à la date de votre choix via le calendrier éditorial. Vos réseaux sociaux (LinkedIn, Facebook, Instagram...) reçoivent votre contenu automatiquement.',
+    desc: 'Immédiatement ou à la date de votre choix via le calendrier éditorial. Vos comptes LinkedIn et Facebook reçoivent votre contenu automatiquement.',
   },
 ]
 
@@ -299,7 +299,7 @@ function CalendarMockup() {
       <div className="mx-4 mb-4 rounded-xl p-3 flex items-center justify-between" style={{ background: 'var(--success-50)', border: '1px solid #cfe6da' }}>
         <div>
           <p className="text-[10px] font-semibold" style={{ color: 'var(--success)' }}>✓ 8 publications programmées ce mois</p>
-          <p className="text-[9px]" style={{ color: 'var(--ink-500)' }}>Publication automatique active · Vos réseaux sociaux</p>
+          <p className="text-[9px]" style={{ color: 'var(--ink-500)' }}>Publication automatique active · LinkedIn et Facebook</p>
         </div>
         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: 'var(--success)', boxShadow: '0 0 0 4px rgba(31,122,76,0.15)' }} />
       </div>
@@ -392,7 +392,7 @@ export default function HomePage() {
               className="mb-10"
               style={{ fontSize: 'clamp(1rem, 1.5vw, 1.125rem)', color: 'var(--ink-500)', lineHeight: 1.65, maxWidth: '36rem' }}
             >
-              Lexavo génère vos articles de blog optimisés SEO, avec FAQ, image téléchargeable, et à partir de l&apos;article, crée des posts adaptés à vos réseaux sociaux (LinkedIn, Facebook, Instagram...) — publiés en un clic ou programmables. Conforme à la déontologie du barreau.
+              Lexavo génère vos articles de blog optimisés SEO, avec FAQ, image téléchargeable, et à partir de l&apos;article, crée des posts adaptés à <strong style={{ color: 'var(--ink-700)', fontWeight: 600 }}>LinkedIn</strong> (pour vos clients professionnels) et <strong style={{ color: 'var(--ink-700)', fontWeight: 600 }}>Facebook</strong> (pour vos clients particuliers) — publiés en un clic ou programmables. Conforme à la déontologie du barreau.
             </p>
 
             {/* CTAs */}
@@ -428,8 +428,8 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Mockup — droite */}
-          <div className="fade-in-scale fade-in-delay-2">
+          {/* Mockup — droite (cache sur mobile/tablette : grilles trop denses) */}
+          <div className="hidden lg:block fade-in-scale fade-in-delay-2">
             <HeroMockup />
           </div>
         </div>
@@ -442,7 +442,118 @@ export default function HomePage() {
             className="mb-0"
             style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)', lineHeight: 1.45, color: 'var(--white)', letterSpacing: '-0.01em' }}
           >
-            Programmez votre présence régulière sur vos réseaux sociaux (LinkedIn, Facebook, Instagram...). Généré et adapté à votre cabinet.
+            Programmez votre présence régulière sur LinkedIn et Facebook. Généré et adapté à votre cabinet.
+          </p>
+        </div>
+      </section>
+
+      {/* ══ Positionnement LinkedIn + Facebook ═══════════════ */}
+      <section className="py-28 px-6" style={{ background: 'var(--paper)' }}>
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-14 fade-in">
+            <p
+              className="mb-4 uppercase"
+              style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '11px', letterSpacing: '0.16em', color: 'var(--ocre-700)' }}
+            >
+              Deux réseaux, toute votre clientèle
+            </p>
+            <h2
+              className="mb-5"
+              style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.875rem, 3.5vw, 2.75rem)', color: 'var(--ink-900)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
+            >
+              LinkedIn et Facebook : les 2 réseaux les plus prometteurs pour un cabinet
+            </h2>
+            <p className="text-base max-w-2xl mx-auto" style={{ color: 'var(--ink-500)', lineHeight: 1.65 }}>
+              Inutile d&apos;être partout. Concentrez vos efforts là où vos futurs clients vous cherchent vraiment.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* LinkedIn — pros */}
+            <div
+              className="rounded-2xl p-7 fade-in fade-in-delay-1"
+              style={{ background: 'var(--white)', border: '1px solid var(--ink-200)', boxShadow: '0 4px 20px -4px rgba(15,34,71,0.06)' }}
+            >
+              <div className="flex items-center gap-3 mb-5">
+                <div
+                  className="w-11 h-11 rounded-xl flex items-center justify-center font-bold text-base flex-shrink-0"
+                  style={{ background: '#0A66C2', color: 'white', fontFamily: 'var(--font-jetbrains-mono)' }}
+                >
+                  in
+                </div>
+                <span
+                  className="text-xs uppercase font-semibold"
+                  style={{ fontFamily: 'var(--font-jetbrains-mono)', letterSpacing: '0.16em', color: '#0A66C2' }}
+                >
+                  LinkedIn
+                </span>
+              </div>
+              <p
+                className="font-semibold mb-3"
+                style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.5rem', color: 'var(--ink-900)', letterSpacing: '-0.015em', lineHeight: 1.15 }}
+              >
+                Pour vos clients professionnels
+              </p>
+              <p className="text-sm mb-5" style={{ color: 'var(--ink-500)', lineHeight: 1.7 }}>
+                Décideurs, dirigeants, DRH, juristes d&apos;entreprise. C&apos;est ici que se nouent les <strong style={{ color: 'var(--ink-700)', fontWeight: 600 }}>mandats récurrents à forte valeur</strong> et que vos pairs vous prescrivent.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {['Droit des affaires', 'Droit social', 'Fiscalité', 'M&A', 'IP'].map(t => (
+                  <span
+                    key={t}
+                    className="text-xs px-2.5 py-1 rounded-full font-medium"
+                    style={{ background: 'var(--navy-50)', color: 'var(--navy-700)', border: '1px solid var(--navy-100)' }}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Facebook — particuliers */}
+            <div
+              className="rounded-2xl p-7 fade-in fade-in-delay-2"
+              style={{ background: 'var(--white)', border: '1px solid var(--ink-200)', boxShadow: '0 4px 20px -4px rgba(15,34,71,0.06)' }}
+            >
+              <div className="flex items-center gap-3 mb-5">
+                <div
+                  className="w-11 h-11 rounded-xl flex items-center justify-center font-bold text-lg flex-shrink-0"
+                  style={{ background: '#1877F2', color: 'white', fontFamily: 'var(--font-jetbrains-mono)' }}
+                >
+                  f
+                </div>
+                <span
+                  className="text-xs uppercase font-semibold"
+                  style={{ fontFamily: 'var(--font-jetbrains-mono)', letterSpacing: '0.16em', color: '#1877F2' }}
+                >
+                  Facebook
+                </span>
+              </div>
+              <p
+                className="font-semibold mb-3"
+                style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.5rem', color: 'var(--ink-900)', letterSpacing: '-0.015em', lineHeight: 1.15 }}
+              >
+                Pour vos clients particuliers
+              </p>
+              <p className="text-sm mb-5" style={{ color: 'var(--ink-500)', lineHeight: 1.7 }}>
+                Familles, salariés, locataires, consommateurs. C&apos;est le réseau du <strong style={{ color: 'var(--ink-700)', fontWeight: 600 }}>bouche-à-oreille local</strong> et des recherches juridiques de la vie courante.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {['Famille', 'Travail', 'Immobilier', 'Consommation', 'Pénal'].map(t => (
+                  <span
+                    key={t}
+                    className="text-xs px-2.5 py-1 rounded-full font-medium"
+                    style={{ background: 'var(--ocre-50)', color: 'var(--ocre-700)', border: '1px solid var(--ocre-100)' }}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <p className="mt-10 text-center text-sm fade-in" style={{ color: 'var(--ink-400)', fontStyle: 'italic' }}>
+            Pourquoi pas Instagram, X ou TikTok ? Parce qu&apos;à temps égal, LinkedIn et Facebook convertissent davantage en mandats pour un cabinet d&apos;avocats.
           </p>
         </div>
       </section>
@@ -567,35 +678,20 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Mockup */}
-            <div className="fade-in-right fade-in-delay-1">
+            {/* Mockup (cache sur mobile/tablette) */}
+            <div className="hidden lg:block fade-in-right fade-in-delay-1">
               <HeroMockup />
             </div>
           </div>
 
-          {/* Citation */}
-          <div className="mt-20 text-center max-w-2xl mx-auto fade-in">
-            <div className="gold-sep mb-8" />
-            <p
-              style={{
-                fontFamily: 'var(--font-instrument-serif)',
-                fontSize: 'clamp(1rem, 1.5vw, 1.1875rem)',
-                color: 'var(--ink-600)',
-                lineHeight: 1.75,
-                fontStyle: 'italic',
-              }}
-            >
-              &ldquo;J&apos;ai pu programmé 12 posts ce mois-ci sur Linkedin en quelques clics, je suis tranquille mais surtout vu car régulier.&rdquo;
-            </p>
-          </div>
         </div>
       </section>
 
       {/* ══ Feature spotlight 2 — calendrier ════════════════ */}
       <section className="py-28 px-6" style={{ background: 'var(--white)' }}>
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Mockup en premier sur mobile, à gauche sur desktop */}
-          <div className="order-2 lg:order-1 fade-in-left fade-in-delay-1">
+          {/* Mockup (cache sur mobile/tablette) */}
+          <div className="hidden lg:block order-2 lg:order-1 fade-in-left fade-in-delay-1">
             <CalendarMockup />
           </div>
 
@@ -614,13 +710,13 @@ export default function HomePage() {
               Publiez quand vous voulez
             </h2>
             <p className="mb-8 leading-relaxed" style={{ fontSize: '1rem', color: 'var(--ink-500)', lineHeight: 1.7 }}>
-              Immédiatement ou à la date de votre choix via le calendrier éditorial. Vos réseaux sociaux (LinkedIn, Facebook, Instagram...) reçoivent votre contenu automatiquement.
+              Immédiatement ou à la date de votre choix via le calendrier éditorial. Vos comptes LinkedIn et Facebook reçoivent votre contenu automatiquement.
             </p>
 
             <div className="space-y-3">
               {[
                 'Programmation à la date et l\'heure de votre choix',
-                'Publication automatique sur vos réseaux (LinkedIn, Facebook, Instagram...)',
+                'Publication automatique sur LinkedIn et Facebook',
                 'Calendrier éditorial visuel pour piloter votre présence',
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
