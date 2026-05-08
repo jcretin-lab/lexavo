@@ -1,7 +1,6 @@
 ﻿import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { GenerateurForm } from '@/components/dashboard/generateur-form'
-import { PlanLockScreen } from '@/components/dashboard/plan-lock-screen'
 
 export default async function GenererPage() {
   const supabase = await createClient()
@@ -17,17 +16,6 @@ export default async function GenererPage() {
     .maybeSingle()
 
   if (!cabinet) redirect('/onboarding')
-
-  // Plan Essentiel : pas d'accès à la génération depuis un thème
-  if (cabinet.plan === 'essentiel') {
-    return (
-      <PlanLockScreen
-        titre="Génération depuis un thème"
-        message="Cette fonctionnalité est disponible à partir du Plan Pro à 69 €/mois. Vous pouvez toujours transformer vos articles existants en posts depuis l'onglet Article → Posts."
-        minPlan="pro"
-      />
-    )
-  }
 
   return (
     <div>

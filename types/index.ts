@@ -1,4 +1,4 @@
-export type Plan = 'trial' | 'essentiel' | 'pro' | 'cabinet'
+export type Plan = 'trial' | 'pro' | 'cabinet'
 
 export interface Cabinet {
   id: string
@@ -92,20 +92,17 @@ export const BARREAUX_FR = [
 
 export const NOM_PAR_PLAN: Record<Plan, string> = {
   trial: 'Essai gratuit',
-  essentiel: 'Essentiel',
   pro: 'Pro',
   cabinet: 'Cabinet',
 }
 
 export const PRIX_PAR_PLAN: Record<Exclude<Plan, 'trial'>, string> = {
-  essentiel: '49 €/mois',
   pro: '69 €/mois',
   cabinet: '149 €/mois',
 }
 
 export const MAX_MEMBRES_PAR_PLAN: Record<Plan, number> = {
   trial: 1,
-  essentiel: 1,
   pro: 1,
   cabinet: 3,
 }

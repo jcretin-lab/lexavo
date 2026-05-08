@@ -12,13 +12,11 @@ const supabaseAdmin = createSupabaseClient(
 )
 
 const PLAN_PAR_PRICE: Record<string, string> = {
-  [process.env.STRIPE_PRICE_DECOUVERTE!]: 'essentiel',
-  [process.env.STRIPE_PRICE_ACTIF!]:      'pro',
-  [process.env.STRIPE_PRICE_CABINET!]:    'cabinet',
+  [process.env.STRIPE_PRICE_ACTIF!]:   'pro',
+  [process.env.STRIPE_PRICE_CABINET!]: 'cabinet',
 }
 
 const MAX_MEMBRES_PAR_PLAN: Record<string, number> = {
-  essentiel: 1,
   pro: 1,
   cabinet: 3,
 }
@@ -76,11 +74,11 @@ export async function POST(request: NextRequest) {
       const sub = event.data.object as Stripe.Subscription
       const cabinetId = sub.metadata?.cabinet_id
       const priceId = sub.items.data[0]?.price.id
-      const plan = PLAN_PAR_PRICE[priceId] || 'essentiel'
+      const plan = PLAN_PAR_PRICE[priceId] || 'pro'
 
       if (cabinetId) {
         const actif = sub.status === 'active' || sub.status === 'trialing'
-        const effectivePlan = actif ? plan : 'essentiel'
+        const effectivePlan = actif ? plan : 'trial'
         await supabaseAdmin
           .from('cabinets')
           .update({
@@ -109,7 +107,7 @@ export async function POST(request: NextRequest) {
         // 2. Downgrader le plan
         await supabaseAdmin
           .from('cabinets')
-          .update({ plan: 'essentiel', stripe_subscription_id: null, max_membres: 1 })
+          .update({ plan: 'trial', stripe_subscription_id: null, max_membres: 1 })
           .eq('id', cabinetId)
 
         // 3. Envoyer l'email de résiliation

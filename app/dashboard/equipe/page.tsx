@@ -53,7 +53,7 @@ export default async function EquipePage() {
 
   // Plan Cabinet = 3 utilisateurs total (admin + 2 membres invitables)
   // On utilise le plan comme source de vérité, pas max_membres (peut être désynchronisé)
-  const MAX_TOTAL_PAR_PLAN: Record<string, number> = { cabinet: 3, pro: 1, essentiel: 1, trial: 1 }
+  const MAX_TOTAL_PAR_PLAN: Record<string, number> = { cabinet: 3, pro: 1, trial: 1 }
   const maxTotal = MAX_TOTAL_PAR_PLAN[cabinet.plan] ?? 3
   const maxMembresInvitables = maxTotal - 1
 

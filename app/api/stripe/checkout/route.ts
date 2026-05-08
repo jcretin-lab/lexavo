@@ -16,9 +16,8 @@ export async function POST(request: NextRequest) {
     const stripe = new Stripe(stripeKey, { maxNetworkRetries: 1, timeout: 20000 })
 
     const PRICE_IDS: Record<string, string> = {
-      essentiel: process.env.STRIPE_PRICE_DECOUVERTE!,
-      pro:       process.env.STRIPE_PRICE_ACTIF!,
-      cabinet:   process.env.STRIPE_PRICE_CABINET!,
+      pro:     process.env.STRIPE_PRICE_ACTIF!,
+      cabinet: process.env.STRIPE_PRICE_CABINET!,
     }
 
     const supabase = await createClient()
