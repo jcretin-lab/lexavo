@@ -168,7 +168,7 @@ Champs supplémentaires :
     { "question": "string", "reponse": "string" },
     { "question": "string", "reponse": "string" }
   ],
-  "prompt_image": "string (prompt DALL-E 3 en anglais décrivant une scène abstraite ou un objet symbolique lié au thème juridique et à la spécialité. Le prompt doit évoquer visuellement le sujet sans montrer de personnes ni de texte. Utiliser des métaphores visuelles (ex: pour le divorce → deux anneaux dorés séparés sur fond épuré, pour le droit du travail → un bureau élégant avec des documents, pour le droit immobilier → une clé dorée sur un plan architectural). Maximum 50 mots.)"
+  "prompt_image": "string (prompt DALL-E 3 en anglais décrivant une scène chaleureuse et authentique avec des personnes en situation de vie courante liée au thème juridique et à la spécialité. Privilégier les moments humains réels (ex: pour le divorce → un parent serrant son enfant dans ses bras au coucher du soleil, pour le droit du travail → une personne souriante recevant une enveloppe dans un bureau lumineux, pour le droit immobilier → un couple devant les clés de leur nouvelle maison). Cadrages variés (de dos, profils, mains, plans larges) pour éviter les visages identifiables. AUCUN texte, aucun panneau, aucune lettre visible nulle part dans l'image. Maximum 50 mots.)"
 }`
 
   inProgress.add(cabinet.id)
@@ -220,7 +220,7 @@ Champs supplémentaires :
       const imageResponse = await openai.images.generate({
         model: 'dall-e-3',
         prompt: content.prompt_image +
-          ' Professional French law firm atmosphere, clean and sophisticated minimal design, navy blue and white color scheme with subtle gold accents, soft natural lighting, high-end corporate photography style, no text, no people, no faces, wide format 16:9, sharp focus with shallow depth of field, premium quality, photorealistic, suitable for luxury French law firm marketing material',
+          ' Warm and approachable lifestyle photography, soft golden-hour natural lighting, palette of warm beige, terracotta, soft cream and gentle gold accents, authentic candid moment, shallow depth of field, faces hidden or blurred for anonymity, absolutely no text and no readable letters or signage anywhere in the image, wide format 16:9, photorealistic editorial style, suitable for a friendly French law firm communicating with everyday clients',
         size: '1792x1024',
         quality: 'standard',
         n: 1,
