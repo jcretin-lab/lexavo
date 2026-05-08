@@ -6,14 +6,14 @@ export const PRICING_PLANS = [
   {
     id: 'essentiel',
     nom: 'Découverte',
-    tagline: 'Je diffuse mon contenu sur Facebook',
+    tagline: 'Je diffuse mon contenu sur mes réseaux sociaux',
     prix: '49 €',
     periode: '/mois',
     utilisateurs: '1 utilisateur',
     recommande: false,
     features: [
-      'Transformer un article existant en 3 posts Facebook',
-      'Publication automatique sur Facebook',
+      'Transformer un article existant en 3 posts pour vos réseaux sociaux',
+      'Publication automatique sur vos réseaux (LinkedIn, Facebook, Instagram...)',
       'Programmation via calendrier éditorial',
       'Contenu modifiable avant publication',
       'Générations illimitées',
@@ -22,7 +22,7 @@ export const PRICING_PLANS = [
   {
     id: 'pro',
     nom: 'Actif',
-    tagline: 'Je crée et diffuse sur Facebook & LinkedIn',
+    tagline: 'Je crée et diffuse sur tous mes réseaux sociaux',
     prix: '69 €',
     periode: '/mois',
     utilisateurs: '1 utilisateur',
@@ -30,7 +30,8 @@ export const PRICING_PLANS = [
     features: [
       'Tout le plan Découverte',
       'Génération de contenu depuis un thème au choix',
-      'Publication automatique Facebook ET LinkedIn',
+      'Publication automatique sur vos réseaux (LinkedIn, Facebook, Instagram...)',
+      'Configuration personnalisée de vos réseaux sociaux (appel inclus)',
       'Calendrier éditorial complet',
       'Décrivez votre thème et obtenez un article SEO + 3 posts + FAQ + image IA en 3 min',
       'Générations illimitées',
@@ -47,7 +48,8 @@ export const PRICING_PLANS = [
     features: [
       'Tout le plan Actif',
       '3 comptes utilisateurs inclus',
-      'Chacun son espace Facebook & LinkedIn indépendant',
+      'Chacun son espace réseaux sociaux indépendant',
+      'Configuration personnalisée de vos réseaux sociaux (appel inclus)',
       'Tableau de bord par utilisateur',
       'Générations illimitées pour chaque utilisateur',
       'Économisez 58 €/mois vs 3 abonnements Actif',

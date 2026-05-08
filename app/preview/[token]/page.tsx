@@ -62,11 +62,11 @@ export default async function PreviewPage({
         </section>
       )}
 
-      {/* Posts LinkedIn */}
+      {/* Posts réseaux sociaux */}
       {posts && posts.length > 0 && (
         <section style={{ marginBottom: '48px' }}>
           <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#1A3F7C', marginBottom: '20px' }}>
-            Posts LinkedIn
+            Posts pour vos réseaux sociaux
           </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {posts.map((post, i) => (

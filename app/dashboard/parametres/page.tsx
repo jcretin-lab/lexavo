@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { GestionAbonnement } from '@/components/dashboard/gestion-abonnement'
 import { ChangeEmailForm } from '@/components/dashboard/change-email-form'
 import { DeleteAccountButton } from '@/components/dashboard/delete-account-button'
+import { ReseauxSection } from '@/components/dashboard/reseaux-section'
 
 export default async function ParametresPage({
   searchParams,
@@ -53,6 +54,9 @@ export default async function ParametresPage({
       <div className="max-w-2xl space-y-6">
         {/* Abonnement — masqué pour les membres invités */}
         {!isMembre && <GestionAbonnement cabinet={cabinet} />}
+
+        {/* Réseaux sociaux */}
+        <ReseauxSection initialUrl={cabinet.make_webhook_url ?? null} />
 
         {/* Informations du cabinet */}
         <div className="bg-white rounded-2xl border border-gray-200 p-6">

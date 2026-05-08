@@ -25,10 +25,10 @@ export default function CGVPage() {
             LEXAVO propose un service SaaS (Software as a Service) permettant aux cabinets d&apos;avocats de :
           </p>
           <ul className="list-disc list-inside text-gray-700 space-y-1 pl-2">
-            <li>Générer automatiquement du contenu marketing (articles de blog, posts Facebook, FAQ)</li>
-            <li>Publier automatiquement du contenu sur Facebook</li>
+            <li>Générer automatiquement du contenu marketing (articles de blog, posts pour réseaux sociaux, FAQ)</li>
+            <li>Publier automatiquement du contenu sur les réseaux sociaux du cabinet (LinkedIn, Facebook, Instagram...)</li>
             <li>Programmer des publications via un calendrier éditorial</li>
-            <li>Transformer des articles existants en posts Facebook</li>
+            <li>Transformer des articles existants en posts pour réseaux sociaux</li>
           </ul>
         </section>
 
@@ -38,11 +38,11 @@ export default function CGVPage() {
           <div className="space-y-4">
             <div className="rounded-xl border border-gray-200 p-4">
               <p className="font-semibold text-gray-900">Plan Essentiel — 49 € HT/mois</p>
-              <p className="text-gray-600 text-sm mt-1">1 utilisateur, génération illimitée depuis articles existants, publication et programmation automatique Facebook</p>
+              <p className="text-gray-600 text-sm mt-1">1 utilisateur, génération illimitée depuis articles existants, publication et programmation automatique sur vos réseaux sociaux</p>
             </div>
             <div className="rounded-xl border border-gray-200 p-4">
               <p className="font-semibold text-gray-900">Plan Pro — 69 € HT/mois</p>
-              <p className="text-gray-600 text-sm mt-1">1 utilisateur, toutes les fonctionnalités Essentiel + génération depuis un thème (article SEO, posts Facebook, FAQ, image IA)</p>
+              <p className="text-gray-600 text-sm mt-1">1 utilisateur, toutes les fonctionnalités Essentiel + génération depuis un thème (article SEO, posts réseaux sociaux, FAQ, image IA)</p>
             </div>
             <div className="rounded-xl border border-gray-200 p-4">
               <p className="font-semibold text-gray-900">Plan Cabinet — 149 € HT/mois</p>

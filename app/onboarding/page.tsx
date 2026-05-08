@@ -7,10 +7,11 @@ import { BARREAUX_FR } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
+import { CALENDLY_URL } from '@/lib/constants'
 
 const STEPS = [
   'Identité du cabinet',
-  'Connexions RS',
+  'Activation des réseaux',
 ]
 
 function OnboardingContent() {
@@ -22,6 +23,7 @@ function OnboardingContent() {
 
   const [step, setStep] = useState(0)
   const [loading, setLoading] = useState(false)
+  const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
 
   // Step 1 — Identité
@@ -30,21 +32,19 @@ function OnboardingContent() {
   const [barreau, setBarreau] = useState('')
   const [siteWeb, setSiteWeb] = useState('')
 
-  // Pré-remplir le nom depuis l'invitation si disponible
   useEffect(() => {
     if (inviteId) {
       // On pourrait fetch les données de l'invitation, mais on laisse l'utilisateur remplir
     }
   }, [inviteId])
 
-  async function handleFinish() {
+  async function handleSaveAndContinue() {
     setLoading(true)
     setError('')
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error('Non authentifié')
 
-      // Vérifier si un cabinet existe déjà pour éviter les doublons
       const { data: existing } = await supabase
         .from('cabinets')
         .select('id')
@@ -88,20 +88,11 @@ function OnboardingContent() {
           .maybeSingle()
 
         if (membre) {
-          // Récupérer le plan du cabinet admin pour l'appliquer au nouveau cabinet
-          const { data: cabinetAdmin } = await supabase
-            .from('cabinets')
-            .select('plan')
-            .eq('id', membre.cabinet_id)
-            .maybeSingle()
-
-          // Mettre à jour le membre avec user_id et statut actif
           await supabase
             .from('membres')
             .update({ user_id: user.id, statut: 'actif', nom })
             .eq('id', inviteId)
 
-          // Les membres invités reçoivent toujours 'pro', jamais 'cabinet' ni 'trial'
           await supabase
             .from('cabinets')
             .update({ plan: 'pro', max_membres: 1 })
@@ -109,9 +100,11 @@ function OnboardingContent() {
         }
       }
 
-      router.push('/dashboard')
+      setSaved(true)
+      setStep(1)
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Erreur lors de la sauvegarde')
+    } finally {
       setLoading(false)
     }
   }
@@ -205,8 +198,9 @@ function OnboardingContent() {
                   onClick={() => {
                     if (!nom || !ville || !barreau) { setError('Veuillez remplir tous les champs obligatoires.'); return }
                     setError('')
-                    setStep(1)
+                    handleSaveAndContinue()
                   }}
+                  loading={loading}
                   size="lg"
                 >
                   Suivant →
@@ -215,39 +209,33 @@ function OnboardingContent() {
             </div>
           )}
 
-          {/* ÉTAPE 2 — Facebook */}
+          {/* ÉTAPE 2 — Activation Calendly */}
           {step === 1 && (
-            <div>
-              <h2 className="text-xl font-semibold mb-1">Connexions Réseaux Sociaux</h2>
-              <p className="text-sm text-gray-500 mb-6">
-                Connectez vos pages Facebook et LinkedIn pour programmer la publication automatique de vos posts.
+            <div className="text-center">
+              <div className="text-5xl mb-3">🎉</div>
+              <h2 className="text-2xl font-semibold mb-2">Votre compte est prêt !</h2>
+              <p className="text-sm text-gray-600 max-w-md mx-auto mb-8">
+                Pour activer la publication automatique sur vos réseaux sociaux, réservez un appel gratuit de 15 minutes avec notre équipe. Nous configurons ensemble vos réseaux (LinkedIn, Facebook, Instagram...) selon vos besoins.
               </p>
-              <div className="rounded-xl border border-gray-200 p-6 flex flex-col items-center gap-4">
-                <div className="flex gap-3">
-                  <div className="w-12 h-12 rounded-full bg-[#1877F2] flex items-center justify-center">
-                    <svg viewBox="0 0 24 24" fill="white" className="w-6 h-6">
-                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                    </svg>
-                  </div>
-                  <div className="w-12 h-12 rounded-full bg-[#0A66C2] flex items-center justify-center">
-                    <svg viewBox="0 0 24 24" fill="white" className="w-6 h-6">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                    </svg>
-                  </div>
-                </div>
-                <div className="text-center">
-                  <p className="text-gray-700 font-medium">Connexion de vos réseaux sociaux</p>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Facebook et LinkedIn se configurent depuis votre tableau de bord.<br />
-                    Vous pouvez passer cette étape et les connecter plus tard.
-                  </p>
-                </div>
-              </div>
-              <div className="mt-8 flex justify-between">
-                <Button variant="outline" onClick={() => setStep(0)}>← Retour</Button>
-                <Button onClick={handleFinish} loading={loading} size="lg">
-                  Accéder au tableau de bord →
-                </Button>
+
+              <a
+                href={CALENDLY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-xl text-white text-sm font-semibold bg-blue-700 hover:bg-blue-800 transition-colors"
+              >
+                Réserver mon appel gratuit →
+              </a>
+
+              <div className="mt-6">
+                <button
+                  type="button"
+                  onClick={() => router.push('/dashboard')}
+                  className="text-xs text-gray-400 hover:text-gray-600 underline"
+                  disabled={!saved && !inviteId}
+                >
+                  Je le ferai plus tard → accéder au dashboard
+                </button>
               </div>
             </div>
           )}

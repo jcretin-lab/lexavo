@@ -5,6 +5,7 @@ import { NOM_PAR_PLAN, type Plan } from '@/types'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { TrialStatus } from '@/components/dashboard/trial-status'
+import { CALENDLY_URL } from '@/lib/constants'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -71,16 +72,38 @@ export default async function DashboardPage() {
 
       {isTrial && <TrialStatus remaining={trialRemaining} exhausted={trialExhausted} />}
 
-      {/* Alerte réseau */}
-      {!cabinet.linkedin_token && (
-        <div className="mb-6 rounded-xl px-5 py-4 flex items-center justify-between" style={{ background: 'var(--warning-50)', border: '1px solid #efd6a8' }}>
-          <div>
-            <p className="text-sm font-medium" style={{ color: 'var(--warning)' }}>Facebook non connecté</p>
-            <p className="text-xs mt-0.5" style={{ color: 'var(--ink-500)' }}>Connectez votre page pour programmer la publication automatique.</p>
+      {/* Activation des réseaux sociaux */}
+      {!cabinet.make_webhook_url && (
+        <div
+          className="mb-6 rounded-xl px-5 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+          style={{ background: 'var(--navy-50)', border: '1px solid var(--navy-100)' }}
+        >
+          <div className="flex items-start gap-4">
+            <div
+              className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-xl"
+              style={{ background: 'var(--white)', color: 'var(--navy-700)' }}
+              aria-hidden
+            >
+              📅
+            </div>
+            <div>
+              <p className="text-sm font-semibold" style={{ color: 'var(--navy-700)' }}>
+                Activez la publication automatique
+              </p>
+              <p className="text-xs mt-1" style={{ color: 'var(--ink-500)' }}>
+                Réservez un appel de 15 minutes pour configurer vos réseaux sociaux (LinkedIn, Facebook, Instagram...).
+              </p>
+            </div>
           </div>
-          <Link href="/dashboard/reseaux" className="text-xs font-semibold hover:underline" style={{ color: 'var(--warning)' }}>
-            Connecter →
-          </Link>
+          <a
+            href={CALENDLY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors flex-shrink-0 whitespace-nowrap"
+            style={{ background: 'var(--navy-700)', color: 'var(--white)' }}
+          >
+            Réserver mon appel →
+          </a>
         </div>
       )}
 

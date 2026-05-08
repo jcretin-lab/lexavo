@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { format, addMonths, subMonths } from 'date-fns'
 import { fr } from 'date-fns/locale'
+import { CALENDLY_URL } from '@/lib/constants'
 
 interface CalendrierPost {
   id: string
@@ -11,13 +12,11 @@ interface CalendrierPost {
   statut: 'en_attente' | 'publie'
   image_url?: string | null
   generation_id?: string | null
-  reseau?: 'facebook' | 'linkedin' | null
 }
 
 interface Props {
   posts: CalendrierPost[]
-  facebookConnected: boolean
-  linkedinConnected: boolean
+  reseauxConfigured: boolean
 }
 
 type ModalMode = 'view' | 'edit' | 'changeDate' | 'confirmDelete'
@@ -42,7 +41,7 @@ function sameDay(a: Date, b: Date) {
     a.getDate() === b.getDate()
 }
 
-export function CalendrierView({ posts: initialPosts, facebookConnected, linkedinConnected }: Props) {
+export function CalendrierView({ posts: initialPosts, reseauxConfigured }: Props) {
   const [posts, setPosts] = useState<CalendrierPost[]>(initialPosts)
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedPost, setSelectedPost] = useState<CalendrierPost | null>(null)
@@ -176,15 +175,20 @@ export function CalendrierView({ posts: initialPosts, facebookConnected, linkedi
 
   return (
     <div>
-      {/* Alerte aucun réseau connecté */}
-      {!facebookConnected && !linkedinConnected && (
-        <div className="mb-6 rounded-xl bg-amber-50 border border-amber-200 px-5 py-4 flex items-center justify-between">
+      {/* Alerte réseaux non configurés */}
+      {!reseauxConfigured && (
+        <div className="mb-6 rounded-xl bg-amber-50 border border-amber-200 px-5 py-4 flex items-center justify-between gap-3">
           <div>
-            <p className="text-sm font-medium text-amber-800">Aucun réseau social connecté</p>
-            <p className="text-xs text-amber-600 mt-0.5">Connectez Facebook ou LinkedIn pour programmer vos posts.</p>
+            <p className="text-sm font-medium text-amber-800">Réseaux sociaux non configurés</p>
+            <p className="text-xs text-amber-600 mt-0.5">Réservez un appel pour activer la publication automatique sur vos réseaux.</p>
           </div>
-          <a href="/dashboard/reseaux" className="text-xs font-semibold text-amber-700 hover:underline flex-shrink-0">
-            Configurer →
+          <a
+            href={CALENDLY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-semibold text-amber-700 hover:underline flex-shrink-0 whitespace-nowrap"
+          >
+            Réserver →
           </a>
         </div>
       )}
@@ -338,22 +342,15 @@ export function CalendrierView({ posts: initialPosts, facebookConnected, linkedi
                       Changer la date
                     </button>
                   )}
-                  {selectedPost.statut === 'en_attente' && (() => {
-                    const isLinkedin = selectedPost.reseau === 'linkedin'
-                    const reseauConnecte = isLinkedin ? linkedinConnected : facebookConnected
-                    if (!reseauConnecte) return null
-                    return (
-                      <button
-                        onClick={publishNow}
-                        disabled={publishing}
-                        className={`text-xs font-semibold text-white px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
-                          isLinkedin ? 'bg-[#0A66C2] hover:bg-[#084e96]' : 'bg-[#1877F2] hover:bg-[#0d65d9]'
-                        }`}
-                      >
-                        {publishing ? 'Envoi…' : `Publier sur ${isLinkedin ? 'LinkedIn' : 'Facebook'}`}
-                      </button>
-                    )
-                  })()}
+                  {selectedPost.statut === 'en_attente' && reseauxConfigured && (
+                    <button
+                      onClick={publishNow}
+                      disabled={publishing}
+                      className="text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50"
+                    >
+                      {publishing ? 'Envoi…' : 'Publier maintenant'}
+                    </button>
+                  )}
                   <button
                     onClick={() => { setModalMode('confirmDelete'); setActionError('') }}
                     className="text-xs font-semibold text-red-600 hover:text-red-700 border border-red-200 hover:border-red-300 px-3 py-1.5 rounded-lg transition-colors ml-auto"

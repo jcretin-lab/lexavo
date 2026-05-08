@@ -12,8 +12,7 @@ export interface Cabinet {
   stripe_subscription_id?: string
   plan: Plan
   max_membres: number
-  facebook_connected?: string
-  make_webhook_url?: string
+  make_webhook_url?: string | null
   created_at: string
 }
 
@@ -24,7 +23,6 @@ export interface Membre {
   nom: string
   email: string
   role: 'admin' | 'membre'
-  linkedin_token?: string | null
   statut: 'invite' | 'actif'
   created_at: string
 }

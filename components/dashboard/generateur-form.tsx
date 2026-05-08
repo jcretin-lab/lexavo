@@ -8,6 +8,7 @@ import { Select } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import type { GenerationContent } from '@/types'
 import { UpgradeModal } from './upgrade-modal'
+import { CALENDLY_URL } from '@/lib/constants'
 
 const TONS = ['Pédagogique', 'Rassurant', 'Expert', 'Accessible'] as const
 
@@ -48,8 +49,7 @@ interface Cabinet {
   ville: string
   specialites: string[]
   plan: string
-  facebook_connected?: string
-  make_webhook_url?: string
+  make_webhook_url?: string | null
 }
 
 interface Props {
@@ -69,7 +69,7 @@ export function GenerateurForm({ cabinet }: Props) {
   const [publishingIndex, setPublishingIndex] = useState<number | null>(null)
   const [publishedIndexes, setPublishedIndexes] = useState<Set<number>>(new Set())
   const [publishError, setPublishError] = useState('')
-  const [activeTab, setActiveTab] = useState<'facebook' | 'article' | 'faq'>('facebook')
+  const [activeTab, setActiveTab] = useState<'posts' | 'article' | 'faq'>('posts')
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
 
   const specialiteOptions = SPECIALITES_LISTE.map((s) => ({ value: s, label: s }))
@@ -103,7 +103,7 @@ export function GenerateurForm({ cabinet }: Props) {
       setPublishedIndexes(new Set())
       setPublishError('')
       setResult({ generationId: data.generation?.id ?? null, content: data.content, image_url: data.image_url })
-      setActiveTab('facebook')
+      setActiveTab('posts')
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue')
     } finally {
@@ -215,7 +215,7 @@ export function GenerateurForm({ cabinet }: Props) {
           <div className="bg-white rounded-2xl border border-dashed border-gray-300 p-10 flex flex-col items-center justify-center text-center h-full min-h-64">
             <div className="text-4xl mb-3">✦</div>
             <p className="text-gray-400 text-sm">Le contenu généré apparaîtra ici</p>
-            <p className="text-gray-300 text-xs mt-1">Article · 3 posts Facebook · FAQ · Image</p>
+            <p className="text-gray-300 text-xs mt-1">Article · 3 posts pour vos réseaux · FAQ · Image</p>
           </div>
         )}
 
@@ -245,7 +245,7 @@ export function GenerateurForm({ cabinet }: Props) {
             {/* Tabs */}
             <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
               <div className="flex border-b border-gray-200">
-                {(['facebook', 'article', 'faq'] as const).map((tab) => (
+                {(['posts', 'article', 'faq'] as const).map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
@@ -255,25 +255,27 @@ export function GenerateurForm({ cabinet }: Props) {
                         : 'text-gray-500 hover:text-gray-700'
                     }`}
                   >
-                    {tab === 'facebook' ? 'Posts Facebook' : tab === 'article' ? 'Article' : 'FAQ'}
+                    {tab === 'posts' ? 'Posts réseaux' : tab === 'article' ? 'Article' : 'FAQ'}
                   </button>
                 ))}
               </div>
 
               <div className="p-5">
-                {/* Posts Facebook */}
-                {activeTab === 'facebook' && (
+                {/* Posts réseaux sociaux */}
+                {activeTab === 'posts' && (
                   <div className="space-y-4">
                     {publishError && (
                       <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
                         {publishError}
-                        <a href="/dashboard/reseaux" className="ml-2 font-semibold underline">Configurer →</a>
+                        <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="ml-2 font-semibold underline">Configurer →</a>
                       </div>
                     )}
-                    {!cabinet.facebook_connected && (
+                    {!cabinet.make_webhook_url && (
                       <div className="rounded-lg bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-700">
-                        Facebook non connecté —{' '}
-                        <a href="/dashboard/reseaux" className="font-semibold underline">Connecter ma page →</a>
+                        Réseaux sociaux non configurés —{' '}
+                        <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="font-semibold underline">
+                          Réserver un appel →
+                        </a>
                       </div>
                     )}
                     {result.content.posts_linkedin.map((post, i) => (
@@ -300,20 +302,19 @@ export function GenerateurForm({ cabinet }: Props) {
                             </span>
                           ))}
                         </div>
-                        {!!cabinet.facebook_connected && (
+                        {!!cabinet.make_webhook_url && (
                           <div className="mt-3 pt-3 border-t border-gray-100 flex items-center gap-2">
                             {publishedIndexes.has(i) ? (
-                              <span className="text-xs text-green-600 font-semibold">✓ Envoyé à Facebook</span>
+                              <span className="text-xs text-green-600 font-semibold">✓ Publié</span>
                             ) : (
                               <>
                                 <Button
                                   size="sm"
-                                  variant="outline"
                                   onClick={() => publierPost(post, i)}
                                   loading={publishingIndex === i}
-                                  className="text-[#1877F2] border-[#1877F2] hover:bg-blue-50 text-xs"
+                                  className="text-xs"
                                 >
-                                  Publier maintenant
+                                  Publier
                                 </Button>
                                 <input
                                   type="datetime-local"

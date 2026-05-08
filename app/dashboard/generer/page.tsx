@@ -10,7 +10,7 @@ export default async function GenererPage() {
 
   const { data: cabinet } = await supabase
     .from('cabinets')
-    .select('id, nom, ville, specialites, plan, facebook_connected, make_webhook_url')
+    .select('id, nom, ville, specialites, plan, make_webhook_url')
     .eq('user_id', user.id)
     .order('created_at', { ascending: true })
     .limit(1)
@@ -23,7 +23,7 @@ export default async function GenererPage() {
     return (
       <PlanLockScreen
         titre="Génération depuis un thème"
-        message="Cette fonctionnalité est disponible à partir du Plan Pro à 69 €/mois. Vous pouvez toujours transformer vos articles existants en posts Facebook depuis l'onglet Article → Facebook."
+        message="Cette fonctionnalité est disponible à partir du Plan Pro à 69 €/mois. Vous pouvez toujours transformer vos articles existants en posts depuis l'onglet Article → Posts."
         minPlan="pro"
       />
     )
@@ -34,7 +34,7 @@ export default async function GenererPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Générer du contenu</h1>
         <p className="text-gray-500 mt-1">
-          Remplissez le formulaire pour obtenir un article, 3 posts Facebook, une FAQ et une image.
+          Remplissez le formulaire pour obtenir un article, 3 posts pour vos réseaux sociaux, une FAQ et une image.
         </p>
       </div>
       <GenerateurForm cabinet={cabinet} />

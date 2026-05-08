@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { ArticleBlog, PostLinkedin, FaqItem } from '@/types'
+import { CALENDLY_URL } from '@/lib/constants'
 
 interface Generation {
   id: string
@@ -19,15 +20,11 @@ interface Generation {
 
 interface Props {
   generation: Generation
-  plan: string
-  facebookConnected: boolean
-  linkedinConnected: boolean
+  reseauxConfigured: boolean
 }
 
-type Reseau = 'facebook' | 'linkedin'
-
-export function GenerationDetail({ generation, plan, facebookConnected, linkedinConnected }: Props) {
-  const [tab, setTab] = useState<'facebook' | 'article' | 'faq'>('facebook')
+export function GenerationDetail({ generation, reseauxConfigured }: Props) {
+  const [tab, setTab] = useState<'posts' | 'article' | 'faq'>('posts')
   const [copied, setCopied] = useState<string | null>(null)
 
   const [posts, setPosts] = useState<PostLinkedin[]>(generation.posts_linkedin ?? [])
@@ -39,10 +36,12 @@ export function GenerationDetail({ generation, plan, facebookConnected, linkedin
   const [saveError, setSaveError] = useState('')
 
   const [publishingIndex, setPublishingIndex] = useState<number | null>(null)
-  const [successMessages, setSuccessMessages] = useState<Record<number, Reseau>>({})
+  const [successIndexes, setSuccessIndexes] = useState<Set<number>>(new Set())
   const [schedulingIndex, setSchedulingIndex] = useState<number | null>(null)
   const [scheduleDate, setScheduleDate] = useState('')
   const [publishError, setPublishError] = useState('')
+
+  const [downloading, setDownloading] = useState(false)
 
   function startScheduling(index: number) {
     setSchedulingIndex(index)
@@ -52,20 +51,6 @@ export function GenerationDetail({ generation, plan, facebookConnected, linkedin
   function cancelScheduling() {
     setSchedulingIndex(null)
     setScheduleDate('')
-  }
-
-  const [selectedNetwork, setSelectedNetwork] = useState<Record<number, Reseau>>({})
-  const canLinkedin = plan === 'pro' || plan === 'cabinet'
-
-  const [downloading, setDownloading] = useState(false)
-
-  function getNetwork(index: number): Reseau {
-    const stored = selectedNetwork[index]
-    if (stored) return stored
-    // Réseau par défaut : le premier disponible
-    if (facebookConnected) return 'facebook'
-    if (linkedinConnected && canLinkedin) return 'linkedin'
-    return 'facebook'
   }
 
   async function downloadImage() {
@@ -134,7 +119,6 @@ export function GenerationDetail({ generation, plan, facebookConnected, linkedin
   }
 
   async function publier(post: PostLinkedin, index: number, scheduledDate?: string) {
-    const reseau = getNetwork(index)
     setPublishingIndex(index)
     setPublishError('')
     try {
@@ -148,18 +132,17 @@ export function GenerationDetail({ generation, plan, facebookConnected, linkedin
           hashtags: post.hashtags,
           image_url: generation.image_url ?? null,
           scheduled_date: scheduledDate ?? null,
-          reseau,
         }),
       })
       let data: Record<string, unknown> = {}
       try { data = await res.json() } catch { /* non-JSON */ }
       if (!res.ok) throw new Error((data.error as string) || `Erreur ${res.status}`)
 
-      setSuccessMessages(prev => ({ ...prev, [index]: reseau }))
+      setSuccessIndexes(prev => new Set(prev).add(index))
       setTimeout(() => {
-        setSuccessMessages(prev => {
-          const next = { ...prev }
-          delete next[index]
+        setSuccessIndexes(prev => {
+          const next = new Set(prev)
+          next.delete(index)
           return next
         })
       }, 3000)
@@ -170,8 +153,6 @@ export function GenerationDetail({ generation, plan, facebookConnected, linkedin
       setSchedulingIndex(null)
     }
   }
-
-  const canPublish = facebookConnected || (linkedinConnected && canLinkedin)
 
   return (
     <div>
@@ -206,15 +187,20 @@ export function GenerationDetail({ generation, plan, facebookConnected, linkedin
         </div>
       )}
 
-      {/* Alerte aucun réseau connecté */}
-      {!canPublish && (
-        <div className="mb-5 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 flex items-center justify-between">
+      {/* Alerte aucun réseau configuré */}
+      {!reseauxConfigured && (
+        <div className="mb-5 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 flex items-center justify-between gap-3">
           <p className="text-sm text-amber-700">
-            Connectez {canLinkedin ? 'Facebook ou LinkedIn' : 'votre page Facebook'} pour publier ces posts.
+            Activez la publication automatique sur vos réseaux sociaux (LinkedIn, Facebook, Instagram...) en réservant un appel gratuit.
           </p>
-          <Link href="/dashboard/reseaux" className="text-xs font-semibold text-amber-700 hover:underline flex-shrink-0">
-            Configurer →
-          </Link>
+          <a
+            href={CALENDLY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-semibold text-amber-700 hover:underline flex-shrink-0 whitespace-nowrap"
+          >
+            Réserver →
+          </a>
         </div>
       )}
 
@@ -233,7 +219,7 @@ export function GenerationDetail({ generation, plan, facebookConnected, linkedin
       {/* Onglets */}
       <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
         <div className="flex border-b border-gray-200">
-          {(['facebook', 'article', 'faq'] as const).map(t => (
+          {(['posts', 'article', 'faq'] as const).map(t => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -241,7 +227,7 @@ export function GenerationDetail({ generation, plan, facebookConnected, linkedin
                 tab === t ? 'border-b-2 border-blue-700 text-blue-700 bg-white' : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              {t === 'facebook' ? 'Posts Facebook' : t === 'article' ? 'Article de blog' : 'FAQ'}
+              {t === 'posts' ? 'Posts réseaux' : t === 'article' ? 'Article de blog' : 'FAQ'}
             </button>
           ))}
         </div>
@@ -249,7 +235,7 @@ export function GenerationDetail({ generation, plan, facebookConnected, linkedin
         <div className="p-6">
 
           {/* ── POSTS ── */}
-          {tab === 'facebook' && (
+          {tab === 'posts' && (
             <div className="space-y-5">
               {posts.length === 0 && (
                 <p className="text-sm text-gray-400 text-center py-8">Aucun post généré.</p>
@@ -257,10 +243,9 @@ export function GenerationDetail({ generation, plan, facebookConnected, linkedin
               {posts.map((post, i) => {
                 const isEditing = editingIndex === i
                 const isSaved = savedIndexes.has(i)
-                const successReseau = successMessages[i]
+                const isSuccess = successIndexes.has(i)
                 const isPublishing = publishingIndex === i
                 const isScheduling = schedulingIndex === i
-                const network = getNetwork(i)
 
                 const ANGLES = [
                   { label: '🎓 Pédagogique — expliquer un concept', color: 'bg-violet-50 text-violet-700' },
@@ -335,104 +320,24 @@ export function GenerationDetail({ generation, plan, facebookConnected, linkedin
                         </div>
 
                         <div className="mt-4 pt-3 border-t border-gray-100">
-                          {successReseau ? (
-                            <span className="text-xs font-semibold text-green-600">
-                              ✓ Envoyé sur {successReseau === 'facebook' ? 'Facebook' : 'LinkedIn'}
-                            </span>
+                          {isSuccess ? (
+                            <span className="text-xs font-semibold text-green-600">✓ Publié</span>
                           ) : (
                             <div className="flex flex-wrap items-center gap-2">
-                              {/* Sélecteur de réseau */}
-                              {canPublish && (
-                                <div className="flex items-center gap-1.5 w-full mb-1">
-                                  <span className="text-xs text-gray-400">Publier sur :</span>
-                                  {facebookConnected ? (
-                                    <button
-                                      onClick={() => setSelectedNetwork(prev => ({ ...prev, [i]: 'facebook' }))}
-                                      className={`flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border transition-colors ${
-                                        network === 'facebook'
-                                          ? 'bg-[#1877F2] border-[#1877F2] text-white'
-                                          : 'border-gray-200 text-gray-500 hover:border-gray-300'
-                                      }`}
-                                    >
-                                      <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                                      Facebook
-                                    </button>
-                                  ) : (
-                                    <div className="relative group">
-                                      <button
-                                        disabled
-                                        className="flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border border-gray-200 text-gray-300 cursor-not-allowed"
-                                      >
-                                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                                        Facebook
-                                      </button>
-                                      <div className="absolute bottom-full left-0 mb-1.5 hidden group-hover:block z-10 w-48 bg-gray-800 text-white text-xs rounded-lg px-2.5 py-1.5 pointer-events-none">
-                                        Connectez Facebook depuis Réseaux sociaux
-                                      </div>
-                                    </div>
-                                  )}
-                                  {canLinkedin ? (
-                                    linkedinConnected ? (
-                                      <button
-                                        onClick={() => setSelectedNetwork(prev => ({ ...prev, [i]: 'linkedin' }))}
-                                        className={`flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border transition-colors ${
-                                          network === 'linkedin'
-                                            ? 'bg-[#0A66C2] border-[#0A66C2] text-white'
-                                            : 'border-gray-200 text-gray-500 hover:border-gray-300'
-                                        }`}
-                                      >
-                                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                                        LinkedIn
-                                      </button>
-                                    ) : (
-                                      <div className="relative group">
-                                        <button
-                                          disabled
-                                          className="flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border border-gray-200 text-gray-300 cursor-not-allowed"
-                                        >
-                                          <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                                          LinkedIn
-                                        </button>
-                                        <div className="absolute bottom-full left-0 mb-1.5 hidden group-hover:block z-10 w-48 bg-gray-800 text-white text-xs rounded-lg px-2.5 py-1.5 pointer-events-none">
-                                          Connectez LinkedIn depuis Réseaux sociaux
-                                        </div>
-                                      </div>
-                                    )
-                                  ) : (
-                                    <div className="relative group">
-                                      <button
-                                        disabled
-                                        className="flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border border-gray-200 text-gray-300 cursor-not-allowed"
-                                      >
-                                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                                        LinkedIn
-                                      </button>
-                                      <div className="absolute bottom-full left-0 mb-1.5 hidden group-hover:block z-10 w-52 bg-gray-800 text-white text-xs rounded-lg px-2.5 py-1.5 pointer-events-none">
-                                        Disponible à partir du plan Actif
-                                      </div>
-                                    </div>
-                                  )}
-                                </div>
-                              )}
-
                               <button
                                 onClick={() => startEdit(post, i)}
                                 className="text-xs font-medium text-gray-600 border border-gray-300 hover:border-gray-400 hover:bg-gray-50 px-2.5 py-1.5 rounded-lg transition-colors"
                               >
                                 Modifier
                               </button>
-                              {canPublish && (
+                              {reseauxConfigured && (
                                 <>
                                   <button
                                     onClick={() => publier(post, i)}
                                     disabled={isPublishing}
-                                    className={`text-xs font-semibold text-white px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
-                                      network === 'linkedin'
-                                        ? 'bg-[#0A66C2] hover:bg-[#084e96]'
-                                        : 'bg-[#1877F2] hover:bg-[#0d65d9]'
-                                    }`}
+                                    className="text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                                   >
-                                    {isPublishing && !isScheduling ? 'Envoi…' : 'Publier maintenant'}
+                                    {isPublishing && !isScheduling ? 'Envoi…' : 'Publier'}
                                   </button>
                                   {isScheduling ? (
                                     <div className="flex items-center gap-2">

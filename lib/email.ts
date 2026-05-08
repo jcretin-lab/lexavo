@@ -48,7 +48,7 @@ export async function sendBienvenue(email: string, nomCabinet?: string) {
     <p style="font-size:14px;color:#444;line-height:1.7;margin-bottom:8px;">Ce que vous pouvez faire avec vos 3 essais :</p>
     <ul style="font-size:14px;color:#444;line-height:2;margin:0 0 24px 0;padding-left:20px;">
       <li>Un article de blog optimisé SEO</li>
-      <li>3 posts Facebook prêts à publier</li>
+      <li>3 posts prêts à publier sur vos réseaux sociaux</li>
       <li>Une FAQ juridique + une image générée par IA</li>
     </ul>
     ${btn('https://www.lexavo.fr/dashboard/generer', 'Commencer maintenant')}
@@ -109,7 +109,7 @@ export async function sendConfirmationAbonnement(email: string, planId: string) 
       Merci pour votre confiance. Votre plan <strong>${nomPlan}</strong>${prixPlan ? ` (${prixPlan})` : ''} est maintenant actif.
     </p>
     <p style="font-size:14px;color:#444;line-height:1.7;margin-bottom:24px;">
-      Vous pouvez dès maintenant générer du contenu et programmer vos publications sur Facebook${planId !== 'essentiel' ? ' et LinkedIn' : ''}.
+      Vous pouvez dès maintenant générer du contenu et programmer vos publications sur vos réseaux sociaux (LinkedIn, Facebook, Instagram...).
     </p>
     ${btn('https://www.lexavo.fr/dashboard', 'Accéder à mon tableau de bord')}
     <p style="font-size:12px;color:#aaa;margin-top:24px;">
@@ -117,31 +117,6 @@ export async function sendConfirmationAbonnement(email: string, planId: string) 
     </p>
   `)
   return send(email, `Votre abonnement ${nomPlan} est activé — Lexavo`, html)
-}
-
-// ── 4. Rappel expiration LinkedIn ────────────────────────────────────────────
-export async function sendLinkedinRappel(email: string) {
-  const html = layout(`
-    <p style="font-size:16px;font-weight:600;margin-bottom:16px;">Votre connexion LinkedIn expire dans 7 jours</p>
-    <p style="font-size:14px;color:#444;line-height:1.7;margin-bottom:16px;">
-      Bonjour,<br/><br/>
-      Votre connexion LinkedIn à Lexavo expire dans <strong>7 jours</strong>.
-      Pour continuer à publier automatiquement, il vous faut la renouveler en 2 minutes.
-    </p>
-    <p style="font-size:14px;font-weight:600;color:#1A3F7C;margin-bottom:12px;">Pour la renouveler :</p>
-    <ol style="font-size:14px;color:#444;line-height:2;margin:0 0 24px 0;padding-left:20px;">
-      <li>Retournez sur <a href="https://www.make.com" style="color:#1A3F7C;">make.com</a></li>
-      <li>Ouvrez votre scénario LinkedIn</li>
-      <li>Cliquez sur le module LinkedIn</li>
-      <li>Cliquez « Reconnect »</li>
-      <li>Revenez sur Lexavo et ré-enregistrez votre URL webhook</li>
-    </ol>
-    ${btn('https://www.lexavo.fr/guide-linkedin', 'Renouveler ma connexion')}
-    <p style="font-size:12px;color:#aaa;margin-top:24px;">
-      Si vous avez des difficultés, contactez-nous à <a href="mailto:contact@lexavo.fr" style="color:#aaa;">contact@lexavo.fr</a>
-    </p>
-  `)
-  return send(email, 'Votre connexion LinkedIn expire dans 7 jours — Lexavo', html)
 }
 
 // ── 5. Quota d'essai atteint ────────────────────────────────────────────────

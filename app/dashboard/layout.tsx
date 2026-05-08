@@ -14,7 +14,7 @@ export default async function DashboardLayout({
 
   const { data: cabinet } = await supabase
     .from('cabinets')
-    .select('id, nom, plan, facebook_connected')
+    .select('id, nom, plan, make_webhook_url')
     .eq('user_id', user.id)
     .order('created_at', { ascending: true })
     .limit(1)

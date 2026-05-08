@@ -36,7 +36,7 @@ export default async function EquipePage() {
         <h1 className="text-2xl font-bold text-gray-900 mb-8">Équipe</h1>
         <PlanLockScreen
           titre="Gestion de l'équipe"
-          message="Invitez vos associés avec le Plan Cabinet à 149 €/mois. Chaque membre a son propre espace de génération et sa propre page Facebook. Économisez 58 €/mois par rapport à 3 abonnements Pro séparés."
+          message="Invitez vos associés avec le Plan Cabinet à 149 €/mois. Chaque membre a son propre espace de génération et ses propres réseaux sociaux. Économisez 58 €/mois par rapport à 3 abonnements Pro séparés."
           minPlan="cabinet"
         />
       </div>

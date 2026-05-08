@@ -12,8 +12,8 @@ const PUBLICATION_ITEMS = [
   {
     num: '02',
     icon: '◈',
-    titre: '3 posts Facebook/LinkedIn',
-    desc: 'Trois angles différents, prêts à publier ou à programmer sur votre page cabinet.',
+    titre: '3 posts prêts à publier sur vos réseaux sociaux',
+    desc: 'Trois angles différents, prêts à publier ou à programmer sur vos réseaux (LinkedIn, Facebook, Instagram...).',
   },
   {
     num: '03',
@@ -43,7 +43,7 @@ const STEPS = [
   {
     num: '03',
     titre: 'Publiez quand vous voulez',
-    desc: 'Immédiatement ou à la date de votre choix via le calendrier éditorial. Facebook et/ou LinkedIn reçoit votre contenu automatiquement.',
+    desc: 'Immédiatement ou à la date de votre choix via le calendrier éditorial. Vos réseaux sociaux (LinkedIn, Facebook, Instagram...) reçoivent votre contenu automatiquement.',
   },
 ]
 
@@ -104,7 +104,7 @@ function HeroMockup() {
               <div className="mb-3 px-2 py-1.5">
                 <span className="text-xs font-semibold" style={{ fontFamily: 'var(--font-instrument-serif)', color: 'var(--navy-700)' }}>Lexavo.</span>
               </div>
-              {['Générer', 'Article → Post', 'Calendrier', 'Contenu', 'Réseaux'].map((item, i) => (
+              {['Générer', 'Article → Post', 'Calendrier', 'Contenu', 'Paramètres'].map((item, i) => (
                 <div
                   key={item}
                   className="px-2 py-1.5 rounded-lg text-[10px] font-medium"
@@ -156,7 +156,7 @@ function HeroMockup() {
               {/* Results */}
               <div className="col-span-3 rounded-xl overflow-hidden" style={{ background: 'var(--white)', border: '1px solid var(--ink-200)' }}>
                 <div className="flex border-b" style={{ borderColor: 'var(--ink-200)' }}>
-                  {['Posts Facebook', 'Article SEO', 'FAQ', 'Image IA'].map((tab, i) => (
+                  {['Posts réseaux', 'Article SEO', 'FAQ', 'Image IA'].map((tab, i) => (
                     <div key={tab} className="flex-1 py-2 text-center text-[9px] font-medium border-b-2" style={{ color: i === 0 ? 'var(--navy-700)' : 'var(--ink-400)', borderColor: i === 0 ? 'var(--navy-700)' : 'transparent' }}>
                       {tab}
                     </div>
@@ -299,7 +299,7 @@ function CalendarMockup() {
       <div className="mx-4 mb-4 rounded-xl p-3 flex items-center justify-between" style={{ background: 'var(--success-50)', border: '1px solid #cfe6da' }}>
         <div>
           <p className="text-[10px] font-semibold" style={{ color: 'var(--success)' }}>✓ 8 publications programmées ce mois</p>
-          <p className="text-[9px]" style={{ color: 'var(--ink-500)' }}>Publication automatique active · Facebook & LinkedIn</p>
+          <p className="text-[9px]" style={{ color: 'var(--ink-500)' }}>Publication automatique active · Vos réseaux sociaux</p>
         </div>
         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: 'var(--success)', boxShadow: '0 0 0 4px rgba(31,122,76,0.15)' }} />
       </div>
@@ -392,7 +392,7 @@ export default function HomePage() {
               className="mb-10"
               style={{ fontSize: 'clamp(1rem, 1.5vw, 1.125rem)', color: 'var(--ink-500)', lineHeight: 1.65, maxWidth: '36rem' }}
             >
-              Lexavo génère vos articles de blog optimisés SEO, avec FAQ, image téléchargeable, et à partir de l&apos;article, crée des posts adaptés à Facebook et LinkedIn — publiés en un clic ou programmables. Conforme à la déontologie du barreau.
+              Lexavo génère vos articles de blog optimisés SEO, avec FAQ, image téléchargeable, et à partir de l&apos;article, crée des posts adaptés à vos réseaux sociaux (LinkedIn, Facebook, Instagram...) — publiés en un clic ou programmables. Conforme à la déontologie du barreau.
             </p>
 
             {/* CTAs */}
@@ -442,7 +442,7 @@ export default function HomePage() {
             className="mb-0"
             style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)', lineHeight: 1.45, color: 'var(--white)', letterSpacing: '-0.01em' }}
           >
-            Programmez votre présence régulière sur Facebook et LinkedIn. Généré et adapté à votre cabinet.
+            Programmez votre présence régulière sur vos réseaux sociaux (LinkedIn, Facebook, Instagram...). Généré et adapté à votre cabinet.
           </p>
         </div>
       </section>
@@ -614,13 +614,13 @@ export default function HomePage() {
               Publiez quand vous voulez
             </h2>
             <p className="mb-8 leading-relaxed" style={{ fontSize: '1rem', color: 'var(--ink-500)', lineHeight: 1.7 }}>
-              Immédiatement ou à la date de votre choix via le calendrier éditorial. Facebook et/ou LinkedIn reçoit votre contenu automatiquement.
+              Immédiatement ou à la date de votre choix via le calendrier éditorial. Vos réseaux sociaux (LinkedIn, Facebook, Instagram...) reçoivent votre contenu automatiquement.
             </p>
 
             <div className="space-y-3">
               {[
                 'Programmation à la date et l\'heure de votre choix',
-                'Publication automatique via Facebook & LinkedIn',
+                'Publication automatique sur vos réseaux (LinkedIn, Facebook, Instagram...)',
                 'Calendrier éditorial visuel pour piloter votre présence',
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">

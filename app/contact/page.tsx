@@ -8,7 +8,7 @@ export const metadata = {
 const FAQ = [
   {
     q: 'Est-ce que Lexavo fonctionne sans site web ?',
-    r: 'Oui. Lexavo génère du contenu pour Facebook et votre blog indépendamment de votre site web.',
+    r: 'Oui. Lexavo génère du contenu pour vos réseaux sociaux et votre blog indépendamment de votre site web.',
   },
   {
     q: 'Puis-je annuler mon abonnement à tout moment ?',
@@ -19,8 +19,8 @@ const FAQ = [
     r: 'Oui. Lexavo intègre les règles du RIN et du décret du 12 juillet 2005 dans chaque génération. Nous vous recommandons toutefois de relire chaque contenu avant publication.',
   },
   {
-    q: 'Comment connecter ma page Facebook ?',
-    r: 'Notre équipe vous contacte sous 24h après votre inscription pour finaliser la connexion de votre page Facebook. C\'est gratuit et prend 5 minutes.',
+    q: 'Comment connecter mes réseaux sociaux ?',
+    r: 'Réservez un appel gratuit de 15 minutes avec notre équipe. Nous configurons ensemble vos réseaux sociaux (LinkedIn, Facebook, Instagram...) selon vos besoins.',
   },
 ]
 

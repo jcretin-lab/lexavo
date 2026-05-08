@@ -15,7 +15,7 @@ export default async function ContenuDetailPage({
 
   const { data: cabinet } = await supabase
     .from('cabinets')
-    .select('id, plan, facebook_connected, make_webhook_url, linkedin_connected')
+    .select('id, plan, make_webhook_url')
     .eq('user_id', user.id)
     .order('created_at', { ascending: true })
     .limit(1)
@@ -35,9 +35,7 @@ export default async function ContenuDetailPage({
   return (
     <GenerationDetail
       generation={generation}
-      plan={cabinet.plan ?? 'essentiel'}
-      facebookConnected={!!cabinet.facebook_connected}
-      linkedinConnected={!!(cabinet as Record<string, unknown>).linkedin_connected}
+      reseauxConfigured={!!cabinet.make_webhook_url}
     />
   )
 }

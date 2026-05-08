@@ -20,12 +20,10 @@ interface GenerationResult {
 }
 
 interface Props {
-  plan: string
-  facebookConnected: boolean
-  linkedinConnected: boolean
+  reseauxConfigured: boolean
 }
 
-export function ArticleLinkedinClient({ plan, facebookConnected, linkedinConnected }: Props) {
+export function ArticleLinkedinClient({ reseauxConfigured }: Props) {
   const [article, setArticle] = useState('')
   const [ton, setTon] = useState('Pédagogique')
   const [loading, setLoading] = useState(false)
@@ -71,7 +69,7 @@ export function ArticleLinkedinClient({ plan, facebookConnected, linkedinConnect
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-xs text-green-600 font-semibold mb-1">✓ Génération terminée</p>
-            <h1 className="text-2xl font-bold text-gray-900">Vos posts Facebook sont prêts</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Vos posts sont prêts</h1>
             <p className="text-sm text-gray-500 mt-1">
               Relisez, modifiez et publiez directement depuis cette page.
             </p>
@@ -95,9 +93,7 @@ export function ArticleLinkedinClient({ plan, facebookConnected, linkedinConnect
         <GenerationDetail
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           generation={generation as any}
-          plan={plan}
-          facebookConnected={facebookConnected}
-          linkedinConnected={linkedinConnected}
+          reseauxConfigured={reseauxConfigured}
         />
       </div>
     )
@@ -107,9 +103,9 @@ export function ArticleLinkedinClient({ plan, facebookConnected, linkedinConnect
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Transformer un article en posts Facebook</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Transformer un article en posts</h1>
         <p className="text-sm text-gray-500 mt-2">
-          Collez votre article existant et Lexavo génère 3 posts Facebook optimisés et une image professionnelle.
+          Collez votre article existant et Lexavo génère 3 posts optimisés pour vos réseaux sociaux et une image professionnelle.
         </p>
       </div>
 
@@ -177,7 +173,7 @@ export function ArticleLinkedinClient({ plan, facebookConnected, linkedinConnect
               Génération en cours… (30-60 secondes)
             </span>
           ) : (
-            'Générer mes posts Facebook'
+            'Générer mes posts'
           )}
         </button>
       </form>

@@ -115,11 +115,6 @@ export function EquipeClient({ membres: initialMembres, maxMembresInvitables, ca
                     }`}>
                       {membre.statut === 'actif' ? '✓ Actif' : '⏳ Invitation envoyée'}
                     </span>
-                    {membre.linkedin_token ? (
-                      <span className="text-xs text-blue-600">LinkedIn connecté</span>
-                    ) : (
-                      <span className="text-xs text-gray-400">LinkedIn non connecté</span>
-                    )}
                   </div>
                 </div>
               </div>

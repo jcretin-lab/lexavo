@@ -81,14 +81,14 @@ export async function POST(request: NextRequest) {
     html: `
       <div style="font-family: sans-serif; max-width: 520px; margin: 0 auto; padding: 32px 24px; color: #1a1a1a;">
         <h1 style="font-size: 24px; font-weight: bold; color: #1A3F7C; margin-bottom: 8px;">Lexavo</h1>
-        <p style="color: #666; font-size: 14px; margin-bottom: 32px;">La plateforme de communication Facebook pour avocats</p>
+        <p style="color: #666; font-size: 14px; margin-bottom: 32px;">La plateforme de communication réseaux sociaux pour avocats</p>
 
         <p style="font-size: 16px; margin-bottom: 16px;">
           <strong>${cabinet.nom}</strong> vous invite à rejoindre leur espace Lexavo.
         </p>
 
         <p style="font-size: 14px; color: #555; margin-bottom: 32px;">
-          Créez votre compte pour générer et publier du contenu juridique sur Facebook,
+          Créez votre compte pour générer et publier du contenu juridique sur vos réseaux sociaux (LinkedIn, Facebook, Instagram...),
           avec votre propre espace indépendant.
         </p>
 

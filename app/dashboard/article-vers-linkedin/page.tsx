@@ -1,4 +1,4 @@
-﻿import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { ArticleLinkedinClient } from '@/components/dashboard/article-linkedin-client'
 
@@ -10,7 +10,7 @@ export default async function ArticleVersLinkedinPage() {
 
   const { data: cabinet } = await supabase
     .from('cabinets')
-    .select('id, plan, facebook_connected, make_webhook_url, linkedin_connected')
+    .select('id, plan, make_webhook_url')
     .eq('user_id', user.id)
     .order('created_at', { ascending: true })
     .limit(1)
@@ -18,11 +18,5 @@ export default async function ArticleVersLinkedinPage() {
 
   if (!cabinet) redirect('/onboarding')
 
-  return (
-    <ArticleLinkedinClient
-      plan={cabinet.plan ?? 'essentiel'}
-      facebookConnected={!!cabinet.facebook_connected}
-      linkedinConnected={!!(cabinet as Record<string, unknown>).linkedin_connected}
-    />
-  )
+  return <ArticleLinkedinClient reseauxConfigured={!!cabinet.make_webhook_url} />
 }
