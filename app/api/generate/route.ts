@@ -168,7 +168,7 @@ Champs supplémentaires :
     { "question": "string", "reponse": "string" },
     { "question": "string", "reponse": "string" }
   ],
-  "prompt_image": "string (prompt DALL-E 3 en anglais décrivant une scène abstraite ou un objet symbolique lié au thème juridique et à la spécialité. Le prompt doit évoquer visuellement le sujet sans montrer de personnes ni de texte. Utiliser des métaphores visuelles (ex: pour le divorce → deux anneaux dorés séparés sur fond épuré, pour le droit du travail → un bureau élégant avec des documents, pour le droit immobilier → une clé dorée sur un plan architectural). Maximum 50 mots.)"
+  "prompt_image": "string (prompt DALL-E 3 en anglais décrivant une vraie photographie réaliste prise dans un environnement réel lié au thème juridique. Privilégier des scènes documentaires authentiques (ex: pour le divorce → des alliances posées sur une table en bois usée près d'une fenêtre, pour le droit du travail → un dossier ouvert sur un bureau moderne avec un café, pour le droit immobilier → un trousseau de clés sur le seuil d'une vraie maison, pour le droit pénal → un couloir de palais de justice avec lumière naturelle). Aucun texte ni lettre lisible nulle part dans l'image. Aucune personne ni visage. Maximum 50 mots.)"
 }`
 
   inProgress.add(cabinet.id)
@@ -220,7 +220,7 @@ Champs supplémentaires :
       const imageResponse = await openai.images.generate({
         model: 'dall-e-3',
         prompt: content.prompt_image +
-          ' Professional French law firm atmosphere, clean and sophisticated minimal design, navy blue and white color scheme with subtle gold accents, soft natural lighting, high-end corporate photography style, no text, no people, no faces, wide format 16:9, sharp focus with shallow depth of field, premium quality, photorealistic, suitable for luxury French law firm marketing material',
+          ' Realistic documentary photography, shot on a 35mm full-frame camera with a 50mm lens at f/2.8, natural window light, true-to-life colors and textures, authentic everyday environment, visible material details (wood grain, paper texture, fabric weave), shallow depth of field, no studio lighting, no marketing styling, no glossy retouching, absolutely no text and no readable letters or signage anywhere in the image, no people, no faces, wide format 16:9, looks like a real candid photograph, not a stock image',
         size: '1792x1024',
         quality: 'standard',
         n: 1,
