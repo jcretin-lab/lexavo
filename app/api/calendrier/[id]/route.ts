@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
-const DEFAULT_WEBHOOK_FACEBOOK = process.env.MAKE_WEBHOOK_URL ?? ''
-const DEFAULT_WEBHOOK_LINKEDIN = process.env.MAKE_WEBHOOK_LINKEDIN ?? ''
+const DEFAULT_WEBHOOK = process.env.MAKE_WEBHOOK_URL ?? ''
 
 export async function PATCH(
   request: NextRequest,
@@ -17,7 +16,7 @@ export async function PATCH(
 
     const { data: cabinet } = await supabase
       .from('cabinets')
-      .select('id, facebook_connected, linkedin_connected, make_webhook_facebook, make_webhook_linkedin')
+      .select('id, make_webhook_url')
       .eq('user_id', user.id)
       .single()
 
@@ -28,31 +27,18 @@ export async function PATCH(
     if (body.publish === true) {
       const { data: entry } = await supabase
         .from('calendrier')
-        .select('contenu, image_url, generation_id, reseau')
+        .select('contenu, image_url, generation_id')
         .eq('id', id)
         .eq('cabinet_id', cabinet.id)
         .single()
 
       if (!entry) return NextResponse.json({ error: 'Post introuvable' }, { status: 404 })
 
-      const entryReseau = (entry as Record<string, unknown>).reseau ?? 'facebook'
-      const cab = cabinet as Record<string, unknown>
-      const isLinkedin = entryReseau === 'linkedin'
-
-      if (isLinkedin && !cab.linkedin_connected) {
-        return NextResponse.json({ error: 'LinkedIn non connecté. Connectez votre profil depuis Réseaux sociaux.' }, { status: 400 })
-      }
-      if (!isLinkedin && !cab.facebook_connected) {
-        return NextResponse.json({ error: 'Facebook non connecté. Connectez votre page depuis Réseaux sociaux.' }, { status: 400 })
-      }
-
-      const webhookUrl = isLinkedin
-        ? ((cab.make_webhook_linkedin as string) || DEFAULT_WEBHOOK_LINKEDIN)
-        : ((cab.make_webhook_facebook as string) || DEFAULT_WEBHOOK_FACEBOOK)
+      const webhookUrl = (cabinet.make_webhook_url as string | null) || DEFAULT_WEBHOOK
 
       if (!webhookUrl) {
         return NextResponse.json(
-          { error: `Webhook ${isLinkedin ? 'LinkedIn' : 'Facebook'} non configuré.` },
+          { error: 'Réseaux sociaux non configurés. Réservez un appel pour activer la publication automatique.' },
           { status: 400 }
         )
       }
@@ -61,14 +47,13 @@ export async function PATCH(
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          texte: entry.contenu,
-          image_url: entry.image_url ?? null,
-          scheduled_date: null,
           cabinet_id: cabinet.id,
-          generation_id: entry.generation_id ?? null,
-          post_index: 0,
-          facebook_page_url: cabinet.facebook_connected,
-          reseau: entryReseau,
+          calendrier_id: id,
+          reseau: 'tous',
+          texte: entry.contenu,
+          hashtags: [],
+          image_url: entry.image_url ?? null,
+          date_programmee: new Date().toISOString(),
         }),
       })
 

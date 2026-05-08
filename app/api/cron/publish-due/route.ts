@@ -7,14 +7,10 @@ const supabaseAdmin = createClient(
   { auth: { autoRefreshToken: false, persistSession: false } }
 )
 
-const DEFAULT_WEBHOOK_FACEBOOK = process.env.MAKE_WEBHOOK_URL ?? ''
-const DEFAULT_WEBHOOK_LINKEDIN = process.env.MAKE_WEBHOOK_LINKEDIN ?? ''
+const DEFAULT_WEBHOOK = process.env.MAKE_WEBHOOK_URL ?? ''
 
 interface CabinetInfo {
-  facebook_connected: string | null
-  linkedin_connected: boolean | null
-  make_webhook_facebook: string | null
-  make_webhook_linkedin: string | null
+  make_webhook_url: string | null
 }
 
 export async function GET(request: NextRequest) {
@@ -30,7 +26,7 @@ export async function GET(request: NextRequest) {
 
   const { data: posts, error } = await supabaseAdmin
     .from('calendrier')
-    .select('id, contenu, image_url, generation_id, reseau, cabinet_id, date_programmee')
+    .select('id, contenu, image_url, generation_id, cabinet_id, date_programmee')
     .eq('statut', 'en_attente')
     .lte('date_programmee', new Date().toISOString())
 
@@ -53,7 +49,7 @@ export async function GET(request: NextRequest) {
       if (!cabinet) {
         const { data } = await supabaseAdmin
           .from('cabinets')
-          .select('facebook_connected, linkedin_connected, make_webhook_facebook, make_webhook_linkedin')
+          .select('make_webhook_url')
           .eq('id', post.cabinet_id)
           .single()
         if (!data) {
@@ -65,13 +61,10 @@ export async function GET(request: NextRequest) {
         cabinetCache[post.cabinet_id] = cabinet
       }
 
-      const isLinkedin = post.reseau === 'linkedin'
-      const webhookUrl = isLinkedin
-        ? (cabinet.make_webhook_linkedin || DEFAULT_WEBHOOK_LINKEDIN)
-        : (cabinet.make_webhook_facebook || DEFAULT_WEBHOOK_FACEBOOK)
+      const webhookUrl = cabinet.make_webhook_url || DEFAULT_WEBHOOK
 
       if (!webhookUrl) {
-        console.error(`[cron/publish-due] Webhook ${isLinkedin ? 'LinkedIn' : 'Facebook'} absent pour post ${post.id}`)
+        console.error(`[cron/publish-due] Webhook absent pour post ${post.id}`)
         failed++
         continue
       }
@@ -80,14 +73,13 @@ export async function GET(request: NextRequest) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          texte: post.contenu,
-          image_url: post.image_url ?? null,
-          scheduled_date: null,
           cabinet_id: post.cabinet_id,
-          generation_id: post.generation_id ?? null,
-          post_index: 0,
-          facebook_page_url: cabinet.facebook_connected,
-          reseau: post.reseau ?? 'facebook',
+          calendrier_id: post.id,
+          reseau: 'tous',
+          texte: post.contenu,
+          hashtags: [],
+          image_url: post.image_url ?? null,
+          date_programmee: post.date_programmee,
         }),
       })
 
