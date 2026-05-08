@@ -156,36 +156,41 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
 
   return (
     <div>
-      {/* Header */}
-      <div className="mb-6 flex items-start justify-between gap-4">
-        <div>
-          <Link href="/dashboard/contenu" className="text-sm text-gray-400 hover:text-gray-600 mb-2 inline-block">
-            ← Mes contenus
-          </Link>
-          <h1 className="text-2xl font-bold text-gray-900">{generation.theme}</h1>
-          <p className="text-sm text-gray-500 mt-1">{generation.specialite}</p>
-        </div>
-        <span className={`flex-shrink-0 text-xs px-2.5 py-1 rounded-full font-medium mt-1 ${
-          generation.statut === 'publie' ? 'bg-green-100 text-green-700' :
-          generation.statut === 'programme' ? 'bg-blue-100 text-blue-700' :
-          'bg-gray-100 text-gray-500'
-        }`}>
-          {generation.statut}
-        </span>
-      </div>
+      {/* Lien retour */}
+      <Link href="/dashboard/contenu" className="text-sm text-gray-400 hover:text-gray-600 mb-4 inline-block">
+        ← Mes contenus
+      </Link>
 
-      {/* Image */}
-      {generation.image_url && (
-        <div className="mb-6 rounded-2xl overflow-hidden border border-gray-200">
-          <Image
-            src={generation.image_url}
-            alt={generation.article_blog?.alt_image ?? generation.theme}
-            width={1792}
-            height={1024}
-            className="w-full h-56 object-cover"
-          />
+      {/* Header : à gauche le nom du droit + le titre + statut, à droite l'image en 16:9 */}
+      <div className={`mb-8 grid grid-cols-1 ${generation.image_url ? 'md:grid-cols-2' : ''} gap-6 items-center`}>
+        <div>
+          <p className="text-xs font-semibold text-blue-700 uppercase tracking-widest mb-3">
+            {generation.specialite}
+          </p>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-4">
+            {generation.theme}
+          </h1>
+          <span className={`inline-block text-xs px-2.5 py-1 rounded-full font-medium ${
+            generation.statut === 'publie' ? 'bg-green-100 text-green-700' :
+            generation.statut === 'programme' ? 'bg-blue-100 text-blue-700' :
+            'bg-gray-100 text-gray-500'
+          }`}>
+            {generation.statut}
+          </span>
         </div>
-      )}
+
+        {generation.image_url && (
+          <div className="rounded-2xl overflow-hidden border border-gray-200">
+            <Image
+              src={generation.image_url}
+              alt={generation.article_blog?.alt_image ?? generation.theme}
+              width={1792}
+              height={1024}
+              className="w-full h-auto block"
+            />
+          </div>
+        )}
+      </div>
 
       {/* Alerte aucun réseau configuré */}
       {!reseauxConfigured && (

@@ -125,7 +125,7 @@ CONTEXTE DU CABINET :
   const imagePromptUserPrompt = `Génère UNIQUEMENT un objet JSON valide contenant ce seul champ, sans markdown ni texte autour.
 
 {
-  "prompt_image": "string (prompt DALL-E 3 en anglais décrivant une scène simple, humaine et naturelle liée au thème juridique. INCLURE une ou plusieurs personnes en situation du quotidien (de dos, de profil, mains, ou en plan large pour éviter les visages identifiables). Exemples : pour le divorce → un parent qui prend la main de son enfant en se promenant, pour le droit du travail → quelqu'un assis à son bureau qui regarde par la fenêtre, pour le droit immobilier → un couple qui visite une pièce vide. Composition simple, pas dramatique. Aucun texte visible. Si du texte apparaît malgré tout, il doit être en français uniquement, jamais en anglais. Maximum 50 mots.)"
+  "prompt_image": "string (prompt DALL-E 3 en anglais décrivant une scène abstraite ou un objet symbolique lié au thème juridique et à la spécialité. Le prompt doit évoquer visuellement le sujet sans montrer de personnes ni de texte. Utiliser des métaphores visuelles (ex: pour le divorce → deux anneaux dorés séparés sur fond épuré, pour le droit du travail → un bureau élégant avec des documents, pour le droit immobilier → une clé dorée sur un plan architectural). Maximum 50 mots.)"
 }`
 
   // Prompt 2 — gros appel Claude pour article + posts + FAQ (sans le prompt_image).
@@ -180,8 +180,8 @@ Champs supplémentaires :
 }`
 
   const DALLE_STYLE_SUFFIX =
-    ' Simple natural human photograph, soft everyday daylight, calm and human atmosphere, true-to-life neutral colors, ordinary real-world setting (a home, an office, a street in France), one or several people present but no clearly identifiable faces (from behind, partial profile, hands, wide shot), composition kept simple and not cinematic, no dramatic angles, no marketing styling. STRICTLY NO TEXT and NO LETTERS visible in the image. If any text accidentally appears on a sign, paper or book, it MUST be written in French only, NEVER in English, no English words anywhere. Wide format 16:9, looks like a sincere everyday French photograph.'
-  const FALLBACK_IMAGE_PROMPT = `A simple realistic photograph illustrating ${specialite} in everyday French context, with one person from behind in a calm domestic or office scene.`
+    ' Professional French law firm atmosphere, clean and sophisticated minimal design, navy blue and white color scheme with subtle gold accents, soft natural lighting, high-end corporate photography style, no text, no people, no faces, wide format 16:9, sharp focus with shallow depth of field, premium quality, photorealistic, suitable for luxury French law firm marketing material'
+  const FALLBACK_IMAGE_PROMPT = `An abstract symbolic composition illustrating ${specialite}, with elegant minimal objects on a clean background, navy blue and gold accents.`
 
   // Helper pour upload image dans Supabase Storage
   const cabinetId = cabinet.id
