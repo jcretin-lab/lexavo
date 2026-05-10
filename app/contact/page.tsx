@@ -20,7 +20,7 @@ const FAQ = [
   },
   {
     q: 'Comment connecter mes réseaux sociaux ?',
-    r: 'Réservez un appel gratuit de 15 minutes avec notre équipe. Nous configurons ensemble vos réseaux sociaux (LinkedIn, Facebook, Instagram...) selon vos besoins.',
+    r: 'Réservez un appel gratuit de 20 minutes avec notre équipe. Nous configurons ensemble vos réseaux sociaux (LinkedIn et Facebook) selon vos besoins.',
   },
 ]
 

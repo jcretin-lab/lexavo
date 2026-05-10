@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
         </p>
 
         <p style="font-size: 14px; color: #555; margin-bottom: 32px;">
-          Créez votre compte pour générer et publier du contenu juridique sur vos réseaux sociaux (LinkedIn, Facebook, Instagram...),
+          Créez votre compte pour générer et publier du contenu juridique sur vos réseaux sociaux (LinkedIn et Facebook),
           avec votre propre espace indépendant.
         </p>
 

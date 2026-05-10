@@ -109,7 +109,7 @@ export async function sendConfirmationAbonnement(email: string, planId: string) 
       Merci pour votre confiance. Votre plan <strong>${nomPlan}</strong>${prixPlan ? ` (${prixPlan})` : ''} est maintenant actif.
     </p>
     <p style="font-size:14px;color:#444;line-height:1.7;margin-bottom:24px;">
-      Vous pouvez dès maintenant générer du contenu et programmer vos publications sur vos réseaux sociaux (LinkedIn, Facebook, Instagram...).
+      Vous pouvez dès maintenant générer du contenu et programmer vos publications sur vos réseaux sociaux (LinkedIn et Facebook).
     </p>
     ${btn('https://www.lexavo.fr/dashboard', 'Accéder à mon tableau de bord')}
     <p style="font-size:12px;color:#aaa;margin-top:24px;">

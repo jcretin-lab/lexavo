@@ -1,6 +1,6 @@
 -- Migration v7 — Webhook unifié pour la publication multi-réseaux
 -- Remplace les webhooks Facebook/LinkedIn séparés par un webhook Make unique
--- qui orchestre tous les réseaux sociaux du cabinet (LinkedIn, Facebook, Instagram...).
+-- qui orchestre tous les réseaux sociaux du cabinet (LinkedIn et Facebook).
 
 ALTER TABLE cabinets
   DROP COLUMN IF EXISTS make_webhook_facebook,

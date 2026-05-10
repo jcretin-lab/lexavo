@@ -5,7 +5,6 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
-import { CALENDLY_URL } from '@/lib/constants'
 
 interface NavProps {
   cabinet: { id: string; nom: string; plan: string; make_webhook_url?: string | null }
@@ -111,26 +110,17 @@ export function DashboardNav({ cabinet }: NavProps) {
             )
           })}
 
-          {reseauxConfigured ? (
-            <div
-              className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium mt-1"
-              style={{ background: 'rgba(22, 163, 74, 0.08)', color: '#15803d' }}
-            >
-              <span className="text-base">✓</span>
-              Réseaux configurés
-            </div>
-          ) : (
-            <a
-              href={CALENDLY_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors mt-1"
-              style={{ color: 'var(--ink-500)' }}
-            >
-              <span className="text-base opacity-70">📅</span>
-              Mes réseaux
-            </a>
-          )}
+          <Link
+            href="/dashboard/reseaux"
+            className={cn('flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors mt-1')}
+            style={{
+              background: pathname === '/dashboard/reseaux' ? 'var(--navy-50)' : 'transparent',
+              color: pathname === '/dashboard/reseaux' ? 'var(--navy-700)' : 'var(--ink-500)',
+            }}
+          >
+            <span className="text-base opacity-70">{reseauxConfigured ? '✓' : '📅'}</span>
+            {reseauxConfigured ? 'Réseaux configurés' : 'Mes réseaux'}
+          </Link>
         </nav>
 
         {/* Footer */}

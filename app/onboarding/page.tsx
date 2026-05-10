@@ -215,7 +215,7 @@ function OnboardingContent() {
               <div className="text-5xl mb-3">🎉</div>
               <h2 className="text-2xl font-semibold mb-2">Votre compte est prêt !</h2>
               <p className="text-sm text-gray-600 max-w-md mx-auto mb-8">
-                Pour activer la publication automatique sur vos réseaux sociaux, réservez un appel gratuit de 15 minutes avec notre équipe. Nous configurons ensemble vos réseaux (LinkedIn, Facebook, Instagram...) selon vos besoins.
+                Pour activer la publication automatique sur vos réseaux sociaux, réservez un appel gratuit de 20 minutes avec notre équipe. Nous configurons ensemble vos réseaux (LinkedIn et Facebook) selon vos besoins.
               </p>
 
               <a

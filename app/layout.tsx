@@ -24,8 +24,8 @@ export const metadata: Metadata = {
     default: 'Lexavo — Publiez facilement pour faire entendre votre droit.',
     template: '%s | Lexavo',
   },
-  description: 'Lexavo génère vos articles SEO et posts pour vos réseaux sociaux (LinkedIn, Facebook, Instagram...) conformes à la déontologie du barreau. Publiez facilement pour faire entendre votre droit. Essai gratuit sans carte bancaire.',
-  keywords: ['avocat', 'contenu juridique', 'réseaux sociaux avocat', 'SEO cabinet avocat', 'publication automatique', 'LinkedIn avocat', 'Facebook avocat', 'Instagram avocat', 'marketing juridique', 'déontologie barreau'],
+  description: 'Lexavo génère vos articles SEO et posts pour vos réseaux sociaux (LinkedIn et Facebook) conformes à la déontologie du barreau. Publiez facilement pour faire entendre votre droit. Essai gratuit sans carte bancaire.',
+  keywords: ['avocat', 'contenu juridique', 'réseaux sociaux avocat', 'SEO cabinet avocat', 'publication automatique', 'LinkedIn avocat', 'Facebook avocat', 'marketing juridique', 'déontologie barreau'],
   authors: [{ name: 'Lexavo' }],
   creator: 'Lexavo',
   openGraph: {
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     url: 'https://www.lexavo.fr',
     siteName: 'Lexavo',
     title: 'Lexavo — Publiez facilement pour faire entendre votre droit.',
-    description: 'Lexavo génère vos articles SEO et posts pour vos réseaux sociaux (LinkedIn, Facebook, Instagram...) conformes à la déontologie du barreau. Publiez facilement pour faire entendre votre droit. Essai gratuit.',
+    description: 'Lexavo génère vos articles SEO et posts pour vos réseaux sociaux (LinkedIn et Facebook) conformes à la déontologie du barreau. Publiez facilement pour faire entendre votre droit. Essai gratuit.',
   },
   twitter: {
     card: 'summary_large_image',

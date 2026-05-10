@@ -91,7 +91,7 @@ export default async function DashboardPage() {
                 Activez la publication automatique
               </p>
               <p className="text-xs mt-1" style={{ color: 'var(--ink-500)' }}>
-                Réservez un appel de 15 minutes pour configurer vos réseaux sociaux (LinkedIn, Facebook, Instagram...).
+                Réservez un appel de 20 minutes pour configurer vos réseaux sociaux (LinkedIn et Facebook).
               </p>
             </div>
           </div>

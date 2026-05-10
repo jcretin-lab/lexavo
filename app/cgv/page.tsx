@@ -26,7 +26,7 @@ export default function CGVPage() {
           </p>
           <ul className="list-disc list-inside text-gray-700 space-y-1 pl-2">
             <li>Générer automatiquement du contenu marketing (articles de blog, posts pour réseaux sociaux, FAQ)</li>
-            <li>Publier automatiquement du contenu sur les réseaux sociaux du cabinet (LinkedIn, Facebook, Instagram...)</li>
+            <li>Publier automatiquement du contenu sur les réseaux sociaux du cabinet (LinkedIn et Facebook)</li>
             <li>Programmer des publications via un calendrier éditorial</li>
             <li>Transformer des articles existants en posts pour réseaux sociaux</li>
           </ul>

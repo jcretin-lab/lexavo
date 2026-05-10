@@ -1,0 +1,693 @@
+{
+    "name": "Lexavo Publications RS",
+    "flow": [
+        {
+            "id": 1,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 2998784,
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": -39,
+                    "y": 156
+                },
+                "restore": {
+                    "parameters": {
+                        "hook": {
+                            "data": {
+                                "editable": "true"
+                            },
+                            "label": "My gateway-webhook webhook"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "type": "hook:gateway-webhook",
+                        "label": "Webhook",
+                        "required": true
+                    },
+                    {
+                        "name": "maxResults",
+                        "type": "number",
+                        "label": "Maximum number of results"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "cabinet_id",
+                        "type": "text"
+                    },
+                    {
+                        "name": "calendrier_id",
+                        "type": "text"
+                    },
+                    {
+                        "name": "reseau",
+                        "type": "text"
+                    },
+                    {
+                        "name": "texte",
+                        "type": "text"
+                    },
+                    {
+                        "name": "hashtags",
+                        "spec": {
+                            "type": "text"
+                        },
+                        "type": "array"
+                    },
+                    {
+                        "name": "image_url",
+                        "type": "text"
+                    },
+                    {
+                        "name": "date_programmee",
+                        "type": "text"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 4,
+            "module": "http:DownloadFile",
+            "version": 4,
+            "parameters": {
+                "authenticationType": "noAuth"
+            },
+            "mapper": {
+                "url": "{{1.image_url}}",
+                "shareCookies": false,
+                "stopOnHttpError": true
+            },
+            "metadata": {
+                "designer": {
+                    "x": -35,
+                    "y": -158
+                },
+                "restore": {
+                    "expect": {
+                        "headers": {
+                            "mode": "chose"
+                        },
+                        "shareCookies": {
+                            "mode": "chose"
+                        },
+                        "queryParameters": {
+                            "mode": "chose"
+                        },
+                        "stopOnHttpError": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "authenticationType": {
+                            "label": "No authenticationUse when no credentials are required for the request."
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "authenticationType",
+                        "type": "select",
+                        "label": "Authentication type",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "noAuth",
+                                "apiKey",
+                                "basicAuth",
+                                "oAuth"
+                            ]
+                        }
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "url",
+                        "type": "url",
+                        "label": "URL",
+                        "required": true
+                    },
+                    {
+                        "name": "stopOnHttpError",
+                        "type": "boolean",
+                        "label": "Return error if HTTP request fails",
+                        "required": true
+                    },
+                    {
+                        "name": "shareCookies",
+                        "type": "boolean",
+                        "label": "Share cookies with other HTTP modules",
+                        "required": true
+                    },
+                    {
+                        "name": "headers",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "name",
+                                    "type": "text",
+                                    "label": "Name",
+                                    "required": true,
+                                    "validate": {
+                                        "pattern": "^[-!#$%&'*+.^_`|~0-9A-Za-z]+$"
+                                    }
+                                },
+                                {
+                                    "name": "value",
+                                    "type": "text",
+                                    "label": "Value"
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Header"
+                        },
+                        "type": "array",
+                        "label": "Headers"
+                    },
+                    {
+                        "name": "queryParameters",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "name",
+                                    "type": "text",
+                                    "label": "Name",
+                                    "required": true
+                                },
+                                {
+                                    "name": "value",
+                                    "type": "text",
+                                    "label": "Value"
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Parameter"
+                        },
+                        "type": "array",
+                        "label": "Query parameters"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 5,
+            "module": "linkedin:ShareImage",
+            "version": 2,
+            "parameters": {
+                "__IMTCONN__": 7256076
+            },
+            "mapper": {
+                "url": "{{1.image_url}}",
+                "method": "link",
+                "content": "{{1.texte}}",
+                "visibility": "PUBLIC",
+                "feedDistribution": "MAIN_FEED",
+                "isReshareDisabledByAuthor": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": 305,
+                    "y": -157
+                },
+                "restore": {
+                    "expect": {
+                        "method": {
+                            "label": "Upload by link"
+                        },
+                        "visibility": {
+                            "mode": "chose",
+                            "label": "Anyone"
+                        },
+                        "feedDistribution": {
+                            "mode": "chose",
+                            "label": "Main feed"
+                        },
+                        "isReshareDisabledByAuthor": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "linkedin2"
+                            },
+                            "label": "My LinkedIn connection (Julien PRETET)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:linkedin2,linkedin-openid",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "method",
+                        "type": "select",
+                        "label": "Choose Upload Method",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "upload",
+                                "link"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "type": "text",
+                        "label": "Title"
+                    },
+                    {
+                        "name": "altText",
+                        "type": "text",
+                        "label": "Alt Text"
+                    },
+                    {
+                        "name": "content",
+                        "type": "text",
+                        "label": "Content",
+                        "required": true
+                    },
+                    {
+                        "name": "visibility",
+                        "type": "select",
+                        "label": "Visibility",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "PUBLIC",
+                                "CONNECTIONS",
+                                "LOGGED_IN"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "feedDistribution",
+                        "type": "select",
+                        "label": "Feed Distribution",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "MAIN_FEED",
+                                "NONE"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "isReshareDisabledByAuthor",
+                        "type": "boolean",
+                        "label": "Is Reshare Disabled",
+                        "required": true
+                    },
+                    {
+                        "name": "url",
+                        "type": "text",
+                        "label": "Image URL",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 6,
+            "module": "linkedin:CreateCompanyImagePost",
+            "version": 2,
+            "parameters": {
+                "__IMTCONN__": 7256076
+            },
+            "mapper": {
+                "data": "{{4.data}}",
+                "method": "upload",
+                "content": "{{1.texte}}{{1.image_url}}",
+                "fileName": "{{4.fileName}}",
+                "visibility": "PUBLIC",
+                "organization": "urn:li:organization:113273232",
+                "feedDistribution": "MAIN_FEED",
+                "isReshareDisabledByAuthor": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": 301,
+                    "y": 153
+                },
+                "restore": {
+                    "expect": {
+                        "method": {
+                            "label": "Upload by file"
+                        },
+                        "visibility": {
+                            "mode": "chose",
+                            "label": "Anyone"
+                        },
+                        "organization": {
+                            "mode": "chose",
+                            "label": "Lexavo"
+                        },
+                        "feedDistribution": {
+                            "mode": "chose",
+                            "label": "Main feed"
+                        },
+                        "isReshareDisabledByAuthor": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "linkedin2"
+                            },
+                            "label": "My LinkedIn connection (Julien PRETET)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:linkedin2,linkedin-openid",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "organization",
+                        "type": "select",
+                        "label": "Company",
+                        "required": true
+                    },
+                    {
+                        "name": "method",
+                        "type": "select",
+                        "label": "Choose Upload Method",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "upload",
+                                "link"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "type": "text",
+                        "label": "Title"
+                    },
+                    {
+                        "name": "altText",
+                        "type": "text",
+                        "label": "Alt Text"
+                    },
+                    {
+                        "name": "content",
+                        "type": "text",
+                        "label": "Content",
+                        "required": true
+                    },
+                    {
+                        "name": "visibility",
+                        "type": "select",
+                        "label": "Visibility",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "PUBLIC",
+                                "CONNECTIONS",
+                                "LOGGED_IN"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "feedDistribution",
+                        "type": "select",
+                        "label": "Feed Distribution",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "MAIN_FEED",
+                                "NONE"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "isReshareDisabledByAuthor",
+                        "type": "boolean",
+                        "label": "Is Reshare Disabled",
+                        "required": true
+                    },
+                    {
+                        "name": "fileName",
+                        "type": "text",
+                        "label": "File name",
+                        "required": true
+                    },
+                    {
+                        "name": "data",
+                        "type": "buffer",
+                        "label": "Data",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 7,
+            "module": "facebook-pages:CreatePostWithPhotos",
+            "version": 6,
+            "parameters": {
+                "__IMTCONN__": 7256152
+            },
+            "mapper": {
+                "photos": [
+                    {
+                        "url": "{{1.image_url}}",
+                        "type": "url"
+                    }
+                ],
+                "message": "{{1.texte}}",
+                "page_id": "276079968911666"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 639,
+                    "y": 153
+                },
+                "restore": {
+                    "expect": {
+                        "photos": {
+                            "mode": "chose",
+                            "items": [
+                                {
+                                    "type": {
+                                        "mode": "chose",
+                                        "label": "Use a photo URL"
+                                    }
+                                }
+                            ]
+                        },
+                        "page_id": {
+                            "mode": "chose",
+                            "label": "Supercœur (Paris)"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "facebook"
+                            },
+                            "label": "My Facebook connection (Julien Cretin)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:facebook",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "page_id",
+                        "type": "select",
+                        "label": "Page",
+                        "required": true
+                    },
+                    {
+                        "name": "photos",
+                        "spec": [
+                            {
+                                "name": "type",
+                                "type": "select",
+                                "label": "Image input type",
+                                "options": [
+                                    {
+                                        "label": "Map from previous module",
+                                        "value": "data",
+                                        "nested": [
+                                            {
+                                                "name": "fileName",
+                                                "type": "filename",
+                                                "label": "File name",
+                                                "required": true,
+                                                "semantic": "file:name"
+                                            },
+                                            {
+                                                "name": "data",
+                                                "type": "buffer",
+                                                "label": "Data",
+                                                "required": true,
+                                                "semantic": "file:data"
+                                            }
+                                        ],
+                                        "default": true
+                                    },
+                                    {
+                                        "label": "Use a photo URL",
+                                        "value": "url",
+                                        "nested": [
+                                            {
+                                                "name": "url",
+                                                "type": "url",
+                                                "label": "URL",
+                                                "required": true
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "required": true
+                            },
+                            {
+                                "name": "caption",
+                                "type": "text",
+                                "label": "Image caption"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Photos",
+                        "required": true,
+                        "validate": {
+                            "maxItems": 30,
+                            "minItems": 1
+                        }
+                    },
+                    {
+                        "name": "message",
+                        "type": "text",
+                        "label": "Post caption"
+                    },
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "label": "Publish date"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 10,
+            "module": "gateway:WebhookRespond",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "body": "{{1.calendrier_id}}",
+                "status": "200",
+                "headers": []
+            },
+            "metadata": {
+                "designer": {
+                    "x": 853,
+                    "y": -134
+                },
+                "restore": {
+                    "expect": {
+                        "headers": {
+                            "mode": "chose"
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "name": "status",
+                        "type": "uinteger",
+                        "label": "Status",
+                        "required": true,
+                        "validate": {
+                            "min": 100
+                        }
+                    },
+                    {
+                        "name": "body",
+                        "type": "any",
+                        "label": "Body"
+                    },
+                    {
+                        "name": "headers",
+                        "spec": [
+                            {
+                                "name": "key",
+                                "type": "text",
+                                "label": "Key",
+                                "required": true,
+                                "validate": {
+                                    "max": 256
+                                }
+                            },
+                            {
+                                "name": "value",
+                                "type": "text",
+                                "label": "Value",
+                                "required": true,
+                                "validate": {
+                                    "max": 4096
+                                }
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Custom headers",
+                        "validate": {
+                            "maxItems": 16
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": true,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu1.make.com",
+        "notes": []
+    }
+}

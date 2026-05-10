@@ -553,7 +553,7 @@ export default function HomePage() {
           </div>
 
           <p className="mt-10 text-center text-sm fade-in" style={{ color: 'var(--ink-400)', fontStyle: 'italic' }}>
-            Pourquoi pas Instagram, X ou TikTok ? Parce qu&apos;à temps égal, LinkedIn et Facebook convertissent davantage en mandats pour un cabinet d&apos;avocats.
+            Pourquoi pas X ou TikTok ? Parce qu&apos;à temps égal, LinkedIn et Facebook convertissent davantage en mandats pour un cabinet d&apos;avocats.
           </p>
         </div>
       </section>
