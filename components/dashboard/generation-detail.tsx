@@ -3,9 +3,16 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import type { ArticleBlog, PostLinkedin, FaqItem, ImagesByStyle } from '@/types'
+import {
+  type ArticleBlog,
+  type PostLinkedin,
+  type FaqItem,
+  type ImagesByStyle,
+  type ImageStyle,
+  IMAGE_STYLE_LABELS,
+  IMAGE_STYLE_ORDER,
+} from '@/types'
 import { CALENDLY_URL } from '@/lib/constants'
-import { ImagePicker } from './image-picker'
 
 interface Generation {
   id: string
@@ -54,9 +61,56 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
   const [scheduleDate, setScheduleDate] = useState('')
   const [publishError, setPublishError] = useState('')
 
-  const headerImage = selectedImage ?? generation.image_url ?? null
   const images = generation.images ?? null
   const hasImages = !!images && Object.values(images).some(Boolean)
+  const fallbackImage = !hasImages ? (generation.image_url ?? null) : null
+
+  const [persistingSelection, setPersistingSelection] = useState(false)
+  const [downloading, setDownloading] = useState(false)
+  const [pickError, setPickError] = useState('')
+
+  async function selectImage(url: string) {
+    if (url === selectedImage) return
+    setSelectedImage(url)
+    setPickError('')
+    setPersistingSelection(true)
+    try {
+      const res = await fetch('/api/content/select-image', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ generation_id: generation.id, image_url: url }),
+      })
+      if (!res.ok) {
+        let data: Record<string, unknown> = {}
+        try { data = await res.json() } catch {}
+        throw new Error((data.error as string) || `Erreur ${res.status}`)
+      }
+    } catch (err: unknown) {
+      setPickError(err instanceof Error ? err.message : 'Erreur lors de la sélection')
+    } finally {
+      setPersistingSelection(false)
+    }
+  }
+
+  async function downloadSelected() {
+    if (!selectedImage) return
+    setDownloading(true)
+    try {
+      const res = await fetch(selectedImage)
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      const slug = (generation.theme || 'visuel').replace(/[^a-z0-9]/gi, '-').toLowerCase()
+      a.download = `${slug}.png`
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch {
+      // silently fail
+    } finally {
+      setDownloading(false)
+    }
+  }
 
   function startScheduling(index: number) {
     setSchedulingIndex(index)
@@ -165,8 +219,8 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
         ← Mes contenus
       </Link>
 
-      {/* Header : à gauche le nom du droit + le titre + statut, à droite l'image sélectionnée en 16:9 */}
-      <div className={`mb-8 grid grid-cols-1 ${headerImage ? 'md:grid-cols-2' : ''} gap-6 items-center`}>
+      {/* Header : à gauche le nom du droit + le titre + statut, à droite les 3 visuels selectionnables */}
+      <div className={`mb-8 grid grid-cols-1 ${(hasImages || fallbackImage) ? 'md:grid-cols-2' : ''} gap-6 items-start`}>
         <div>
           <p className="text-xs font-semibold text-blue-700 uppercase tracking-widest mb-3">
             {generation.specialite}
@@ -183,17 +237,79 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
           </span>
         </div>
 
-        {headerImage && (
+        {hasImages && images ? (
+          <div>
+            <div className="flex items-center justify-between mb-2 gap-3">
+              <p className="text-xs font-semibold text-gray-600">Choisissez votre image</p>
+              {persistingSelection && (
+                <span className="text-[11px] text-gray-400">Enregistrement…</span>
+              )}
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {IMAGE_STYLE_ORDER.map((style: ImageStyle) => {
+                const url = images[style]
+                if (!url) return null
+                const isSelected = url === selectedImage
+                return (
+                  <button
+                    key={style}
+                    type="button"
+                    onClick={() => selectImage(url)}
+                    className={`group flex flex-col rounded-xl overflow-hidden border-2 transition-all bg-white ${
+                      isSelected ? 'border-blue-600 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="relative w-full aspect-[16/9] bg-gray-100">
+                      <Image
+                        src={url}
+                        alt={`${IMAGE_STYLE_LABELS[style]} — ${generation.theme}`}
+                        fill
+                        sizes="(max-width: 768px) 33vw, 16vw"
+                        className="object-cover"
+                      />
+                      {isSelected && (
+                        <span className="absolute top-1.5 right-1.5 inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-white text-[10px] font-bold shadow">
+                          ✓
+                        </span>
+                      )}
+                    </div>
+                    <span
+                      className={`block text-[10px] py-1 text-center font-medium truncate ${
+                        isSelected ? 'text-blue-700 bg-blue-50' : 'text-gray-600 bg-gray-50'
+                      }`}
+                    >
+                      {IMAGE_STYLE_LABELS[style]}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+            {pickError && (
+              <p className="mt-2 text-[11px] text-red-600">{pickError}</p>
+            )}
+            {selectedImage && (
+              <div className="mt-2 text-right">
+                <button
+                  onClick={downloadSelected}
+                  disabled={downloading}
+                  className="text-xs font-medium text-gray-500 hover:text-gray-700 underline disabled:opacity-50"
+                >
+                  {downloading ? 'Téléchargement…' : '↓ Télécharger l\'image sélectionnée'}
+                </button>
+              </div>
+            )}
+          </div>
+        ) : fallbackImage ? (
           <div className="rounded-2xl overflow-hidden border border-gray-200">
             <Image
-              src={headerImage}
+              src={fallbackImage}
               alt={generation.article_blog?.alt_image ?? generation.theme}
               width={1792}
               height={1024}
               className="w-full h-auto block"
             />
           </div>
-        )}
+        ) : null}
       </div>
 
       {/* Alerte aucun réseau configuré */}
@@ -329,18 +445,6 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
                           ))}
                         </div>
 
-                        {hasImages && images && (
-                          <div className="mt-4">
-                            <ImagePicker
-                              generationId={generation.id}
-                              images={images}
-                              selected={selectedImage}
-                              onSelectedChange={setSelectedImage}
-                              themeForFilename={generation.theme}
-                            />
-                          </div>
-                        )}
-
                         <div className="mt-4 pt-3 border-t border-gray-100">
                           {isSuccess ? (
                             <span className="text-xs font-semibold text-green-600">✓ Publié</span>
@@ -464,18 +568,6 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
                 className="article-content"
                 dangerouslySetInnerHTML={{ __html: generation.article_blog.contenu }}
               />
-
-              {hasImages && images && (
-                <div className="mt-6">
-                  <ImagePicker
-                    generationId={generation.id}
-                    images={images}
-                    selected={selectedImage}
-                    onSelectedChange={setSelectedImage}
-                    themeForFilename={generation.theme}
-                  />
-                </div>
-              )}
 
               {generation.article_blog.alt_image && (
                 <div className="mt-5 rounded-lg bg-gray-50 border border-gray-200 px-4 py-3">
