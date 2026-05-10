@@ -193,7 +193,7 @@ export default async function DashboardPage() {
           <div>
             <p className="font-semibold">Article → Posts</p>
             <p className="text-sm mt-0.5" style={{ color: 'var(--ocre-300)' }}>
-              Transformez un article en 3 posts
+              Transformez votre article en 3 posts + FAQ + 3 images IA
             </p>
           </div>
           <Link
