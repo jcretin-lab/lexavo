@@ -151,15 +151,15 @@ Génère UNIQUEMENT un objet JSON valide contenant ce seul champ, sans markdown 
   "prompts_images": [
     {
       "style": "conceptuelle",
-      "prompt": "string (prompt DALL-E 3 en anglais, illustration éditoriale abstraite. L'élément visuel central spécifique au thème occupe 60-70% de la composition. Pas de personnes. Pas de texte visible. Palette bleu marine et or sur fond clair. Maximum 50 mots.)"
+      "prompt": "string (prompt DALL-E 3 en anglais. UNE seule icône/objet stylisé central qui evoque le thème. Fond uni épuré, ÉNORMÉMENT d'espace vide autour. AUCUN autre élément décoratif. Pas de personnes. Pas de texte. Maximum 25 mots.)"
     },
     {
       "style": "photorealiste",
-      "prompt": "string (prompt DALL-E 3 en anglais, démarrant par 'A documentary photograph of…'. Décrire UNE scène concrète sans personne avec l'élément central du thème comme sujet principal. Préciser une lumière naturelle nommée (soft window light, late afternoon sun…) et une faible profondeur de champ. Couleurs réalistes, pas de teinte forcée. Maximum 60 mots.)"
+      "prompt": "string (prompt DALL-E 3 en anglais, commençant par 'A documentary photograph of…'. UNE scène concrète sans personne avec UN objet/lieu central tiré du thème, en avant-plan. ÉVITER absolument livres avec dos visibles, panneaux, documents avec écriture, étiquettes — choisir des objets sans texte (carton fermé, dossier vierge, mur uni, etc.) OU décrire explicitement toutes les surfaces comme vierges/blanches. Lumière naturelle nommée + faible profondeur de champ. Maximum 50 mots.)"
     },
     {
       "style": "humains",
-      "prompt": "string (prompt DALL-E 3 en anglais, démarrant par 'A candid documentary photograph of…'. Décrire UNE scène avec 1 à 3 personnes en interaction directe avec l'élément central du thème (ex : un employé qui rend son badge, un commerçant qui remet ses clés, des époux qui signent des documents…). Cadre professionnel français. Tenue adaptée. Diversité réaliste (genres, âges, origines). Lumière naturelle. Expressions authentiques, peau réaliste avec texture naturelle. Maximum 60 mots.)"
+      "prompt": "string (prompt DALL-E 3 en anglais, commençant par 'A candid photograph of one person…'. UNE SEULE personne en interaction directe avec l'objet central du thème (ex : un employé seul qui rend son badge, une avocate seule qui signe un document, un commerçant seul qui ferme sa vitrine…). PAS de groupe (DALL-E rend mal les groupes). Tenue ordinaire et plausible, expression naturelle imparfaite, instant pris sur le vif. Lumière naturelle latérale. Arrière-plan flou. Aucun texte visible (écrans éteints, livres fermés, murs vides). Maximum 50 mots.)"
     }
   ]
 }`
@@ -226,19 +226,19 @@ Champs supplémentaires :
   }> = {
     conceptuelle: {
       suffix:
-        ' Clean editorial illustration style, sophisticated minimal corporate design, navy blue and white color scheme with subtle gold accents, soft lighting, no text, no people, no faces, wide format 16:9, premium French law firm marketing aesthetic.',
+        ' Minimalist editorial illustration of a SINGLE central iconic subject only. Vast empty off-white background with abundant negative space around the subject. NO additional decorative elements, NO clutter, NO surrounding objects, NO secondary symbols. Strictly 2-3 colors total: navy blue, off-white, subtle gold accents. Single soft light source. Flat editorial poster style. Wide format 16:9. Completely textless image, no letters, no numbers, no labels, no writing of any kind anywhere.',
       quality: 'standard',
       style: 'vivid',
     },
     photorealiste: {
       suffix:
-        ' Professional documentary photography, shot on a full-frame DSLR with a 35mm f/1.8 lens, natural window light, shallow depth of field, sharp focus, fine film grain, true-to-life muted colors with natural color grading, no text, no people, no faces, wide format 16:9. This is a real photograph, indistinguishable from one shot by a professional photojournalist. NOT an illustration, NOT digital art, NOT a 3D render, NOT CGI.',
+        ' Documentary photograph, shot on Sony A7IV with 35mm f/1.8 lens, Kodak Portra 400 film emulation, natural window light, shallow depth of field. Completely textless image: all books and folders have completely blank covers and spines (no titles, no labels), all papers are blank or face-down, no signs, no posters, no writing of any kind anywhere in the frame. No people, no faces. Wide format 16:9. Real photograph aesthetic, indistinguishable from a snapshot by a journalist. NOT an illustration, NOT digital art, NOT a 3D render, NOT CGI.',
       quality: 'hd',
       style: 'natural',
     },
     humains: {
       suffix:
-        ' Photojournalism portrait, shot on a full-frame DSLR with a 50mm f/1.4 lens, natural window light, shallow depth of field, candid composition, authentic facial expressions, photorealistic skin texture with visible pores and natural skin tones, lifelike eyes, true-to-life muted colors with natural color grading, fine film grain, no visible text, contemporary French law firm setting, wide format 16:9. This is a real photograph, indistinguishable from one shot by a professional photojournalist. NOT an illustration, NOT digital art, NOT a 3D render, NOT CGI, NOT cartoonish, NOT stylized.',
+        ' Genuine candid photograph, shot on Sony A7IV with 50mm f/1.4 lens, Kodak Portra 400 film emulation. ONE single ordinary person, real human anatomy with normal skin imperfections, asymmetric features, individual character, age-appropriate wrinkles and pores. Authentic everyday clothing, not styled. Subtle film grain, slight imperfect framing, soft natural side light through office window. Completely textless: all books, papers and signs in the background have blank covers, no writing visible anywhere. Wide format 16:9. Looks exactly like a real snapshot taken by a real photographer with a real camera. NOT a stock photo, NOT an AI illustration, NOT a 3D render, NOT cartoonish, NOT stylized, NOT plastic skin.',
       quality: 'hd',
       style: 'natural',
     },

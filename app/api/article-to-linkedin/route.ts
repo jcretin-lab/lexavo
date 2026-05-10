@@ -94,9 +94,9 @@ Exemples de traduction sujet → élément visuel central :
 
 Identifie d'abord 2-3 éléments visuels SPÉCIFIQUES au sujet de l'article, puis construis les 3 prompts autour de ces éléments. Les 3 prompts partagent le MÊME élément central, traité différemment selon le style.
 
-- "conceptuelle" : illustration éditoriale abstraite avec l'élément central spécifique au sujet (60-70% de la composition), pas de personnes, pas de texte, palette bleu marine et or sur fond clair, max 50 mots.
-- "photorealiste" : démarrer par "A documentary photograph of…". UNE scène concrète sans personne, l'élément central du sujet en avant-plan. Lumière naturelle nommée (soft window light, late afternoon sun) et faible profondeur de champ. Couleurs réalistes. Pas les mots "illustration", "render", "3D", "art". Max 60 mots.
-- "humains" : démarrer par "A candid documentary photograph of…". 1 à 3 personnes en interaction directe avec l'élément central (ex : un employé qui rend son badge, un commerçant qui remet ses clés…). Cadre professionnel français. Diversité réaliste. Lumière naturelle. Expressions authentiques. Peau réaliste avec texture naturelle. Max 60 mots.
+- "conceptuelle" : UNE seule icône/objet stylisé central qui évoque le sujet. Fond uni épuré, ÉNORMÉMENT d'espace vide autour. AUCUN autre élément décoratif. Pas de personnes. Pas de texte. Max 25 mots.
+- "photorealiste" : démarrer par "A documentary photograph of…". UNE scène concrète sans personne avec UN objet/lieu central tiré du sujet, en avant-plan. ÉVITER livres avec dos visibles, panneaux, documents écrits, étiquettes — choisir des objets sans texte OU décrire toutes les surfaces comme vierges. Lumière naturelle nommée + faible profondeur de champ. Max 50 mots.
+- "humains" : démarrer par "A candid photograph of one person…". UNE SEULE personne en interaction directe avec l'objet central (ex : un employé seul qui rend son badge, une avocate seule qui signe un document…). PAS de groupe. Tenue ordinaire et plausible, expression naturelle imparfaite, instant pris sur le vif. Lumière naturelle latérale. Arrière-plan flou. Aucun texte visible (écrans éteints, livres fermés, murs vides). Max 50 mots.
 
 Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
 {
@@ -178,19 +178,19 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
     }> = {
       conceptuelle: {
         suffix:
-          ' Clean editorial illustration style, sophisticated minimal corporate design, navy blue and white color scheme with subtle gold accents, soft lighting, no text, no people, no faces, wide format 16:9, premium French law firm marketing aesthetic.',
+          ' Minimalist editorial illustration of a SINGLE central iconic subject only. Vast empty off-white background with abundant negative space around the subject. NO additional decorative elements, NO clutter, NO surrounding objects, NO secondary symbols. Strictly 2-3 colors total: navy blue, off-white, subtle gold accents. Single soft light source. Flat editorial poster style. Wide format 16:9. Completely textless image, no letters, no numbers, no labels, no writing of any kind anywhere.',
         quality: 'standard',
         style: 'vivid',
       },
       photorealiste: {
         suffix:
-          ' Professional documentary photography, shot on a full-frame DSLR with a 35mm f/1.8 lens, natural window light, shallow depth of field, sharp focus, fine film grain, true-to-life muted colors with natural color grading, no text, no people, no faces, wide format 16:9. This is a real photograph, indistinguishable from one shot by a professional photojournalist. NOT an illustration, NOT digital art, NOT a 3D render, NOT CGI.',
+          ' Documentary photograph, shot on Sony A7IV with 35mm f/1.8 lens, Kodak Portra 400 film emulation, natural window light, shallow depth of field. Completely textless image: all books and folders have completely blank covers and spines (no titles, no labels), all papers are blank or face-down, no signs, no posters, no writing of any kind anywhere in the frame. No people, no faces. Wide format 16:9. Real photograph aesthetic, indistinguishable from a snapshot by a journalist. NOT an illustration, NOT digital art, NOT a 3D render, NOT CGI.',
         quality: 'hd',
         style: 'natural',
       },
       humains: {
         suffix:
-          ' Photojournalism portrait, shot on a full-frame DSLR with a 50mm f/1.4 lens, natural window light, shallow depth of field, candid composition, authentic facial expressions, photorealistic skin texture with visible pores and natural skin tones, lifelike eyes, true-to-life muted colors with natural color grading, fine film grain, no visible text, contemporary French law firm setting, wide format 16:9. This is a real photograph, indistinguishable from one shot by a professional photojournalist. NOT an illustration, NOT digital art, NOT a 3D render, NOT CGI, NOT cartoonish, NOT stylized.',
+          ' Genuine candid photograph, shot on Sony A7IV with 50mm f/1.4 lens, Kodak Portra 400 film emulation. ONE single ordinary person, real human anatomy with normal skin imperfections, asymmetric features, individual character, age-appropriate wrinkles and pores. Authentic everyday clothing, not styled. Subtle film grain, slight imperfect framing, soft natural side light through office window. Completely textless: all books, papers and signs in the background have blank covers, no writing visible anywhere. Wide format 16:9. Looks exactly like a real snapshot taken by a real photographer with a real camera. NOT a stock photo, NOT an AI illustration, NOT a 3D render, NOT cartoonish, NOT stylized, NOT plastic skin.',
         quality: 'hd',
         style: 'natural',
       },
