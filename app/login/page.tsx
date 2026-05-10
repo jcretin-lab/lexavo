@@ -28,6 +28,7 @@ export default async function LoginPage({
         </div>
 
         <LoginForm
+          key={`${initialMode}|${invite ?? ''}`}
           initialMode={initialMode}
           initialEmail={email ? decodeURIComponent(email) : ''}
           inviteId={invite ?? null}
