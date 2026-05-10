@@ -129,19 +129,21 @@ CONTEXTE DU CABINET :
   // Lancé en parallèle du gros appel pour démarrer DALL-E dès que possible.
   const imagePromptUserPrompt = `Génère UNIQUEMENT un objet JSON valide contenant ce seul champ, sans markdown ni texte autour.
 
+Les prompts photo (photorealiste, humains) doivent décrire une vraie photographie : commencer par "A documentary photograph of…", inclure un sujet précis, un cadrage, une lumière naturelle nommée (window light, golden hour…), une profondeur de champ. Pas de mots comme "illustration", "render", "3D", "art".
+
 {
   "prompts_images": [
     {
       "style": "conceptuelle",
-      "prompt": "string (prompt DALL-E 3 en anglais, abstrait et conceptuel, lié au thème juridique. Pas de personnes. Pas de texte visible. Symboles juridiques abstraits, métaphores visuelles élégantes. Palette bleu marine et or. Maximum 50 mots.)"
+      "prompt": "string (prompt DALL-E 3 en anglais, illustration éditoriale abstraite et symbolique liée au thème juridique. Pas de personnes. Pas de texte visible. Symboles juridiques (balance, marteau, plume, dossier, scellé…), métaphores visuelles élégantes. Palette bleu marine et or sur fond clair. Maximum 50 mots.)"
     },
     {
       "style": "photorealiste",
-      "prompt": "string (prompt DALL-E 3 en anglais, photo réaliste documentaire d'un lieu juridique ou d'un objet lié au thème — tribunal, bureau d'avocat, dossier, balance, livre de droit, etc. Pas de personnes. Pas de texte visible. Haute qualité photographique, éclairage naturel. Maximum 50 mots.)"
+      "prompt": "string (prompt DALL-E 3 en anglais, démarrant par 'A documentary photograph of…'. Décrire UNE scène concrète sans personne : intérieur de cabinet d'avocat français, dossiers sur bureau en bois, livres de droit reliés, balance de la justice, palais de justice, salle d'audience vide, etc. Préciser une lumière naturelle (ex : soft window light, late afternoon sun) et une faible profondeur de champ. Couleurs réalistes (pas de teinte forcée). Maximum 60 mots.)"
     },
     {
       "style": "humains",
-      "prompt": "string (prompt DALL-E 3 en anglais, photo réaliste d'une scène professionnelle juridique avec des personnes — avocat·e en consultation, équipe en réunion, client recevant un conseil, etc. Pas de texte visible. Diversité (genres, âges, origines). Tenue professionnelle. Cadre français. Maximum 50 mots.)"
+      "prompt": "string (prompt DALL-E 3 en anglais, démarrant par 'A candid documentary photograph of…'. Décrire UNE scène avec 1 à 3 personnes en cadre professionnel juridique français : avocat consultant un client, équipe d'avocats discutant autour d'un dossier, avocat lisant un dossier près d'une fenêtre, etc. Tenue professionnelle (costume, robe). Diversité réaliste (genres, âges, origines). Lumière naturelle (window light, daylight). Expressions authentiques, peau réaliste avec texture naturelle. Maximum 60 mots.)"
     }
   ]
 }`
@@ -197,12 +199,38 @@ Champs supplémentaires :
   ]
 }`
 
-  const DALLE_STYLE_SUFFIX =
-    ' Professional French law firm atmosphere, navy blue and white color scheme, no text, premium quality, wide format 16:9, photorealistic'
+  // Suffixes ET parametres DALL-E par style.
+  // - conceptuelle reste corporate (style: vivid, palette navy/or)
+  // - photorealiste & humains forcent un rendu photographique (style: natural,
+  //   quality: hd, vocabulaire d'appareil photo, anti "illustration/3D/render")
+  const STYLE_CONFIG: Record<ImageStyle, {
+    suffix: string
+    quality: 'standard' | 'hd'
+    style: 'vivid' | 'natural'
+  }> = {
+    conceptuelle: {
+      suffix:
+        ' Clean editorial illustration style, sophisticated minimal corporate design, navy blue and white color scheme with subtle gold accents, soft lighting, no text, no people, no faces, wide format 16:9, premium French law firm marketing aesthetic.',
+      quality: 'standard',
+      style: 'vivid',
+    },
+    photorealiste: {
+      suffix:
+        ' Professional documentary photography, shot on a full-frame DSLR with a 35mm f/1.8 lens, natural window light, shallow depth of field, sharp focus, fine film grain, true-to-life muted colors with natural color grading, no text, no people, no faces, wide format 16:9. This is a real photograph, indistinguishable from one shot by a professional photojournalist. NOT an illustration, NOT digital art, NOT a 3D render, NOT CGI.',
+      quality: 'hd',
+      style: 'natural',
+    },
+    humains: {
+      suffix:
+        ' Photojournalism portrait, shot on a full-frame DSLR with a 50mm f/1.4 lens, natural window light, shallow depth of field, candid composition, authentic facial expressions, photorealistic skin texture with visible pores and natural skin tones, lifelike eyes, true-to-life muted colors with natural color grading, fine film grain, no visible text, contemporary French law firm setting, wide format 16:9. This is a real photograph, indistinguishable from one shot by a professional photojournalist. NOT an illustration, NOT digital art, NOT a 3D render, NOT CGI, NOT cartoonish, NOT stylized.',
+      quality: 'hd',
+      style: 'natural',
+    },
+  }
   const FALLBACK_PROMPTS: Record<ImageStyle, string> = {
-    conceptuelle: `An abstract symbolic composition illustrating ${specialite}, elegant minimal objects on a clean background, navy blue and gold accents, no people.`,
-    photorealiste: `A photorealistic documentary photo of a French law office interior related to ${specialite}, books, balance scale, dossiers on a wooden desk, soft natural light, no people.`,
-    humains: `A photorealistic professional scene of French lawyers working together related to ${specialite}, diverse team in business attire in a modern law firm, warm natural light, no visible text.`,
+    conceptuelle: `An editorial abstract composition illustrating ${specialite}, with elegant minimal symbols (balance scale, gavel, leather-bound book) on a clean background, navy blue and gold accents, no people.`,
+    photorealiste: `A documentary photograph of a French law office interior related to ${specialite}: leather-bound law books on wooden shelves, a brass balance scale on a polished oak desk, an open dossier with hand-written notes, soft afternoon window light from the left, shallow depth of field, no people.`,
+    humains: `A candid documentary photograph of two diverse French lawyers in business attire reviewing a dossier together at a wooden desk in a modern law firm office, soft window light from a side window, warm natural tones, authentic concentrated expressions, no visible text.`,
   }
 
   // Helper pour upload image dans Supabase Storage
@@ -220,12 +248,14 @@ Champs supplémentaires :
   }
 
   async function generateAndStore(style: ImageStyle, prompt: string): Promise<string | null> {
+    const cfg = STYLE_CONFIG[style]
     try {
       const imageResponse = await openai.images.generate({
         model: 'dall-e-3',
-        prompt: prompt + DALLE_STYLE_SUFFIX,
+        prompt: prompt + cfg.suffix,
         size: '1792x1024',
-        quality: 'standard',
+        quality: cfg.quality,
+        style: cfg.style,
         n: 1,
       })
       const tempUrl = imageResponse.data?.[0]?.url

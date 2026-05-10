@@ -79,9 +79,9 @@ Chaque post :
 - Appel à consultation en conclusion
 
 Génère aussi 3 prompts DALL-E 3 en anglais pour 3 images professionnelles distinctes du sujet de l'article :
-- "conceptuelle" : abstrait, symboles juridiques, pas de personnes, pas de texte, palette bleu marine et or, max 50 mots.
-- "photorealiste" : photo réaliste documentaire d'un lieu juridique ou d'un objet lié au thème, pas de personnes, pas de texte, max 50 mots.
-- "humains" : photo réaliste avec personnes, scène professionnelle juridique, diversité, pas de texte visible, max 50 mots.
+- "conceptuelle" : illustration éditoriale abstraite, symboles juridiques (balance, marteau, plume, dossier), pas de personnes, pas de texte, palette bleu marine et or sur fond clair, max 50 mots.
+- "photorealiste" : démarrer par "A documentary photograph of…". Décrire UNE scène concrète sans personne (cabinet, dossiers, livres reliés, balance, salle d'audience…). Préciser une lumière naturelle nommée (soft window light, late afternoon sun) et une faible profondeur de champ. Couleurs réalistes, pas de teinte forcée. Pas les mots "illustration", "render", "3D", "art". Max 60 mots.
+- "humains" : démarrer par "A candid documentary photograph of…". 1 à 3 personnes en cadre professionnel juridique français (avocat avec client, équipe sur dossier, etc.), tenue costume/robe, diversité réaliste, lumière naturelle (window light), expressions authentiques, peau réaliste avec texture naturelle. Max 60 mots.
 
 Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
 {
@@ -144,12 +144,34 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
       }
     }
 
-    const DALLE_STYLE_SUFFIX =
-      ' Professional French law firm atmosphere, navy blue and white color scheme, no text, premium quality, wide format 16:9, photorealistic'
+    const STYLE_CONFIG: Record<ImageStyle, {
+      suffix: string
+      quality: 'standard' | 'hd'
+      style: 'vivid' | 'natural'
+    }> = {
+      conceptuelle: {
+        suffix:
+          ' Clean editorial illustration style, sophisticated minimal corporate design, navy blue and white color scheme with subtle gold accents, soft lighting, no text, no people, no faces, wide format 16:9, premium French law firm marketing aesthetic.',
+        quality: 'standard',
+        style: 'vivid',
+      },
+      photorealiste: {
+        suffix:
+          ' Professional documentary photography, shot on a full-frame DSLR with a 35mm f/1.8 lens, natural window light, shallow depth of field, sharp focus, fine film grain, true-to-life muted colors with natural color grading, no text, no people, no faces, wide format 16:9. This is a real photograph, indistinguishable from one shot by a professional photojournalist. NOT an illustration, NOT digital art, NOT a 3D render, NOT CGI.',
+        quality: 'hd',
+        style: 'natural',
+      },
+      humains: {
+        suffix:
+          ' Photojournalism portrait, shot on a full-frame DSLR with a 50mm f/1.4 lens, natural window light, shallow depth of field, candid composition, authentic facial expressions, photorealistic skin texture with visible pores and natural skin tones, lifelike eyes, true-to-life muted colors with natural color grading, fine film grain, no visible text, contemporary French law firm setting, wide format 16:9. This is a real photograph, indistinguishable from one shot by a professional photojournalist. NOT an illustration, NOT digital art, NOT a 3D render, NOT CGI, NOT cartoonish, NOT stylized.',
+        quality: 'hd',
+        style: 'natural',
+      },
+    }
     const FALLBACK_PROMPTS: Record<ImageStyle, string> = {
-      conceptuelle: 'An abstract symbolic composition illustrating French law, elegant minimal objects on a clean background, navy blue and gold accents, no people.',
-      photorealiste: 'A photorealistic documentary photo of a French law office interior, books, balance scale, dossiers on a wooden desk, soft natural light, no people.',
-      humains: 'A photorealistic professional scene of French lawyers working together, diverse team in business attire in a modern law firm, warm natural light, no visible text.',
+      conceptuelle: 'An editorial abstract composition illustrating French law, with elegant minimal symbols (balance scale, gavel, leather-bound book) on a clean background, navy blue and gold accents, no people.',
+      photorealiste: 'A documentary photograph of a French law office interior: leather-bound law books on wooden shelves, a brass balance scale on a polished oak desk, an open dossier with hand-written notes, soft afternoon window light from the left, shallow depth of field, no people.',
+      humains: 'A candid documentary photograph of two diverse French lawyers in business attire reviewing a dossier together at a wooden desk in a modern law firm office, soft window light from a side window, warm natural tones, authentic concentrated expressions, no visible text.',
     }
 
     const prompts: Record<ImageStyle, string> = { ...FALLBACK_PROMPTS }
@@ -163,12 +185,14 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
 
     const cabinetId = cabinet.id
     async function generateAndStore(style: ImageStyle, prompt: string): Promise<string | null> {
+      const cfg = STYLE_CONFIG[style]
       try {
         const imageResponse = await openai.images.generate({
           model: 'dall-e-3',
-          prompt: prompt + DALLE_STYLE_SUFFIX,
+          prompt: prompt + cfg.suffix,
           size: '1792x1024',
-          quality: 'standard',
+          quality: cfg.quality,
+          style: cfg.style,
           n: 1,
         })
         const tempUrl = imageResponse.data?.[0]?.url
