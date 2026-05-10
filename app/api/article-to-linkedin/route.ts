@@ -78,6 +78,8 @@ Chaque post :
 - 3-5 hashtags juridiques pertinents
 - Appel à consultation en conclusion
 
+Génère aussi 5 questions/réponses de FAQ juridique tirées de l'article (questions concrètes que se pose un justiciable, réponses pédagogiques de 2-3 phrases conformes à la déontologie, sans avis juridique personnalisé).
+
 Génère aussi 3 prompts DALL-E 3 en anglais pour 3 images professionnelles distinctes du sujet de l'article :
 - "conceptuelle" : illustration éditoriale abstraite, symboles juridiques (balance, marteau, plume, dossier), pas de personnes, pas de texte, palette bleu marine et or sur fond clair, max 50 mots.
 - "photorealiste" : démarrer par "A documentary photograph of…". Décrire UNE scène concrète sans personne (cabinet, dossiers, livres reliés, balance, salle d'audience…). Préciser une lumière naturelle nommée (soft window light, late afternoon sun) et une faible profondeur de champ. Couleurs réalistes, pas de teinte forcée. Pas les mots "illustration", "render", "3D", "art". Max 60 mots.
@@ -90,6 +92,13 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
     { "angle": "cas_pratique", "texte": "string", "hashtags": ["string"] },
     { "angle": "conseil", "texte": "string", "hashtags": ["string"] }
   ],
+  "faq": [
+    { "question": "string", "reponse": "string (2-3 phrases)" },
+    { "question": "string", "reponse": "string" },
+    { "question": "string", "reponse": "string" },
+    { "question": "string", "reponse": "string" },
+    { "question": "string", "reponse": "string" }
+  ],
   "prompts_images": [
     { "style": "conceptuelle", "prompt": "string" },
     { "style": "photorealiste", "prompt": "string" },
@@ -99,6 +108,7 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
 
   type ApiResult = {
     posts_linkedin: Array<{ angle: string; texte: string; hashtags: string[] }>
+    faq?: Array<{ question?: string; reponse?: string }>
     prompts_images: Array<{ style?: string; prompt?: string }>
   }
 
@@ -110,7 +120,7 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
       try {
         const message = await anthropic.messages.create({
           model: 'claude-sonnet-4-6',
-          max_tokens: 3000,
+          max_tokens: 4500,
           system: systemPrompt,
           messages: [{ role: 'user', content: `ARTICLE :\n\n${article}` }],
         })
@@ -223,6 +233,13 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
     const rawTheme = article.trim().slice(0, 80)
     const theme = rawTheme + (article.trim().length > 80 ? '…' : '')
     const postsLinkedin = result.posts_linkedin.map(({ texte, hashtags }) => ({ texte, hashtags }))
+    const faq = Array.isArray(result.faq)
+      ? result.faq
+          .filter((item): item is { question: string; reponse: string } =>
+            !!item && typeof item.question === 'string' && typeof item.reponse === 'string'
+          )
+          .map(({ question, reponse }) => ({ question, reponse }))
+      : []
 
     const { data: generation, error: dbError } = await supabase
       .from('generations')
@@ -231,6 +248,7 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
         theme,
         specialite: 'Article importé',
         posts_linkedin: postsLinkedin,
+        faq,
         image_url: defaultImageUrl,
         images,
         image_selectionnee: defaultImageUrl,

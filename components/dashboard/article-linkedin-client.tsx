@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { GenerationDetail } from '@/components/dashboard/generation-detail'
-import type { PostLinkedin, ImagesByStyle } from '@/types'
+import type { PostLinkedin, ImagesByStyle, FaqItem } from '@/types'
 
 const TONS = ['Pédagogique', 'Rassurant', 'Expert', 'Accessible'] as const
 
@@ -17,7 +17,7 @@ interface GenerationResult {
   image_selectionnee?: string | null
   posts_linkedin?: PostLinkedin[] | null
   article_blog?: null
-  faq?: null
+  faq?: FaqItem[] | null
   created_at: string
 }
 
@@ -107,7 +107,7 @@ export function ArticleLinkedinClient({ reseauxConfigured }: Props) {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Transformer un article en posts</h1>
         <p className="text-sm text-gray-500 mt-2">
-          Collez votre article existant et Lexavo génère 3 posts optimisés pour vos réseaux sociaux et 3 images professionnelles au choix.
+          Collez votre article existant et Lexavo génère 3 posts optimisés pour vos réseaux sociaux, une FAQ et 3 images professionnelles au choix.
         </p>
       </div>
 
