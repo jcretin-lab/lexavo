@@ -42,11 +42,11 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  if (user && pathname === '/login') {
-    const url = request.nextUrl.clone()
-    url.pathname = '/dashboard'
-    return NextResponse.redirect(url)
-  }
+  // Note : on ne redirige PAS /login → /dashboard quand une session existe.
+  // L'utilisateur peut vouloir se reconnecter avec un autre compte ou
+  // recuperer le formulaire en cas de session orpheline (signup incomplet,
+  // cabinet non cree, etc.). Le formulaire /login appelle signInWithPassword
+  // qui remplace la session existante proprement.
 
   return supabaseResponse
 }
