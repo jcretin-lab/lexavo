@@ -127,23 +127,39 @@ CONTEXTE DU CABINET :
 
   // Prompt 1 — petit appel Claude qui ne génère QUE les 3 prompts DALL-E.
   // Lancé en parallèle du gros appel pour démarrer DALL-E dès que possible.
-  const imagePromptUserPrompt = `Génère UNIQUEMENT un objet JSON valide contenant ce seul champ, sans markdown ni texte autour.
+  const imagePromptUserPrompt = `THÈME DE L'ARTICLE : « ${theme} »
+SPÉCIALITÉ : ${specialite}
 
-Les prompts photo (photorealiste, humains) doivent décrire une vraie photographie : commencer par "A documentary photograph of…", inclure un sujet précis, un cadrage, une lumière naturelle nommée (window light, golden hour…), une profondeur de champ. Pas de mots comme "illustration", "render", "3D", "art".
+RÈGLE ABSOLUE : chacun des 3 prompts DALL-E DOIT placer au centre de la scène un élément visuel CONCRET et SPÉCIFIQUE tiré directement du thème ci-dessus. Ne te contente PAS des classiques génériques (balance, marteau, livres reliés) sauf si le thème les évoque réellement. L'objectif est qu'un lecteur reconnaisse instantanément le sujet de l'article rien qu'en regardant l'image.
+
+Exemples de traduction thème → élément visuel central :
+- "Licenciement pour faute grave" → un bureau vide, badge d'accès retourné, carton de déménagement avec quelques affaires personnelles, ou une lettre recommandée ouverte sur un bureau
+- "Rupture brutale des relations commerciales" → un contrat déchiré en deux, deux poignées de main qui se séparent, deux bureaux qui s'éloignent
+- "Droit de rétractation" → une enveloppe LRAR fermée, un calendrier marqué "14 jours", un colis non ouvert avec un bordereau de retour
+- "Divorce" → deux alliances séparées sur une table, deux clés sur des porte-clés différents, deux jeux de bagages
+- "Bail commercial" → la vitrine d'un commerce avec un bail dans le cadre, une remise de clés de boutique
+- "Succession / héritage" → une vieille horloge familiale, un dossier notarié relié, un coffre familial ouvert
+- "Contestation PV" → une contravention sur un pare-brise, un panneau de signalisation, un radar
+
+Identifie d'abord 2-3 éléments visuels SPÉCIFIQUES au thème « ${theme} », puis construis les 3 prompts autour de ces éléments. Les 3 prompts (conceptuelle, photorealiste, humains) doivent partager le MÊME élément central, mais traité différemment selon le style.
+
+Les prompts photo (photorealiste, humains) doivent décrire une vraie photographie : commencer par "A documentary photograph of…", inclure le sujet spécifique, un cadrage, une lumière naturelle nommée (window light, golden hour…), une profondeur de champ. Pas de mots comme "illustration", "render", "3D", "art".
+
+Génère UNIQUEMENT un objet JSON valide contenant ce seul champ, sans markdown ni texte autour.
 
 {
   "prompts_images": [
     {
       "style": "conceptuelle",
-      "prompt": "string (prompt DALL-E 3 en anglais, illustration éditoriale abstraite et symbolique liée au thème juridique. Pas de personnes. Pas de texte visible. Symboles juridiques (balance, marteau, plume, dossier, scellé…), métaphores visuelles élégantes. Palette bleu marine et or sur fond clair. Maximum 50 mots.)"
+      "prompt": "string (prompt DALL-E 3 en anglais, illustration éditoriale abstraite. L'élément visuel central spécifique au thème occupe 60-70% de la composition. Pas de personnes. Pas de texte visible. Palette bleu marine et or sur fond clair. Maximum 50 mots.)"
     },
     {
       "style": "photorealiste",
-      "prompt": "string (prompt DALL-E 3 en anglais, démarrant par 'A documentary photograph of…'. Décrire UNE scène concrète sans personne : intérieur de cabinet d'avocat français, dossiers sur bureau en bois, livres de droit reliés, balance de la justice, palais de justice, salle d'audience vide, etc. Préciser une lumière naturelle (ex : soft window light, late afternoon sun) et une faible profondeur de champ. Couleurs réalistes (pas de teinte forcée). Maximum 60 mots.)"
+      "prompt": "string (prompt DALL-E 3 en anglais, démarrant par 'A documentary photograph of…'. Décrire UNE scène concrète sans personne avec l'élément central du thème comme sujet principal. Préciser une lumière naturelle nommée (soft window light, late afternoon sun…) et une faible profondeur de champ. Couleurs réalistes, pas de teinte forcée. Maximum 60 mots.)"
     },
     {
       "style": "humains",
-      "prompt": "string (prompt DALL-E 3 en anglais, démarrant par 'A candid documentary photograph of…'. Décrire UNE scène avec 1 à 3 personnes en cadre professionnel juridique français : avocat consultant un client, équipe d'avocats discutant autour d'un dossier, avocat lisant un dossier près d'une fenêtre, etc. Tenue professionnelle (costume, robe). Diversité réaliste (genres, âges, origines). Lumière naturelle (window light, daylight). Expressions authentiques, peau réaliste avec texture naturelle. Maximum 60 mots.)"
+      "prompt": "string (prompt DALL-E 3 en anglais, démarrant par 'A candid documentary photograph of…'. Décrire UNE scène avec 1 à 3 personnes en interaction directe avec l'élément central du thème (ex : un employé qui rend son badge, un commerçant qui remet ses clés, des époux qui signent des documents…). Cadre professionnel français. Tenue adaptée. Diversité réaliste (genres, âges, origines). Lumière naturelle. Expressions authentiques, peau réaliste avec texture naturelle. Maximum 60 mots.)"
     }
   ]
 }`
@@ -228,9 +244,9 @@ Champs supplémentaires :
     },
   }
   const FALLBACK_PROMPTS: Record<ImageStyle, string> = {
-    conceptuelle: `An editorial abstract composition illustrating ${specialite}, with elegant minimal symbols (balance scale, gavel, leather-bound book) on a clean background, navy blue and gold accents, no people.`,
-    photorealiste: `A documentary photograph of a French law office interior related to ${specialite}: leather-bound law books on wooden shelves, a brass balance scale on a polished oak desk, an open dossier with hand-written notes, soft afternoon window light from the left, shallow depth of field, no people.`,
-    humains: `A candid documentary photograph of two diverse French lawyers in business attire reviewing a dossier together at a wooden desk in a modern law firm office, soft window light from a side window, warm natural tones, authentic concentrated expressions, no visible text.`,
+    conceptuelle: `An editorial abstract composition illustrating "${theme}" in the context of ${specialite}, with a central symbolic object visually evoking this specific topic, minimalist styling, navy blue and gold accents on a clean background, no people, no text.`,
+    photorealiste: `A documentary photograph illustrating "${theme}" in a French law context (${specialite}): a relevant concrete object or place tied to this topic in the foreground, shallow depth of field, soft natural window light, true-to-life muted colors, no people, no text.`,
+    humains: `A candid documentary photograph of one to three diverse French professionals in a situation directly related to "${theme}" (${specialite}), realistic interaction with a concrete object or place tied to the topic, business or contextual attire, soft natural window light, authentic expressions, no visible text.`,
   }
 
   // Helper pour upload image dans Supabase Storage
@@ -272,7 +288,7 @@ Champs supplémentaires :
     // Lance les 2 appels Claude en parallèle.
     const imagePromptCall = anthropic.messages.create({
       model: 'claude-sonnet-4-6',
-      max_tokens: 200,
+      max_tokens: 600,
       system: systemPrompt,
       messages: [{ role: 'user', content: imagePromptUserPrompt }],
     })

@@ -80,10 +80,23 @@ Chaque post :
 
 Génère aussi 5 questions/réponses de FAQ juridique tirées de l'article (questions concrètes que se pose un justiciable, réponses pédagogiques de 2-3 phrases conformes à la déontologie, sans avis juridique personnalisé).
 
-Génère aussi 3 prompts DALL-E 3 en anglais pour 3 images professionnelles distinctes du sujet de l'article :
-- "conceptuelle" : illustration éditoriale abstraite, symboles juridiques (balance, marteau, plume, dossier), pas de personnes, pas de texte, palette bleu marine et or sur fond clair, max 50 mots.
-- "photorealiste" : démarrer par "A documentary photograph of…". Décrire UNE scène concrète sans personne (cabinet, dossiers, livres reliés, balance, salle d'audience…). Préciser une lumière naturelle nommée (soft window light, late afternoon sun) et une faible profondeur de champ. Couleurs réalistes, pas de teinte forcée. Pas les mots "illustration", "render", "3D", "art". Max 60 mots.
-- "humains" : démarrer par "A candid documentary photograph of…". 1 à 3 personnes en cadre professionnel juridique français (avocat avec client, équipe sur dossier, etc.), tenue costume/robe, diversité réaliste, lumière naturelle (window light), expressions authentiques, peau réaliste avec texture naturelle. Max 60 mots.
+Génère aussi 3 prompts DALL-E 3 en anglais pour 3 images professionnelles distinctes.
+
+RÈGLE ABSOLUE pour les prompts d'image : chacun des 3 prompts DOIT placer au centre de la scène un élément visuel CONCRET et SPÉCIFIQUE tiré directement du sujet de l'article fourni. Ne te contente PAS des classiques génériques (balance, marteau, livres reliés) sauf si l'article les évoque réellement. L'objectif est qu'un lecteur reconnaisse instantanément le sujet de l'article rien qu'en regardant l'image.
+
+Exemples de traduction sujet → élément visuel central :
+- "Licenciement pour faute grave" → un bureau vide, badge d'accès retourné, carton de déménagement
+- "Rupture brutale de relations commerciales" → un contrat déchiré en deux, deux poignées de main qui se séparent
+- "Droit de rétractation" → une enveloppe LRAR, un calendrier marqué "14 jours", un colis non ouvert
+- "Divorce" → deux alliances séparées, deux clés sur des porte-clés différents
+- "Bail commercial" → la vitrine d'un commerce avec un bail, une remise de clés
+- "Succession / héritage" → une vieille horloge familiale, un dossier notarié relié
+
+Identifie d'abord 2-3 éléments visuels SPÉCIFIQUES au sujet de l'article, puis construis les 3 prompts autour de ces éléments. Les 3 prompts partagent le MÊME élément central, traité différemment selon le style.
+
+- "conceptuelle" : illustration éditoriale abstraite avec l'élément central spécifique au sujet (60-70% de la composition), pas de personnes, pas de texte, palette bleu marine et or sur fond clair, max 50 mots.
+- "photorealiste" : démarrer par "A documentary photograph of…". UNE scène concrète sans personne, l'élément central du sujet en avant-plan. Lumière naturelle nommée (soft window light, late afternoon sun) et faible profondeur de champ. Couleurs réalistes. Pas les mots "illustration", "render", "3D", "art". Max 60 mots.
+- "humains" : démarrer par "A candid documentary photograph of…". 1 à 3 personnes en interaction directe avec l'élément central (ex : un employé qui rend son badge, un commerçant qui remet ses clés…). Cadre professionnel français. Diversité réaliste. Lumière naturelle. Expressions authentiques. Peau réaliste avec texture naturelle. Max 60 mots.
 
 Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
 {
@@ -154,6 +167,10 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
       }
     }
 
+    // Sujet de l'article reduit a un theme exploitable dans les prompts/fallback.
+    const rawTheme = article.trim().slice(0, 80)
+    const theme = rawTheme + (article.trim().length > 80 ? '…' : '')
+
     const STYLE_CONFIG: Record<ImageStyle, {
       suffix: string
       quality: 'standard' | 'hd'
@@ -179,9 +196,9 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
       },
     }
     const FALLBACK_PROMPTS: Record<ImageStyle, string> = {
-      conceptuelle: 'An editorial abstract composition illustrating French law, with elegant minimal symbols (balance scale, gavel, leather-bound book) on a clean background, navy blue and gold accents, no people.',
-      photorealiste: 'A documentary photograph of a French law office interior: leather-bound law books on wooden shelves, a brass balance scale on a polished oak desk, an open dossier with hand-written notes, soft afternoon window light from the left, shallow depth of field, no people.',
-      humains: 'A candid documentary photograph of two diverse French lawyers in business attire reviewing a dossier together at a wooden desk in a modern law firm office, soft window light from a side window, warm natural tones, authentic concentrated expressions, no visible text.',
+      conceptuelle: `An editorial abstract composition illustrating the topic of the article ("${theme}"), with a central symbolic object visually evoking this specific topic, minimalist styling, navy blue and gold accents on a clean background, no people, no text.`,
+      photorealiste: `A documentary photograph illustrating the topic "${theme}" in a French legal context: a relevant concrete object or place tied to this topic in the foreground, shallow depth of field, soft natural window light, true-to-life muted colors, no people, no text.`,
+      humains: `A candid documentary photograph of one to three diverse French professionals in a situation directly related to "${theme}", realistic interaction with a concrete object or place tied to the topic, business or contextual attire, soft natural window light, authentic expressions, no visible text.`,
     }
 
     const prompts: Record<ImageStyle, string> = { ...FALLBACK_PROMPTS }
@@ -230,8 +247,6 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
     const images: ImagesByStyle = { conceptuelle, photorealiste, humains }
     const defaultImageUrl = conceptuelle ?? photorealiste ?? humains ?? null
 
-    const rawTheme = article.trim().slice(0, 80)
-    const theme = rawTheme + (article.trim().length > 80 ? '…' : '')
     const postsLinkedin = result.posts_linkedin.map(({ texte, hashtags }) => ({ texte, hashtags }))
     const faq = Array.isArray(result.faq)
       ? result.faq
