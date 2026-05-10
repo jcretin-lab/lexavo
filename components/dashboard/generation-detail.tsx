@@ -49,6 +49,7 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
 
   const [publishingIndex, setPublishingIndex] = useState<number | null>(null)
   const [successIndexes, setSuccessIndexes] = useState<Set<number>>(new Set())
+  const [failedIndexes, setFailedIndexes] = useState<Set<number>>(new Set())
   const [schedulingIndex, setSchedulingIndex] = useState<number | null>(null)
   const [scheduleDate, setScheduleDate] = useState('')
   const [publishError, setPublishError] = useState('')
@@ -116,6 +117,13 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
   async function publier(post: PostLinkedin, index: number, scheduledDate?: string) {
     setPublishingIndex(index)
     setPublishError('')
+    // En cas de retry, on retire l'index des échecs précédents le temps de l'appel.
+    setFailedIndexes(prev => {
+      if (!prev.has(index)) return prev
+      const next = new Set(prev)
+      next.delete(index)
+      return next
+    })
     try {
       const res = await fetch('/api/publish', {
         method: 'POST',
@@ -143,6 +151,7 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
       }, 3000)
     } catch (err: unknown) {
       setPublishError(err instanceof Error ? err.message : "Erreur lors de l'envoi")
+      setFailedIndexes(prev => new Set(prev).add(index))
     } finally {
       setPublishingIndex(null)
       setSchedulingIndex(null)
@@ -244,6 +253,7 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
                 const isEditing = editingIndex === i
                 const isSaved = savedIndexes.has(i)
                 const isSuccess = successIndexes.has(i)
+                const isFailed = failedIndexes.has(i)
                 const isPublishing = publishingIndex === i
                 const isScheduling = schedulingIndex === i
 
@@ -335,63 +345,71 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
                           {isSuccess ? (
                             <span className="text-xs font-semibold text-green-600">✓ Publié</span>
                           ) : (
-                            <div className="flex flex-wrap items-center gap-2">
-                              <button
-                                onClick={() => startEdit(post, i)}
-                                className="text-xs font-medium text-gray-600 border border-gray-300 hover:border-gray-400 hover:bg-gray-50 px-2.5 py-1.5 rounded-lg transition-colors"
-                              >
-                                Modifier
-                              </button>
-                              {reseauxConfigured && (
-                                <>
-                                  <button
-                                    onClick={() => publier(post, i)}
-                                    disabled={isPublishing}
-                                    className="text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                                  >
-                                    {isPublishing && !isScheduling ? 'Envoi…' : 'Publier'}
-                                  </button>
-                                  {isScheduling ? (
-                                    <div className="flex items-center gap-2">
-                                      <input
-                                        type="datetime-local"
-                                        value={scheduleDate}
-                                        min={new Date().toISOString().slice(0, 16)}
-                                        autoFocus
-                                        className="text-xs border border-gray-300 rounded-lg px-2 py-1.5 focus:outline-none focus:border-blue-400"
-                                        onChange={e => setScheduleDate(e.target.value)}
-                                      />
-                                      <button
-                                        onClick={() => {
-                                          if (scheduleDate) {
-                                            publier(post, i, new Date(scheduleDate).toISOString())
-                                          }
-                                        }}
-                                        disabled={isPublishing || !scheduleDate}
-                                        className="text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                                      >
-                                        {isPublishing ? 'Envoi…' : 'Programmer'}
-                                      </button>
-                                      <button
-                                        onClick={cancelScheduling}
-                                        disabled={isPublishing}
-                                        className="text-xs text-gray-400 hover:text-gray-600 disabled:opacity-40"
-                                      >
-                                        Annuler
-                                      </button>
-                                    </div>
-                                  ) : (
+                            <>
+                              <div className="flex flex-wrap items-center gap-2">
+                                <button
+                                  onClick={() => startEdit(post, i)}
+                                  className="text-xs font-medium text-gray-600 border border-gray-300 hover:border-gray-400 hover:bg-gray-50 px-2.5 py-1.5 rounded-lg transition-colors"
+                                >
+                                  Modifier
+                                </button>
+                                {reseauxConfigured && (
+                                  <>
                                     <button
-                                      onClick={() => startScheduling(i)}
+                                      onClick={() => publier(post, i)}
                                       disabled={isPublishing}
-                                      className="text-xs font-semibold text-gray-600 border border-gray-300 hover:border-gray-400 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                                      className="text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                                     >
-                                      Programmer
+                                      {isPublishing && !isScheduling ? 'Envoi…' : 'Publier'}
                                     </button>
-                                  )}
-                                </>
+                                    {isScheduling ? (
+                                      <div className="flex items-center gap-2">
+                                        <input
+                                          type="datetime-local"
+                                          value={scheduleDate}
+                                          min={new Date().toISOString().slice(0, 16)}
+                                          autoFocus
+                                          className="text-xs border border-gray-300 rounded-lg px-2 py-1.5 focus:outline-none focus:border-blue-400"
+                                          onChange={e => setScheduleDate(e.target.value)}
+                                        />
+                                        <button
+                                          onClick={() => {
+                                            if (scheduleDate) {
+                                              publier(post, i, new Date(scheduleDate).toISOString())
+                                            }
+                                          }}
+                                          disabled={isPublishing || !scheduleDate}
+                                          className="text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                                        >
+                                          {isPublishing ? 'Envoi…' : 'Programmer'}
+                                        </button>
+                                        <button
+                                          onClick={cancelScheduling}
+                                          disabled={isPublishing}
+                                          className="text-xs text-gray-400 hover:text-gray-600 disabled:opacity-40"
+                                        >
+                                          Annuler
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      <button
+                                        onClick={() => startScheduling(i)}
+                                        disabled={isPublishing}
+                                        className="text-xs font-semibold text-gray-600 border border-gray-300 hover:border-gray-400 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                                      >
+                                        Programmer
+                                      </button>
+                                    )}
+                                  </>
+                                )}
+                              </div>
+
+                              {isFailed && !isPublishing && (
+                                <p className="mt-2 text-xs font-medium text-red-600">
+                                  Publication échouée, vérifier la connexion sur Make.
+                                </p>
                               )}
-                            </div>
+                            </>
                           )}
                         </div>
                       </>
