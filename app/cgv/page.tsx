@@ -42,7 +42,7 @@ export default function CGVPage() {
             </div>
             <div className="rounded-xl border border-gray-200 p-4">
               <p className="font-semibold text-gray-900">Plan Pro — 69 € HT/mois</p>
-              <p className="text-gray-600 text-sm mt-1">1 utilisateur, toutes les fonctionnalités Essentiel + génération depuis un thème (article SEO, posts réseaux sociaux, FAQ, image IA)</p>
+              <p className="text-gray-600 text-sm mt-1">1 utilisateur, toutes les fonctionnalités Essentiel + génération depuis un thème (article SEO, posts réseaux sociaux, FAQ, 3 images IA)</p>
             </div>
             <div className="rounded-xl border border-gray-200 p-4">
               <p className="font-semibold text-gray-900">Plan Cabinet — 149 € HT/mois</p>

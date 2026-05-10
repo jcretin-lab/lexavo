@@ -177,7 +177,7 @@ export default async function DashboardPage() {
             <div>
               <p className="font-semibold">Générer du contenu</p>
               <p className="text-sm mt-0.5" style={{ color: 'var(--ocre-300)' }}>
-                Article SEO + 3 posts + FAQ + image IA
+                Article SEO + 3 posts + FAQ + 3 images IA
               </p>
             </div>
             <Link

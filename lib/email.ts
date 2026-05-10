@@ -49,7 +49,7 @@ export async function sendBienvenue(email: string, nomCabinet?: string) {
     <ul style="font-size:14px;color:#444;line-height:2;margin:0 0 24px 0;padding-left:20px;">
       <li>Un article de blog optimisé SEO</li>
       <li>3 posts prêts à publier sur vos réseaux sociaux</li>
-      <li>Une FAQ juridique + une image générée par IA</li>
+      <li>Une FAQ juridique + 3 images générées par IA (au choix)</li>
     </ul>
     ${btn('https://www.lexavo.fr/dashboard/generer', 'Commencer maintenant')}
     <p style="font-size:12px;color:#aaa;margin-top:24px;">

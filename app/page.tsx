@@ -24,8 +24,8 @@ const PUBLICATION_ITEMS = [
   {
     num: '04',
     icon: '◻',
-    titre: 'Image générée par IA',
-    desc: 'Visuel professionnel adapté à l\'article et au post généré.',
+    titre: '3 images générées par IA',
+    desc: '3 visuels distincts (conceptuel, photo, avec personnes) — choisissez celui qui colle à votre publication.',
   },
 ]
 
@@ -38,7 +38,7 @@ const STEPS = [
   {
     num: '02',
     titre: 'Votre contenu est généré',
-    desc: 'En moins de 3 minutes : un article SEO structuré, 3 posts distincts, une FAQ et une image professionnelle. Tout est modifiable avant publication. Vous pouvez aussi insérer votre article existant pour obtenir 3 posts sous 3 angles différents.',
+    desc: 'En moins de 3 minutes : un article SEO structuré, 3 posts distincts, une FAQ et 3 visuels au choix (conceptuel, photo, avec personnes). Tout est modifiable avant publication. Vous pouvez aussi insérer votre article existant pour obtenir 3 posts sous 3 angles différents.',
   },
   {
     num: '03',
@@ -156,7 +156,7 @@ function HeroMockup() {
               {/* Results */}
               <div className="col-span-3 rounded-xl overflow-hidden" style={{ background: 'var(--white)', border: '1px solid var(--ink-200)' }}>
                 <div className="flex border-b" style={{ borderColor: 'var(--ink-200)' }}>
-                  {['Posts réseaux', 'Article SEO', 'FAQ', 'Image IA'].map((tab, i) => (
+                  {['Posts réseaux', 'Article SEO', 'FAQ', '3 images IA'].map((tab, i) => (
                     <div key={tab} className="flex-1 py-2 text-center text-[9px] font-medium border-b-2" style={{ color: i === 0 ? 'var(--navy-700)' : 'var(--ink-400)', borderColor: i === 0 ? 'var(--navy-700)' : 'transparent' }}>
                       {tab}
                     </div>
@@ -203,7 +203,7 @@ function HeroMockup() {
               <span className="text-[8px] font-medium" style={{ color: 'rgba(255,255,255,0.8)' }}>IA</span>
             </div>
             <div className="flex-1">
-              <p className="text-[10px] font-semibold mb-1.5" style={{ color: 'var(--ink-700)' }}>Image IA générée — Droit du travail / Paris</p>
+              <p className="text-[10px] font-semibold mb-1.5" style={{ color: 'var(--ink-700)' }}>3 images IA générées — choisissez votre visuel</p>
               <div className="flex gap-2">
                 <div className="h-1.5 rounded-full flex-1" style={{ background: 'var(--navy-200, #c0cfe8)' }} />
                 <div className="h-1.5 rounded-full" style={{ background: 'var(--ink-100)', width: '30%' }} />

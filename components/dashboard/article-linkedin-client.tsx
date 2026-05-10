@@ -107,7 +107,7 @@ export function ArticleLinkedinClient({ reseauxConfigured }: Props) {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Transformer un article en posts</h1>
         <p className="text-sm text-gray-500 mt-2">
-          Collez votre article existant et Lexavo génère 3 posts optimisés pour vos réseaux sociaux et une image professionnelle.
+          Collez votre article existant et Lexavo génère 3 posts optimisés pour vos réseaux sociaux et 3 images professionnelles au choix.
         </p>
       </div>
 
