@@ -12,7 +12,7 @@ export const PRICING_PLANS = [
     utilisateurs: '1 utilisateur',
     recommande: true,
     features: [
-      'Génération SEO depuis un thème : article + 3 posts + FAQ + 3 images IA en 3 min',
+      'Génération SEO depuis un thème : article + 3 posts + FAQ + 2 images IA en 3 min',
       'Transformation d\'un article existant en 3 posts adaptés',
       'Publication automatique sur LinkedIn et Facebook',
       'Calendrier éditorial complet et programmation',

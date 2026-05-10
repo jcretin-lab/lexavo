@@ -47,7 +47,10 @@ export interface FaqItem {
   reponse: string
 }
 
-export type ImageStyle = 'conceptuelle' | 'photorealiste' | 'humains'
+// On ne genere plus que 2 styles : conceptuelle (illustration corporate) et
+// humains (photo realiste avec personnes). photorealiste est conserve dans le
+// type sous-jacent JSONB mais n'est plus produit ni affiche.
+export type ImageStyle = 'conceptuelle' | 'humains'
 
 export interface ImagePromptSpec {
   style: ImageStyle
@@ -81,11 +84,10 @@ export interface Generation {
 
 export const IMAGE_STYLE_LABELS: Record<ImageStyle, string> = {
   conceptuelle: 'Conceptuelle',
-  photorealiste: 'Photo',
   humains: 'Avec personnes',
 }
 
-export const IMAGE_STYLE_ORDER: ImageStyle[] = ['conceptuelle', 'photorealiste', 'humains']
+export const IMAGE_STYLE_ORDER: ImageStyle[] = ['conceptuelle', 'humains']
 
 export type Ton = 'Pédagogique' | 'Rassurant' | 'Expert' | 'Accessible'
 

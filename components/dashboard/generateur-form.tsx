@@ -167,7 +167,7 @@ export function GenerateurForm({ cabinet: _cabinet }: Props) {
             {loading && (
               <div className="text-center space-y-1">
                 <p className="text-sm text-gray-600 font-medium">
-                  Lexavo génère votre contenu et vos 3 visuels…
+                  Lexavo génère votre contenu et vos 2 visuels…
                 </p>
                 <p className="text-xs text-gray-400">
                   Cela prend environ 30-45 secondes. Ne fermez pas la page.

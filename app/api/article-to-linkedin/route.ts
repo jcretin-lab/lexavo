@@ -80,9 +80,9 @@ Chaque post :
 
 Génère aussi 5 questions/réponses de FAQ juridique tirées de l'article (questions concrètes que se pose un justiciable, réponses pédagogiques de 2-3 phrases conformes à la déontologie, sans avis juridique personnalisé).
 
-Génère aussi 3 prompts DALL-E 3 en anglais pour 3 images professionnelles distinctes.
+Génère aussi 2 prompts en anglais pour 2 images professionnelles distinctes.
 
-RÈGLE ABSOLUE pour les prompts d'image : chacun des 3 prompts DOIT placer au centre de la scène un élément visuel CONCRET et SPÉCIFIQUE tiré directement du sujet de l'article fourni. Ne te contente PAS des classiques génériques (balance, marteau, livres reliés) sauf si l'article les évoque réellement. L'objectif est qu'un lecteur reconnaisse instantanément le sujet de l'article rien qu'en regardant l'image.
+RÈGLE ABSOLUE pour les prompts d'image : chacun des 2 prompts DOIT placer au centre de la scène un élément visuel CONCRET et SPÉCIFIQUE tiré directement du sujet de l'article fourni. Ne te contente PAS des classiques génériques (balance, marteau, livres reliés) sauf si l'article les évoque réellement. L'objectif est qu'un lecteur reconnaisse instantanément le sujet de l'article rien qu'en regardant l'image.
 
 Exemples de traduction sujet → élément visuel central :
 - "Licenciement pour faute grave" → un bureau vide, badge d'accès retourné, carton de déménagement
@@ -92,10 +92,9 @@ Exemples de traduction sujet → élément visuel central :
 - "Bail commercial" → la vitrine d'un commerce avec un bail, une remise de clés
 - "Succession / héritage" → une vieille horloge familiale, un dossier notarié relié
 
-Identifie d'abord 2-3 éléments visuels SPÉCIFIQUES au sujet de l'article, puis construis les 3 prompts autour de ces éléments. Les 3 prompts partagent le MÊME élément central, traité différemment selon le style.
+Identifie d'abord 2-3 éléments visuels SPÉCIFIQUES au sujet de l'article, puis construis les 2 prompts autour de ces éléments. Les 2 prompts partagent le MÊME élément central, traité différemment selon le style.
 
 - "conceptuelle" : UNE seule icône/objet stylisé central qui évoque le sujet. Fond uni épuré, ÉNORMÉMENT d'espace vide autour. AUCUN autre élément décoratif. Pas de personnes. Pas de texte. Max 25 mots.
-- "photorealiste" : démarrer par "A documentary photograph of…". UNE scène concrète sans personne avec UN objet/lieu central tiré du sujet, en avant-plan. ÉVITER livres avec dos visibles, panneaux, documents écrits, étiquettes — choisir des objets sans texte OU décrire toutes les surfaces comme vierges. Lumière naturelle nommée + faible profondeur de champ. Max 50 mots.
 - "humains" : démarrer par "A candid photograph of one person…". UNE SEULE personne en interaction directe avec l'objet central (ex : un employé seul qui rend son badge, une avocate seule qui signe un document…). PAS de groupe. Tenue ordinaire et plausible, expression naturelle imparfaite, instant pris sur le vif. Lumière naturelle latérale. Arrière-plan flou. Aucun texte visible (écrans éteints, livres fermés, murs vides). Max 50 mots.
 
 Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
@@ -114,7 +113,6 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
   ],
   "prompts_images": [
     { "style": "conceptuelle", "prompt": "string" },
-    { "style": "photorealiste", "prompt": "string" },
     { "style": "humains", "prompt": "string" }
   ]
 }`
@@ -171,34 +169,39 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
     const rawTheme = article.trim().slice(0, 80)
     const theme = rawTheme + (article.trim().length > 80 ? '…' : '')
 
-    const STYLE_CONFIG: Record<ImageStyle, {
+    type DalleConfig = {
+      model: 'dall-e-3'
       suffix: string
+      size: '1792x1024'
       quality: 'standard' | 'hd'
       style: 'vivid' | 'natural'
-    }> = {
+    }
+    type GptImageConfig = {
+      model: 'gpt-image-1'
+      suffix: string
+      size: '1536x1024'
+      quality: 'low' | 'medium' | 'high'
+    }
+    const STYLE_CONFIG: Record<ImageStyle, DalleConfig | GptImageConfig> = {
       conceptuelle: {
+        model: 'dall-e-3',
         suffix:
           ' Minimalist editorial illustration of a SINGLE central iconic subject only. Vast empty off-white background with abundant negative space around the subject. NO additional decorative elements, NO clutter, NO surrounding objects, NO secondary symbols. Strictly 2-3 colors total: navy blue, off-white, subtle gold accents. Single soft light source. Flat editorial poster style. Wide format 16:9. Completely textless image, no letters, no numbers, no labels, no writing of any kind anywhere.',
+        size: '1792x1024',
         quality: 'standard',
         style: 'vivid',
       },
-      photorealiste: {
-        suffix:
-          ' Documentary photograph, shot on Sony A7IV with 35mm f/1.8 lens, Kodak Portra 400 film emulation, natural window light, shallow depth of field. Completely textless image: all books and folders have completely blank covers and spines (no titles, no labels), all papers are blank or face-down, no signs, no posters, no writing of any kind anywhere in the frame. No people, no faces. Wide format 16:9. Real photograph aesthetic, indistinguishable from a snapshot by a journalist. NOT an illustration, NOT digital art, NOT a 3D render, NOT CGI.',
-        quality: 'hd',
-        style: 'natural',
-      },
       humains: {
+        model: 'gpt-image-1',
         suffix:
-          ' Genuine candid photograph, shot on Sony A7IV with 50mm f/1.4 lens, Kodak Portra 400 film emulation. ONE single ordinary person, real human anatomy with normal skin imperfections, asymmetric features, individual character, age-appropriate wrinkles and pores. Authentic everyday clothing, not styled. Subtle film grain, slight imperfect framing, soft natural side light through office window. Completely textless: all books, papers and signs in the background have blank covers, no writing visible anywhere. Wide format 16:9. Looks exactly like a real snapshot taken by a real photographer with a real camera. NOT a stock photo, NOT an AI illustration, NOT a 3D render, NOT cartoonish, NOT stylized, NOT plastic skin.',
-        quality: 'hd',
-        style: 'natural',
+          ' Authentic candid photograph of an ordinary person. Real human anatomy with natural skin imperfections, asymmetric features, age-appropriate texture and pores, individual character. Authentic everyday clothing, not styled. Soft natural side light from a window. Slight imperfect framing, like a real snapshot. Photorealistic, indistinguishable from a real photograph. No visible text in the background (books, papers and signs have blank covers).',
+        size: '1536x1024',
+        quality: 'high',
       },
     }
     const FALLBACK_PROMPTS: Record<ImageStyle, string> = {
       conceptuelle: `An editorial abstract composition illustrating the topic of the article ("${theme}"), with a central symbolic object visually evoking this specific topic, minimalist styling, navy blue and gold accents on a clean background, no people, no text.`,
-      photorealiste: `A documentary photograph illustrating the topic "${theme}" in a French legal context: a relevant concrete object or place tied to this topic in the foreground, shallow depth of field, soft natural window light, true-to-life muted colors, no people, no text.`,
-      humains: `A candid documentary photograph of one to three diverse French professionals in a situation directly related to "${theme}", realistic interaction with a concrete object or place tied to the topic, business or contextual attire, soft natural window light, authentic expressions, no visible text.`,
+      humains: `A candid photograph of one ordinary French professional in a situation directly related to "${theme}", realistic interaction with a concrete object tied to the topic, soft natural window light, authentic expression, no visible text.`,
     }
 
     const prompts: Record<ImageStyle, string> = { ...FALLBACK_PROMPTS }
@@ -211,41 +214,58 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
     }
 
     const cabinetId = cabinet.id
+    async function storeBuffer(buffer: Buffer | ArrayBuffer, style: ImageStyle): Promise<string | null> {
+      const fileName = `${cabinetId}/${Date.now()}-${style}.png`
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('images')
+        .upload(fileName, buffer, { contentType: 'image/png', upsert: false })
+      if (uploadError || !uploadData) return null
+      const { data: urlData } = supabase.storage.from('images').getPublicUrl(fileName)
+      return urlData.publicUrl
+    }
+
     async function generateAndStore(style: ImageStyle, prompt: string): Promise<string | null> {
       const cfg = STYLE_CONFIG[style]
       try {
-        const imageResponse = await openai.images.generate({
-          model: 'dall-e-3',
-          prompt: prompt + cfg.suffix,
-          size: '1792x1024',
-          quality: cfg.quality,
-          style: cfg.style,
-          n: 1,
-        })
-        const tempUrl = imageResponse.data?.[0]?.url
-        if (!tempUrl) return null
-        const imgResp = await fetch(tempUrl)
-        const imgBuffer = await imgResp.arrayBuffer()
-        const fileName = `${cabinetId}/${Date.now()}-${style}.png`
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('images')
-          .upload(fileName, imgBuffer, { contentType: 'image/png', upsert: false })
-        if (uploadError || !uploadData) return null
-        const { data: urlData } = supabase.storage.from('images').getPublicUrl(fileName)
-        return urlData.publicUrl
+        if (cfg.model === 'dall-e-3') {
+          const resp = await openai.images.generate({
+            model: 'dall-e-3',
+            prompt: prompt + cfg.suffix,
+            size: cfg.size,
+            quality: cfg.quality,
+            style: cfg.style,
+            n: 1,
+          })
+          const tempUrl = resp.data?.[0]?.url
+          if (!tempUrl) return null
+          const r = await fetch(tempUrl)
+          const buf = await r.arrayBuffer()
+          return await storeBuffer(buf, style)
+        } else {
+          const resp = await openai.images.generate({
+            model: 'gpt-image-1',
+            prompt: prompt + cfg.suffix,
+            size: cfg.size,
+            quality: cfg.quality,
+            n: 1,
+          })
+          const b64 = resp.data?.[0]?.b64_json
+          if (!b64) return null
+          const buf = Buffer.from(b64, 'base64')
+          return await storeBuffer(buf, style)
+        }
       } catch (err) {
-        console.error(`[article-to-linkedin] Erreur DALL-E (${style}) :`, err)
+        console.error(`[article-to-linkedin] Erreur image (${style}, ${cfg.model}) :`, err)
         return null
       }
     }
 
-    const [conceptuelle, photorealiste, humains] = await Promise.all([
+    const [conceptuelle, humains] = await Promise.all([
       generateAndStore('conceptuelle', prompts.conceptuelle),
-      generateAndStore('photorealiste', prompts.photorealiste),
       generateAndStore('humains', prompts.humains),
     ])
-    const images: ImagesByStyle = { conceptuelle, photorealiste, humains }
-    const defaultImageUrl = conceptuelle ?? photorealiste ?? humains ?? null
+    const images: ImagesByStyle = { conceptuelle, humains }
+    const defaultImageUrl = conceptuelle ?? humains ?? null
 
     const postsLinkedin = result.posts_linkedin.map(({ texte, hashtags }) => ({ texte, hashtags }))
     const faq = Array.isArray(result.faq)

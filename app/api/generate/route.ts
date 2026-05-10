@@ -141,9 +141,9 @@ Exemples de traduction thème → élément visuel central :
 - "Succession / héritage" → une vieille horloge familiale, un dossier notarié relié, un coffre familial ouvert
 - "Contestation PV" → une contravention sur un pare-brise, un panneau de signalisation, un radar
 
-Identifie d'abord 2-3 éléments visuels SPÉCIFIQUES au thème « ${theme} », puis construis les 3 prompts autour de ces éléments. Les 3 prompts (conceptuelle, photorealiste, humains) doivent partager le MÊME élément central, mais traité différemment selon le style.
+Identifie d'abord 2-3 éléments visuels SPÉCIFIQUES au thème « ${theme} », puis construis les 2 prompts autour de ces éléments. Les 2 prompts (conceptuelle, humains) doivent partager le MÊME élément central, mais traité différemment selon le style.
 
-Les prompts photo (photorealiste, humains) doivent décrire une vraie photographie : commencer par "A documentary photograph of…", inclure le sujet spécifique, un cadrage, une lumière naturelle nommée (window light, golden hour…), une profondeur de champ. Pas de mots comme "illustration", "render", "3D", "art".
+Le prompt humains doit décrire une vraie photographie : commencer par "A candid photograph of…", inclure le sujet spécifique, un cadrage, une lumière naturelle nommée (window light, golden hour…), une profondeur de champ. Pas de mots comme "illustration", "render", "3D", "art".
 
 Génère UNIQUEMENT un objet JSON valide contenant ce seul champ, sans markdown ni texte autour.
 
@@ -151,15 +151,11 @@ Génère UNIQUEMENT un objet JSON valide contenant ce seul champ, sans markdown 
   "prompts_images": [
     {
       "style": "conceptuelle",
-      "prompt": "string (prompt DALL-E 3 en anglais. UNE seule icône/objet stylisé central qui evoque le thème. Fond uni épuré, ÉNORMÉMENT d'espace vide autour. AUCUN autre élément décoratif. Pas de personnes. Pas de texte. Maximum 25 mots.)"
-    },
-    {
-      "style": "photorealiste",
-      "prompt": "string (prompt DALL-E 3 en anglais, commençant par 'A documentary photograph of…'. UNE scène concrète sans personne avec UN objet/lieu central tiré du thème, en avant-plan. ÉVITER absolument livres avec dos visibles, panneaux, documents avec écriture, étiquettes — choisir des objets sans texte (carton fermé, dossier vierge, mur uni, etc.) OU décrire explicitement toutes les surfaces comme vierges/blanches. Lumière naturelle nommée + faible profondeur de champ. Maximum 50 mots.)"
+      "prompt": "string (prompt en anglais. UNE seule icône/objet stylisé central qui évoque le thème. Fond uni épuré, ÉNORMÉMENT d'espace vide autour. AUCUN autre élément décoratif. Pas de personnes. Pas de texte. Maximum 25 mots.)"
     },
     {
       "style": "humains",
-      "prompt": "string (prompt DALL-E 3 en anglais, commençant par 'A candid photograph of one person…'. UNE SEULE personne en interaction directe avec l'objet central du thème (ex : un employé seul qui rend son badge, une avocate seule qui signe un document, un commerçant seul qui ferme sa vitrine…). PAS de groupe (DALL-E rend mal les groupes). Tenue ordinaire et plausible, expression naturelle imparfaite, instant pris sur le vif. Lumière naturelle latérale. Arrière-plan flou. Aucun texte visible (écrans éteints, livres fermés, murs vides). Maximum 50 mots.)"
+      "prompt": "string (prompt photoréaliste en anglais, commençant par 'A candid photograph of one person…'. UNE SEULE personne en interaction directe avec l'objet central du thème (ex : un employé seul qui rend son badge, une avocate seule qui signe un document, un commerçant seul qui ferme sa vitrine…). PAS de groupe. Tenue ordinaire et plausible, expression naturelle imparfaite, instant pris sur le vif. Lumière naturelle latérale. Arrière-plan flou. Aucun texte visible (écrans éteints, livres fermés, murs vides). Maximum 50 mots.)"
     }
   ]
 }`
@@ -215,49 +211,51 @@ Champs supplémentaires :
   ]
 }`
 
-  // Suffixes ET parametres DALL-E par style.
-  // - conceptuelle reste corporate (style: vivid, palette navy/or)
-  // - photorealiste & humains forcent un rendu photographique (style: natural,
-  //   quality: hd, vocabulaire d'appareil photo, anti "illustration/3D/render")
-  const STYLE_CONFIG: Record<ImageStyle, {
+  // 2 styles produits :
+  // - conceptuelle : DALL-E 3 standard 1792x1024 vivid (illustration corporate, $0.08)
+  // - humains     : gpt-image-1 high 1536x1024 (photo realiste de personne, $0.25)
+  type DalleConfig = {
+    model: 'dall-e-3'
     suffix: string
+    size: '1792x1024'
     quality: 'standard' | 'hd'
     style: 'vivid' | 'natural'
-  }> = {
+  }
+  type GptImageConfig = {
+    model: 'gpt-image-1'
+    suffix: string
+    size: '1536x1024'
+    quality: 'low' | 'medium' | 'high'
+  }
+  const STYLE_CONFIG: Record<ImageStyle, DalleConfig | GptImageConfig> = {
     conceptuelle: {
+      model: 'dall-e-3',
       suffix:
         ' Minimalist editorial illustration of a SINGLE central iconic subject only. Vast empty off-white background with abundant negative space around the subject. NO additional decorative elements, NO clutter, NO surrounding objects, NO secondary symbols. Strictly 2-3 colors total: navy blue, off-white, subtle gold accents. Single soft light source. Flat editorial poster style. Wide format 16:9. Completely textless image, no letters, no numbers, no labels, no writing of any kind anywhere.',
+      size: '1792x1024',
       quality: 'standard',
       style: 'vivid',
     },
-    photorealiste: {
-      suffix:
-        ' Documentary photograph, shot on Sony A7IV with 35mm f/1.8 lens, Kodak Portra 400 film emulation, natural window light, shallow depth of field. Completely textless image: all books and folders have completely blank covers and spines (no titles, no labels), all papers are blank or face-down, no signs, no posters, no writing of any kind anywhere in the frame. No people, no faces. Wide format 16:9. Real photograph aesthetic, indistinguishable from a snapshot by a journalist. NOT an illustration, NOT digital art, NOT a 3D render, NOT CGI.',
-      quality: 'hd',
-      style: 'natural',
-    },
     humains: {
+      model: 'gpt-image-1',
       suffix:
-        ' Genuine candid photograph, shot on Sony A7IV with 50mm f/1.4 lens, Kodak Portra 400 film emulation. ONE single ordinary person, real human anatomy with normal skin imperfections, asymmetric features, individual character, age-appropriate wrinkles and pores. Authentic everyday clothing, not styled. Subtle film grain, slight imperfect framing, soft natural side light through office window. Completely textless: all books, papers and signs in the background have blank covers, no writing visible anywhere. Wide format 16:9. Looks exactly like a real snapshot taken by a real photographer with a real camera. NOT a stock photo, NOT an AI illustration, NOT a 3D render, NOT cartoonish, NOT stylized, NOT plastic skin.',
-      quality: 'hd',
-      style: 'natural',
+        ' Authentic candid photograph of an ordinary person. Real human anatomy with natural skin imperfections, asymmetric features, age-appropriate texture and pores, individual character. Authentic everyday clothing, not styled. Soft natural side light from a window. Slight imperfect framing, like a real snapshot. Photorealistic, indistinguishable from a real photograph. No visible text in the background (books, papers and signs have blank covers).',
+      size: '1536x1024',
+      quality: 'high',
     },
   }
   const FALLBACK_PROMPTS: Record<ImageStyle, string> = {
     conceptuelle: `An editorial abstract composition illustrating "${theme}" in the context of ${specialite}, with a central symbolic object visually evoking this specific topic, minimalist styling, navy blue and gold accents on a clean background, no people, no text.`,
-    photorealiste: `A documentary photograph illustrating "${theme}" in a French law context (${specialite}): a relevant concrete object or place tied to this topic in the foreground, shallow depth of field, soft natural window light, true-to-life muted colors, no people, no text.`,
-    humains: `A candid documentary photograph of one to three diverse French professionals in a situation directly related to "${theme}" (${specialite}), realistic interaction with a concrete object or place tied to the topic, business or contextual attire, soft natural window light, authentic expressions, no visible text.`,
+    humains: `A candid photograph of one ordinary French professional in a situation directly related to "${theme}" (${specialite}), realistic interaction with a concrete object tied to the topic, soft natural window light, authentic expression, no visible text.`,
   }
 
-  // Helper pour upload image dans Supabase Storage
+  // Helper pour stocker un buffer image dans Supabase Storage
   const cabinetId = cabinet.id
-  async function uploadImageFromUrl(tempUrl: string, style: ImageStyle): Promise<string | null> {
-    const imgResp = await fetch(tempUrl)
-    const imgBuffer = await imgResp.arrayBuffer()
+  async function storeBuffer(buffer: Buffer | ArrayBuffer, style: ImageStyle): Promise<string | null> {
     const fileName = `${cabinetId}/${Date.now()}-${style}.png`
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from('images')
-      .upload(fileName, imgBuffer, { contentType: 'image/png', upsert: false })
+      .upload(fileName, buffer, { contentType: 'image/png', upsert: false })
     if (uploadError || !uploadData) return null
     const { data: urlData } = supabase.storage.from('images').getPublicUrl(fileName)
     return urlData.publicUrl
@@ -266,18 +264,35 @@ Champs supplémentaires :
   async function generateAndStore(style: ImageStyle, prompt: string): Promise<string | null> {
     const cfg = STYLE_CONFIG[style]
     try {
-      const imageResponse = await openai.images.generate({
-        model: 'dall-e-3',
-        prompt: prompt + cfg.suffix,
-        size: '1792x1024',
-        quality: cfg.quality,
-        style: cfg.style,
-        n: 1,
-      })
-      const tempUrl = imageResponse.data?.[0]?.url
-      return tempUrl ? await uploadImageFromUrl(tempUrl, style) : null
+      if (cfg.model === 'dall-e-3') {
+        const resp = await openai.images.generate({
+          model: 'dall-e-3',
+          prompt: prompt + cfg.suffix,
+          size: cfg.size,
+          quality: cfg.quality,
+          style: cfg.style,
+          n: 1,
+        })
+        const tempUrl = resp.data?.[0]?.url
+        if (!tempUrl) return null
+        const r = await fetch(tempUrl)
+        const buf = await r.arrayBuffer()
+        return await storeBuffer(buf, style)
+      } else {
+        const resp = await openai.images.generate({
+          model: 'gpt-image-1',
+          prompt: prompt + cfg.suffix,
+          size: cfg.size,
+          quality: cfg.quality,
+          n: 1,
+        })
+        const b64 = resp.data?.[0]?.b64_json
+        if (!b64) return null
+        const buf = Buffer.from(b64, 'base64')
+        return await storeBuffer(buf, style)
+      }
     } catch (err) {
-      console.error(`[generate] Erreur DALL-E (${style}) :`, err)
+      console.error(`[generate] Erreur image (${style}, ${cfg.model}) :`, err)
       return null
     }
   }
@@ -299,8 +314,7 @@ Champs supplémentaires :
       messages: [{ role: 'user', content: contentUserPrompt }],
     })
 
-    // Dès que les 3 prompts sont disponibles, démarre les 3 DALL-E en parallèle
-    // pour ne pas tripler le temps de génération.
+    // Dès que les 2 prompts sont disponibles, lance les 2 generations en parallèle.
     const imagesPromise: Promise<ImagesByStyle> = (async () => {
       const prompts: Record<ImageStyle, string> = { ...FALLBACK_PROMPTS }
       try {
@@ -319,12 +333,11 @@ Champs supplémentaires :
         console.error('[generate] prompts_images parse failed, fallbacks utilisés :', err)
       }
 
-      const [conceptuelle, photorealiste, humains] = await Promise.all([
+      const [conceptuelle, humains] = await Promise.all([
         generateAndStore('conceptuelle', prompts.conceptuelle),
-        generateAndStore('photorealiste', prompts.photorealiste),
         generateAndStore('humains', prompts.humains),
       ])
-      return { conceptuelle, photorealiste, humains }
+      return { conceptuelle, humains }
     })()
 
     // Parse du contenu principal avec retry (1 réessai en cas de JSON invalide).
@@ -370,9 +383,9 @@ Champs supplémentaires :
       }
     }
 
-    // Attend la fin des 3 générations d'images (déjà lancées en parallèle).
+    // Attend la fin des 2 générations d'images (déjà lancées en parallèle).
     const images = await imagesPromise
-    const defaultImageUrl = images.conceptuelle ?? images.photorealiste ?? images.humains ?? null
+    const defaultImageUrl = images.conceptuelle ?? images.humains ?? null
 
     const { data: generation, error: dbError } = await supabase
       .from('generations')

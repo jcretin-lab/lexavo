@@ -107,7 +107,7 @@ export function ArticleLinkedinClient({ reseauxConfigured }: Props) {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Transformer un article en posts</h1>
         <p className="text-sm text-gray-500 mt-2">
-          Collez votre article existant et Lexavo génère 3 posts optimisés pour vos réseaux sociaux, une FAQ et 3 images professionnelles au choix.
+          Collez votre article existant et Lexavo génère 3 posts optimisés pour vos réseaux sociaux, une FAQ et 2 images professionnelles au choix.
         </p>
       </div>
 
@@ -172,7 +172,7 @@ export function ArticleLinkedinClient({ reseauxConfigured }: Props) {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
-              Lexavo génère votre contenu et vos 3 visuels…
+              Lexavo génère votre contenu et vos 2 visuels…
             </span>
           ) : (
             'Générer mes posts'

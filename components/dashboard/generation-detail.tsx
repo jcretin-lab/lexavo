@@ -36,7 +36,6 @@ interface Props {
 function pickDefaultImage(g: Generation): string | null {
   if (g.image_selectionnee) return g.image_selectionnee
   if (g.images?.conceptuelle) return g.images.conceptuelle
-  if (g.images?.photorealiste) return g.images.photorealiste
   if (g.images?.humains) return g.images.humains
   return g.image_url ?? null
 }
@@ -219,7 +218,7 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
         ← Mes contenus
       </Link>
 
-      {/* Header : à gauche le nom du droit + le titre + statut, à droite les 3 visuels selectionnables */}
+      {/* Header : à gauche le nom du droit + le titre + statut, à droite les 2 visuels selectionnables */}
       <div className={`mb-8 grid grid-cols-1 ${(hasImages || fallbackImage) ? 'md:grid-cols-2' : ''} gap-6 items-start`}>
         <div>
           <p className="text-xs font-semibold text-blue-700 uppercase tracking-widest mb-3">
@@ -245,7 +244,7 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
                 <span className="text-[11px] text-gray-400">Enregistrement…</span>
               )}
             </div>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               {IMAGE_STYLE_ORDER.map((style: ImageStyle) => {
                 const url = images[style]
                 if (!url) return null
