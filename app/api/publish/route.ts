@@ -31,6 +31,22 @@ export async function POST(request: NextRequest) {
 
     if (!cabinet) return NextResponse.json({ error: 'Cabinet introuvable' }, { status: 404 })
 
+    // Si le client n'a pas passé d'image_url mais référence une génération,
+    // on retombe sur image_selectionnee, puis sur images.conceptuelle, puis image_url legacy.
+    let resolvedImageUrl: string | null = image_url ?? null
+    if (!resolvedImageUrl && generation_id) {
+      const { data: gen } = await supabase
+        .from('generations')
+        .select('image_url, image_selectionnee, images')
+        .eq('id', generation_id)
+        .eq('cabinet_id', cabinet.id)
+        .maybeSingle()
+      if (gen) {
+        const images = (gen.images ?? null) as Record<string, string | null> | null
+        resolvedImageUrl = (gen.image_selectionnee as string | null) ?? images?.conceptuelle ?? (gen.image_url as string | null) ?? null
+      }
+    }
+
     const webhookUrl = (cabinet.make_webhook_url as string | null) || DEFAULT_WEBHOOK
 
     if (!webhookUrl) {
@@ -56,7 +72,7 @@ export async function POST(request: NextRequest) {
         generation_id: generation_id ?? null,
         reseau: 'tous',
         contenu,
-        image_url: image_url ?? null,
+        image_url: resolvedImageUrl,
         date_programmee: datePublication,
         statut: 'en_attente',
       })
@@ -75,7 +91,7 @@ export async function POST(request: NextRequest) {
         reseau: 'tous',
         texte,
         hashtags: hashtagsArr,
-        image_url: image_url ?? null,
+        image_url: resolvedImageUrl,
         date_programmee: datePublication,
       }
 

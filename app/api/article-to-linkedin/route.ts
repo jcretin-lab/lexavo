@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import OpenAI from 'openai'
 import { createClient } from '@/lib/supabase/server'
+import { type ImageStyle, type ImagesByStyle, IMAGE_STYLE_ORDER } from '@/types'
 
 export const maxDuration = 90
 
@@ -77,7 +78,10 @@ Chaque post :
 - 3-5 hashtags juridiques pertinents
 - Appel à consultation en conclusion
 
-Génère aussi un prompt DALL-E 3 en anglais pour une image professionnelle adaptée au sujet de l'article.
+Génère aussi 3 prompts DALL-E 3 en anglais pour 3 images professionnelles distinctes du sujet de l'article :
+- "conceptuelle" : abstrait, symboles juridiques, pas de personnes, pas de texte, palette bleu marine et or, max 50 mots.
+- "photorealiste" : photo réaliste documentaire d'un lieu juridique ou d'un objet lié au thème, pas de personnes, pas de texte, max 50 mots.
+- "humains" : photo réaliste avec personnes, scène professionnelle juridique, diversité, pas de texte visible, max 50 mots.
 
 Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
 {
@@ -86,12 +90,16 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
     { "angle": "cas_pratique", "texte": "string", "hashtags": ["string"] },
     { "angle": "conseil", "texte": "string", "hashtags": ["string"] }
   ],
-  "prompt_image": "string"
+  "prompts_images": [
+    { "style": "conceptuelle", "prompt": "string" },
+    { "style": "photorealiste", "prompt": "string" },
+    { "style": "humains", "prompt": "string" }
+  ]
 }`
 
   type ApiResult = {
     posts_linkedin: Array<{ angle: string; texte: string; hashtags: string[] }>
-    prompt_image: string
+    prompts_images: Array<{ style?: string; prompt?: string }>
   }
 
   inProgress.add(cabinet.id)
@@ -136,35 +144,57 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
       }
     }
 
-    let imageUrl: string | null = null
-    try {
-      const imageResponse = await openai.images.generate({
-        model: 'dall-e-3',
-        prompt: result.prompt_image +
-          ' Professional legal office atmosphere, clean minimal design, blue and white color scheme, no text, no people, suitable for French law firm marketing',
-        size: '1792x1024',
-        quality: 'standard',
-        n: 1,
-      })
+    const DALLE_STYLE_SUFFIX =
+      ' Professional French law firm atmosphere, navy blue and white color scheme, no text, premium quality, wide format 16:9, photorealistic'
+    const FALLBACK_PROMPTS: Record<ImageStyle, string> = {
+      conceptuelle: 'An abstract symbolic composition illustrating French law, elegant minimal objects on a clean background, navy blue and gold accents, no people.',
+      photorealiste: 'A photorealistic documentary photo of a French law office interior, books, balance scale, dossiers on a wooden desk, soft natural light, no people.',
+      humains: 'A photorealistic professional scene of French lawyers working together, diverse team in business attire in a modern law firm, warm natural light, no visible text.',
+    }
 
-      const tempUrl = imageResponse.data?.[0]?.url
-      if (tempUrl) {
+    const prompts: Record<ImageStyle, string> = { ...FALLBACK_PROMPTS }
+    if (Array.isArray(result.prompts_images)) {
+      for (const item of result.prompts_images) {
+        if (item?.style && item?.prompt && IMAGE_STYLE_ORDER.includes(item.style as ImageStyle)) {
+          prompts[item.style as ImageStyle] = item.prompt
+        }
+      }
+    }
+
+    const cabinetId = cabinet.id
+    async function generateAndStore(style: ImageStyle, prompt: string): Promise<string | null> {
+      try {
+        const imageResponse = await openai.images.generate({
+          model: 'dall-e-3',
+          prompt: prompt + DALLE_STYLE_SUFFIX,
+          size: '1792x1024',
+          quality: 'standard',
+          n: 1,
+        })
+        const tempUrl = imageResponse.data?.[0]?.url
+        if (!tempUrl) return null
         const imgResp = await fetch(tempUrl)
         const imgBuffer = await imgResp.arrayBuffer()
-        const fileName = `${cabinet.id}/${Date.now()}.png`
-
+        const fileName = `${cabinetId}/${Date.now()}-${style}.png`
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from('images')
           .upload(fileName, imgBuffer, { contentType: 'image/png', upsert: false })
-
-        if (!uploadError && uploadData) {
-          const { data: urlData } = supabase.storage.from('images').getPublicUrl(fileName)
-          imageUrl = urlData.publicUrl
-        }
+        if (uploadError || !uploadData) return null
+        const { data: urlData } = supabase.storage.from('images').getPublicUrl(fileName)
+        return urlData.publicUrl
+      } catch (err) {
+        console.error(`[article-to-linkedin] Erreur DALL-E (${style}) :`, err)
+        return null
       }
-    } catch (err) {
-      console.error('[article-to-linkedin] Erreur DALL-E :', err)
     }
+
+    const [conceptuelle, photorealiste, humains] = await Promise.all([
+      generateAndStore('conceptuelle', prompts.conceptuelle),
+      generateAndStore('photorealiste', prompts.photorealiste),
+      generateAndStore('humains', prompts.humains),
+    ])
+    const images: ImagesByStyle = { conceptuelle, photorealiste, humains }
+    const defaultImageUrl = conceptuelle ?? photorealiste ?? humains ?? null
 
     const rawTheme = article.trim().slice(0, 80)
     const theme = rawTheme + (article.trim().length > 80 ? '…' : '')
@@ -177,7 +207,9 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
         theme,
         specialite: 'Article importé',
         posts_linkedin: postsLinkedin,
-        image_url: imageUrl,
+        image_url: defaultImageUrl,
+        images,
+        image_selectionnee: defaultImageUrl,
         statut: 'brouillon',
       })
       .select()
@@ -188,7 +220,7 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
       return NextResponse.json({ error: 'Erreur lors de la sauvegarde' }, { status: 500 })
     }
 
-    return NextResponse.json({ generation, image_url: imageUrl })
+    return NextResponse.json({ generation, images, image_selectionnee: defaultImageUrl })
   } finally {
     inProgress.delete(cabinet.id)
   }

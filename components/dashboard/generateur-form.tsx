@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
-import type { GenerationContent } from '@/types'
+import type { GenerationContent, ImagesByStyle } from '@/types'
 import { UpgradeModal } from './upgrade-modal'
 import { CALENDLY_URL } from '@/lib/constants'
 
@@ -65,7 +65,7 @@ export function GenerateurForm({ cabinet }: Props) {
   const [error, setError] = useState('')
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const [upgradeReason, setUpgradeReason] = useState<'trial' | 'quota'>('trial')
-  const [result, setResult] = useState<{ generationId: string | null; content: GenerationContent; image_url: string | null } | null>(null)
+  const [result, setResult] = useState<{ generationId: string | null; content: GenerationContent; images: ImagesByStyle | null; image_selectionnee: string | null } | null>(null)
   const [publishingIndex, setPublishingIndex] = useState<number | null>(null)
   const [publishedIndexes, setPublishedIndexes] = useState<Set<number>>(new Set())
   const [publishError, setPublishError] = useState('')
@@ -102,7 +102,12 @@ export function GenerateurForm({ cabinet }: Props) {
       if (!res.ok) throw new Error(data.error || 'Erreur serveur')
       setPublishedIndexes(new Set())
       setPublishError('')
-      setResult({ generationId: data.generation?.id ?? null, content: data.content, image_url: data.image_url })
+      setResult({
+        generationId: data.generation?.id ?? null,
+        content: data.content,
+        images: (data.images ?? null) as ImagesByStyle | null,
+        image_selectionnee: data.image_selectionnee ?? null,
+      })
       setActiveTab('posts')
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue')
@@ -123,7 +128,7 @@ export function GenerateurForm({ cabinet }: Props) {
           post_index: index,
           texte: post.texte,
           hashtags: post.hashtags,
-          image_url: result?.image_url,
+          image_url: result?.image_selectionnee ?? result?.images?.conceptuelle ?? null,
           scheduled_date: scheduledDate || null,
         }),
       })
@@ -203,7 +208,7 @@ export function GenerateurForm({ cabinet }: Props) {
 
           {loading && (
             <p className="text-center text-xs text-gray-400">
-              Cela prend environ 15-30 secondes. Ne fermez pas la page.
+              Lexavo génère votre contenu et vos 3 visuels… Ne fermez pas la page.
             </p>
           )}
         </form>
@@ -215,25 +220,25 @@ export function GenerateurForm({ cabinet }: Props) {
           <div className="bg-white rounded-2xl border border-dashed border-gray-300 p-10 flex flex-col items-center justify-center text-center h-full min-h-64">
             <div className="text-4xl mb-3">✦</div>
             <p className="text-gray-400 text-sm">Le contenu généré apparaîtra ici</p>
-            <p className="text-gray-300 text-xs mt-1">Article · 3 posts pour vos réseaux · FAQ · Image</p>
+            <p className="text-gray-300 text-xs mt-1">Article · 3 posts pour vos réseaux · FAQ · 3 visuels</p>
           </div>
         )}
 
         {loading && (
           <div className="bg-white rounded-2xl border border-gray-200 p-10 flex flex-col items-center justify-center text-center h-full min-h-64">
             <div className="w-10 h-10 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mb-4" />
-            <p className="text-gray-600 font-medium text-sm">Génération en cours…</p>
-            <p className="text-gray-400 text-xs mt-1">Lexavo analyse votre thème et crée le contenu</p>
+            <p className="text-gray-600 font-medium text-sm">Lexavo génère votre contenu et vos 3 visuels…</p>
+            <p className="text-gray-400 text-xs mt-1">Cela prend environ 30-45 secondes</p>
           </div>
         )}
 
         {result && (
           <div className="space-y-4">
-            {/* Image */}
-            {result.image_url && (
+            {/* Image principale (sélectionnée par défaut : conceptuelle) */}
+            {result.image_selectionnee && (
               <div className="rounded-2xl overflow-hidden border border-gray-200">
                 <Image
-                  src={result.image_url}
+                  src={result.image_selectionnee}
                   alt="Illustration générée"
                   width={1792}
                   height={1024}

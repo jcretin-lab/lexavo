@@ -2,7 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import OpenAI from 'openai'
 import { createClient } from '@/lib/supabase/server'
-import { type GenerationContent } from '@/types'
+import {
+  type GenerationContent,
+  type ImageStyle,
+  type ImagesByStyle,
+  IMAGE_STYLE_ORDER,
+} from '@/types'
 import { sendQuotaAtteint } from '@/lib/email'
 
 export const maxDuration = 120
@@ -120,12 +125,25 @@ CONTEXTE DU CABINET :
 - Thème : ${theme}
 - Ton souhaité : ${ton}`
 
-  // Prompt 1 — petit appel Claude (max_tokens=200) qui ne génère QUE le prompt_image.
+  // Prompt 1 — petit appel Claude qui ne génère QUE les 3 prompts DALL-E.
   // Lancé en parallèle du gros appel pour démarrer DALL-E dès que possible.
   const imagePromptUserPrompt = `Génère UNIQUEMENT un objet JSON valide contenant ce seul champ, sans markdown ni texte autour.
 
 {
-  "prompt_image": "string (prompt DALL-E 3 en anglais décrivant une scène abstraite ou un objet symbolique lié au thème juridique et à la spécialité. Le prompt doit évoquer visuellement le sujet sans montrer de personnes ni de texte. Utiliser des métaphores visuelles (ex: pour le divorce → deux anneaux dorés séparés sur fond épuré, pour le droit du travail → un bureau élégant avec des documents, pour le droit immobilier → une clé dorée sur un plan architectural). Maximum 50 mots.)"
+  "prompts_images": [
+    {
+      "style": "conceptuelle",
+      "prompt": "string (prompt DALL-E 3 en anglais, abstrait et conceptuel, lié au thème juridique. Pas de personnes. Pas de texte visible. Symboles juridiques abstraits, métaphores visuelles élégantes. Palette bleu marine et or. Maximum 50 mots.)"
+    },
+    {
+      "style": "photorealiste",
+      "prompt": "string (prompt DALL-E 3 en anglais, photo réaliste documentaire d'un lieu juridique ou d'un objet lié au thème — tribunal, bureau d'avocat, dossier, balance, livre de droit, etc. Pas de personnes. Pas de texte visible. Haute qualité photographique, éclairage naturel. Maximum 50 mots.)"
+    },
+    {
+      "style": "humains",
+      "prompt": "string (prompt DALL-E 3 en anglais, photo réaliste d'une scène professionnelle juridique avec des personnes — avocat·e en consultation, équipe en réunion, client recevant un conseil, etc. Pas de texte visible. Diversité (genres, âges, origines). Tenue professionnelle. Cadre français. Maximum 50 mots.)"
+    }
+  ]
 }`
 
   // Prompt 2 — gros appel Claude pour article + posts + FAQ (sans le prompt_image).
@@ -180,21 +198,42 @@ Champs supplémentaires :
 }`
 
   const DALLE_STYLE_SUFFIX =
-    ' Professional French law firm atmosphere, clean and sophisticated minimal design, navy blue and white color scheme with subtle gold accents, soft natural lighting, high-end corporate photography style, no text, no people, no faces, wide format 16:9, sharp focus with shallow depth of field, premium quality, photorealistic, suitable for luxury French law firm marketing material'
-  const FALLBACK_IMAGE_PROMPT = `An abstract symbolic composition illustrating ${specialite}, with elegant minimal objects on a clean background, navy blue and gold accents.`
+    ' Professional French law firm atmosphere, navy blue and white color scheme, no text, premium quality, wide format 16:9, photorealistic'
+  const FALLBACK_PROMPTS: Record<ImageStyle, string> = {
+    conceptuelle: `An abstract symbolic composition illustrating ${specialite}, elegant minimal objects on a clean background, navy blue and gold accents, no people.`,
+    photorealiste: `A photorealistic documentary photo of a French law office interior related to ${specialite}, books, balance scale, dossiers on a wooden desk, soft natural light, no people.`,
+    humains: `A photorealistic professional scene of French lawyers working together related to ${specialite}, diverse team in business attire in a modern law firm, warm natural light, no visible text.`,
+  }
 
   // Helper pour upload image dans Supabase Storage
   const cabinetId = cabinet.id
-  async function uploadImageFromUrl(tempUrl: string): Promise<string | null> {
+  async function uploadImageFromUrl(tempUrl: string, style: ImageStyle): Promise<string | null> {
     const imgResp = await fetch(tempUrl)
     const imgBuffer = await imgResp.arrayBuffer()
-    const fileName = `${cabinetId}/${Date.now()}.png`
+    const fileName = `${cabinetId}/${Date.now()}-${style}.png`
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from('images')
       .upload(fileName, imgBuffer, { contentType: 'image/png', upsert: false })
     if (uploadError || !uploadData) return null
     const { data: urlData } = supabase.storage.from('images').getPublicUrl(fileName)
     return urlData.publicUrl
+  }
+
+  async function generateAndStore(style: ImageStyle, prompt: string): Promise<string | null> {
+    try {
+      const imageResponse = await openai.images.generate({
+        model: 'dall-e-3',
+        prompt: prompt + DALLE_STYLE_SUFFIX,
+        size: '1792x1024',
+        quality: 'standard',
+        n: 1,
+      })
+      const tempUrl = imageResponse.data?.[0]?.url
+      return tempUrl ? await uploadImageFromUrl(tempUrl, style) : null
+    } catch (err) {
+      console.error(`[generate] Erreur DALL-E (${style}) :`, err)
+      return null
+    }
   }
 
   inProgress.add(cabinet.id)
@@ -214,38 +253,36 @@ Champs supplémentaires :
       messages: [{ role: 'user', content: contentUserPrompt }],
     })
 
-    // Dès que le prompt_image est dispo (rapide), démarre DALL-E en parallèle
-    // de la grosse génération de contenu. Fallback si l'appel ou le parse échoue.
-    const imageUrlPromise: Promise<string | null> = (async () => {
-      let imagePrompt = FALLBACK_IMAGE_PROMPT
+    // Dès que les 3 prompts sont disponibles, démarre les 3 DALL-E en parallèle
+    // pour ne pas tripler le temps de génération.
+    const imagesPromise: Promise<ImagesByStyle> = (async () => {
+      const prompts: Record<ImageStyle, string> = { ...FALLBACK_PROMPTS }
       try {
         const imageMsg = await imagePromptCall
         const rawImg = imageMsg.content[0].type === 'text' ? imageMsg.content[0].text : ''
         const cleanedImg = rawImg.replace(/^```json\n?/, '').replace(/\n?```$/, '').trim()
-        const parsed = JSON.parse(cleanedImg) as { prompt_image?: string }
-        if (parsed.prompt_image) imagePrompt = parsed.prompt_image
+        const parsed = JSON.parse(cleanedImg) as { prompts_images?: Array<{ style?: string; prompt?: string }> }
+        if (Array.isArray(parsed.prompts_images)) {
+          for (const item of parsed.prompts_images) {
+            if (item?.style && item?.prompt && IMAGE_STYLE_ORDER.includes(item.style as ImageStyle)) {
+              prompts[item.style as ImageStyle] = item.prompt
+            }
+          }
+        }
       } catch (err) {
-        console.error('[generate] prompt_image parse failed, fallback générique :', err)
+        console.error('[generate] prompts_images parse failed, fallbacks utilisés :', err)
       }
 
-      try {
-        const imageResponse = await openai.images.generate({
-          model: 'dall-e-3',
-          prompt: imagePrompt + DALLE_STYLE_SUFFIX,
-          size: '1792x1024',
-          quality: 'standard',
-          n: 1,
-        })
-        const tempUrl = imageResponse.data?.[0]?.url
-        return tempUrl ? await uploadImageFromUrl(tempUrl) : null
-      } catch (err) {
-        console.error('[generate] Erreur DALL-E :', err)
-        return null
-      }
+      const [conceptuelle, photorealiste, humains] = await Promise.all([
+        generateAndStore('conceptuelle', prompts.conceptuelle),
+        generateAndStore('photorealiste', prompts.photorealiste),
+        generateAndStore('humains', prompts.humains),
+      ])
+      return { conceptuelle, photorealiste, humains }
     })()
 
     // Parse du contenu principal avec retry (1 réessai en cas de JSON invalide).
-    type ContentSansImage = Omit<GenerationContent, 'prompt_image'>
+    type ContentSansImage = Omit<GenerationContent, 'prompts_images'>
     let content: ContentSansImage | null = null
 
     for (let attempt = 0; attempt < 2; attempt++) {
@@ -287,8 +324,9 @@ Champs supplémentaires :
       }
     }
 
-    // Attend la fin de la génération d'image (déjà lancée en parallèle).
-    const imageUrl = await imageUrlPromise
+    // Attend la fin des 3 générations d'images (déjà lancées en parallèle).
+    const images = await imagesPromise
+    const defaultImageUrl = images.conceptuelle ?? images.photorealiste ?? images.humains ?? null
 
     const { data: generation, error: dbError } = await supabase
       .from('generations')
@@ -299,7 +337,9 @@ Champs supplémentaires :
         article_blog: content.article_blog,
         posts_linkedin: content.posts_linkedin,
         faq: content.faq,
-        image_url: imageUrl,
+        image_url: defaultImageUrl,
+        images,
+        image_selectionnee: defaultImageUrl,
         statut: 'brouillon',
         date_publication: date_publication || null,
       })
@@ -310,7 +350,7 @@ Champs supplémentaires :
       return NextResponse.json({ error: 'Erreur lors de la sauvegarde' }, { status: 500 })
     }
 
-    return NextResponse.json({ generation, content, image_url: imageUrl })
+    return NextResponse.json({ generation, content, images, image_selectionnee: defaultImageUrl })
   } finally {
     inProgress.delete(cabinet.id)
   }

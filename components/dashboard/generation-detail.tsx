@@ -3,15 +3,18 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import type { ArticleBlog, PostLinkedin, FaqItem } from '@/types'
+import type { ArticleBlog, PostLinkedin, FaqItem, ImagesByStyle } from '@/types'
 import { CALENDLY_URL } from '@/lib/constants'
+import { ImagePicker } from './image-picker'
 
 interface Generation {
   id: string
   theme: string
   specialite: string
   statut: string
-  image_url?: string
+  image_url?: string | null
+  images?: ImagesByStyle | null
+  image_selectionnee?: string | null
   article_blog?: ArticleBlog
   posts_linkedin?: PostLinkedin[]
   faq?: FaqItem[]
@@ -23,11 +26,20 @@ interface Props {
   reseauxConfigured: boolean
 }
 
+function pickDefaultImage(g: Generation): string | null {
+  if (g.image_selectionnee) return g.image_selectionnee
+  if (g.images?.conceptuelle) return g.images.conceptuelle
+  if (g.images?.photorealiste) return g.images.photorealiste
+  if (g.images?.humains) return g.images.humains
+  return g.image_url ?? null
+}
+
 export function GenerationDetail({ generation, reseauxConfigured }: Props) {
   const [tab, setTab] = useState<'posts' | 'article' | 'faq'>('posts')
   const [copied, setCopied] = useState<string | null>(null)
 
   const [posts, setPosts] = useState<PostLinkedin[]>(generation.posts_linkedin ?? [])
+  const [selectedImage, setSelectedImage] = useState<string | null>(pickDefaultImage(generation))
 
   const [editingIndex, setEditingIndex] = useState<number | null>(null)
   const [editText, setEditText] = useState('')
@@ -41,7 +53,9 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
   const [scheduleDate, setScheduleDate] = useState('')
   const [publishError, setPublishError] = useState('')
 
-  const [downloading, setDownloading] = useState(false)
+  const headerImage = selectedImage ?? generation.image_url ?? null
+  const images = generation.images ?? null
+  const hasImages = !!images && Object.values(images).some(Boolean)
 
   function startScheduling(index: number) {
     setSchedulingIndex(index)
@@ -51,25 +65,6 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
   function cancelScheduling() {
     setSchedulingIndex(null)
     setScheduleDate('')
-  }
-
-  async function downloadImage() {
-    if (!generation.image_url) return
-    setDownloading(true)
-    try {
-      const res = await fetch(generation.image_url)
-      const blob = await res.blob()
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `${generation.theme.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.png`
-      a.click()
-      URL.revokeObjectURL(url)
-    } catch {
-      // silently fail
-    } finally {
-      setDownloading(false)
-    }
   }
 
   function copy(text: string, key: string) {
@@ -130,7 +125,7 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
           post_index: index,
           texte: post.texte,
           hashtags: post.hashtags,
-          image_url: generation.image_url ?? null,
+          image_url: selectedImage ?? generation.images?.conceptuelle ?? generation.image_url ?? null,
           scheduled_date: scheduledDate ?? null,
         }),
       })
@@ -161,8 +156,8 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
         ← Mes contenus
       </Link>
 
-      {/* Header : à gauche le nom du droit + le titre + statut, à droite l'image en 16:9 */}
-      <div className={`mb-8 grid grid-cols-1 ${generation.image_url ? 'md:grid-cols-2' : ''} gap-6 items-center`}>
+      {/* Header : à gauche le nom du droit + le titre + statut, à droite l'image sélectionnée en 16:9 */}
+      <div className={`mb-8 grid grid-cols-1 ${headerImage ? 'md:grid-cols-2' : ''} gap-6 items-center`}>
         <div>
           <p className="text-xs font-semibold text-blue-700 uppercase tracking-widest mb-3">
             {generation.specialite}
@@ -179,10 +174,10 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
           </span>
         </div>
 
-        {generation.image_url && (
+        {headerImage && (
           <div className="rounded-2xl overflow-hidden border border-gray-200">
             <Image
-              src={generation.image_url}
+              src={headerImage}
               alt={generation.article_blog?.alt_image ?? generation.theme}
               width={1792}
               height={1024}
@@ -324,6 +319,18 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
                           ))}
                         </div>
 
+                        {hasImages && images && (
+                          <div className="mt-4">
+                            <ImagePicker
+                              generationId={generation.id}
+                              images={images}
+                              selected={selectedImage}
+                              onSelectedChange={setSelectedImage}
+                              themeForFilename={generation.theme}
+                            />
+                          </div>
+                        )}
+
                         <div className="mt-4 pt-3 border-t border-gray-100">
                           {isSuccess ? (
                             <span className="text-xs font-semibold text-green-600">✓ Publié</span>
@@ -398,17 +405,6 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
           {/* ── ARTICLE ── */}
           {tab === 'article' && generation.article_blog && (
             <div>
-              {generation.image_url && (
-                <div className="mb-5">
-                  <button
-                    onClick={downloadImage}
-                    disabled={downloading}
-                    className="text-xs font-medium text-gray-600 border border-gray-300 hover:border-gray-400 hover:bg-gray-50 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {downloading ? 'Téléchargement…' : '↓ Télécharger l\'image'}
-                  </button>
-                </div>
-              )}
               <div className="flex items-start justify-between gap-4 mb-3">
                 <h2 className="text-xl font-bold text-gray-900">{generation.article_blog.titre}</h2>
                 <button
@@ -450,6 +446,18 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
                 className="article-content"
                 dangerouslySetInnerHTML={{ __html: generation.article_blog.contenu }}
               />
+
+              {hasImages && images && (
+                <div className="mt-6">
+                  <ImagePicker
+                    generationId={generation.id}
+                    images={images}
+                    selected={selectedImage}
+                    onSelectedChange={setSelectedImage}
+                    themeForFilename={generation.theme}
+                  />
+                </div>
+              )}
 
               {generation.article_blog.alt_image && (
                 <div className="mt-5 rounded-lg bg-gray-50 border border-gray-200 px-4 py-3">

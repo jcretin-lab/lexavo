@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { GenerationDetail } from '@/components/dashboard/generation-detail'
-import type { PostLinkedin } from '@/types'
+import type { PostLinkedin, ImagesByStyle } from '@/types'
 
 const TONS = ['Pédagogique', 'Rassurant', 'Expert', 'Accessible'] as const
 
@@ -13,6 +13,8 @@ interface GenerationResult {
   specialite: string
   statut: 'brouillon' | 'publie' | 'programme'
   image_url?: string | null
+  images?: ImagesByStyle | null
+  image_selectionnee?: string | null
   posts_linkedin?: PostLinkedin[] | null
   article_blog?: null
   faq?: null
@@ -170,7 +172,7 @@ export function ArticleLinkedinClient({ reseauxConfigured }: Props) {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
-              Génération en cours… (30-60 secondes)
+              Lexavo génère votre contenu et vos 3 visuels…
             </span>
           ) : (
             'Générer mes posts'

@@ -47,11 +47,20 @@ export interface FaqItem {
   reponse: string
 }
 
+export type ImageStyle = 'conceptuelle' | 'photorealiste' | 'humains'
+
+export interface ImagePromptSpec {
+  style: ImageStyle
+  prompt: string
+}
+
+export type ImagesByStyle = Partial<Record<ImageStyle, string | null>>
+
 export interface GenerationContent {
   article_blog: ArticleBlog
   posts_linkedin: PostLinkedin[]
   faq: FaqItem[]
-  prompt_image: string
+  prompts_images: ImagePromptSpec[]
 }
 
 export interface Generation {
@@ -62,11 +71,21 @@ export interface Generation {
   article_blog?: ArticleBlog
   posts_linkedin?: PostLinkedin[]
   faq?: FaqItem[]
-  image_url?: string
+  image_url?: string | null
+  images?: ImagesByStyle | null
+  image_selectionnee?: string | null
   statut: 'brouillon' | 'publie' | 'programme'
   date_publication?: string
   created_at: string
 }
+
+export const IMAGE_STYLE_LABELS: Record<ImageStyle, string> = {
+  conceptuelle: 'Conceptuelle',
+  photorealiste: 'Photo',
+  humains: 'Avec personnes',
+}
+
+export const IMAGE_STYLE_ORDER: ImageStyle[] = ['conceptuelle', 'photorealiste', 'humains']
 
 export type Ton = 'Pédagogique' | 'Rassurant' | 'Expert' | 'Accessible'
 
