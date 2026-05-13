@@ -169,27 +169,20 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
     const rawTheme = article.trim().slice(0, 80)
     const theme = rawTheme + (article.trim().length > 80 ? '…' : '')
 
-    type DalleConfig = {
-      model: 'dall-e-3'
-      suffix: string
-      size: '1024x1024'
-      quality: 'standard' | 'hd'
-      style: 'vivid' | 'natural'
-    }
+    // dall-e-3 a ete deprecie par OpenAI en mai 2026, on utilise gpt-image-1 pour les 2 styles
     type GptImageConfig = {
       model: 'gpt-image-1'
       suffix: string
       size: '1536x1024'
       quality: 'low' | 'medium' | 'high'
     }
-    const STYLE_CONFIG: Record<ImageStyle, DalleConfig | GptImageConfig> = {
+    const STYLE_CONFIG: Record<ImageStyle, GptImageConfig> = {
       conceptuelle: {
-        model: 'dall-e-3',
+        model: 'gpt-image-1',
         suffix:
           ' Minimalist editorial illustration of a SINGLE central iconic subject only. Vast empty off-white background with abundant negative space around the subject. NO additional decorative elements, NO clutter, NO surrounding objects, NO secondary symbols. Strictly 2-3 colors total: navy blue, off-white, subtle gold accents. Single soft light source. Flat editorial poster style. Wide format 16:9. Completely textless image, no letters, no numbers, no labels, no writing of any kind anywhere.',
-        size: '1024x1024',
-        quality: 'standard',
-        style: 'vivid',
+        size: '1536x1024',
+        quality: 'medium',
       },
       humains: {
         model: 'gpt-image-1',
@@ -227,33 +220,17 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
     async function generateAndStore(style: ImageStyle, prompt: string): Promise<string | null> {
       const cfg = STYLE_CONFIG[style]
       try {
-        if (cfg.model === 'dall-e-3') {
-          const resp = await openai.images.generate({
-            model: 'dall-e-3',
-            prompt: prompt + cfg.suffix,
-            size: cfg.size,
-            quality: cfg.quality,
-            style: cfg.style,
-            n: 1,
-          })
-          const tempUrl = resp.data?.[0]?.url
-          if (!tempUrl) return null
-          const r = await fetch(tempUrl)
-          const buf = await r.arrayBuffer()
-          return await storeBuffer(buf, style)
-        } else {
-          const resp = await openai.images.generate({
-            model: 'gpt-image-1',
-            prompt: prompt + cfg.suffix,
-            size: cfg.size,
-            quality: cfg.quality,
-            n: 1,
-          })
-          const b64 = resp.data?.[0]?.b64_json
-          if (!b64) return null
-          const buf = Buffer.from(b64, 'base64')
-          return await storeBuffer(buf, style)
-        }
+        const resp = await openai.images.generate({
+          model: cfg.model,
+          prompt: prompt + cfg.suffix,
+          size: cfg.size,
+          quality: cfg.quality,
+          n: 1,
+        })
+        const b64 = resp.data?.[0]?.b64_json
+        if (!b64) return null
+        const buf = Buffer.from(b64, 'base64')
+        return await storeBuffer(buf, style)
       } catch (err) {
         console.error(`[article-to-linkedin] Erreur image (${style}, ${cfg.model}) :`, err)
         return null
