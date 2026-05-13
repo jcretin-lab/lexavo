@@ -123,7 +123,7 @@ function OnboardingContent() {
             <rect x="1" y="1" width="15" height="11.5" rx="2.5" stroke="currentColor" strokeWidth="1.2" />
             <path d="M3.5 16L6 12.5H1L3.5 16Z" fill="currentColor" />
           </svg>
-          <span style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.375rem', color: 'var(--white)', letterSpacing: '-0.02em' }}>
+          <span style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.375rem', fontWeight: 600, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
             Lex<em>avo</em><span style={{ color: 'var(--ocre-500)' }}>.</span>
           </span>
         </div>
