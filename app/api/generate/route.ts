@@ -125,37 +125,59 @@ CONTEXTE DU CABINET :
 - Thème : ${theme}
 - Ton souhaité : ${ton}`
 
-  // Prompt 1 — petit appel Claude qui ne génère QUE les 3 prompts DALL-E.
-  // Lancé en parallèle du gros appel pour démarrer DALL-E dès que possible.
+  // Prompt 1 — petit appel Claude qui ne génère QUE les 2 prompts d'image.
+  // Lancé en parallèle du gros appel pour démarrer la génération d'image au plus tôt.
   const imagePromptUserPrompt = `THÈME DE L'ARTICLE : « ${theme} »
 SPÉCIALITÉ : ${specialite}
 
-RÈGLE ABSOLUE : chacun des 3 prompts DALL-E DOIT placer au centre de la scène un élément visuel CONCRET et SPÉCIFIQUE tiré directement du thème ci-dessus. Ne te contente PAS des classiques génériques (balance, marteau, livres reliés) sauf si le thème les évoque réellement. L'objectif est qu'un lecteur reconnaisse instantanément le sujet de l'article rien qu'en regardant l'image.
+OBJECTIF : 2 prompts (anglais) qui rendent le sujet juridique IMMÉDIATEMENT identifiable d'un coup d'œil. On veut une qualité magazine éditorial juridique (Le Monde, Les Échos, Forbes France).
 
-Exemples de traduction thème → élément visuel central :
-- "Licenciement pour faute grave" → un bureau vide, badge d'accès retourné, carton de déménagement avec quelques affaires personnelles, ou une lettre recommandée ouverte sur un bureau
-- "Rupture brutale des relations commerciales" → un contrat déchiré en deux, deux poignées de main qui se séparent, deux bureaux qui s'éloignent
-- "Droit de rétractation" → une enveloppe LRAR fermée, un calendrier marqué "14 jours", un colis non ouvert avec un bordereau de retour
-- "Divorce" → deux alliances séparées sur une table, deux clés sur des porte-clés différents, deux jeux de bagages
-- "Bail commercial" → la vitrine d'un commerce avec un bail dans le cadre, une remise de clés de boutique
-- "Succession / héritage" → une vieille horloge familiale, un dossier notarié relié, un coffre familial ouvert
-- "Contestation PV" → une contravention sur un pare-brise, un panneau de signalisation, un radar
+ÉTAPE 1 — Identifie 3 ÉLÉMENTS VISUELS CONCRETS spécifiques au thème :
+- des OBJETS RÉELS du quotidien, pas des concepts abstraits
+- immédiatement reconnaissables par un justiciable français
+- évite "balance", "marteau", "livres reliés", "colonnes de tribunal" — ce sont des clichés vides
+- privilégie les objets qui évoquent la situation juridique précise
 
-Identifie d'abord 2-3 éléments visuels SPÉCIFIQUES au thème « ${theme} », puis construis les 2 prompts autour de ces éléments. Les 2 prompts (conceptuelle, humains) doivent partager le MÊME élément central, mais traité différemment selon le style.
+Exemples de mapping thème → 3 éléments visuels :
+- "Licenciement pour faute grave" → badge d'accès retourné, carton de bureau avec affaires personnelles, lettre recommandée ouverte
+- "Rupture brutale relations commerciales" → contrat déchiré en deux, poignée de main qui se sépare, calendrier biffé
+- "Droit de rétractation" → enveloppe LRAR cachetée, calendrier marqué "14 jours", colis non ouvert avec bordereau
+- "Divorce" → deux alliances séparées sur une table, deux clés sur des porte-clés différents, valise prête près de la porte
+- "Bail commercial" → vitrine de commerce, clés de boutique, contrat de bail tamponné
+- "Succession" → horloge familiale, dossier notarié relié, coffre de famille ouvert
+- "Contestation PV" → contravention sous l'essuie-glace, panneau de signalisation, radar fixe
+- "Avis Google diffamatoire" → écran d'ordinateur affichant une note 1 étoile, smartphone à côté, capture d'écran imprimée
 
-Le prompt humains doit décrire une vraie photographie : commencer par "A candid photograph of…", inclure le sujet spécifique, un cadrage, une lumière naturelle nommée (window light, golden hour…), une profondeur de champ. Pas de mots comme "illustration", "render", "3D", "art".
+ÉTAPE 2 — Rédige les 2 prompts en anglais autour de ces 3 éléments.
 
-Génère UNIQUEMENT un objet JSON valide contenant ce seul champ, sans markdown ni texte autour.
+CONTRAINTES "conceptuelle" (60 mots max) :
+- composition éditoriale photographique mise en scène dans un vrai bureau d'avocat français
+- 2 à 3 objets concrets disposés naturellement sur un bureau en bois sous lumière de fenêtre
+- profondeur de champ cinématographique, textures réalistes, palette navy / off-white / touches d'or brossé
+- aucune personne dans le cadre, aucun texte lisible (documents vierges ou flous)
+- INTERDIT : "minimalist", "single object", "flat illustration", "icon", "vast empty background", "abstract"
+
+CONTRAINTES "humains" (90 mots max) :
+- commence par "A candid reportage photograph of one person in the middle of [action concrète]…"
+- ACTION EN COURS, pas une pose figée : la personne est en TRAIN de faire quelque chose (rendre un badge, déchirer une lettre, signer un document, regarder un écran avec une réaction…)
+- au moins 2 des éléments visuels de l'étape 1 visibles dans la scène
+- expression cohérente avec l'émotion du sujet (tension, soulagement, désarroi, concentration…)
+- lumière naturelle latérale, profondeur de champ, style reportage magazine
+- INTERDIT : "professional headshot", "studio", "smiling at camera", "posing"
+
+Génère UNIQUEMENT un objet JSON valide, sans markdown ni texte autour :
 
 {
   "prompts_images": [
     {
       "style": "conceptuelle",
-      "prompt": "string (prompt en anglais. UNE seule icône/objet stylisé central qui évoque le thème. Fond uni épuré, ÉNORMÉMENT d'espace vide autour. AUCUN autre élément décoratif. Pas de personnes. Pas de texte. Maximum 25 mots.)"
+      "keywords": "string (3 expressions visuelles concrètes séparées par virgule, en anglais — ex: 'returned access badge, packed office box, opened registered letter')",
+      "prompt": "string (60 mots max, anglais)"
     },
     {
       "style": "humains",
-      "prompt": "string (prompt photoréaliste en anglais, commençant par 'A candid photograph of one person…'. UNE SEULE personne en interaction directe avec l'objet central du thème (ex : un employé seul qui rend son badge, une avocate seule qui signe un document, un commerçant seul qui ferme sa vitrine…). PAS de groupe. Tenue ordinaire et plausible, expression naturelle imparfaite, instant pris sur le vif. Lumière naturelle latérale. Arrière-plan flou. Aucun texte visible (écrans éteints, livres fermés, murs vides). Maximum 50 mots.)"
+      "keywords": "string (3 expressions visuelles concrètes séparées par virgule, en anglais — mêmes objets que conceptuelle ou très proches)",
+      "prompt": "string (90 mots max, anglais, commence par 'A candid reportage photograph of one person in the middle of…')"
     }
   ]
 }`
@@ -224,21 +246,21 @@ Champs supplémentaires :
     conceptuelle: {
       model: 'gpt-image-1',
       suffix:
-        ' Minimalist editorial illustration of a SINGLE central iconic subject only. Vast empty off-white background with abundant negative space around the subject. NO additional decorative elements, NO clutter, NO surrounding objects, NO secondary symbols. Strictly 2-3 colors total: navy blue, off-white, subtle gold accents. Single soft light source. Flat editorial poster style. Wide format 16:9. Completely textless image, no letters, no numbers, no labels, no writing of any kind anywhere.',
+        ' Editorial photographic composition staged in a real French law office. Show 2 to 3 concrete legal objects arranged naturally on a wooden desk under soft window light. Cinematic depth of field, fine realistic textures, warm professional tones with navy blue and brushed gold accents. Magazine editorial quality (Le Monde, Les Echos, Forbes France style). No people in frame. No legible text on any document, papers and screens are blank or blurred. Wide format 16:9.',
       size: '1536x1024',
       quality: 'medium',
     },
     humains: {
       model: 'gpt-image-1',
       suffix:
-        ' Authentic candid photograph of an ordinary person. Real human anatomy with natural skin imperfections, asymmetric features, age-appropriate texture and pores, individual character. Authentic everyday clothing, not styled. Soft natural side light from a window. Slight imperfect framing, like a real snapshot. Photorealistic, indistinguishable from a real photograph. No visible text in the background (books, papers and signs have blank covers).',
+        ' Authentic candid reportage photograph of one ordinary person mid-action. Real human anatomy with natural skin imperfections, asymmetric features, age-appropriate pores, individual character. Authentic everyday clothing, not styled. Hands actually engaged with concrete objects, mid-gesture, slight natural motion. Soft natural side light from a window, shallow depth of field, imperfect framing like a real magazine reportage snapshot. Photorealistic, indistinguishable from a real photograph. No visible text in the background, papers and screens are blank or blurred.',
       size: '1536x1024',
       quality: 'medium',
     },
   }
   const FALLBACK_PROMPTS: Record<ImageStyle, string> = {
-    conceptuelle: `An editorial abstract composition illustrating "${theme}" in the context of ${specialite}, with a central symbolic object visually evoking this specific topic, minimalist styling, navy blue and gold accents on a clean background, no people, no text.`,
-    humains: `A candid photograph of one ordinary French professional in a situation directly related to "${theme}" (${specialite}), realistic interaction with a concrete object tied to the topic, soft natural window light, authentic expression, no visible text.`,
+    conceptuelle: `An editorial photographic composition staged on a wooden desk in a French law office, evoking "${theme}" in the context of ${specialite}. Two or three concrete objects tied to the topic placed naturally under window light. Realistic textures, cinematic depth of field, navy blue and gold accents, no people, no legible text.`,
+    humains: `A candid reportage photograph of one ordinary French person in the middle of an action directly related to "${theme}" (${specialite}). Two concrete objects tied to the topic are visible in the scene. Soft natural window light, mid-gesture, authentic expression, no visible text.`,
   }
 
   // Helper pour stocker un buffer image dans Supabase Storage
@@ -297,11 +319,15 @@ Champs supplémentaires :
         const imageMsg = await imagePromptCall
         const rawImg = imageMsg.content[0].type === 'text' ? imageMsg.content[0].text : ''
         const cleanedImg = rawImg.replace(/^```json\n?/, '').replace(/\n?```$/, '').trim()
-        const parsed = JSON.parse(cleanedImg) as { prompts_images?: Array<{ style?: string; prompt?: string }> }
+        const parsed = JSON.parse(cleanedImg) as { prompts_images?: Array<{ style?: string; keywords?: string; prompt?: string }> }
         if (Array.isArray(parsed.prompts_images)) {
           for (const item of parsed.prompts_images) {
             if (item?.style && item?.prompt && IMAGE_STYLE_ORDER.includes(item.style as ImageStyle)) {
-              prompts[item.style as ImageStyle] = item.prompt
+              // Les mots-cles visuels sont concaténés en tete pour que gpt-image-1 leur donne plus de poids.
+              const keywords = item.keywords?.trim()
+              prompts[item.style as ImageStyle] = keywords
+                ? `Visual focus: ${keywords}. ${item.prompt}`
+                : item.prompt
             }
           }
         }

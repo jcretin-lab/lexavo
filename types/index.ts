@@ -57,6 +57,7 @@ export type ImageSlot = ImageStyle | 'personnalisee'
 
 export interface ImagePromptSpec {
   style: ImageStyle
+  keywords?: string
   prompt: string
 }
 
