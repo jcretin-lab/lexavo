@@ -398,6 +398,9 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
               onChange={handleFileChange}
               className="hidden"
             />
+            <p className="mt-1.5 text-[11px] text-gray-400">
+              Format recommandé : 16:9 (ex. 1536×1024) — PNG, JPG ou WEBP, 5 Mo max.
+            </p>
             {pickError && (
               <p className="mt-2 text-[11px] text-red-600">{pickError}</p>
             )}
