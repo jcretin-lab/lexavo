@@ -41,20 +41,26 @@ export function DashboardNav({ cabinet }: NavProps) {
   return (
     <>
       {/* Barre mobile */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-30 h-14 flex items-center px-4 gap-3" style={{ background: 'var(--white)', borderBottom: '1px solid var(--ink-200)' }}>
+      <div className="md:hidden fixed top-0 left-0 right-0 z-30 h-14 flex items-center px-4 gap-3" style={{ background: 'var(--navy-900)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <button
           onClick={() => setMobileOpen(true)}
           className="p-2 rounded-lg transition-colors"
-          style={{ color: 'var(--ink-500)' }}
+          style={{ color: 'rgba(255,255,255,0.75)' }}
           aria-label="Ouvrir le menu"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-        <span style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', color: 'var(--navy-700)', letterSpacing: '-0.02em' }}>
-          Lex<em>avo</em><span style={{ color: 'var(--ocre-500)' }}>.</span>
-        </span>
+        <div className="flex items-center gap-2">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none" style={{ color: 'rgba(255,255,255,0.65)', flexShrink: 0 }}>
+            <rect x="1" y="1" width="15" height="11.5" rx="2.5" stroke="currentColor" strokeWidth="1.2"/>
+            <path d="M3.5 16L6 12.5H1L3.5 16Z" fill="currentColor"/>
+          </svg>
+          <span style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', color: 'var(--white)', letterSpacing: '-0.02em' }}>
+            Lex<em>avo</em><span style={{ color: 'var(--ocre-500)' }}>.</span>
+          </span>
+        </div>
       </div>
 
       {/* Overlay mobile */}
@@ -69,19 +75,25 @@ export function DashboardNav({ cabinet }: NavProps) {
       <aside className={cn(
         'fixed left-0 top-0 h-full w-64 flex flex-col z-30 transition-transform duration-300',
         mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-      )} style={{ background: 'var(--white)', borderRight: '1px solid var(--ink-200)' }}>
+      )} style={{ background: 'var(--navy-900)', borderRight: '1px solid rgba(255,255,255,0.06)' }}>
         {/* Logo */}
-        <div className="px-6 py-5 flex items-center justify-between" style={{ borderBottom: '1px solid var(--ink-100)' }}>
+        <div className="px-6 py-5 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
           <div>
-            <h1 style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.375rem', color: 'var(--navy-700)', letterSpacing: '-0.02em', lineHeight: 1 }}>
-              Lex<em>avo</em><span style={{ color: 'var(--ocre-500)' }}>.</span>
-            </h1>
-            <p className="text-xs mt-1 truncate" style={{ color: 'var(--ink-400)', fontFamily: 'var(--font-jetbrains-mono)', letterSpacing: '0.04em' }}>{cabinet.nom}</p>
+            <div className="flex items-center gap-2">
+              <svg width="18" height="18" viewBox="0 0 17 17" fill="none" style={{ color: 'rgba(255,255,255,0.65)', flexShrink: 0 }}>
+                <rect x="1" y="1" width="15" height="11.5" rx="2.5" stroke="currentColor" strokeWidth="1.2"/>
+                <path d="M3.5 16L6 12.5H1L3.5 16Z" fill="currentColor"/>
+              </svg>
+              <h1 style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.375rem', color: 'var(--white)', letterSpacing: '-0.02em', lineHeight: 1 }}>
+                Lex<em>avo</em><span style={{ color: 'var(--ocre-500)' }}>.</span>
+              </h1>
+            </div>
+            <p className="text-xs mt-2 truncate" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: 'var(--font-jetbrains-mono)', letterSpacing: '0.04em' }}>{cabinet.nom}</p>
           </div>
           <button
             onClick={() => setMobileOpen(false)}
             className="md:hidden p-1.5 rounded-lg transition-colors"
-            style={{ color: 'var(--ink-400)' }}
+            style={{ color: 'rgba(255,255,255,0.5)' }}
             aria-label="Fermer le menu"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,8 +112,8 @@ export function DashboardNav({ cabinet }: NavProps) {
                 href={item.href}
                 className={cn('flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors')}
                 style={{
-                  background: active ? 'var(--navy-50)' : 'transparent',
-                  color: active ? 'var(--navy-700)' : 'var(--ink-500)',
+                  background: active ? 'rgba(255,255,255,0.08)' : 'transparent',
+                  color: active ? 'var(--white)' : 'rgba(255,255,255,0.65)',
                 }}
               >
                 <span className="text-base opacity-70">{item.icon}</span>
@@ -114,8 +126,8 @@ export function DashboardNav({ cabinet }: NavProps) {
             href="/dashboard/reseaux"
             className={cn('flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors mt-1')}
             style={{
-              background: pathname === '/dashboard/reseaux' ? 'var(--navy-50)' : 'transparent',
-              color: pathname === '/dashboard/reseaux' ? 'var(--navy-700)' : 'var(--ink-500)',
+              background: pathname === '/dashboard/reseaux' ? 'rgba(255,255,255,0.08)' : 'transparent',
+              color: pathname === '/dashboard/reseaux' ? 'var(--white)' : 'rgba(255,255,255,0.65)',
             }}
           >
             <span className="text-base opacity-70">{reseauxConfigured ? '✓' : '📅'}</span>
@@ -124,14 +136,14 @@ export function DashboardNav({ cabinet }: NavProps) {
         </nav>
 
         {/* Footer */}
-        <div className="px-4 py-4" style={{ borderTop: '1px solid var(--ink-100)' }}>
-          <div className="px-3 py-2 rounded-lg text-xs font-medium capitalize mb-3" style={{ background: 'var(--navy-50)', color: 'var(--navy-700)', fontFamily: 'var(--font-jetbrains-mono)', letterSpacing: '0.06em' }}>
+        <div className="px-4 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="px-3 py-2 rounded-lg text-xs font-medium capitalize mb-3" style={{ background: 'rgba(255,255,255,0.08)', color: 'var(--ocre-300)', fontFamily: 'var(--font-jetbrains-mono)', letterSpacing: '0.06em' }}>
             Plan {cabinet.plan}
           </div>
           <button
             onClick={handleLogout}
             className="w-full text-left px-3 py-2 text-sm rounded-lg transition-colors"
-            style={{ color: 'var(--ink-400)' }}
+            style={{ color: 'rgba(255,255,255,0.5)' }}
           >
             Déconnexion
           </button>

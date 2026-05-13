@@ -215,23 +215,23 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--navy-700);
+  background: var(--navy-900);
   color: var(--white);
   font-family: var(--font-inter), system-ui, sans-serif;
   font-weight: 500;
   font-size: 0.9375rem;
   padding: 0.9375rem 2rem;
   border-radius: 10px;
-  border: 1px solid var(--navy-700);
+  border: 1px solid var(--navy-900);
   transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
   text-decoration: none;
   letter-spacing: -0.005em;
-  box-shadow: 0 2px 8px -2px rgba(26,63,124,0.35);
+  box-shadow: 0 2px 8px -2px rgba(15,34,71,0.35);
 }
 .landing-cta-primary:hover {
-  background: var(--navy-800);
-  border-color: var(--navy-800);
-  box-shadow: 0 4px 16px -4px rgba(26,63,124,0.45);
+  background: #07142E;
+  border-color: #07142E;
+  box-shadow: 0 4px 16px -4px rgba(15,34,71,0.55);
 }
 
 .landing-cta-secondary {
@@ -259,18 +259,18 @@ body {
 .landing-nav-cta {
   font-family: var(--font-inter), system-ui, sans-serif;
   font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--white);
+  font-weight: 600;
+  color: var(--navy-900);
   padding: 0.5625rem 1.125rem;
   border-radius: 8px;
-  background: var(--navy-700);
-  border: 1px solid var(--navy-700);
+  background: var(--ocre-500);
+  border: 1px solid var(--ocre-500);
   transition: background 0.15s, box-shadow 0.15s;
   text-decoration: none;
 }
 .landing-nav-cta:hover {
-  background: var(--navy-800);
-  box-shadow: 0 2px 8px -2px rgba(26,63,124,0.4);
+  background: var(--ocre-700);
+  box-shadow: 0 2px 8px -2px rgba(176,122,42,0.5);
 }
 
 /* ─── Animations au scroll ──────────────────────────── */
