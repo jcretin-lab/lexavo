@@ -62,7 +62,6 @@ export function GenerateurForm({ cabinet: _cabinet }: Props) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
-  const [upgradeReason, setUpgradeReason] = useState<'trial' | 'quota'>('trial')
 
   const specialiteOptions = SPECIALITES_LISTE.map((s) => ({ value: s, label: s }))
   const tonOptions = TONS.map((t) => ({ value: t, label: t }))
@@ -81,13 +80,6 @@ export function GenerateurForm({ cabinet: _cabinet }: Props) {
       })
       const data = await res.json()
       if (res.status === 402 && data.trial_exhausted) {
-        setUpgradeReason('trial')
-        setShowUpgradeModal(true)
-        setLoading(false)
-        return
-      }
-      if (res.status === 429) {
-        setUpgradeReason('quota')
         setShowUpgradeModal(true)
         setLoading(false)
         return
@@ -112,8 +104,6 @@ export function GenerateurForm({ cabinet: _cabinet }: Props) {
       <UpgradeModal
         open={showUpgradeModal}
         onClose={() => setShowUpgradeModal(false)}
-        titre={upgradeReason === 'quota' ? 'Quota mensuel atteint' : undefined}
-        message={upgradeReason === 'quota' ? 'Vous avez utilisé toutes vos générations ce mois-ci. Passez à un plan supérieur pour continuer.' : undefined}
       />
       <div className="max-w-2xl mx-auto">
         <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8">
@@ -167,7 +157,7 @@ export function GenerateurForm({ cabinet: _cabinet }: Props) {
             {loading && (
               <div className="text-center space-y-1">
                 <p className="text-sm text-gray-600 font-medium">
-                  Lexavo génère votre contenu et vos 2 visuels…
+                  Lexavo génère votre contenu et votre visuel…
                 </p>
                 <p className="text-xs text-gray-400">
                   Cela prend environ 30-45 secondes. Ne fermez pas la page.

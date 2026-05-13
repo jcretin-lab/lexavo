@@ -22,7 +22,7 @@ export default async function GenererPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Générer du contenu</h1>
         <p className="text-gray-500 mt-1">
-          Remplissez le formulaire pour obtenir un article, 3 posts pour vos réseaux sociaux, une FAQ et 2 visuels au choix.
+          Remplissez le formulaire pour obtenir un article, 3 posts pour vos réseaux sociaux, une FAQ et 1 visuel généré (ou le vôtre).
         </p>
       </div>
       <GenerateurForm cabinet={cabinet} />

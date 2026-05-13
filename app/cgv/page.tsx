@@ -42,7 +42,7 @@ export default function CGVPage() {
             </div>
             <div className="rounded-xl border border-gray-200 p-4">
               <p className="font-semibold text-gray-900">Plan Pro — 69 € HT/mois</p>
-              <p className="text-gray-600 text-sm mt-1">1 utilisateur, toutes les fonctionnalités Essentiel + génération depuis un thème (article SEO, posts réseaux sociaux, FAQ, 2 images IA)</p>
+              <p className="text-gray-600 text-sm mt-1">1 utilisateur, toutes les fonctionnalités Essentiel + génération depuis un thème (article SEO, posts réseaux sociaux, FAQ, 1 image IA générée ou la vôtre)</p>
             </div>
             <div className="rounded-xl border border-gray-200 p-4">
               <p className="font-semibold text-gray-900">Plan Cabinet — 149 € HT/mois</p>
@@ -57,7 +57,7 @@ export default function CGVPage() {
         <section className="mb-10">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">2.4 Période d&apos;essai</h2>
           <p className="text-gray-700 leading-relaxed">
-            Tout nouvel utilisateur bénéficie de 3 publications gratuites sans engagement ni saisie de coordonnées bancaires. À l&apos;issue de cette période d&apos;essai, la souscription à un plan payant est nécessaire pour continuer à utiliser le service.
+            Tout nouvel utilisateur bénéficie de 10 publications gratuites sans engagement ni saisie de coordonnées bancaires. À l&apos;issue de cette période d&apos;essai, la souscription à un plan payant est nécessaire pour continuer à utiliser le service.
           </p>
         </section>
 

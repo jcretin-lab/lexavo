@@ -80,7 +80,7 @@ Chaque post :
 
 Génère aussi 5 questions/réponses de FAQ juridique tirées de l'article (questions concrètes que se pose un justiciable, réponses pédagogiques de 2-3 phrases conformes à la déontologie, sans avis juridique personnalisé).
 
-Génère aussi 2 prompts en anglais pour 2 images professionnelles distinctes (qualité magazine éditorial juridique type Le Monde, Les Échos, Forbes France).
+Génère aussi 1 prompt en anglais pour une image professionnelle (qualité magazine éditorial juridique type Le Monde, Les Échos, Forbes France).
 
 OBJECTIF VISUEL : que le lecteur reconnaisse INSTANTANÉMENT le sujet juridique de l'article rien qu'en voyant l'image.
 
@@ -98,22 +98,14 @@ Exemples de mapping :
 - "Succession" → horloge familiale, dossier notarié relié, coffre de famille ouvert
 - "Avis Google diffamatoire" → écran d'ordinateur affichant une note 1 étoile, smartphone, capture d'écran imprimée
 
-ÉTAPE 2 — Rédige les 2 prompts en anglais autour de ces 3 éléments.
+ÉTAPE 2 — Rédige le prompt "conceptuelle" en anglais (60 mots max) autour de ces 3 éléments.
 
-CONTRAINTES "conceptuelle" (60 mots max) :
+CONTRAINTES :
 - composition éditoriale photographique mise en scène dans un vrai bureau d'avocat français
 - 2 à 3 objets concrets disposés naturellement sur un bureau en bois sous lumière de fenêtre
 - profondeur de champ cinématographique, textures réalistes, palette navy / off-white / touches d'or brossé
 - aucune personne, aucun texte lisible (documents vierges ou flous)
 - INTERDIT : "minimalist", "single object", "flat illustration", "icon", "vast empty background", "abstract"
-
-CONTRAINTES "humains" (90 mots max) :
-- commence par "A candid reportage photograph of one person in the middle of [action concrète]…"
-- ACTION EN COURS, pas une pose figée (en TRAIN de rendre un badge, déchirer une lettre, signer un document, regarder un écran avec une réaction…)
-- au moins 2 des éléments visuels de l'étape 1 visibles dans la scène
-- expression cohérente avec l'émotion du sujet (tension, soulagement, désarroi, concentration…)
-- lumière naturelle latérale, profondeur de champ, style reportage magazine
-- INTERDIT : "professional headshot", "studio", "smiling at camera", "posing"
 
 Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
 {
@@ -130,8 +122,7 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
     { "question": "string", "reponse": "string" }
   ],
   "prompts_images": [
-    { "style": "conceptuelle", "keywords": "string (3 expressions visuelles concrètes en anglais, séparées par virgule)", "prompt": "string (60 mots max, anglais)" },
-    { "style": "humains", "keywords": "string (3 expressions visuelles, mêmes objets ou très proches)", "prompt": "string (90 mots max, commence par 'A candid reportage photograph of one person in the middle of…')" }
+    { "style": "conceptuelle", "keywords": "string (3 expressions visuelles concrètes en anglais, séparées par virgule)", "prompt": "string (60 mots max, anglais)" }
   ]
 }`
 
@@ -187,7 +178,7 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
     const rawTheme = article.trim().slice(0, 80)
     const theme = rawTheme + (article.trim().length > 80 ? '…' : '')
 
-    // dall-e-3 a ete deprecie par OpenAI en mai 2026, on utilise gpt-image-1 pour les 2 styles
+    // 1 seul style genere via gpt-image-1
     type GptImageConfig = {
       model: 'gpt-image-1'
       suffix: string
@@ -202,17 +193,9 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
         size: '1536x1024',
         quality: 'medium',
       },
-      humains: {
-        model: 'gpt-image-1',
-        suffix:
-          ' Authentic candid reportage photograph of one ordinary person mid-action. Real human anatomy with natural skin imperfections, asymmetric features, age-appropriate pores, individual character. Authentic everyday clothing, not styled. Hands actually engaged with concrete objects, mid-gesture, slight natural motion. Soft natural side light from a window, shallow depth of field, imperfect framing like a real magazine reportage snapshot. Photorealistic, indistinguishable from a real photograph. No visible text in the background, papers and screens are blank or blurred.',
-        size: '1536x1024',
-        quality: 'medium',
-      },
     }
     const FALLBACK_PROMPTS: Record<ImageStyle, string> = {
       conceptuelle: `An editorial photographic composition staged on a wooden desk in a French law office, evoking the topic of the article ("${theme}"). Two or three concrete objects tied to the topic placed naturally under window light. Realistic textures, cinematic depth of field, navy blue and gold accents, no people, no legible text.`,
-      humains: `A candid reportage photograph of one ordinary French person in the middle of an action directly related to "${theme}". Two concrete objects tied to the topic are visible in the scene. Soft natural window light, mid-gesture, authentic expression, no visible text.`,
     }
 
     const prompts: Record<ImageStyle, string> = { ...FALLBACK_PROMPTS }
@@ -259,12 +242,9 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
       }
     }
 
-    const [conceptuelle, humains] = await Promise.all([
-      generateAndStore('conceptuelle', prompts.conceptuelle),
-      generateAndStore('humains', prompts.humains),
-    ])
-    const images: ImagesByStyle = { conceptuelle, humains }
-    const defaultImageUrl = conceptuelle ?? humains ?? null
+    const conceptuelle = await generateAndStore('conceptuelle', prompts.conceptuelle)
+    const images: ImagesByStyle = { conceptuelle }
+    const defaultImageUrl = conceptuelle ?? null
 
     const postsLinkedin = result.posts_linkedin.map(({ texte, hashtags }) => ({ texte, hashtags }))
     const faq = Array.isArray(result.faq)

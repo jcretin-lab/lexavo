@@ -42,14 +42,14 @@ export async function sendBienvenue(email: string, nomCabinet?: string) {
     <p style="font-size:16px;font-weight:600;margin-bottom:16px;">${salutation}</p>
     <p style="font-size:14px;color:#444;line-height:1.7;margin-bottom:16px;">
       Votre cabinet est configuré. Pour démarrer, vous bénéficiez de
-      <strong>3 publications gratuites</strong> — générez votre premier contenu juridique
+      <strong>10 publications gratuites</strong> — générez votre premier contenu juridique
       dès maintenant, sans engagement.
     </p>
-    <p style="font-size:14px;color:#444;line-height:1.7;margin-bottom:8px;">Ce que vous pouvez faire avec vos 3 essais :</p>
+    <p style="font-size:14px;color:#444;line-height:1.7;margin-bottom:8px;">Ce que vous pouvez faire avec vos 10 essais :</p>
     <ul style="font-size:14px;color:#444;line-height:2;margin:0 0 24px 0;padding-left:20px;">
       <li>Un article de blog optimisé SEO</li>
       <li>3 posts prêts à publier sur vos réseaux sociaux</li>
-      <li>Une FAQ juridique + 2 images générées par IA (au choix)</li>
+      <li>Une FAQ juridique + 1 image générée par IA (ou la vôtre)</li>
     </ul>
     ${btn('https://www.lexavo.fr/dashboard/generer', 'Commencer maintenant')}
     <p style="font-size:12px;color:#aaa;margin-top:24px;">
@@ -122,9 +122,9 @@ export async function sendConfirmationAbonnement(email: string, planId: string) 
 // ── 5. Quota d'essai atteint ────────────────────────────────────────────────
 export async function sendQuotaAtteint(email: string) {
   const html = layout(`
-    <p style="font-size:16px;font-weight:600;margin-bottom:16px;">Vos 3 publications gratuites sont épuisées</p>
+    <p style="font-size:16px;font-weight:600;margin-bottom:16px;">Vos 10 publications gratuites sont épuisées</p>
     <p style="font-size:14px;color:#444;line-height:1.7;margin-bottom:16px;">
-      Vous avez utilisé vos 3 générations d'essai. Pour continuer à créer du contenu juridique
+      Vous avez utilisé vos 10 générations d'essai. Pour continuer à créer du contenu juridique
       sans limite, choisissez un plan adapté à votre cabinet.
     </p>
     ${btn('https://www.lexavo.fr/dashboard/parametres', 'Voir les plans')}
@@ -132,7 +132,7 @@ export async function sendQuotaAtteint(email: string) {
       Une question ? Contactez-nous à <a href="mailto:contact@lexavo.fr" style="color:#aaa;">contact@lexavo.fr</a>
     </p>
   `)
-  return send(email, 'Vos 3 publications gratuites sont épuisées — Lexavo', html)
+  return send(email, 'Vos 10 publications gratuites sont épuisées — Lexavo', html)
 }
 
 // ── 6. Publication réussie ───────────────────────────────────────────────────

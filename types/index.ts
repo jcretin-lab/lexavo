@@ -47,10 +47,10 @@ export interface FaqItem {
   reponse: string
 }
 
-// On ne genere plus que 2 styles : conceptuelle (illustration corporate) et
-// humains (photo realiste avec personnes). photorealiste est conserve dans le
-// type sous-jacent JSONB mais n'est plus produit ni affiche.
-export type ImageStyle = 'conceptuelle' | 'humains'
+// On ne genere plus qu'une seule image (style "conceptuelle"). Les anciens records
+// peuvent contenir d'autres styles ('humains', 'photorealiste') dans le JSONB,
+// mais ils ne sont plus produits ni affiches.
+export type ImageStyle = 'conceptuelle'
 
 // L'utilisateur peut egalement uploader sa propre image, stockee sous la cle 'personnalisee'.
 export type ImageSlot = ImageStyle | 'personnalisee'
@@ -88,11 +88,10 @@ export interface Generation {
 
 export const IMAGE_STYLE_LABELS: Record<ImageSlot, string> = {
   conceptuelle: 'Conceptuelle',
-  humains: 'Avec personnes',
   personnalisee: 'La mienne',
 }
 
-export const IMAGE_STYLE_ORDER: ImageStyle[] = ['conceptuelle', 'humains']
+export const IMAGE_STYLE_ORDER: ImageStyle[] = ['conceptuelle']
 
 export type Ton = 'Pédagogique' | 'Rassurant' | 'Expert' | 'Accessible'
 

@@ -125,12 +125,12 @@ CONTEXTE DU CABINET :
 - Thème : ${theme}
 - Ton souhaité : ${ton}`
 
-  // Prompt 1 — petit appel Claude qui ne génère QUE les 2 prompts d'image.
+  // Prompt 1 — petit appel Claude qui ne génère QUE le prompt d'image conceptuelle.
   // Lancé en parallèle du gros appel pour démarrer la génération d'image au plus tôt.
   const imagePromptUserPrompt = `THÈME DE L'ARTICLE : « ${theme} »
 SPÉCIALITÉ : ${specialite}
 
-OBJECTIF : 2 prompts (anglais) qui rendent le sujet juridique IMMÉDIATEMENT identifiable d'un coup d'œil. On veut une qualité magazine éditorial juridique (Le Monde, Les Échos, Forbes France).
+OBJECTIF : 1 prompt (anglais) qui rend le sujet juridique IMMÉDIATEMENT identifiable d'un coup d'œil. Qualité magazine éditorial juridique (Le Monde, Les Échos, Forbes France).
 
 ÉTAPE 1 — Identifie 3 ÉLÉMENTS VISUELS CONCRETS spécifiques au thème :
 - des OBJETS RÉELS du quotidien, pas des concepts abstraits
@@ -148,22 +148,14 @@ Exemples de mapping thème → 3 éléments visuels :
 - "Contestation PV" → contravention sous l'essuie-glace, panneau de signalisation, radar fixe
 - "Avis Google diffamatoire" → écran d'ordinateur affichant une note 1 étoile, smartphone à côté, capture d'écran imprimée
 
-ÉTAPE 2 — Rédige les 2 prompts en anglais autour de ces 3 éléments.
+ÉTAPE 2 — Rédige le prompt "conceptuelle" en anglais (60 mots max) autour de ces 3 éléments.
 
-CONTRAINTES "conceptuelle" (60 mots max) :
+CONTRAINTES :
 - composition éditoriale photographique mise en scène dans un vrai bureau d'avocat français
 - 2 à 3 objets concrets disposés naturellement sur un bureau en bois sous lumière de fenêtre
 - profondeur de champ cinématographique, textures réalistes, palette navy / off-white / touches d'or brossé
 - aucune personne dans le cadre, aucun texte lisible (documents vierges ou flous)
 - INTERDIT : "minimalist", "single object", "flat illustration", "icon", "vast empty background", "abstract"
-
-CONTRAINTES "humains" (90 mots max) :
-- commence par "A candid reportage photograph of one person in the middle of [action concrète]…"
-- ACTION EN COURS, pas une pose figée : la personne est en TRAIN de faire quelque chose (rendre un badge, déchirer une lettre, signer un document, regarder un écran avec une réaction…)
-- au moins 2 des éléments visuels de l'étape 1 visibles dans la scène
-- expression cohérente avec l'émotion du sujet (tension, soulagement, désarroi, concentration…)
-- lumière naturelle latérale, profondeur de champ, style reportage magazine
-- INTERDIT : "professional headshot", "studio", "smiling at camera", "posing"
 
 Génère UNIQUEMENT un objet JSON valide, sans markdown ni texte autour :
 
@@ -173,11 +165,6 @@ Génère UNIQUEMENT un objet JSON valide, sans markdown ni texte autour :
       "style": "conceptuelle",
       "keywords": "string (3 expressions visuelles concrètes séparées par virgule, en anglais — ex: 'returned access badge, packed office box, opened registered letter')",
       "prompt": "string (60 mots max, anglais)"
-    },
-    {
-      "style": "humains",
-      "keywords": "string (3 expressions visuelles concrètes séparées par virgule, en anglais — mêmes objets que conceptuelle ou très proches)",
-      "prompt": "string (90 mots max, anglais, commence par 'A candid reportage photograph of one person in the middle of…')"
     }
   ]
 }`
@@ -233,9 +220,7 @@ Champs supplémentaires :
   ]
 }`
 
-  // 2 styles produits, tous les deux via gpt-image-1 (dall-e-3 a ete deprecie par OpenAI en mai 2026) :
-  // - conceptuelle : illustration editoriale minimaliste
-  // - humains     : photo realiste de personne
+  // 1 seul style genere via gpt-image-1 : composition editoriale photo dans un bureau d'avocat
   type GptImageConfig = {
     model: 'gpt-image-1'
     suffix: string
@@ -250,17 +235,9 @@ Champs supplémentaires :
       size: '1536x1024',
       quality: 'medium',
     },
-    humains: {
-      model: 'gpt-image-1',
-      suffix:
-        ' Authentic candid reportage photograph of one ordinary person mid-action. Real human anatomy with natural skin imperfections, asymmetric features, age-appropriate pores, individual character. Authentic everyday clothing, not styled. Hands actually engaged with concrete objects, mid-gesture, slight natural motion. Soft natural side light from a window, shallow depth of field, imperfect framing like a real magazine reportage snapshot. Photorealistic, indistinguishable from a real photograph. No visible text in the background, papers and screens are blank or blurred.',
-      size: '1536x1024',
-      quality: 'medium',
-    },
   }
   const FALLBACK_PROMPTS: Record<ImageStyle, string> = {
     conceptuelle: `An editorial photographic composition staged on a wooden desk in a French law office, evoking "${theme}" in the context of ${specialite}. Two or three concrete objects tied to the topic placed naturally under window light. Realistic textures, cinematic depth of field, navy blue and gold accents, no people, no legible text.`,
-    humains: `A candid reportage photograph of one ordinary French person in the middle of an action directly related to "${theme}" (${specialite}). Two concrete objects tied to the topic are visible in the scene. Soft natural window light, mid-gesture, authentic expression, no visible text.`,
   }
 
   // Helper pour stocker un buffer image dans Supabase Storage
@@ -312,7 +289,7 @@ Champs supplémentaires :
       messages: [{ role: 'user', content: contentUserPrompt }],
     })
 
-    // Dès que les 2 prompts sont disponibles, lance les 2 generations en parallèle.
+    // Dès que le prompt est disponible, lance la generation.
     const imagesPromise: Promise<ImagesByStyle> = (async () => {
       const prompts: Record<ImageStyle, string> = { ...FALLBACK_PROMPTS }
       try {
@@ -335,11 +312,8 @@ Champs supplémentaires :
         console.error('[generate] prompts_images parse failed, fallbacks utilisés :', err)
       }
 
-      const [conceptuelle, humains] = await Promise.all([
-        generateAndStore('conceptuelle', prompts.conceptuelle),
-        generateAndStore('humains', prompts.humains),
-      ])
-      return { conceptuelle, humains }
+      const conceptuelle = await generateAndStore('conceptuelle', prompts.conceptuelle)
+      return { conceptuelle }
     })()
 
     // Parse du contenu principal avec retry (1 réessai en cas de JSON invalide).
@@ -385,9 +359,9 @@ Champs supplémentaires :
       }
     }
 
-    // Attend la fin des 2 générations d'images (déjà lancées en parallèle).
+    // Attend la fin de la generation d'image (deja lancee en parallele).
     const images = await imagesPromise
-    const defaultImageUrl = images.conceptuelle ?? images.humains ?? null
+    const defaultImageUrl = images.conceptuelle ?? null
 
     const { data: generation, error: dbError } = await supabase
       .from('generations')

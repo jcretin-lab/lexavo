@@ -12,7 +12,7 @@ export const PRICING_PLANS = [
     utilisateurs: '1 utilisateur',
     recommande: true,
     features: [
-      'Génération SEO depuis un thème : article + 3 posts + FAQ + 2 images IA en 3 min',
+      'Génération SEO depuis un thème : article + 3 posts + FAQ + 1 image IA (ou la vôtre) en 3 min',
       'Transformation d\'un article existant en 3 posts adaptés',
       'Publication automatique sur LinkedIn et Facebook',
       'Calendrier éditorial complet et programmation',
@@ -73,8 +73,8 @@ export function PricingSection({ onChoose, loadingPlan, currentPlanId, error, mi
               key={plan.id}
               className="rounded-2xl p-6 flex flex-col"
               style={{
-                background: plan.recommande ? 'var(--navy-700)' : 'var(--white)',
-                border: plan.recommande ? '2px solid var(--navy-700)' : '2px solid var(--ink-200)',
+                background: plan.recommande ? 'var(--navy-900)' : 'var(--white)',
+                border: plan.recommande ? '2px solid var(--navy-900)' : '2px solid var(--ink-200)',
                 boxShadow: plan.recommande ? 'var(--shadow-lg)' : 'none',
               }}
             >
@@ -112,15 +112,44 @@ export function PricingSection({ onChoose, loadingPlan, currentPlanId, error, mi
 
               <div className="mb-5" style={{ borderTop: `1px solid ${plan.recommande ? 'rgba(255,255,255,0.18)' : 'var(--ink-100)'}` }} />
 
-              {/* Features */}
-              <ul className="space-y-3 mb-6 flex-1">
-                {plan.features.map(f => (
+              {/* Features — "Générations illimitées" est mis en avant au milieu */}
+              {(() => {
+                const unlimited = plan.features.find(f => /illimité/i.test(f))
+                const others = plan.features.filter(f => !/illimité/i.test(f))
+                const midpoint = Math.ceil(others.length / 2)
+                const topFeatures = others.slice(0, midpoint)
+                const bottomFeatures = others.slice(midpoint)
+                const renderFeature = (f: string) => (
                   <li key={f} className="flex items-start gap-2 text-sm" style={{ color: plan.recommande ? 'rgba(255,255,255,0.85)' : 'var(--ink-700)' }}>
                     <span className="flex-shrink-0 mt-0.5 font-bold" style={{ color: plan.recommande ? 'var(--ocre-300)' : 'var(--success)' }}>✓</span>
                     {f}
                   </li>
-                ))}
-              </ul>
+                )
+                return (
+                  <ul className="space-y-3 mb-6 flex-1">
+                    {topFeatures.map(renderFeature)}
+                    {unlimited && (
+                      <li
+                        key={unlimited}
+                        className="text-center py-3 my-1 rounded-lg"
+                        style={{
+                          fontFamily: 'var(--font-jetbrains-mono)',
+                          fontSize: '0.8125rem',
+                          fontWeight: 700,
+                          letterSpacing: '0.12em',
+                          textTransform: 'uppercase',
+                          color: plan.recommande ? 'var(--navy-900)' : 'var(--white)',
+                          background: plan.recommande ? 'var(--ocre-500)' : 'var(--navy-900)',
+                          border: plan.recommande ? '1px solid var(--ocre-500)' : '1px solid var(--navy-900)',
+                        }}
+                      >
+                        {unlimited}
+                      </li>
+                    )}
+                    {bottomFeatures.map(renderFeature)}
+                  </ul>
+                )
+              })()}
 
               {/* Bouton */}
               <div className="mt-auto">
@@ -134,7 +163,7 @@ export function PricingSection({ onChoose, loadingPlan, currentPlanId, error, mi
                     onClick={() => onChoose(plan.id)}
                     disabled={!!loadingPlan && loadingPlan !== plan.id}
                     style={{
-                      background: plan.recommande ? 'var(--ocre-500)' : 'var(--navy-700)',
+                      background: plan.recommande ? 'var(--ocre-500)' : 'var(--navy-900)',
                       color: plan.recommande ? 'var(--navy-900)' : 'var(--white)',
                       opacity: (!!loadingPlan && loadingPlan !== plan.id) ? 0.5 : 1,
                     }}

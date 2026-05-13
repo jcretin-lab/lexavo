@@ -24,8 +24,8 @@ const PUBLICATION_ITEMS = [
   {
     num: '04',
     icon: '◻',
-    titre: '2 images générées par IA',
-    desc: '2 visuels distincts (conceptuel et avec personnes) — choisissez celui qui colle à votre publication.',
+    titre: '1 image générée par IA (ou la vôtre)',
+    desc: 'Un visuel éditorial sur-mesure pour votre publication, ou uploadez votre propre image en un clic.',
   },
 ]
 
@@ -38,7 +38,7 @@ const STEPS = [
   {
     num: '02',
     titre: 'Votre contenu est généré',
-    desc: 'En moins de 3 minutes : un article SEO structuré, 3 posts distincts, une FAQ et 2 visuels au choix (conceptuel et avec personnes). Tout est modifiable avant publication. Vous pouvez aussi insérer votre article existant pour obtenir 3 posts sous 3 angles différents.',
+    desc: 'En moins de 3 minutes : un article SEO structuré, 3 posts distincts, une FAQ et 1 visuel éditorial (ou uploadez le vôtre). Tout est modifiable avant publication. Vous pouvez aussi insérer votre article existant pour obtenir 3 posts sous 3 angles différents.',
   },
   {
     num: '03',
@@ -102,7 +102,7 @@ function HeroMockup() {
             {/* Sidebar nav */}
             <div className="col-span-1 rounded-xl p-3 space-y-1" style={{ background: 'var(--white)', border: '1px solid var(--ink-200)' }}>
               <div className="mb-3 px-2 py-1.5">
-                <span className="text-xs font-semibold" style={{ fontFamily: 'var(--font-instrument-serif)', color: 'var(--navy-700)' }}>Lexavo.</span>
+                <span className="text-xs font-semibold" style={{ fontFamily: 'var(--font-instrument-serif)', color: 'var(--navy-900)' }}>Lexavo.</span>
               </div>
               {['Générer', 'Article → Post', 'Calendrier', 'Contenu', 'Paramètres'].map((item, i) => (
                 <div
@@ -110,7 +110,7 @@ function HeroMockup() {
                   className="px-2 py-1.5 rounded-lg text-[10px] font-medium"
                   style={{
                     background: i === 0 ? 'var(--navy-50)' : 'transparent',
-                    color: i === 0 ? 'var(--navy-700)' : 'var(--ink-400)',
+                    color: i === 0 ? 'var(--navy-900)' : 'var(--ink-400)',
                     border: i === 0 ? '1px solid var(--navy-100)' : '1px solid transparent',
                   }}
                 >
@@ -143,12 +143,12 @@ function HeroMockup() {
                   <p className="text-[9px] uppercase tracking-widest" style={{ color: 'var(--ink-400)', fontFamily: 'var(--font-jetbrains-mono)' }}>Ton</p>
                   <div className="flex gap-1 flex-wrap">
                     {['Pédagogique', 'Expert', 'Rassurant'].map((t, i) => (
-                      <span key={t} className="text-[9px] px-2 py-0.5 rounded-full" style={{ background: i === 0 ? 'var(--navy-700)' : 'var(--ink-100)', color: i === 0 ? 'var(--white)' : 'var(--ink-500)' }}>{t}</span>
+                      <span key={t} className="text-[9px] px-2 py-0.5 rounded-full" style={{ background: i === 0 ? 'var(--navy-900)' : 'var(--ink-100)', color: i === 0 ? 'var(--white)' : 'var(--ink-500)' }}>{t}</span>
                     ))}
                   </div>
                 </div>
 
-                <div className="text-[10px] font-semibold px-3 py-2 rounded-xl text-center" style={{ background: 'var(--navy-700)', color: 'var(--white)' }}>
+                <div className="text-[10px] font-semibold px-3 py-2 rounded-xl text-center" style={{ background: 'var(--navy-900)', color: 'var(--white)' }}>
                   ✦ Générer le contenu
                 </div>
               </div>
@@ -156,8 +156,8 @@ function HeroMockup() {
               {/* Results */}
               <div className="col-span-3 rounded-xl overflow-hidden" style={{ background: 'var(--white)', border: '1px solid var(--ink-200)' }}>
                 <div className="flex border-b" style={{ borderColor: 'var(--ink-200)' }}>
-                  {['Posts réseaux', 'Article SEO', 'FAQ', '2 images IA'].map((tab, i) => (
-                    <div key={tab} className="flex-1 py-2 text-center text-[9px] font-medium border-b-2" style={{ color: i === 0 ? 'var(--navy-700)' : 'var(--ink-400)', borderColor: i === 0 ? 'var(--navy-700)' : 'transparent' }}>
+                  {['Posts réseaux', 'Article SEO', 'FAQ', 'Image IA'].map((tab, i) => (
+                    <div key={tab} className="flex-1 py-2 text-center text-[9px] font-medium border-b-2" style={{ color: i === 0 ? 'var(--navy-900)' : 'var(--ink-400)', borderColor: i === 0 ? 'var(--navy-900)' : 'transparent' }}>
                       {tab}
                     </div>
                   ))}
@@ -167,15 +167,15 @@ function HeroMockup() {
                   <div className="rounded-xl p-3" style={{ border: '1px solid var(--ink-200)' }}>
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-[8px] font-bold uppercase tracking-widest" style={{ color: 'var(--ink-400)', fontFamily: 'var(--font-jetbrains-mono)' }}>Post 1</span>
-                      <span className="text-[9px] px-2 py-0.5 rounded-full" style={{ background: 'var(--navy-50)', color: 'var(--navy-700)' }}>Pédagogique</span>
+                      <span className="text-[9px] px-2 py-0.5 rounded-full" style={{ background: 'var(--navy-50)', color: 'var(--navy-900)' }}>Pédagogique</span>
                       <span className="ml-auto text-[9px] font-medium" style={{ color: 'var(--success)', background: 'var(--success-50)', padding: '1px 6px', borderRadius: '999px' }}>✓ Prêt</span>
                     </div>
                     <p className="text-[10px] leading-relaxed mb-2" style={{ color: 'var(--ink-600)' }}>
                       Le licenciement pour faute grave est une procédure aux multiples pièges. Voici les 5 erreurs les plus fréquentes que je constate en cabinet...
                     </p>
                     <div className="flex gap-1 flex-wrap">
-                      <span className="text-[8px] px-1.5 py-0.5 rounded-full" style={{ color: 'var(--navy-600)', background: 'var(--navy-50)' }}>#DroitDuTravail</span>
-                      <span className="text-[8px] px-1.5 py-0.5 rounded-full" style={{ color: 'var(--navy-600)', background: 'var(--navy-50)' }}>#Avocat</span>
+                      <span className="text-[8px] px-1.5 py-0.5 rounded-full" style={{ color: 'var(--navy-900)', background: 'var(--navy-50)' }}>#DroitDuTravail</span>
+                      <span className="text-[8px] px-1.5 py-0.5 rounded-full" style={{ color: 'var(--navy-900)', background: 'var(--navy-50)' }}>#Avocat</span>
                     </div>
                   </div>
 
@@ -203,7 +203,7 @@ function HeroMockup() {
               <span className="text-[8px] font-medium" style={{ color: 'rgba(255,255,255,0.8)' }}>IA</span>
             </div>
             <div className="flex-1">
-              <p className="text-[10px] font-semibold mb-1.5" style={{ color: 'var(--ink-700)' }}>2 images IA générées — choisissez votre visuel</p>
+              <p className="text-[10px] font-semibold mb-1.5" style={{ color: 'var(--ink-700)' }}>1 image IA générée — ou uploadez la vôtre</p>
               <div className="flex gap-2">
                 <div className="h-1.5 rounded-full flex-1" style={{ background: 'var(--navy-200, #c0cfe8)' }} />
                 <div className="h-1.5 rounded-full" style={{ background: 'var(--ink-100)', width: '30%' }} />
@@ -211,7 +211,7 @@ function HeroMockup() {
             </div>
             <div className="flex gap-2 flex-shrink-0">
               <span className="text-[9px] font-semibold px-2.5 py-1 rounded-full" style={{ color: 'var(--success)', background: 'var(--success-50)' }}>✓ Prêt</span>
-              <span className="text-[9px] font-medium px-2.5 py-1 rounded-full" style={{ color: 'var(--navy-700)', background: 'var(--navy-50)', border: '1px solid var(--navy-100)' }}>Télécharger</span>
+              <span className="text-[9px] font-medium px-2.5 py-1 rounded-full" style={{ color: 'var(--navy-900)', background: 'var(--navy-50)', border: '1px solid var(--navy-100)' }}>Télécharger</span>
             </div>
           </div>
         </div>
@@ -242,7 +242,7 @@ function CalendarMockup() {
       <div className="px-5 py-3.5 flex items-center justify-between border-b" style={{ borderColor: 'var(--ink-200)' }}>
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold" style={{ color: 'var(--ink-900)' }}>Calendrier éditorial</span>
-          <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: 'var(--navy-50)', color: 'var(--navy-700)', border: '1px solid var(--navy-100)' }}>Juin 2025</span>
+          <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: 'var(--navy-50)', color: 'var(--navy-900)', border: '1px solid var(--navy-100)' }}>Juin 2025</span>
         </div>
         <div className="flex gap-2">
           <div className="w-5 h-5 rounded-md flex items-center justify-center text-[9px]" style={{ background: 'var(--ink-100)', color: 'var(--ink-500)' }}>‹</div>
@@ -274,7 +274,7 @@ function CalendarMockup() {
                     border: isToday ? '1px solid var(--navy-200, #c0cfe8)' : '1px solid transparent',
                   }}
                 >
-                  <span className="text-[9px] font-medium block mb-1" style={{ color: isToday ? 'var(--navy-700)' : 'var(--ink-400)' }}>
+                  <span className="text-[9px] font-medium block mb-1" style={{ color: isToday ? 'var(--navy-900)' : 'var(--ink-400)' }}>
                     {dayNum <= 30 ? dayNum : ''}
                   </span>
                   {post && (
@@ -317,28 +317,32 @@ export default function HomePage() {
       <nav
         className="fixed top-0 left-0 right-0 z-50"
         style={{
-          background: 'rgba(250,250,247,0.92)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(220,224,234,0.6)',
+          background: 'var(--navy-900)',
+          borderBottom: '1px solid rgba(255,255,255,0.06)',
         }}
       >
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <span
-            className="text-xl select-none"
-            style={{ fontFamily: 'var(--font-instrument-serif)', color: 'var(--navy-700)', letterSpacing: '-0.02em' }}
-          >
-            Lex<em>avo</em><span style={{ color: 'var(--ocre-500)' }}>.</span>
-          </span>
+          <div className="flex items-center gap-2">
+            <svg width="18" height="18" viewBox="0 0 17 17" fill="none" style={{ color: 'rgba(255,255,255,0.65)', flexShrink: 0 }}>
+              <rect x="1" y="1" width="15" height="11.5" rx="2.5" stroke="currentColor" strokeWidth="1.2"/>
+              <path d="M3.5 16L6 12.5H1L3.5 16Z" fill="currentColor"/>
+            </svg>
+            <span
+              className="text-xl select-none"
+              style={{ fontFamily: 'var(--font-instrument-serif)', color: 'var(--white)', letterSpacing: '-0.02em' }}
+            >
+              Lex<em>avo</em><span style={{ color: 'var(--ocre-500)' }}>.</span>
+            </span>
+          </div>
 
-          <div className="hidden md:flex items-center gap-8 text-sm" style={{ color: 'var(--ink-500)' }}>
-            <a href="#fonctionnalites" className="hover:text-[var(--ink-900)] transition-colors">Fonctionnalités</a>
-            <a href="#comment" className="hover:text-[var(--ink-900)] transition-colors">Comment ça marche</a>
-            <a href="#tarifs" className="hover:text-[var(--ink-900)] transition-colors">Tarifs</a>
+          <div className="hidden md:flex items-center gap-8 text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
+            <a href="#fonctionnalites" className="hover:text-white transition-colors">Fonctionnalités</a>
+            <a href="#comment" className="hover:text-white transition-colors">Comment ça marche</a>
+            <a href="#tarifs" className="hover:text-white transition-colors">Tarifs</a>
           </div>
 
           <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm hidden sm:block transition-colors hover:text-[var(--ink-900)]" style={{ color: 'var(--ink-500)' }}>
+            <Link href="/login" className="text-sm hidden sm:block transition-colors hover:text-white" style={{ color: 'rgba(255,255,255,0.65)' }}>
               Se connecter
             </Link>
             <Link href="/login?mode=signup" className="landing-nav-cta">
@@ -369,7 +373,7 @@ export default function HomePage() {
               }}
             >
               Publiez facilement pour faire entendre{' '}
-              <span style={{ color: 'var(--navy-700)' }}>votre droit</span>
+              <span style={{ color: 'var(--navy-900)' }}>votre droit</span>
               <span style={{ color: 'var(--ocre-500)' }}>.</span>
             </p>
 
@@ -409,7 +413,7 @@ export default function HomePage() {
             <div className="flex items-center gap-4">
               <div className="flex -space-x-2">
                 {[
-                  { init: 'SL', bg: 'var(--navy-100)', color: 'var(--navy-700)' },
+                  { init: 'SL', bg: 'var(--navy-100)', color: 'var(--navy-900)' },
                   { init: 'RA', bg: 'var(--success-50)', color: 'var(--success)' },
                   { init: 'TB', bg: 'var(--ocre-100)', color: 'var(--ocre-700)' },
                 ].map(({ init, bg, color }) => (
@@ -436,7 +440,7 @@ export default function HomePage() {
       </section>
 
       {/* ══ Stats bar ════════════════════════════════════════ */}
-      <section className="py-16 px-6" style={{ background: 'var(--navy-700)' }}>
+      <section className="py-16 px-6" style={{ background: 'var(--navy-900)' }}>
         <div className="max-w-3xl mx-auto text-center fade-in">
           <p
             className="mb-0"
@@ -502,7 +506,7 @@ export default function HomePage() {
                   <span
                     key={t}
                     className="text-xs px-2.5 py-1 rounded-full font-medium"
-                    style={{ background: 'var(--navy-50)', color: 'var(--navy-700)', border: '1px solid var(--navy-100)' }}
+                    style={{ background: 'var(--navy-50)', color: 'var(--navy-900)', border: '1px solid var(--navy-100)' }}
                   >
                     {t}
                   </span>
@@ -580,7 +584,7 @@ export default function HomePage() {
           <div className="flex justify-center mb-0 fade-in">
             <div
               className="feature-card w-full max-w-xl"
-              style={{ background: 'var(--navy-700)', border: '1px solid rgba(255,255,255,0.1)' }}
+              style={{ background: 'var(--navy-900)', border: '1px solid rgba(255,255,255,0.1)' }}
             >
               <div className="flex items-start gap-5">
                 <span
@@ -665,7 +669,7 @@ export default function HomePage() {
                   <div key={step.num} className={`flex gap-5 fade-in fade-in-delay-${i + 1}`}>
                     <div
                       className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0 mt-0.5"
-                      style={{ background: 'var(--navy-700)', color: 'var(--white)', fontFamily: 'var(--font-jetbrains-mono)' }}
+                      style={{ background: 'var(--navy-900)', color: 'var(--white)', fontFamily: 'var(--font-jetbrains-mono)' }}
                     >
                       {i + 1}
                     </div>
@@ -747,7 +751,7 @@ export default function HomePage() {
               Des tarifs simples, sans surprise
             </h2>
             <p className="text-sm mb-1" style={{ color: 'var(--ink-500)' }}>
-              3 générations d&apos;essai offertes. Aucune carte bancaire requise pour commencer.
+              10 générations d&apos;essai offertes. Aucune carte bancaire requise pour commencer.
             </p>
             <p className="text-sm font-semibold" style={{ color: 'var(--ink-700)' }}>
               Tous les plans sont illimités en générations.
@@ -796,7 +800,7 @@ export default function HomePage() {
       {/* ══ CTA final ════════════════════════════════════════ */}
       <section
         className="py-32 px-6"
-        style={{ background: 'linear-gradient(160deg, var(--navy-900) 0%, var(--navy-700) 100%)' }}
+        style={{ background: 'linear-gradient(160deg, var(--navy-900) 0%, var(--navy-900) 100%)' }}
       >
         <div className="max-w-2xl mx-auto text-center fade-in">
           <div className="gold-sep mb-10" />
@@ -807,7 +811,7 @@ export default function HomePage() {
             Prêt à publier votre premier contenu ?
           </h2>
           <p className="mb-10" style={{ fontSize: '1rem', color: 'var(--ocre-300)', lineHeight: 1.65 }}>
-            3 publications d&apos;essai offertes. Aucune carte bancaire requise.
+            10 publications d&apos;essai offertes. Aucune carte bancaire requise.
           </p>
           <Link
             href="/login?mode=signup"

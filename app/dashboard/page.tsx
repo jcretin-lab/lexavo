@@ -30,8 +30,8 @@ export default async function DashboardPage() {
     .eq('cabinet_id', cabinet.id)
 
   const trialCount = totalCount ?? 0
-  const trialExhausted = isTrial && trialCount >= 3
-  const trialRemaining = isTrial ? Math.max(0, 3 - trialCount) : 0
+  const trialExhausted = isTrial && trialCount >= 10
+  const trialRemaining = isTrial ? Math.max(0, 10 - trialCount) : 0
 
   const { data: dernieresGenerations } = await supabase
     .from('generations')
@@ -133,7 +133,7 @@ export default async function DashboardPage() {
             {totalCount ?? 0}
           </p>
           <p className="text-xs mt-2" style={{ color: 'var(--ink-400)' }}>
-            {isTrial ? `sur 3 essais gratuits` : 'générations illimitées'}
+            {isTrial ? `sur 10 essais gratuits` : 'générations illimitées'}
           </p>
         </div>
 
@@ -177,7 +177,7 @@ export default async function DashboardPage() {
             <div>
               <p className="font-semibold">Générer du contenu</p>
               <p className="text-sm mt-0.5" style={{ color: 'var(--ocre-300)' }}>
-                Article SEO + 3 posts + FAQ + 2 images IA
+                Article SEO + 3 posts + FAQ + 1 image IA (ou la vôtre)
               </p>
             </div>
             <Link
@@ -193,7 +193,7 @@ export default async function DashboardPage() {
           <div>
             <p className="font-semibold">Article → Posts</p>
             <p className="text-sm mt-0.5" style={{ color: 'var(--ocre-300)' }}>
-              Transformez votre article en 3 posts + FAQ + 2 images IA
+              Transformez votre article en 3 posts + FAQ + 1 image IA (ou la vôtre)
             </p>
           </div>
           <Link
