@@ -112,12 +112,27 @@ function OnboardingContent() {
   const barreauOptions = BARREAUX_FR.map((b) => ({ value: b, label: b }))
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col items-center justify-start px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col items-center justify-start px-4 pt-20 pb-12">
+      {/* Barre de menu fixe en haut, alignee sur le menu dashboard (navy-900 + texte blanc) */}
+      <header
+        className="fixed top-0 left-0 right-0 z-30 h-14 flex items-center px-4"
+        style={{ background: 'var(--navy-900)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+      >
+        <div className="flex items-center gap-2">
+          <svg width="18" height="18" viewBox="0 0 17 17" fill="none" style={{ color: 'rgba(255,255,255,0.65)', flexShrink: 0 }}>
+            <rect x="1" y="1" width="15" height="11.5" rx="2.5" stroke="currentColor" strokeWidth="1.2" />
+            <path d="M3.5 16L6 12.5H1L3.5 16Z" fill="currentColor" />
+          </svg>
+          <span style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.375rem', color: 'var(--white)', letterSpacing: '-0.02em' }}>
+            Lex<em>avo</em><span style={{ color: 'var(--ocre-500)' }}>.</span>
+          </span>
+        </div>
+      </header>
+
       <div className="w-full max-w-2xl">
-        {/* Header */}
+        {/* Sous-titre */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-blue-800">Lexavo</h1>
-          <p className="text-gray-500 mt-1 text-sm">
+          <p className="text-gray-500 text-sm">
             {inviteId ? 'Créez votre espace personnel' : 'Configuration de votre cabinet'}
           </p>
         </div>
