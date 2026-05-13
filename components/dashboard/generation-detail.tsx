@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -60,13 +60,50 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
   const [scheduleDate, setScheduleDate] = useState('')
   const [publishError, setPublishError] = useState('')
 
-  const images = generation.images ?? null
+  const [images, setImages] = useState<ImagesByStyle | null>(generation.images ?? null)
   const hasImages = !!images && Object.values(images).some(Boolean)
   const fallbackImage = !hasImages ? (generation.image_url ?? null) : null
 
   const [persistingSelection, setPersistingSelection] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [pickError, setPickError] = useState('')
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState('')
+
+  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+    setUploadError('')
+    if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
+      setUploadError('Format invalide (PNG, JPG ou WEBP uniquement)')
+      return
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError('Fichier trop volumineux (5 Mo max)')
+      return
+    }
+    setUploading(true)
+    try {
+      const formData = new FormData()
+      formData.append('generation_id', generation.id)
+      formData.append('file', file)
+      const res = await fetch('/api/content/upload-image', { method: 'POST', body: formData })
+      let data: Record<string, unknown> = {}
+      try { data = await res.json() } catch {}
+      if (!res.ok) throw new Error((data.error as string) || `Erreur ${res.status}`)
+      const url = data.url as string
+      const nextImages = data.images as ImagesByStyle
+      setImages(nextImages)
+      setSelectedImage(url)
+    } catch (err: unknown) {
+      setUploadError(err instanceof Error ? err.message : 'Erreur lors de l\'upload')
+    } finally {
+      setUploading(false)
+    }
+  }
 
   async function selectImage(url: string) {
     if (url === selectedImage) return
@@ -244,7 +281,7 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
                 <span className="text-[11px] text-gray-400">Enregistrement…</span>
               )}
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               {IMAGE_STYLE_ORDER.map((style: ImageStyle) => {
                 const url = images[style]
                 if (!url) return null
@@ -282,9 +319,90 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
                   </button>
                 )
               })}
+
+              {/* Tuile upload utilisateur : soit miniature si deja uploadee, soit bouton d'upload. */}
+              {(() => {
+                const persoUrl = images.personnalisee ?? null
+                const isSelected = !!persoUrl && persoUrl === selectedImage
+                if (persoUrl) {
+                  return (
+                    <div
+                      className={`group relative flex flex-col rounded-xl overflow-hidden border-2 transition-all bg-white ${
+                        isSelected ? 'border-blue-600 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => selectImage(persoUrl)}
+                        className="flex flex-col w-full"
+                      >
+                        <div className="relative w-full aspect-[16/9] bg-gray-100">
+                          <Image
+                            src={persoUrl}
+                            alt={`${IMAGE_STYLE_LABELS.personnalisee} — ${generation.theme}`}
+                            fill
+                            sizes="(max-width: 768px) 33vw, 16vw"
+                            className="object-cover"
+                          />
+                          {isSelected && (
+                            <span className="absolute top-1.5 right-1.5 inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-white text-[10px] font-bold shadow">
+                              ✓
+                            </span>
+                          )}
+                        </div>
+                        <span
+                          className={`block text-[10px] py-1 text-center font-medium truncate ${
+                            isSelected ? 'text-blue-700 bg-blue-50' : 'text-gray-600 bg-gray-50'
+                          }`}
+                        >
+                          {IMAGE_STYLE_LABELS.personnalisee}
+                        </span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploading}
+                        className="absolute top-1.5 left-1.5 text-[10px] font-medium bg-white/90 hover:bg-white text-gray-700 px-1.5 py-0.5 rounded shadow border border-gray-200 disabled:opacity-60"
+                      >
+                        {uploading ? '…' : 'Remplacer'}
+                      </button>
+                    </div>
+                  )
+                }
+                return (
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className="group flex flex-col rounded-xl overflow-hidden border-2 border-dashed border-gray-300 hover:border-blue-400 transition-all bg-gray-50 hover:bg-blue-50/40 disabled:opacity-60 disabled:cursor-wait"
+                  >
+                    <div className="relative w-full aspect-[16/9] flex items-center justify-center text-gray-400 group-hover:text-blue-500">
+                      <div className="flex flex-col items-center gap-1">
+                        <span className="text-xl leading-none">{uploading ? '…' : '+'}</span>
+                        <span className="text-[10px] font-medium">
+                          {uploading ? 'Upload…' : 'Uploader la mienne'}
+                        </span>
+                      </div>
+                    </div>
+                    <span className="block text-[10px] py-1 text-center font-medium truncate text-gray-500 bg-gray-100">
+                      {IMAGE_STYLE_LABELS.personnalisee}
+                    </span>
+                  </button>
+                )
+              })()}
             </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              onChange={handleFileChange}
+              className="hidden"
+            />
             {pickError && (
               <p className="mt-2 text-[11px] text-red-600">{pickError}</p>
+            )}
+            {uploadError && (
+              <p className="mt-2 text-[11px] text-red-600">{uploadError}</p>
             )}
             {selectedImage && (
               <div className="mt-2 text-right">

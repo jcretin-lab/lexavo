@@ -52,12 +52,15 @@ export interface FaqItem {
 // type sous-jacent JSONB mais n'est plus produit ni affiche.
 export type ImageStyle = 'conceptuelle' | 'humains'
 
+// L'utilisateur peut egalement uploader sa propre image, stockee sous la cle 'personnalisee'.
+export type ImageSlot = ImageStyle | 'personnalisee'
+
 export interface ImagePromptSpec {
   style: ImageStyle
   prompt: string
 }
 
-export type ImagesByStyle = Partial<Record<ImageStyle, string | null>>
+export type ImagesByStyle = Partial<Record<ImageSlot, string | null>>
 
 export interface GenerationContent {
   article_blog: ArticleBlog
@@ -82,9 +85,10 @@ export interface Generation {
   created_at: string
 }
 
-export const IMAGE_STYLE_LABELS: Record<ImageStyle, string> = {
+export const IMAGE_STYLE_LABELS: Record<ImageSlot, string> = {
   conceptuelle: 'Conceptuelle',
   humains: 'Avec personnes',
+  personnalisee: 'La mienne',
 }
 
 export const IMAGE_STYLE_ORDER: ImageStyle[] = ['conceptuelle', 'humains']
