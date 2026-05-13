@@ -48,12 +48,12 @@ export async function POST(request: NextRequest) {
       .select('id', { count: 'exact', head: true })
       .eq('cabinet_id', cabinet.id)
 
-    if ((totalCount ?? 0) >= 3) {
+    if ((totalCount ?? 0) >= 10) {
       if (user.email) {
         sendQuotaAtteint(user.email).catch(() => {})
       }
       return NextResponse.json(
-        { error: 'Vos 3 générations d\'essai sont épuisées. Abonnez-vous pour continuer.', trial_exhausted: true },
+        { error: 'Vos 10 générations d\'essai sont épuisées. Abonnez-vous pour continuer.', trial_exhausted: true },
         { status: 402 }
       )
     }
@@ -212,12 +212,12 @@ Champs supplémentaires :
 }`
 
   // 2 styles produits :
-  // - conceptuelle : DALL-E 3 standard 1792x1024 vivid (illustration corporate, $0.08)
-  // - humains     : gpt-image-1 high 1536x1024 (photo realiste de personne, $0.25)
+  // - conceptuelle : DALL-E 3 standard 1024x1024 vivid (illustration corporate, $0.04)
+  // - humains     : gpt-image-1 medium 1536x1024 (photo realiste de personne)
   type DalleConfig = {
     model: 'dall-e-3'
     suffix: string
-    size: '1792x1024'
+    size: '1024x1024'
     quality: 'standard' | 'hd'
     style: 'vivid' | 'natural'
   }
@@ -232,7 +232,7 @@ Champs supplémentaires :
       model: 'dall-e-3',
       suffix:
         ' Minimalist editorial illustration of a SINGLE central iconic subject only. Vast empty off-white background with abundant negative space around the subject. NO additional decorative elements, NO clutter, NO surrounding objects, NO secondary symbols. Strictly 2-3 colors total: navy blue, off-white, subtle gold accents. Single soft light source. Flat editorial poster style. Wide format 16:9. Completely textless image, no letters, no numbers, no labels, no writing of any kind anywhere.',
-      size: '1792x1024',
+      size: '1024x1024',
       quality: 'standard',
       style: 'vivid',
     },
@@ -241,7 +241,7 @@ Champs supplémentaires :
       suffix:
         ' Authentic candid photograph of an ordinary person. Real human anatomy with natural skin imperfections, asymmetric features, age-appropriate texture and pores, individual character. Authentic everyday clothing, not styled. Soft natural side light from a window. Slight imperfect framing, like a real snapshot. Photorealistic, indistinguishable from a real photograph. No visible text in the background (books, papers and signs have blank covers).',
       size: '1536x1024',
-      quality: 'high',
+      quality: 'medium',
     },
   }
   const FALLBACK_PROMPTS: Record<ImageStyle, string> = {
@@ -375,9 +375,9 @@ Champs supplémentaires :
         .select('id', { count: 'exact', head: true })
         .eq('cabinet_id', cabinet.id)
 
-      if ((finalCount ?? 0) >= 3) {
+      if ((finalCount ?? 0) >= 10) {
         return NextResponse.json(
-          { error: 'Vos 3 générations d\'essai sont épuisées. Abonnez-vous pour continuer.', trial_exhausted: true },
+          { error: 'Vos 10 générations d\'essai sont épuisées. Abonnez-vous pour continuer.', trial_exhausted: true },
           { status: 402 }
         )
       }
