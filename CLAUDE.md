@@ -21,9 +21,11 @@ FAQ et image éditoriale pour avocats français. Site déployé sur https://www.
 - **Resend** pour les e-mails transactionnels.
 - **Make** côté client : chaque cabinet renseigne son `make_webhook_url` pour
   publier sur ses réseaux ; on n'orchestre pas la publication nous-mêmes.
-- Déploiement **Vercel** (`vercel --prod` depuis le repo, alias actif sur
-  `www.lexavo.fr`). Cron unique : `/api/cron/publish-due` toutes les 5 min
-  (`vercel.json`).
+- Déploiement **Vercel** via **Git Integration** : tout `git push` sur `main`
+  déclenche un build production automatique (alias `www.lexavo.fr`), un push
+  sur une autre branche crée une preview. `vercel --prod` à la main reste
+  utile pour tester un build local ou forcer un redeploy sans push. Cron
+  unique : `/api/cron/publish-due` toutes les 5 min (`vercel.json`).
 
 ## Modèle métier
 
@@ -121,5 +123,6 @@ npm run dev           # serveur dev (http://localhost:3000)
 npm run build         # build prod local
 npm run lint          # eslint
 npx tsc --noEmit      # type-check
-vercel --prod         # déploiement production (alias www.lexavo.fr)
+git push              # auto-deploy prod via Vercel Git Integration
+vercel --prod         # deploy CLI manuel (optionnel, sans push)
 ```
