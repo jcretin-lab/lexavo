@@ -68,22 +68,47 @@ RÈGLES TEMPORELLES :
 
 RÈGLES POSTS LINKEDIN :
 
-Les 3 posts ont 3 angles obligatoirement différents. Chaque post est structuré en 3 BLOCS nommés, séparés par un saut de ligne. Chaque bloc est introduit par un sous-titre court (3 à 6 mots, sans gras typographique), suivi d'un saut de ligne, puis du contenu du bloc.
+OBJECTIF : générer 3 posts qui, s'ils étaient publiés à 1 semaine d'intervalle dans le fil d'un avocat, ne donneraient JAMAIS une impression de répétition. Variabilité éditoriale = priorité absolue.
 
-- Post 1 — PÉDAGOGIQUE
-  Bloc 1 — Le concept : présente la notion juridique en 2-3 phrases.
-  Bloc 2 — Ce que ça change pour vous : reformulation concrète côté justiciable.
-  Bloc 3 — Le piège fréquent : un point précis où les gens se trompent.
+CHOIX DES ANGLES (3 angles différents parmi ces 8) :
+- PÉDAGOGIQUE — expliquer une notion juridique d'apparence complexe
+- CAS PRATIQUE — raconter une situation concrète et son issue
+- CONSEIL ACTIONNABLE — un réflexe ou tip immédiatement applicable
+- FAIT MÉCONNU — révéler une règle ou jurisprudence peu connue
+- ALERTE / ERREUR CLASSIQUE — pointer une erreur fréquente et son coût
+- AVANT / APRÈS — montrer le décalage entre perception courante et réalité juridique
+- LES MOTS QUI COMPTENT — décrypter le sens juridique précis d'un terme courant
+- LA QUESTION QU'ON N'OSE PAS POSER — répondre à une interrogation pudique mais courante
 
-- Post 2 — CAS PRATIQUE
-  Bloc 1 — La situation : description factuelle d'un cas réaliste, sans noms ni détails identifiants.
-  Bloc 2 — Ce que dit le droit : référence au texte / article applicable + délai légal s'il en existe un.
-  Bloc 3 — Ce qu'il faut retenir : un enseignement actionnable.
+Choisir les 3 angles qui collent le mieux au sujet. Ne JAMAIS reprendre 3 fois "Pédagogique / Cas pratique / Conseil" par défaut.
 
-- Post 3 — CONSEIL
-  Bloc 1 — Avant d'agir : le réflexe à NE PAS avoir.
-  Bloc 2 — Le bon réflexe : ce qu'il faut faire à la place.
-  Bloc 3 — Quand consulter : signal clair qui doit déclencher la prise de rendez-vous.
+STRUCTURE DE CHAQUE POST :
+- 2 à 4 BLOCS, séparés par un saut de ligne — le nombre est libre, ajusté à l'angle et au sujet
+- Chaque bloc est introduit par un SOUS-TITRE COURT (3 à 5 mots), suivi d'un saut de ligne, puis du contenu
+- Les blocs forment une mini-narration cohérente (ex : situation → mécanisme → action, ou révélation → conséquence)
+
+RÈGLES CRITIQUES SUR LES SOUS-TITRES :
+
+INTERDIT — sous-titres génériques recyclables :
+"Le concept", "Le contexte", "Ce qu'il faut savoir", "Pour conclure", "Ce qui change pour vous", "Le piège fréquent", "L'essentiel", "Les enjeux", "Ce que dit le droit", "La situation", "Avant d'agir", "Quand consulter", "Le bon réflexe", "Ce qu'il faut retenir".
+
+OBLIGATOIRE — sous-titres taillés sur mesure :
+- Chaque sous-titre contient un mot précis du domaine juridique traité OU une image concrète liée au sujet
+- Un sous-titre ne doit JAMAIS être réutilisable tel quel sur un autre sujet juridique
+- Les 9 sous-titres des 3 posts d'une même génération sont tous différents
+
+EXEMPLES de sous-titres bien construits (pour calibrage de style, ne pas recopier) :
+
+Sujet « Licenciement pour faute grave » :
+  Post pédagogique : "Faute grave, faute lourde" — "Le bureau vidé en 48 h" — "Ce qui sauve les indemnités"
+  Post cas pratique : "Un SMS au mauvais moment" — "L'article L. 1234-1 en main" — "Pourquoi il a gagné en appel"
+
+Sujet « Droit de rétractation » :
+  Post fait méconnu : "Quatorze jours, deux exceptions" — "Le bouton qu'on ne voit pas" — "Une LRAR vaut mieux"
+  Post alerte : "Le piège du sur-mesure" — "L'article L. 221-28 dit ceci" — "Trois réflexes avant de cliquer"
+
+Sujet « Rupture brutale relations commerciales » :
+  Post avant/après : "Dix ans de partenariat" — "Un email, trois lignes" — "Le préavis selon les juges"
 
 RÈGLES FORMELLES — s'appliquent aux 3 posts :
 
@@ -93,12 +118,13 @@ RÈGLES FORMELLES — s'appliquent aux 3 posts :
   (b) une énumération sèche de 2 à 3 mots séparés par un point (ex : "Bail. Loyer. Préavis.")
   (c) une question fermée provocante en 8 mots maximum
   (d) un fait juridique méconnu, introduit sans préambule
+  Les 3 posts doivent utiliser 3 leviers d'accroche différents parmi (a, b, c, d).
 - Citer au moins UN élément précis tiré du sujet : article de code, date de texte, chiffre, seuil légal, nom de procédure, juridiction compétente. Ne jamais inventer — si incertain, formuler avec "en général" ou "selon les cas".
-- Aucun paragraphe ne dépasse 3 lignes. Sauter une ligne entre chaque paragraphe et entre chaque bloc nommé. Voix active. Phrases courtes.
-- Aucun emoji, aucun symbole décoratif (✅, 👇, ▸, →). Le seul caractère toléré en tête de bloc est le tiret long "—".
+- Aucun paragraphe ne dépasse 3 lignes. Sauter une ligne entre chaque paragraphe et entre chaque bloc. Voix active. Phrases courtes.
+- Aucun emoji, aucun symbole décoratif (✅, 👇, ▸, →). Le seul caractère toléré en tête de sous-titre est le tiret long "—".
 - Aucune formule auto-promotionnelle ("nous sommes les premiers à…", "je l'avais prévu…", "le meilleur cabinet…"). Aucune comparaison avec d'autres avocats.
-- Appel à consultation en clôture du post (après le bloc 3), formulé DIFFÉREMMENT dans chaque post. Exemples acceptables (à varier, pas à recopier) : "Pour clarifier votre situation, échangeons.", "Ce point mérite un avis adapté à votre dossier.", "Un éclairage personnalisé évite l'erreur de procédure."
-- Longueur : 220 à 280 mots par post, hors hashtags.
+- Appel à consultation en clôture du post, formulé DIFFÉREMMENT dans chaque post (ne jamais réutiliser une formule sur 2 posts d'une même génération).
+- Longueur : 180 à 280 mots par post, ajustée au nombre de blocs (2 blocs ≈ 180-220 mots, 3 blocs ≈ 220-260, 4 blocs ≈ 260-300). Hors hashtags.
 - 3 hashtags juridiques pertinents en fin de post, jamais plus, sur une ligne séparée.
 
 Génère aussi 5 questions/réponses de FAQ juridique tirées de l'article (questions concrètes que se pose un justiciable, réponses pédagogiques de 2-3 phrases conformes à la déontologie, sans avis juridique personnalisé).
