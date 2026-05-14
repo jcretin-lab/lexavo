@@ -106,17 +106,39 @@ RÈGLES SEO OBLIGATOIRES :
 - Balises strong sur les termes juridiques importants
 - Longueur : 900-1200 mots
 
-RÈGLES POSTS FACEBOOK :
-Les 3 posts doivent avoir 3 angles obligatoirement différents :
-- Post 1 : angle pédagogique (expliquer un concept juridique)
-- Post 2 : angle cas pratique (situation concrète du justiciable)
-- Post 3 : angle actualité ou conseil (tip actionnable ou changement récent)
+RÈGLES POSTS LINKEDIN :
 
-Chaque post :
-- Accroche forte en première ligne (question ou chiffre ou affirmation)
-- 150-200 mots
-- 3-5 hashtags pertinents
-- Se termine par un appel à consultation
+Les 3 posts ont 3 angles obligatoirement différents. Chaque post est structuré en 3 BLOCS nommés, séparés par un saut de ligne. Chaque bloc est introduit par un sous-titre court (3 à 6 mots, sans gras typographique), suivi d'un saut de ligne, puis du contenu du bloc.
+
+- Post 1 — PÉDAGOGIQUE
+  Bloc 1 — Le concept : présente la notion juridique en 2-3 phrases.
+  Bloc 2 — Ce que ça change pour vous : reformulation concrète côté justiciable.
+  Bloc 3 — Le piège fréquent : un point précis où les gens se trompent.
+
+- Post 2 — CAS PRATIQUE
+  Bloc 1 — La situation : description factuelle d'un cas réaliste, sans noms ni détails identifiants.
+  Bloc 2 — Ce que dit le droit : référence au texte / article applicable + délai légal s'il en existe un.
+  Bloc 3 — Ce qu'il faut retenir : un enseignement actionnable.
+
+- Post 3 — CONSEIL
+  Bloc 1 — Avant d'agir : le réflexe à NE PAS avoir.
+  Bloc 2 — Le bon réflexe : ce qu'il faut faire à la place.
+  Bloc 3 — Quand consulter : signal clair qui doit déclencher la prise de rendez-vous.
+
+RÈGLES FORMELLES — s'appliquent aux 3 posts :
+
+- Première ligne = ACCROCHE tirée OBLIGATOIREMENT d'un de ces 4 leviers, jamais une formule générique :
+  (a) un chiffre, un délai ou un seuil légal extrait du sujet
+  (b) une énumération sèche de 2 à 3 mots séparés par un point (ex : "Bail. Loyer. Préavis.")
+  (c) une question fermée provocante en 8 mots maximum
+  (d) un fait juridique méconnu, introduit sans préambule
+- Citer au moins UN élément précis tiré du sujet : article de code, date de texte, chiffre, seuil légal, nom de procédure, juridiction compétente. Ne jamais inventer.
+- Aucun paragraphe ne dépasse 3 lignes. Sauter une ligne entre chaque paragraphe et entre chaque bloc nommé. Voix active. Phrases courtes.
+- Aucun emoji, aucun symbole décoratif (✅, 👇, ▸, →). Le seul caractère toléré en tête de bloc est le tiret long "—".
+- Aucune formule auto-promotionnelle, aucune comparaison avec d'autres avocats.
+- Appel à consultation en clôture du post (après le bloc 3), formulé DIFFÉREMMENT dans chaque post.
+- Longueur : 220 à 280 mots par post, hors hashtags.
+- 3 hashtags juridiques pertinents en fin de post, jamais plus, sur une ligne séparée.
 
 CONTEXTE DU CABINET :
 - Nom : ${cabinet.nom}
@@ -205,7 +227,7 @@ Champs supplémentaires :
   },
   "posts_linkedin": [
     {
-      "texte": "string (150-200 mots, accroche forte en 1ère ligne)",
+      "texte": "string (220-280 mots, 3 blocs nommés, accroche tirée d'un des 4 leviers, sauts de ligne entre blocs)",
       "hashtags": ["string", "string", "string"]
     },
     { "texte": "string", "hashtags": ["string", "string", "string"] },

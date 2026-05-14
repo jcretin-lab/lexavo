@@ -66,17 +66,40 @@ RÈGLES TEMPORELLES :
 - Ne jamais mentionner une année pour désigner "aujourd'hui" ou "actuellement" — utiliser "actuellement", "en vigueur", "à ce jour"
 - Les années sont autorisées uniquement pour référencer un texte précis (ex : "la loi du 14 juin 2013") ou une date historique identifiable
 
-LES 3 POSTS DOIVENT AVOIR CES ANGLES DISTINCTS :
-- Post 1 : angle pédagogique (expliquer le concept clé de l'article)
-- Post 2 : angle cas pratique (situation concrète du justiciable)
-- Post 3 : angle conseil (tip actionnable tiré de l'article)
+RÈGLES POSTS LINKEDIN :
 
-Chaque post :
-- 150-200 mots
+Les 3 posts ont 3 angles obligatoirement différents. Chaque post est structuré en 3 BLOCS nommés, séparés par un saut de ligne. Chaque bloc est introduit par un sous-titre court (3 à 6 mots, sans gras typographique), suivi d'un saut de ligne, puis du contenu du bloc.
+
+- Post 1 — PÉDAGOGIQUE
+  Bloc 1 — Le concept : présente la notion juridique en 2-3 phrases.
+  Bloc 2 — Ce que ça change pour vous : reformulation concrète côté justiciable.
+  Bloc 3 — Le piège fréquent : un point précis où les gens se trompent.
+
+- Post 2 — CAS PRATIQUE
+  Bloc 1 — La situation : description factuelle d'un cas réaliste, sans noms ni détails identifiants.
+  Bloc 2 — Ce que dit le droit : référence au texte / article applicable + délai légal s'il en existe un.
+  Bloc 3 — Ce qu'il faut retenir : un enseignement actionnable.
+
+- Post 3 — CONSEIL
+  Bloc 1 — Avant d'agir : le réflexe à NE PAS avoir.
+  Bloc 2 — Le bon réflexe : ce qu'il faut faire à la place.
+  Bloc 3 — Quand consulter : signal clair qui doit déclencher la prise de rendez-vous.
+
+RÈGLES FORMELLES — s'appliquent aux 3 posts :
+
 - Ton souhaité : ${ton}
-- Accroche forte en première ligne
-- 3-5 hashtags juridiques pertinents
-- Appel à consultation en conclusion
+- Première ligne = ACCROCHE tirée OBLIGATOIREMENT d'un de ces 4 leviers, jamais une formule générique :
+  (a) un chiffre, un délai ou un seuil légal extrait du sujet
+  (b) une énumération sèche de 2 à 3 mots séparés par un point (ex : "Bail. Loyer. Préavis.")
+  (c) une question fermée provocante en 8 mots maximum
+  (d) un fait juridique méconnu, introduit sans préambule
+- Citer au moins UN élément précis tiré du sujet : article de code, date de texte, chiffre, seuil légal, nom de procédure, juridiction compétente. Ne jamais inventer — si incertain, formuler avec "en général" ou "selon les cas".
+- Aucun paragraphe ne dépasse 3 lignes. Sauter une ligne entre chaque paragraphe et entre chaque bloc nommé. Voix active. Phrases courtes.
+- Aucun emoji, aucun symbole décoratif (✅, 👇, ▸, →). Le seul caractère toléré en tête de bloc est le tiret long "—".
+- Aucune formule auto-promotionnelle ("nous sommes les premiers à…", "je l'avais prévu…", "le meilleur cabinet…"). Aucune comparaison avec d'autres avocats.
+- Appel à consultation en clôture du post (après le bloc 3), formulé DIFFÉREMMENT dans chaque post. Exemples acceptables (à varier, pas à recopier) : "Pour clarifier votre situation, échangeons.", "Ce point mérite un avis adapté à votre dossier.", "Un éclairage personnalisé évite l'erreur de procédure."
+- Longueur : 220 à 280 mots par post, hors hashtags.
+- 3 hashtags juridiques pertinents en fin de post, jamais plus, sur une ligne séparée.
 
 Génère aussi 5 questions/réponses de FAQ juridique tirées de l'article (questions concrètes que se pose un justiciable, réponses pédagogiques de 2-3 phrases conformes à la déontologie, sans avis juridique personnalisé).
 
