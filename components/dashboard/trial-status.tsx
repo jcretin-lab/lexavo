@@ -20,7 +20,7 @@ export function TrialStatus({ remaining, exhausted }: Props) {
           <div>
             <p className="text-sm font-medium text-red-800">Essai gratuit terminé</p>
             <p className="text-xs text-red-600 mt-0.5">
-              Vos 3 générations d&apos;essai sont épuisées. Abonnez-vous pour un accès illimité.
+              Vos 10 générations d&apos;essai sont épuisées. Abonnez-vous pour un accès illimité.
             </p>
           </div>
           <button

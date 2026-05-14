@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { PricingSection } from '@/components/pricing/pricing-section'
 
 interface Props {
   open: boolean
   onClose: () => void
   titre?: string
-  message?: string
+  message?: ReactNode
 }
 
 export function UpgradeModal({ open, onClose, titre, message }: Props) {
@@ -49,10 +49,15 @@ export function UpgradeModal({ open, onClose, titre, message }: Props) {
           <div className="text-center mb-6">
             <p className="text-3xl mb-2">✦</p>
             <h2 className="text-xl font-bold text-gray-900">
-              {titre ?? 'Vos 3 essais gratuits sont épuisés'}
+              {titre ?? 'Vos 10 essais gratuits sont épuisés'}
             </h2>
-            <p className="text-sm text-gray-500 mt-1">
-              {message ?? 'Choisissez un plan pour un accès illimité au contenu juridique.'}
+            <p className="text-sm text-gray-600 mt-2 leading-relaxed">
+              {message ?? (
+                <>
+                  Vous êtes satisfait des articles et posts générés ?<br />
+                  Passez à la diffusion et à la programmation permanente.
+                </>
+              )}
             </p>
           </div>
 

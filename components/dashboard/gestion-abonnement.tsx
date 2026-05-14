@@ -74,7 +74,7 @@ export function GestionAbonnement({ cabinet }: Props) {
           </p>
         )}
         {isTrial && (
-          <p className="text-sm text-amber-600 mt-0.5">3 générations d'essai offertes</p>
+          <p className="text-sm text-amber-600 mt-0.5">10 générations d'essai offertes</p>
         )}
       </div>
 
