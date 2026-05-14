@@ -4,7 +4,7 @@ import OpenAI from 'openai'
 import { createClient } from '@/lib/supabase/server'
 import { type ImageStyle, type ImagesByStyle, IMAGE_STYLE_ORDER } from '@/types'
 
-export const maxDuration = 240
+export const maxDuration = 90
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! })
@@ -156,21 +156,6 @@ CONTRAINTES :
 - aucune personne, aucun texte lisible (documents vierges ou flous)
 - INTERDIT : "minimalist", "single object", "flat illustration", "icon", "vast empty background", "abstract"
 
-OUTILS LÉGIFRANCE (MCP server "legifrance") :
-Tu as accès au serveur MCP "legifrance" qui expose 3 outils branchés sur les bases officielles françaises :
-- rechercher_code : recherche dans les 73 codes français (Code du travail, Code civil, Code de commerce, etc.)
-- rechercher_jurisprudence_judiciaire : recherche dans Judilibre (Cour de cassation)
-- rechercher_dans_texte_legal : recherche dans une loi/ordonnance/décret précis
-
-PROTOCOLE STRICT (à respecter pour chaque génération) :
-1. AVANT de rédiger les posts, tu fais AU MAXIMUM 2 appels d'outils Légifrance (idéalement 1 seul) pour identifier 1 à 2 références juridiques précises applicables au sujet de l'article.
-2. Tu privilégies rechercher_code (le plus rapide). Tu utilises rechercher_jurisprudence_judiciaire uniquement si l'article traite spécifiquement d'une question de jurisprudence.
-3. Tu cites UNIQUEMENT les références retournées par les outils — jamais une référence que tu inventes.
-4. Si l'article fourni cite déjà une référence précise, tu la vérifies avec rechercher_code avant de la reprendre dans tes posts.
-5. Si les outils ne renvoient rien d'exploitable, tu n'inventes pas — tu cites un délai, un seuil, une procédure ou une juridiction (qui ne nécessitent pas de vérification d'article), ou tu paraphrases sans référence précise.
-
-Les références Légifrance vérifiées peuvent être citées dans 1 ou 2 posts (pas obligatoirement les 3). Le 3e post peut reposer sur un fait, un délai ou un cas pratique.
-
 Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
 {
   "posts_linkedin": [
@@ -200,37 +185,18 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
   let result: ApiResult | null = null
 
   try {
-    const openlegiToken = process.env.OPENLEGI_TOKEN
-    const useMcp = !!openlegiToken
-
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
-        const message = await anthropic.beta.messages.create({
+        const message = await anthropic.messages.create({
           model: 'claude-sonnet-4-6',
           max_tokens: 4500,
-          betas: useMcp ? ['mcp-client-2025-11-20'] : undefined,
-          system: [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
-          mcp_servers: useMcp
-            ? [{
-                name: 'legifrance',
-                type: 'url',
-                url: 'https://mcp.openlegi.fr/legifrance/mcp',
-                authorization_token: openlegiToken!,
-              }]
-            : undefined,
-          tools: useMcp ? [{ type: 'mcp_toolset', mcp_server_name: 'legifrance' }] : undefined,
+          system: systemPrompt,
           messages: [{ role: 'user', content: `ARTICLE :\n\n${article}` }],
         })
 
-        // Concatène tous les blocs text (le JSON final est dans le(s) dernier(s) après les tool calls)
-        const allText = message.content
-          .filter((b): b is Extract<typeof b, { type: 'text' }> => b.type === 'text')
-          .map(b => b.text)
-          .join('\n')
-        const cleaned = allText.replace(/^```json\n?/, '').replace(/\n?```$/, '').trim()
-        const jsonMatch = cleaned.match(/\{[\s\S]*\}/)
-        const jsonStr = jsonMatch ? jsonMatch[0] : cleaned
-        result = JSON.parse(jsonStr) as ApiResult
+        const rawText = message.content[0].type === 'text' ? message.content[0].text : ''
+        const cleaned = rawText.replace(/^```json\n?/, '').replace(/\n?```$/, '').trim()
+        result = JSON.parse(cleaned) as ApiResult
         break
       } catch (err) {
         console.error(`[article-to-linkedin] Tentative ${attempt + 1} échouée :`, err)
