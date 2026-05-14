@@ -162,6 +162,34 @@ body {
 }
 .article-content a:hover { color: var(--navy-800); }
 
+.article-content .a-retenir {
+  background: var(--navy-50);
+  border-left: 4px solid var(--navy-700);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0 1.5rem;
+}
+.article-content .a-retenir > strong {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--navy-900);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.article-content .a-retenir ul {
+  list-style-type: disc;
+  padding-left: 1.25rem;
+  margin: 0;
+}
+.article-content .a-retenir li {
+  margin-bottom: 0.25rem;
+}
+.article-content .a-retenir li:last-child {
+  margin-bottom: 0;
+}
+
 /* ─── Landing page ──────────────────────────────────── */
 
 .gold-sep {

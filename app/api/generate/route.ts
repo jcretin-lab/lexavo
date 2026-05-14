@@ -92,19 +92,45 @@ RÈGLES TEMPORELLES ABSOLUES :
 - Exemples autorisés : "la loi Macron de 2015 prévoit…", "depuis la réforme des retraites de 2023…"
 
 STRUCTURE ARTICLE IMPOSÉE :
-1. Introduction (2-3 phrases) : accroche + mot-clé principal + annonce du plan
-2. Contexte / définition du sujet
-3. Les points clés (2-3 sections h2)
-4. Ce que peut faire l'avocat pour vous (1 section h2)
-5. Conclusion + appel à consultation
+
+Plan-canon. Inclure 5 à 6 sections h2 parmi les 7 ci-dessous, selon ce qui s'applique au thème (ne pas forcer une section qui n'a pas de sens pour le sujet) :
+
+1. Encart "À retenir" (juste après le h1, AVANT l'introduction) — 3 puces de 1 ligne, snippet-friendly, 50-60 mots au total.
+2. Introduction (2-3 phrases, voir RÈGLE ACCROCHE plus bas)
+3. h2 — Définition / De quoi parle-t-on ?
+4. h2 — Quand ce dispositif s'applique-t-il ? (cas typiques)
+5. h2 — Quelle procédure ? (étapes ordonnées, idéalement <ol>)
+6. h2 — Quels délais légaux ? (avec chiffres précis + texte de référence)
+7. h2 — Quels coûts et risques ? (forfait, dépens, sanctions encourues)
+8. h2 — Les erreurs fréquentes à éviter
+9. h2 — Comment un avocat intervient (CTA implicite)
+
+Avant la conclusion : checklist <ul> de 4 à 6 puces actionnables ("ce que vous devez faire / vérifier / conserver").
+
+Conclusion (3-4 phrases) avec <a href="#consultation">Prendre rendez-vous</a>.
+
+RÈGLE ACCROCHE INTRODUCTION :
+Première phrase de l'introduction tirée OBLIGATOIREMENT d'un de ces 4 leviers, jamais une formule générique :
+(a) un chiffre, un délai ou un seuil légal du sujet
+(b) une énumération sèche de 2-3 mots séparés par un point
+(c) une question fermée provocante (8 mots maximum)
+(d) un fait juridique méconnu introduit sans préambule
+
+DENSITÉ JURIDIQUE OBLIGATOIRE :
+- Minimum 2 références textuelles précises avec date ou numéro (ex : "article L. 1232-1 du Code du travail", "la loi du 14 juin 2013", "le décret n° 2008-1339 du 16 décembre 2008")
+- Minimum 1 juridiction compétente nommée (Conseil de prud'hommes, Tribunal judiciaire, Cour d'appel, Conseil d'État…)
+- Minimum 1 délai légal chiffré (en jours, mois ou ans)
+- Minimum 1 procédure nommée (assignation, requête, médiation préalable obligatoire, référé…)
+- INTERDICTION ABSOLUE d'inventer une jurisprudence ou un numéro d'arrêt. Si la jurisprudence n'est pas certaine, formuler avec "la jurisprudence considère généralement que…" sans citer de référence précise.
 
 RÈGLES SEO OBLIGATOIRES :
-- Mot-clé principal dans le h1, premier paragraphe et 1 h2
-- Densité mot-clé : 1-2% maximum
+- Mot-clé principal dans le h1, dans le premier paragraphe sous le h1, et dans au moins 2 h2 (dont le premier)
+- Au moins 1 h2 formulé en question (signal snippet)
+- Densité mot-clé 1-2 % maximum, jamais bourrer
 - Paragraphes : 3-5 lignes maximum
-- Au moins 1 liste ul ou ol
-- Balises strong sur les termes juridiques importants
-- Longueur : 900-1200 mots
+- Au moins 1 <ul> ou <ol> en plus de la checklist finale
+- <strong> sur les termes juridiques précis (noms de procédures, noms de codes), pas sur des adjectifs
+- Longueur cible : 1200 à 1600 mots (hors balises HTML)
 
 RÈGLES POSTS LINKEDIN :
 
@@ -195,24 +221,29 @@ Génère UNIQUEMENT un objet JSON valide, sans markdown ni texte autour :
   const contentUserPrompt = `Génère UNIQUEMENT un objet JSON valide, sans markdown, sans texte avant ou après.
 
 RÈGLES POUR article_blog.contenu (HTML rendu dans un navigateur) :
-Structure obligatoire :
+
+Structure obligatoire dans cet ordre :
 - 1 seul <h1> contenant le mot-clé principal
-- 3 à 5 <h2> pour les sections (au moins un contient le mot-clé)
+- Juste après le <h1> : un encart <div class="a-retenir"><strong>À retenir</strong><ul><li>...</li><li>...</li><li>...</li></ul></div>
+- <p> d'introduction (2-3 phrases respectant la RÈGLE ACCROCHE du systemPrompt)
+- 5 à 6 <h2> suivant le plan-canon du systemPrompt (au moins 1 h2 formulé en question)
 - <h3> pour les sous-sections si nécessaire
 - <p> aérés de 3-5 lignes maximum
-- Au minimum 1 <ul> ou <ol> pour les points clés
-- <strong> sur les termes juridiques importants
-- Introduction : 2-3 phrases avec le mot-clé principal en début d'article
+- Au moins 1 <ol> pour la procédure et 1 <ul> pour la checklist finale (en plus de l'encart À retenir)
+- <strong> sur les termes juridiques précis (noms de procédures, noms de codes)
 - Conclusion avec <a href="#consultation">Prendre rendez-vous</a>
 
 Règles SEO :
-- Mot-clé dans le <h1>, le premier <p> et au moins un <h2>
-- Densité mot-clé : 1-2% maximum
-- Longueur : 900-1200 mots
+- Mot-clé dans le <h1>, le premier <p> sous le h1, et au moins 2 <h2>
+- Densité mot-clé 1-2 % maximum
+- Longueur cible : 1200 à 1600 mots (hors balises HTML)
 
 Champs supplémentaires :
-- slug : URL SEO (minuscules, tirets, sans accents ni espaces)
-- alt_image : texte alt descriptif pour l'image (50-100 caractères)
+- titre : 60-70 caractères, contient le mot-clé principal
+- meta_description : 150-160 caractères, structure "promesse + bénéfice + appel"
+- mots_cles : 4 entrées (1 principal + 3 secondaires sémantiquement proches)
+- slug : URL SEO (minuscules, tirets, sans accents ni espaces, 5-7 mots)
+- alt_image : 50-100 caractères, descriptif visuel sans bourrage de mot-clé
 - reading_time : entier = arrondi de (nombre de mots / 200)
 
 {
