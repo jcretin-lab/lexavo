@@ -167,11 +167,11 @@ EXEMPLES de sous-titres bien construits (pour calibrage de style, ne pas recopie
 
 Sujet « Licenciement pour faute grave » :
   "Faute grave, faute lourde" — "Le bureau vidé en 48 h" — "Ce qui sauve les indemnités"
-  "Un SMS au mauvais moment" — "L'article L. 1234-1 en main" — "Pourquoi il a gagné en appel"
+  "Un SMS au mauvais moment" — "Conseil de prud'hommes saisi" — "Pourquoi il a gagné en appel"
 
 Sujet « Droit de rétractation » :
   "Quatorze jours, deux exceptions" — "Le bouton qu'on ne voit pas" — "Une LRAR vaut mieux"
-  "Le piège du sur-mesure" — "L'article L. 221-28 dit ceci" — "Trois réflexes avant de cliquer"
+  "Le piège du sur-mesure" — "Pas de retour sur commande personnalisée" — "Trois réflexes avant de cliquer"
 
 Sujet « Rupture brutale relations commerciales » :
   "Dix ans de partenariat" — "Un email, trois lignes" — "Le préavis selon les juges"
@@ -184,7 +184,7 @@ RÈGLES FORMELLES — s'appliquent aux 3 posts :
   (c) une question fermée provocante en 8 mots maximum
   (d) un fait juridique méconnu, introduit sans préambule
   Les 3 posts doivent utiliser 3 leviers d'accroche différents parmi (a, b, c, d).
-- Citer au moins UN élément précis tiré du sujet : article de code, date de texte, chiffre, seuil légal, nom de procédure, juridiction compétente. Ne jamais inventer.
+- Citer au moins UN élément précis tiré du sujet, en PRIVILÉGIANT les références stables et faciles à vérifier : un délai légal chiffré (en jours, mois, années), un seuil chiffré (en euros, en effectif), un nom de procédure (référé, injonction de payer, médiation préalable…), un nom de juridiction compétente (Conseil de prud'hommes, Tribunal judiciaire, Cour d'appel…). ÉVITER les numéros d'articles de code numérotés (du type "L. 1234-9") sauf pour les rares références majeures structurantes connues du grand public. En cas de doute, paraphrase : "selon le Code de la consommation", "le droit du travail prévoit que…". Ne jamais inventer une référence.
 - Aucun paragraphe ne dépasse 3 lignes. Saut de ligne entre paragraphes et entre blocs. Voix active. Phrases courtes.
 - Aucun emoji, aucun symbole décoratif. Seul caractère toléré en tête de sous-titre : tiret long "—".
 - Aucune formule auto-promotionnelle, aucune comparaison avec d'autres avocats.
