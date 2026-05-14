@@ -7,7 +7,7 @@ import { BARREAUX_FR } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
-import { CALENDLY_URL } from '@/lib/constants'
+import { ReseauxWebhookForm } from '@/components/dashboard/reseaux-webhook-form'
 
 const STEPS = [
   'Identité du cabinet',
@@ -25,6 +25,7 @@ function OnboardingContent() {
   const [loading, setLoading] = useState(false)
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
+  const [initialWebhookUrl, setInitialWebhookUrl] = useState<string | null>(null)
 
   // Step 1 — Identité
   const [nom, setNom] = useState('')
@@ -73,6 +74,8 @@ function OnboardingContent() {
       }
 
       if (!cabinet) throw new Error('Erreur lors de la création du cabinet.')
+
+      setInitialWebhookUrl((cabinet as { make_webhook_url?: string | null }).make_webhook_url ?? null)
 
       // Email de bienvenue uniquement pour les nouveaux cabinets (pas les ré-onboardings ni les invités)
       if (!existing && !inviteId) {
@@ -224,33 +227,79 @@ function OnboardingContent() {
             </div>
           )}
 
-          {/* ÉTAPE 2 — Activation Calendly */}
+          {/* ÉTAPE 2 — Activation des réseaux (téléchargement + webhook) */}
           {step === 1 && (
-            <div className="text-center">
-              <div className="text-5xl mb-3">🎉</div>
-              <h2 className="text-2xl font-semibold mb-2">Votre compte est prêt !</h2>
-              <p className="text-sm text-gray-600 max-w-md mx-auto mb-8">
-                Pour activer la publication automatique sur vos réseaux sociaux, réservez un appel gratuit de 20 minutes avec notre équipe. Nous configurons ensemble vos réseaux (LinkedIn et Facebook) selon vos besoins.
+            <div>
+              <h2 className="text-xl font-semibold mb-1">Activez la publication automatique</h2>
+              <p className="text-sm text-gray-500 mb-6">
+                Configurez en quelques minutes la publication automatique sur LinkedIn et Facebook.
               </p>
 
-              <a
-                href={CALENDLY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-xl text-white text-sm font-semibold bg-blue-700 hover:bg-blue-800 transition-colors"
-              >
-                Réserver mon appel gratuit →
-              </a>
+              <div className="space-y-5">
+                <div className="rounded-xl border border-gray-200 p-5">
+                  <div className="flex items-start gap-3">
+                    <div
+                      className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-lg"
+                      style={{ background: 'var(--navy-50)', color: 'var(--navy-900)' }}
+                      aria-hidden
+                    >
+                      ⬇️
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-base font-semibold text-gray-900 mb-1">
+                        Téléchargez le scénario et le guide
+                      </h3>
+                      <p className="text-sm text-gray-600 mb-3">
+                        Téléchargez le scénario à utiliser sur votre compte Make et le guide de configuration.
+                      </p>
+                      <div className="flex flex-wrap gap-3">
+                        <a
+                          href="/lexavo-publications.json"
+                          download="lexavo-publications.json"
+                          className="inline-flex items-center gap-2 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 border border-gray-200 px-4 py-2 rounded-lg transition-colors"
+                        >
+                          Télécharger le scénario
+                        </a>
+                        <a
+                          href="/Guide_Configuration_Make_Lexavo.pptx"
+                          download="Guide_Configuration_Make_Lexavo.pptx"
+                          className="inline-flex items-center gap-2 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 border border-gray-200 px-4 py-2 rounded-lg transition-colors"
+                        >
+                          Télécharger le guide
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-              <div className="mt-6">
-                <button
-                  type="button"
+                <div className="rounded-xl border border-gray-200 p-5">
+                  <div className="flex items-start gap-3">
+                    <div
+                      className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-lg"
+                      style={{ background: 'var(--navy-50)', color: 'var(--navy-900)' }}
+                      aria-hidden
+                    >
+                      🔗
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-base font-semibold text-gray-900 mb-1">Collez votre URL webhook</h3>
+                      <p className="text-sm text-gray-600 mb-3">
+                        Collez ici l&apos;URL webhook Make.com créée à partir du scénario importé.
+                      </p>
+                      <ReseauxWebhookForm initialUrl={initialWebhookUrl} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 flex justify-end">
+                <Button
                   onClick={() => router.push('/dashboard')}
-                  className="text-xs text-gray-400 hover:text-gray-600 underline"
+                  size="lg"
                   disabled={!saved && !inviteId}
                 >
-                  Je le ferai plus tard → accéder au dashboard
-                </button>
+                  Accéder au dashboard →
+                </Button>
               </div>
             </div>
           )}
