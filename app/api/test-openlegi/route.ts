@@ -69,6 +69,7 @@ export async function GET(request: NextRequest) {
           authorization_token: process.env.OPENLEGI_TOKEN,
         },
       ],
+      tools: [{ type: 'mcp_toolset', mcp_server_name: 'legifrance' }],
       messages: [{ role: 'user', content: `THÈME JURIDIQUE : ${theme}` }],
     })
 
