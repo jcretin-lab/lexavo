@@ -26,8 +26,17 @@ export default async function ReseauxPage() {
   return (
     <div className="max-w-3xl">
       <h1 className="text-2xl font-bold text-gray-900 mb-2">Configurez vos réseaux sociaux</h1>
+      <p className="text-sm text-gray-600 mb-2">
+        Vous êtes satisfait des posts générés ! Activez la publication automatique sur LinkedIn (page personnelle et/ou entreprise) et/ou Facebook (page).
+      </p>
       <p className="text-sm text-gray-600 mb-8">
-        Activez la publication automatique sur LinkedIn et Facebook.
+        En cas de problème de configuration{' '}
+        <a
+          href="https://www.lexavo.fr/contact"
+          className="text-blue-700 hover:underline font-medium"
+        >
+          contactez-nous
+        </a>
       </p>
 
       <div className="space-y-5">
