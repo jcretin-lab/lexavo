@@ -5,7 +5,6 @@ import { NOM_PAR_PLAN, type Plan } from '@/types'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { TrialStatus } from '@/components/dashboard/trial-status'
-import { CALENDLY_URL } from '@/lib/constants'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -72,41 +71,6 @@ export default async function DashboardPage() {
 
       {isTrial && <TrialStatus remaining={trialRemaining} exhausted={trialExhausted} />}
 
-      {/* Activation des réseaux sociaux */}
-      {!cabinet.make_webhook_url && (
-        <div
-          className="mb-6 rounded-xl px-5 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
-          style={{ background: 'var(--navy-50)', border: '1px solid var(--navy-100)' }}
-        >
-          <div className="flex items-start gap-4">
-            <div
-              className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-xl"
-              style={{ background: 'var(--white)', color: 'var(--navy-700)' }}
-              aria-hidden
-            >
-              📅
-            </div>
-            <div>
-              <p className="text-sm font-semibold" style={{ color: 'var(--navy-700)' }}>
-                Activez la publication automatique
-              </p>
-              <p className="text-xs mt-1" style={{ color: 'var(--ink-500)' }}>
-                Réservez un appel de 20 minutes pour configurer vos réseaux sociaux (LinkedIn et Facebook).
-              </p>
-            </div>
-          </div>
-          <a
-            href={CALENDLY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors flex-shrink-0 whitespace-nowrap"
-            style={{ background: 'var(--navy-700)', color: 'var(--white)' }}
-          >
-            Réserver mon appel →
-          </a>
-        </div>
-      )}
-
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-8">
 
@@ -172,23 +136,6 @@ export default async function DashboardPage() {
 
       {/* Actions principales */}
       <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {(cabinet.plan === 'pro' || cabinet.plan === 'cabinet') && (
-          <div className="rounded-2xl p-6 flex items-center justify-between" style={{ background: 'var(--navy-700)', color: 'var(--white)' }}>
-            <div>
-              <p className="font-semibold">Générer du contenu</p>
-              <p className="text-sm mt-0.5" style={{ color: 'var(--ocre-300)' }}>
-                Article SEO + 3 posts + FAQ + 1 image IA (ou la vôtre)
-              </p>
-            </div>
-            <Link
-              href="/dashboard/generer"
-              className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors flex-shrink-0"
-              style={{ background: 'var(--white)', color: 'var(--navy-700)' }}
-            >
-              Générer →
-            </Link>
-          </div>
-        )}
         <div className="rounded-2xl p-6 flex items-center justify-between" style={{ background: 'var(--navy-800)', color: 'var(--white)' }}>
           <div>
             <p className="font-semibold">Article → Posts</p>
@@ -202,6 +149,21 @@ export default async function DashboardPage() {
             style={{ background: 'var(--white)', color: 'var(--navy-800)' }}
           >
             Transformer →
+          </Link>
+        </div>
+        <div className="rounded-2xl p-6 flex items-center justify-between" style={{ background: 'var(--navy-700)', color: 'var(--white)' }}>
+          <div>
+            <p className="font-semibold">Générer du contenu</p>
+            <p className="text-sm mt-0.5" style={{ color: 'var(--ocre-300)' }}>
+              Article SEO + 3 posts + FAQ + 1 image IA (ou la vôtre)
+            </p>
+          </div>
+          <Link
+            href="/dashboard/generer"
+            className="px-4 py-2 rounded-lg font-semibold text-sm transition-colors flex-shrink-0"
+            style={{ background: 'var(--white)', color: 'var(--navy-700)' }}
+          >
+            Générer →
           </Link>
         </div>
       </div>
