@@ -388,7 +388,7 @@ export default function HomePage() {
                 color: 'var(--ink-900)',
               }}
             >
-              Les avocats qui publient régulièrement attirent plus de clients.
+              Publier chaque semaine sur LinkedIn et Facebook, sans y passer une demi-journée.
             </h1>
 
             {/* Subtitle */}
@@ -396,7 +396,7 @@ export default function HomePage() {
               className="mb-10"
               style={{ fontSize: 'clamp(1rem, 1.5vw, 1.125rem)', color: 'var(--ink-500)', lineHeight: 1.65, maxWidth: '36rem' }}
             >
-              Lexavo génère vos articles de blog optimisés SEO, avec FAQ, image téléchargeable, et à partir de l&apos;article, crée des posts adaptés à <strong style={{ color: 'var(--ink-700)', fontWeight: 600 }}>LinkedIn</strong> (pour vos clients professionnels) et <strong style={{ color: 'var(--ink-700)', fontWeight: 600 }}>Facebook</strong> (pour vos clients particuliers) — publiés en un clic ou programmables. Conforme à la déontologie du barreau.
+              À partir d&apos;un sujet ou d&apos;un article déjà écrit, Lexavo génère un article SEO, 3 posts adaptés à <strong style={{ color: 'var(--ink-700)', fontWeight: 600 }}>LinkedIn</strong> et <strong style={{ color: 'var(--ink-700)', fontWeight: 600 }}>Facebook</strong>, une FAQ et une image — en 3 minutes. Conforme à la déontologie du barreau.
             </p>
 
             {/* CTAs */}
@@ -409,26 +409,23 @@ export default function HomePage() {
               </a>
             </div>
 
-            {/* Social proof */}
-            <div className="flex items-center gap-4">
-              <div className="flex -space-x-2">
-                {[
-                  { init: 'SL', bg: 'var(--navy-100)', color: 'var(--navy-900)' },
-                  { init: 'RA', bg: 'var(--success-50)', color: 'var(--success)' },
-                  { init: 'TB', bg: 'var(--ocre-100)', color: 'var(--ocre-700)' },
-                ].map(({ init, bg, color }) => (
-                  <div
-                    key={init}
-                    className="w-8 h-8 rounded-full border-2 flex items-center justify-center text-[10px] font-semibold"
-                    style={{ borderColor: 'var(--paper)', background: bg, color }}
+            {/* Signes de confiance */}
+            <div className="flex flex-col gap-3">
+              <p className="text-sm" style={{ color: 'var(--ink-500)' }}>
+                Conçu avec et pour les avocats français
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {['Déontologie CNB', 'Hébergement EU', 'RGPD'].map((label) => (
+                  <span
+                    key={label}
+                    className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full"
+                    style={{ background: 'var(--navy-50)', color: 'var(--navy-900)', border: '1px solid var(--navy-100)' }}
                   >
-                    {init}
-                  </div>
+                    <span style={{ color: 'var(--success)' }} aria-hidden>✓</span>
+                    {label}
+                  </span>
                 ))}
               </div>
-              <p className="text-sm" style={{ color: 'var(--ink-500)' }}>
-                <span className="font-semibold" style={{ color: 'var(--ink-900)' }}>+50 cabinets</span> font confiance à Lexavo
-              </p>
             </div>
           </div>
 
