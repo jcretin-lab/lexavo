@@ -382,13 +382,13 @@ export default function HomePage() {
               className="mb-7"
               style={{
                 fontFamily: 'var(--font-instrument-serif)',
-                fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)',
-                lineHeight: 1.04,
+                fontSize: 'clamp(1.875rem, 4.5vw, 3.5rem)',
+                lineHeight: 1.1,
                 letterSpacing: '-0.025em',
                 color: 'var(--ink-900)',
               }}
             >
-              Publier chaque semaine sur LinkedIn et Facebook, sans y passer une demi-journée.
+              Une présence régulière sur LinkedIn et Facebook, sans y consacrer du temps.
             </h1>
 
             {/* Subtitle */}
