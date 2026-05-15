@@ -1,8 +1,6 @@
 ﻿import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
-import Link from 'next/link'
+import { ContenuListItem } from '@/components/dashboard/contenu-list-item'
 
 export default async function ContenuPage() {
   const supabase = await createClient()
@@ -39,31 +37,7 @@ export default async function ContenuPage() {
       ) : (
         <div className="grid gap-4">
           {generations.map((gen) => (
-            <Link key={gen.id} href={`/dashboard/contenu/${gen.id}`}
-              className="bg-white rounded-xl border border-gray-200 px-5 py-4 flex items-center justify-between hover:border-blue-300 hover:shadow-sm transition-all group"
-            >
-              <div className="flex items-center gap-4">
-                {gen.image_url && (
-                  <img src={gen.image_url} alt="" className="w-16 h-10 rounded-lg object-cover flex-shrink-0" />
-                )}
-                <div>
-                  <p className="font-medium text-gray-900 group-hover:text-blue-700 transition-colors">{gen.theme}</p>
-                  <p className="text-xs text-gray-400 mt-0.5">
-                    {gen.specialite} · {format(new Date(gen.created_at), 'd MMM yyyy', { locale: fr })}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className={`text-xs px-2.5 py-1 rounded-full font-medium flex-shrink-0 ${
-                  gen.statut === 'publie' ? 'bg-green-100 text-green-700' :
-                  gen.statut === 'programme' ? 'bg-blue-100 text-blue-700' :
-                  'bg-gray-100 text-gray-500'
-                }`}>
-                  {gen.statut}
-                </span>
-                <span className="text-gray-300 group-hover:text-blue-400 transition-colors text-lg">→</span>
-              </div>
-            </Link>
+            <ContenuListItem key={gen.id} gen={gen} />
           ))}
         </div>
       )}
