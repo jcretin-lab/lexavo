@@ -388,7 +388,11 @@ export default function HomePage() {
                 color: 'var(--ink-900)',
               }}
             >
-              Une présence régulière sur LinkedIn et Facebook, sans y consacrer du temps.
+              Une présence régulière sur{' '}
+              <span style={{ color: '#0A66C2' }}>LinkedIn</span>
+              {' '}et{' '}
+              <span style={{ color: '#1877F2' }}>Facebook</span>
+              , sans y consacrer du temps.
             </h1>
 
             {/* Subtitle */}
@@ -433,18 +437,6 @@ export default function HomePage() {
           <div className="hidden lg:block fade-in-scale fade-in-delay-2">
             <HeroMockup />
           </div>
-        </div>
-      </section>
-
-      {/* ══ Stats bar ════════════════════════════════════════ */}
-      <section className="py-16 px-6" style={{ background: 'var(--navy-900)' }}>
-        <div className="max-w-3xl mx-auto text-center fade-in">
-          <p
-            className="mb-0"
-            style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)', lineHeight: 1.45, color: 'var(--white)', letterSpacing: '-0.01em' }}
-          >
-            Programmez votre présence régulière sur LinkedIn et Facebook. Généré et adapté à votre cabinet.
-          </p>
         </div>
       </section>
 
@@ -499,7 +491,7 @@ export default function HomePage() {
                 Décideurs, dirigeants, DRH, juristes d&apos;entreprise. C&apos;est ici que se nouent les <strong style={{ color: 'var(--ink-700)', fontWeight: 600 }}>mandats récurrents à forte valeur</strong> et que vos pairs vous prescrivent.
               </p>
               <div className="flex flex-wrap gap-2">
-                {['Droit des affaires', 'Droit social', 'Fiscalité', 'M&A', 'IP'].map(t => (
+                {['Droit des affaires TPE/PME', 'Droit social', 'Immobilier pro', 'RH/Management', 'Contentieux commercial'].map(t => (
                   <span
                     key={t}
                     className="text-xs px-2.5 py-1 rounded-full font-medium"
@@ -570,11 +562,14 @@ export default function HomePage() {
               Ce que vous obtenez
             </p>
             <h2
-              className="mb-0"
+              className="mb-4"
               style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.875rem, 3.5vw, 2.75rem)', color: 'var(--ink-900)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
             >
               Tout votre contenu. En une fois.
             </h2>
+            <p className="text-base max-w-2xl mx-auto" style={{ color: 'var(--ink-500)', lineHeight: 1.65 }}>
+              <strong style={{ color: 'var(--ink-900)', fontWeight: 600 }}>De 4 à 6 h de rédaction à 3 minutes.</strong> Un article publié par semaine, sans y penser.
+            </p>
           </div>
 
           {/* 01 — source centrale */}
