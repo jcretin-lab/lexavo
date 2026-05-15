@@ -65,7 +65,7 @@ const RASSURANCE = [
 const FAQ_LANDING = [
   {
     q: 'Qui est le fondateur de Lexavo ?',
-    r: 'Lexavo est fondé par Julien Pretet, spécialiste de la création de sites internet, du SEO et de l\'automatisation pour les cabinets d\'avocats. Le produit est développé en partenariat avec une docteure en droit qui veille à la rigueur juridique de chaque génération.',
+    r: 'Lexavo est fondé par Julien Pretet, spécialiste de la création de sites internet, du SEO et de l\'automatisation pour les cabinets d\'avocats. Le produit est développé en partenariat avec une docteure en droit.',
   },
   {
     q: 'Pour qui Lexavo n\'est pas conçu ?',
