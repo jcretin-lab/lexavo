@@ -20,7 +20,7 @@ const FAQ = [
   },
   {
     q: 'Comment connecter mes réseaux sociaux ?',
-    r: 'Réservez un appel gratuit de 20 minutes avec notre équipe. Nous configurons ensemble vos réseaux sociaux (LinkedIn et Facebook) selon vos besoins.',
+    r: 'Depuis votre tableau de bord, téléchargez en un clic le scénario Make.com prêt à l\'emploi ainsi que son guide de configuration. Vous obtenez ensuite une URL webhook que vous collez dans Lexavo. Comptez environ 20 minutes pour la mise en place initiale.',
   },
 ]
 

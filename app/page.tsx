@@ -62,6 +62,33 @@ const RASSURANCE = [
   },
 ]
 
+const FAQ_LANDING = [
+  {
+    q: 'Qui est le fondateur de Lexavo ?',
+    r: 'Lexavo est fondé par Julien Pretet, spécialiste de la création de sites internet, du SEO et de l\'automatisation pour les cabinets d\'avocats. Le produit est développé en partenariat avec une docteure en droit qui veille à la rigueur juridique de chaque génération.',
+  },
+  {
+    q: 'Pour qui Lexavo n\'est pas conçu ?',
+    r: 'Lexavo n\'est pas adapté aux cabinets d\'affaires internationaux dont la clientèle n\'est ni sur LinkedIn ni sur Facebook (M&A, fiscalité internationale), ni aux avocats qui cherchent un contenu polémique ou comparatif — interdit par la déontologie. Nous misons sur la régularité de publication, pas sur le volume.',
+  },
+  {
+    q: 'Est-ce que Lexavo fonctionne sans site web ?',
+    r: 'Oui. Lexavo génère du contenu pour vos réseaux sociaux et votre blog indépendamment de votre site web.',
+  },
+  {
+    q: 'Puis-je annuler mon abonnement à tout moment ?',
+    r: 'Oui, sans engagement ni frais. La résiliation prend effet à la fin du mois en cours.',
+  },
+  {
+    q: 'Les contenus respectent-ils la déontologie du barreau ?',
+    r: 'Oui. Lexavo intègre les règles du RIN et du décret du 12 juillet 2005 dans chaque génération. Nous vous recommandons toutefois de relire chaque contenu avant publication.',
+  },
+  {
+    q: 'Comment connecter mes réseaux sociaux ?',
+    r: 'Depuis votre tableau de bord, téléchargez en un clic le scénario Make.com prêt à l\'emploi ainsi que son guide de configuration. Vous obtenez ensuite une URL webhook que vous collez dans Lexavo. Comptez environ 20 minutes pour la mise en place initiale.',
+  },
+]
+
 
 /* ─── Mockup hero ──────────────────────────────────────── */
 function HeroMockup() {
@@ -242,7 +269,7 @@ function CalendarMockup() {
       <div className="px-5 py-3.5 flex items-center justify-between border-b" style={{ borderColor: 'var(--ink-200)' }}>
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold" style={{ color: 'var(--ink-900)' }}>Calendrier éditorial</span>
-          <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: 'var(--navy-50)', color: 'var(--navy-900)', border: '1px solid var(--navy-100)' }}>Juin 2025</span>
+          <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: 'var(--navy-50)', color: 'var(--navy-900)', border: '1px solid var(--navy-100)' }}>Juin 2026</span>
         </div>
         <div className="flex gap-2">
           <div className="w-5 h-5 rounded-md flex items-center justify-center text-[9px]" style={{ background: 'var(--ink-100)', color: 'var(--ink-500)' }}>‹</div>
@@ -784,6 +811,52 @@ export default function HomePage() {
                 <p className="font-semibold mb-3" style={{ color: 'var(--white)', fontSize: '1rem' }}>{item.titre}</p>
                 <p className="text-sm leading-relaxed" style={{ color: 'rgba(232,199,136,0.65)' }}>{item.desc}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══ FAQ ══════════════════════════════════════════════ */}
+      <section className="py-28 px-6" style={{ background: 'var(--paper)' }}>
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-12 fade-in">
+            <p
+              className="mb-4 uppercase"
+              style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '11px', letterSpacing: '0.16em', color: 'var(--ocre-700)' }}
+            >
+              Questions fréquentes
+            </p>
+            <h2
+              className="mb-0"
+              style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.875rem, 3.5vw, 2.75rem)', color: 'var(--ink-900)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
+            >
+              Vos questions, nos réponses
+            </h2>
+          </div>
+
+          <div className="space-y-3">
+            {FAQ_LANDING.map(({ q, r }) => (
+              <details
+                key={q}
+                className="rounded-xl overflow-hidden group"
+                style={{ background: 'var(--white)', border: '1px solid var(--ink-200)' }}
+              >
+                <summary
+                  className="px-5 py-4 cursor-pointer flex items-center justify-between gap-4 list-none [&::-webkit-details-marker]:hidden"
+                >
+                  <span className="font-medium text-sm" style={{ color: 'var(--ink-900)' }}>{q}</span>
+                  <span
+                    aria-hidden
+                    className="text-base flex-shrink-0 transition-transform duration-200 group-open:rotate-45"
+                    style={{ color: 'var(--ink-400)' }}
+                  >
+                    +
+                  </span>
+                </summary>
+                <div className="px-5 pb-5">
+                  <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-500)' }}>{r}</p>
+                </div>
+              </details>
             ))}
           </div>
         </div>
