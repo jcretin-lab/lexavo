@@ -7,10 +7,19 @@ export async function PATCH(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
 
-    const { generation_id, post_index, texte } = await request.json()
+    const { generation_id, post_index, texte, hashtags } = await request.json()
     if (!generation_id || post_index === undefined || typeof texte !== 'string' || !texte.trim()) {
       return NextResponse.json({ error: 'Paramètres manquants' }, { status: 400 })
     }
+    if (hashtags !== undefined && (!Array.isArray(hashtags) || hashtags.some(h => typeof h !== 'string'))) {
+      return NextResponse.json({ error: 'Hashtags invalides' }, { status: 400 })
+    }
+    const cleanedHashtags: string[] | undefined = Array.isArray(hashtags)
+      ? hashtags
+          .map((h: string) => h.replace(/^#+/, '').trim())
+          .filter((h: string) => h.length > 0)
+          .slice(0, 10)
+      : undefined
 
     const { data: cabinet } = await supabase
       .from('cabinets')
@@ -34,7 +43,11 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: 'Index de post invalide' }, { status: 400 })
     }
 
-    posts[post_index] = { ...posts[post_index], texte }
+    posts[post_index] = {
+      ...posts[post_index],
+      texte,
+      ...(cleanedHashtags ? { hashtags: cleanedHashtags } : {}),
+    }
 
     const { error } = await supabase
       .from('generations')

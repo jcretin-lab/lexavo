@@ -49,6 +49,7 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
 
   const [editingIndex, setEditingIndex] = useState<number | null>(null)
   const [editText, setEditText] = useState('')
+  const [editTags, setEditTags] = useState('')
   const [savingIndex, setSavingIndex] = useState<number | null>(null)
   const [savedIndexes, setSavedIndexes] = useState<Set<number>>(new Set())
   const [saveError, setSaveError] = useState('')
@@ -167,18 +168,29 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
   function startEdit(post: PostLinkedin, index: number) {
     setEditingIndex(index)
     setEditText(post.texte)
+    setEditTags(post.hashtags.map(h => h.replace(/^#+/, '')).join(' '))
     setSaveError('')
   }
 
   function cancelEdit() {
     setEditingIndex(null)
     setEditText('')
+    setEditTags('')
     setSaveError('')
+  }
+
+  function parseTagsInput(raw: string): string[] {
+    return raw
+      .split(/[\s,]+/)
+      .map(t => t.replace(/^#+/, '').trim())
+      .filter(t => t.length > 0)
+      .slice(0, 10)
   }
 
   async function saveEdit(index: number) {
     setSavingIndex(index)
     setSaveError('')
+    const nextHashtags = parseTagsInput(editTags)
     try {
       const res = await fetch('/api/content/update-post', {
         method: 'PATCH',
@@ -187,16 +199,18 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
           generation_id: generation.id,
           post_index: index,
           texte: editText,
+          hashtags: nextHashtags,
         }),
       })
       let data: Record<string, unknown> = {}
       try { data = await res.json() } catch { /* non-JSON */ }
       if (!res.ok) throw new Error((data.error as string) || `Erreur ${res.status}`)
 
-      setPosts(prev => prev.map((p, i) => i === index ? { ...p, texte: editText } : p))
+      setPosts(prev => prev.map((p, i) => i === index ? { ...p, texte: editText, hashtags: nextHashtags } : p))
       setSavedIndexes(prev => new Set(prev).add(index))
       setEditingIndex(null)
       setEditText('')
+      setEditTags('')
     } catch (err: unknown) {
       setSaveError(err instanceof Error ? err.message : 'Erreur lors de la sauvegarde')
     } finally {
@@ -536,6 +550,21 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
                           className="w-full text-sm text-gray-700 border border-blue-300 rounded-lg px-3 py-2.5 focus:outline-none focus:border-blue-500 resize-y"
                           autoFocus
                         />
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
+                            Hashtags
+                          </label>
+                          <input
+                            type="text"
+                            value={editTags}
+                            onChange={e => setEditTags(e.target.value)}
+                            placeholder="droit, avocat, ..."
+                            className="w-full text-sm text-gray-700 border border-blue-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
+                          />
+                          <p className="mt-1 text-[11px] text-gray-400">
+                            Séparez par des espaces ou des virgules. Le « # » est ajouté automatiquement. 10 max.
+                          </p>
+                        </div>
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => saveEdit(i)}
