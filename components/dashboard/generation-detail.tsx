@@ -631,6 +631,8 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
                                           value={scheduleDate}
                                           min={new Date().toISOString().slice(0, 16)}
                                           autoFocus
+                                          lang="fr-FR"
+                                          step={60}
                                           className="text-xs border border-gray-300 rounded-lg px-2 py-1.5 focus:outline-none focus:border-blue-400"
                                           onChange={e => setScheduleDate(e.target.value)}
                                         />
