@@ -9,6 +9,13 @@ import {
   IMAGE_STYLE_ORDER,
 } from '@/types'
 import { sendQuotaAtteint } from '@/lib/email'
+import {
+  buildImageSuffix,
+  normalizeSceneChoice,
+  SCENE_INSTRUCTIONS_FR,
+  DEFAULT_SCENE_CHOICE,
+  type SceneChoice,
+} from '@/lib/image-prompt'
 
 export const maxDuration = 120
 
@@ -222,14 +229,11 @@ Exemples de mapping thème → 3 éléments visuels :
 - "Contestation PV" → contravention sous l'essuie-glace, panneau de signalisation, radar fixe
 - "Avis Google diffamatoire" → écran d'ordinateur affichant une note 1 étoile, smartphone à côté, capture d'écran imprimée
 
-ÉTAPE 2 — Rédige le prompt "conceptuelle" en anglais (60 mots max) autour de ces 3 éléments.
+ÉTAPE 2 — Choisis la mise en scène (3 axes ci-dessous) puis rédige le prompt "conceptuelle" en anglais (60 mots max) autour des éléments visuels uniquement.
 
-CONTRAINTES :
-- composition éditoriale photographique mise en scène dans un vrai bureau d'avocat français
-- 2 à 3 objets concrets disposés naturellement sur un bureau en bois sous lumière de fenêtre
-- profondeur de champ cinématographique, textures réalistes, palette navy / off-white / touches d'or brossé
-- aucune personne dans le cadre, aucun texte lisible (documents vierges ou flous)
-- INTERDIT : "minimalist", "single object", "flat illustration", "icon", "vast empty background", "abstract"
+${SCENE_INSTRUCTIONS_FR}
+
+INTERDIT dans le prompt anglais : "minimalist", "single object", "flat illustration", "icon", "vast empty background", "abstract".
 
 Génère UNIQUEMENT un objet JSON valide, sans markdown ni texte autour :
 
@@ -237,8 +241,11 @@ Génère UNIQUEMENT un objet JSON valide, sans markdown ni texte autour :
   "prompts_images": [
     {
       "style": "conceptuelle",
-      "keywords": "string (3 expressions visuelles concrètes séparées par virgule, en anglais — ex: 'returned access badge, packed office box, opened registered letter')",
-      "prompt": "string (60 mots max, anglais)"
+      "keywords": "string (2 à 3 expressions visuelles concrètes séparées par virgule, en anglais — ex: 'returned access badge, packed office box, opened registered letter')",
+      "prompt": "string (60 mots max, anglais — UNIQUEMENT les éléments visuels, sans répéter décor, cadrage, lumière ni palette)",
+      "scene": "office_desk | environment | domestic | client_space",
+      "framing": "flat_lay | close_up_50mm | wide_context | macro_detail",
+      "lighting": "morning_window | golden_hour | evening_lamp | overcast_daylight"
     }
   ]
 }`
@@ -299,25 +306,20 @@ Champs supplémentaires :
   ]
 }`
 
-  // 1 seul style genere via gpt-image-1 : composition editoriale photo dans un bureau d'avocat
+  // 1 seul style genere via gpt-image-1. Le suffixe technique est dynamique :
+  // construit à partir des 3 axes (scène/cadrage/lumière) choisis par Claude.
   type GptImageConfig = {
     model: 'gpt-image-1'
-    suffix: string
     size: '1536x1024'
     quality: 'low' | 'medium' | 'high'
   }
   const STYLE_CONFIG: Record<ImageStyle, GptImageConfig> = {
-    conceptuelle: {
-      model: 'gpt-image-1',
-      suffix:
-        ' Editorial photographic composition staged in a real French law office. Show 2 to 3 concrete legal objects arranged naturally on a wooden desk under soft window light. Cinematic depth of field, fine realistic textures, warm professional tones with navy blue and brushed gold accents. Magazine editorial quality (Le Monde, Les Echos, Forbes France style). No people in frame. No legible text on any document, papers and screens are blank or blurred. Wide format 16:9.',
-      size: '1536x1024',
-      quality: 'medium',
-    },
+    conceptuelle: { model: 'gpt-image-1', size: '1536x1024', quality: 'medium' },
   }
-  const FALLBACK_PROMPTS: Record<ImageStyle, string> = {
-    conceptuelle: `An editorial photographic composition staged on a wooden desk in a French law office, evoking "${theme}" in the context of ${specialite}. Two or three concrete objects tied to the topic placed naturally under window light. Realistic textures, cinematic depth of field, navy blue and gold accents, no people, no legible text.`,
+  const FALLBACK_VISUAL: Record<ImageStyle, string> = {
+    conceptuelle: `Two or three concrete objects evoking "${theme}" in the context of ${specialite}.`,
   }
+  const sceneChoices: Record<ImageStyle, SceneChoice> = { conceptuelle: DEFAULT_SCENE_CHOICE }
 
   // Helper pour stocker un buffer image dans Supabase Storage
   const cabinetId = cabinet.id
@@ -333,10 +335,11 @@ Champs supplémentaires :
 
   async function generateAndStore(style: ImageStyle, prompt: string): Promise<string | null> {
     const cfg = STYLE_CONFIG[style]
+    const suffix = buildImageSuffix(sceneChoices[style])
     try {
       const resp = await openai.images.generate({
         model: cfg.model,
-        prompt: prompt + cfg.suffix,
+        prompt: prompt + suffix,
         size: cfg.size,
         quality: cfg.quality,
         n: 1,
@@ -370,20 +373,34 @@ Champs supplémentaires :
 
     // Dès que le prompt est disponible, lance la generation.
     const imagesPromise: Promise<ImagesByStyle> = (async () => {
-      const prompts: Record<ImageStyle, string> = { ...FALLBACK_PROMPTS }
+      const prompts: Record<ImageStyle, string> = { conceptuelle: FALLBACK_VISUAL.conceptuelle }
       try {
         const imageMsg = await imagePromptCall
         const rawImg = imageMsg.content[0].type === 'text' ? imageMsg.content[0].text : ''
         const cleanedImg = rawImg.replace(/^```json\n?/, '').replace(/\n?```$/, '').trim()
-        const parsed = JSON.parse(cleanedImg) as { prompts_images?: Array<{ style?: string; keywords?: string; prompt?: string }> }
+        const parsed = JSON.parse(cleanedImg) as {
+          prompts_images?: Array<{
+            style?: string
+            keywords?: string
+            prompt?: string
+            scene?: string
+            framing?: string
+            lighting?: string
+          }>
+        }
         if (Array.isArray(parsed.prompts_images)) {
           for (const item of parsed.prompts_images) {
-            if (item?.style && item?.prompt && IMAGE_STYLE_ORDER.includes(item.style as ImageStyle)) {
-              // Les mots-cles visuels sont concaténés en tete pour que gpt-image-1 leur donne plus de poids.
+            if (item?.style && IMAGE_STYLE_ORDER.includes(item.style as ImageStyle)) {
+              const style = item.style as ImageStyle
+              const visualCore = (item.prompt?.trim()) || FALLBACK_VISUAL[style]
               const keywords = item.keywords?.trim()
-              prompts[item.style as ImageStyle] = keywords
-                ? `Visual focus: ${keywords}. ${item.prompt}`
-                : item.prompt
+              // Les mots-cles visuels sont concaténés en tete pour que gpt-image-1 leur donne plus de poids.
+              prompts[style] = keywords ? `Visual focus: ${keywords}. ${visualCore}` : visualCore
+              sceneChoices[style] = normalizeSceneChoice({
+                scene: item.scene,
+                framing: item.framing,
+                lighting: item.lighting,
+              })
             }
           }
         }
