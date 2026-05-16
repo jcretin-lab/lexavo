@@ -127,6 +127,13 @@ RÈGLES FORMELLES — s'appliquent aux 3 posts :
 - Longueur : 180 à 280 mots par post, ajustée au nombre de blocs (2 blocs ≈ 180-220 mots, 3 blocs ≈ 220-260, 4 blocs ≈ 260-300). Hors hashtags.
 - 3 hashtags juridiques pertinents en fin de post, jamais plus, sur une ligne séparée.
 
+Génère aussi les MÉTADONNÉES pour publier l'article importé sur un blog d'avocat :
+- titre : 60 à 70 caractères, clair et SEO, contient le mot-clé principal du sujet de l'article
+- meta_description : 150 à 160 caractères, résume l'article et incite au clic
+- mots_cles : 4 entrées exactement (1 mot-clé principal + 3 secondaires sémantiquement proches)
+- alt_image : 50 à 100 caractères, descriptif visuel sans bourrage de mot-clé
+Tu ne dois PAS réécrire ni résumer le corps de l'article : son contenu sera repris tel quel à partir du texte fourni.
+
 Génère aussi 5 questions/réponses de FAQ juridique tirées de l'article (questions concrètes que se pose un justiciable, réponses pédagogiques de 2-3 phrases conformes à la déontologie, sans avis juridique personnalisé).
 
 Génère aussi 1 prompt en anglais pour une image professionnelle (qualité magazine éditorial juridique type Le Monde, Les Échos, Forbes France).
@@ -158,6 +165,12 @@ CONTRAINTES :
 
 Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
 {
+  "article_blog": {
+    "titre": "string (60-70 caractères, contient le mot-clé principal)",
+    "meta_description": "string (150-160 caractères)",
+    "mots_cles": ["mot-clé principal", "secondaire 1", "secondaire 2", "secondaire 3"],
+    "alt_image": "string (50-100 caractères)"
+  },
   "posts_linkedin": [
     { "angle": "pedagogique", "texte": "string", "hashtags": ["string"] },
     { "angle": "cas_pratique", "texte": "string", "hashtags": ["string"] },
@@ -176,9 +189,38 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
 }`
 
   type ApiResult = {
+    article_blog?: {
+      titre?: string
+      meta_description?: string
+      mots_cles?: string[]
+      alt_image?: string
+    }
     posts_linkedin: Array<{ angle: string; texte: string; hashtags: string[] }>
     faq?: Array<{ question?: string; reponse?: string }>
     prompts_images: Array<{ style?: string; keywords?: string; prompt?: string }>
+  }
+
+  function escapeHtml(s: string): string {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  }
+
+  function slugify(s: string): string {
+    return s
+      .normalize('NFD').replace(/\p{M}/gu, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 80)
+  }
+
+  function articleToHtml(raw: string): string {
+    const paragraphs = raw
+      .split(/\n{2,}/)
+      .map(p => p.replace(/\s+\n/g, '\n').trim())
+      .filter(p => p.length > 0)
+    return paragraphs
+      .map(p => `<p>${escapeHtml(p).replace(/\n/g, '<br />')}</p>`)
+      .join('\n')
   }
 
   inProgress.add(cabinet.id)
@@ -304,12 +346,38 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
           .map(({ question, reponse }) => ({ question, reponse }))
       : []
 
+    // Reprise de l'article importé tel quel dans l'onglet "Article de blog",
+    // enrichi des métadonnées (titre, meta, mots-clés, alt_image) fournies par Claude.
+    const articleRaw = (article as string).trim()
+    const contenuHtml = articleToHtml(articleRaw)
+    const wordCount = articleRaw.split(/\s+/).filter(Boolean).length
+    const readingTime = Math.max(1, Math.ceil(wordCount / 200))
+    const meta = result.article_blog ?? {}
+    const titre = (typeof meta.titre === 'string' && meta.titre.trim()) || theme
+    const metaDescription =
+      (typeof meta.meta_description === 'string' && meta.meta_description.trim()) ||
+      articleRaw.slice(0, 160)
+    const motsCles = Array.isArray(meta.mots_cles) && meta.mots_cles.length > 0
+      ? meta.mots_cles.filter((m): m is string => typeof m === 'string' && m.trim().length > 0)
+      : []
+    const altImage = (typeof meta.alt_image === 'string' && meta.alt_image.trim()) || titre
+    const articleBlog = {
+      titre,
+      meta_description: metaDescription,
+      contenu: contenuHtml,
+      mots_cles: motsCles,
+      slug: slugify(titre),
+      alt_image: altImage,
+      reading_time: readingTime,
+    }
+
     const { data: generation, error: dbError } = await supabase
       .from('generations')
       .insert({
         cabinet_id: cabinet.id,
         theme,
         specialite: 'Article importé',
+        article_blog: articleBlog,
         posts_linkedin: postsLinkedin,
         faq,
         image_url: defaultImageUrl,
