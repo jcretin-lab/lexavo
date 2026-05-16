@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { format, addMonths, subMonths } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { CALENDLY_URL } from '@/lib/constants'
+import { DateTimePickerFr } from '@/components/ui/datetime-picker-fr'
 
 interface CalendrierPost {
   id: string
@@ -392,14 +393,11 @@ export function CalendrierView({ posts: initialPosts, reseauxConfigured }: Props
             {modalMode === 'changeDate' && (
               <>
                 <p className="text-sm text-gray-600 mb-3">Choisissez la nouvelle date et heure de publication :</p>
-                <input
-                  type="datetime-local"
+                <DateTimePickerFr
                   value={editDate}
-                  min={format(new Date(), "yyyy-MM-dd'T'HH:mm")}
-                  lang="fr-FR"
-                  step={60}
-                  onChange={e => setEditDate(e.target.value)}
-                  className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400 mb-3"
+                  onChange={setEditDate}
+                  minDate={format(new Date(), 'yyyy-MM-dd')}
+                  className="mb-3"
                   autoFocus
                 />
                 <div className="flex gap-2">

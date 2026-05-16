@@ -13,6 +13,7 @@ import {
   IMAGE_STYLE_ORDER,
 } from '@/types'
 import { CALENDLY_URL } from '@/lib/constants'
+import { DateTimePickerFr } from '@/components/ui/datetime-picker-fr'
 
 interface Generation {
   id: string
@@ -626,15 +627,10 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
                                     </button>
                                     {isScheduling ? (
                                       <div className="flex items-center gap-2">
-                                        <input
-                                          type="datetime-local"
+                                        <DateTimePickerFr
                                           value={scheduleDate}
-                                          min={new Date().toISOString().slice(0, 16)}
+                                          onChange={setScheduleDate}
                                           autoFocus
-                                          lang="fr-FR"
-                                          step={60}
-                                          className="text-xs border border-gray-300 rounded-lg px-2 py-1.5 focus:outline-none focus:border-blue-400"
-                                          onChange={e => setScheduleDate(e.target.value)}
                                         />
                                         <button
                                           onClick={() => {
