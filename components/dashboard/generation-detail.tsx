@@ -56,6 +56,7 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
 
   const [publishingIndex, setPublishingIndex] = useState<number | null>(null)
   const [successIndexes, setSuccessIndexes] = useState<Set<number>>(new Set())
+  const [scheduledIndexes, setScheduledIndexes] = useState<Set<number>>(new Set())
   const [failedIndexes, setFailedIndexes] = useState<Set<number>>(new Set())
   const [schedulingIndex, setSchedulingIndex] = useState<number | null>(null)
   const [scheduleDate, setScheduleDate] = useState('')
@@ -245,14 +246,19 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
       try { data = await res.json() } catch { /* non-JSON */ }
       if (!res.ok) throw new Error((data.error as string) || `Erreur ${res.status}`)
 
-      setSuccessIndexes(prev => new Set(prev).add(index))
-      setTimeout(() => {
-        setSuccessIndexes(prev => {
-          const next = new Set(prev)
-          next.delete(index)
-          return next
-        })
-      }, 3000)
+      const wasScheduled = !!scheduledDate
+      if (wasScheduled) {
+        setScheduledIndexes(prev => new Set(prev).add(index))
+      } else {
+        setSuccessIndexes(prev => new Set(prev).add(index))
+        setTimeout(() => {
+          setSuccessIndexes(prev => {
+            const next = new Set(prev)
+            next.delete(index)
+            return next
+          })
+        }, 3000)
+      }
     } catch (err: unknown) {
       setPublishError(err instanceof Error ? err.message : "Erreur lors de l'envoi")
       setFailedIndexes(prev => new Set(prev).add(index))
@@ -503,6 +509,7 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
                 const isEditing = editingIndex === i
                 const isSaved = savedIndexes.has(i)
                 const isSuccess = successIndexes.has(i)
+                const isScheduled = scheduledIndexes.has(i)
                 const isFailed = failedIndexes.has(i)
                 const isPublishing = publishingIndex === i
                 const isScheduling = schedulingIndex === i
@@ -595,7 +602,9 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
                         </div>
 
                         <div className="mt-4 pt-3 border-t border-gray-100">
-                          {isSuccess ? (
+                          {isScheduled ? (
+                            <span className="text-xs font-semibold text-green-600">✓ Programmé</span>
+                          ) : isSuccess ? (
                             <span className="text-xs font-semibold text-green-600">✓ Publié</span>
                           ) : (
                             <>
