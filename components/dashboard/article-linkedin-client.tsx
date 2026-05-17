@@ -1,8 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { GenerationDetail } from '@/components/dashboard/generation-detail'
+import { ConfidentialiteBandeau } from '@/components/dashboard/confidentialite-bandeau'
+import { PIIWarning } from '@/components/dashboard/pii-warning'
+import { detectPII } from '@/lib/pii-detection'
 import type { PostLinkedin, ImagesByStyle, FaqItem } from '@/types'
 
 const TONS = ['Pédagogique', 'Rassurant', 'Expert', 'Accessible'] as const
@@ -38,8 +41,17 @@ export function ArticleLinkedinClient({ reseauxConfigured }: Props) {
   const [fetchLoading, setFetchLoading] = useState(false)
   const [fetchError, setFetchError] = useState<string | null>(null)
   const [fetchSuccess, setFetchSuccess] = useState(false)
+  const [piiConfirmed, setPiiConfirmed] = useState(false)
 
   const wordCount = article.trim() ? article.trim().split(/\s+/).length : 0
+  const piiFindings = useMemo(() => detectPII(article), [article])
+  const piiBlocked = piiFindings.length > 0 && !piiConfirmed
+
+  function handleArticleChange(next: string) {
+    setArticle(next)
+    if (fetchSuccess) setFetchSuccess(false)
+    if (piiConfirmed) setPiiConfirmed(false)
+  }
 
   async function handleFetchUrl() {
     setFetchError(null)
@@ -70,6 +82,7 @@ export function ArticleLinkedinClient({ reseauxConfigured }: Props) {
       }
 
       setArticle(data.texte)
+      setPiiConfirmed(false)
       setTab('paste')
       setFetchSuccess(true)
     } catch (err: unknown) {
@@ -85,6 +98,10 @@ export function ArticleLinkedinClient({ reseauxConfigured }: Props) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (piiBlocked) {
+      setError('Confirmez l’anonymisation des informations détectées avant de générer.')
+      return
+    }
     setError(null)
     setTrialExhausted(false)
     setLoading(true)
@@ -134,6 +151,7 @@ export function ArticleLinkedinClient({ reseauxConfigured }: Props) {
                 setTab('paste')
                 setFetchError(null)
                 setFetchSuccess(false)
+                setPiiConfirmed(false)
               }}
               className="text-sm text-gray-500 hover:text-gray-700 border border-gray-300 hover:border-gray-400 px-4 py-2 rounded-lg transition-colors"
             >
@@ -178,6 +196,10 @@ export function ArticleLinkedinClient({ reseauxConfigured }: Props) {
         </div>
       )}
 
+      <div className="mb-5">
+        <ConfidentialiteBandeau />
+      </div>
+
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="bg-white rounded-2xl border border-gray-200 p-6 space-y-5">
 
@@ -219,7 +241,7 @@ export function ArticleLinkedinClient({ reseauxConfigured }: Props) {
               )}
               <textarea
                 value={article}
-                onChange={e => { setArticle(e.target.value); if (fetchSuccess) setFetchSuccess(false) }}
+                onChange={e => handleArticleChange(e.target.value)}
                 placeholder={"Collez votre article ici…\n(minimum 200 mots recommandés)"}
                 rows={16}
                 className="w-full text-sm text-gray-700 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-400 resize-y leading-relaxed"
@@ -229,6 +251,12 @@ export function ArticleLinkedinClient({ reseauxConfigured }: Props) {
                 {wordCount} mot{wordCount !== 1 ? 's' : ''}
                 {wordCount > 0 && wordCount < 200 ? ' — 200 mots recommandés pour un meilleur résultat' : ''}
               </p>
+              <PIIWarning
+                findings={piiFindings}
+                confirmed={piiConfirmed}
+                onConfirmChange={setPiiConfirmed}
+                fieldId="article"
+              />
             </div>
           ) : (
             <div>
@@ -283,7 +311,7 @@ export function ArticleLinkedinClient({ reseauxConfigured }: Props) {
 
         <button
           type="submit"
-          disabled={loading || !article.trim()}
+          disabled={loading || !article.trim() || piiBlocked}
           className="w-full py-3.5 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? (

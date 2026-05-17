@@ -52,6 +52,9 @@ export default function MentionsLegalesPage() {
           <p className="text-gray-700 leading-relaxed mt-3">
             Les contenus générés par l&apos;intelligence artificielle sont fournis à titre indicatif. L&apos;utilisateur demeure seul responsable de leur relecture, validation et publication.
           </p>
+          <p className="text-gray-700 leading-relaxed mt-3">
+            <strong>Secret professionnel.</strong> LEXAVO n&apos;est pas conçu pour héberger des informations couvertes par le secret professionnel de l&apos;avocat. Les utilisateurs s&apos;engagent à n&apos;utiliser dans les champs de génération que des sujets génériques et anonymisés. Une détection automatique de motifs sensibles est en place à titre d&apos;assistance, sans transférer ni amoindrir la responsabilité de l&apos;utilisateur au titre de l&apos;article 4 du Règlement Intérieur National de la profession d&apos;avocat.
+          </p>
         </section>
 
         <section className="mb-10">

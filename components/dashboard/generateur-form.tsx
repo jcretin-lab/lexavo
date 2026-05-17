@@ -1,11 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { UpgradeModal } from './upgrade-modal'
+import { ConfidentialiteBandeau } from './confidentialite-bandeau'
+import { PIIWarning } from './pii-warning'
+import { detectPII } from '@/lib/pii-detection'
 
 const TONS = ['Pédagogique', 'Rassurant', 'Expert', 'Accessible'] as const
 
@@ -62,13 +65,25 @@ export function GenerateurForm({ cabinet: _cabinet }: Props) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  const [piiConfirmed, setPiiConfirmed] = useState(false)
 
   const specialiteOptions = SPECIALITES_LISTE.map((s) => ({ value: s, label: s }))
   const tonOptions = TONS.map((t) => ({ value: t, label: t }))
+  const piiFindings = useMemo(() => detectPII(theme), [theme])
+  const piiBlocked = piiFindings.length > 0 && !piiConfirmed
+
+  function handleThemeChange(next: string) {
+    setTheme(next)
+    if (piiConfirmed) setPiiConfirmed(false)
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!theme.trim()) { setError('Veuillez saisir un thème.'); return }
+    if (piiBlocked) {
+      setError('Confirmez l’anonymisation des informations détectées avant de générer.')
+      return
+    }
     setError('')
     setLoading(true)
 
@@ -105,7 +120,8 @@ export function GenerateurForm({ cabinet: _cabinet }: Props) {
         open={showUpgradeModal}
         onClose={() => setShowUpgradeModal(false)}
       />
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto space-y-4">
+        <ConfidentialiteBandeau />
         <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8">
           <h2 className="font-semibold text-gray-900 mb-5">Paramètres de génération</h2>
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -122,9 +138,15 @@ export function GenerateurForm({ cabinet: _cabinet }: Props) {
                 className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"
                 rows={4}
                 value={theme}
-                onChange={(e) => setTheme(e.target.value)}
+                onChange={(e) => handleThemeChange(e.target.value)}
                 placeholder="Ex : Les 5 erreurs à éviter lors d'un licenciement pour faute grave"
                 required
+              />
+              <PIIWarning
+                findings={piiFindings}
+                confirmed={piiConfirmed}
+                onConfirmChange={setPiiConfirmed}
+                fieldId="theme"
               />
               <p className="text-xs text-gray-400">Décrivez le sujet que vous souhaitez traiter.</p>
             </div>
@@ -150,7 +172,13 @@ export function GenerateurForm({ cabinet: _cabinet }: Props) {
               </div>
             )}
 
-            <Button type="submit" size="lg" className="w-full" loading={loading}>
+            <Button
+              type="submit"
+              size="lg"
+              className="w-full"
+              loading={loading}
+              disabled={loading || piiBlocked}
+            >
               {loading ? 'Génération en cours…' : '✦ Générer le contenu'}
             </Button>
 

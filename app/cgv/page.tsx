@@ -93,7 +93,20 @@ export default function CGVPage() {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.8 Disponibilité du service</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.8 Secret professionnel et confidentialité</h2>
+          <p className="text-gray-700 leading-relaxed mb-3">
+            LEXAVO est destiné à produire du contenu pédagogique générique à destination du public. Il ne constitue ni un espace de travail confidentiel, ni un outil de gestion de dossier client.
+          </p>
+          <p className="text-gray-700 leading-relaxed mb-3">
+            L&apos;utilisateur, en sa qualité d&apos;avocat soumis à l&apos;article 66-5 de la loi n° 71-1130 du 31 décembre 1971 et à l&apos;article 4 du Règlement Intérieur National de la profession d&apos;avocat, s&apos;interdit de saisir dans les champs de génération toute information permettant d&apos;identifier directement ou indirectement un client, un adversaire ou un dossier en cours, notamment : nom et prénom, adresse postale, coordonnées téléphoniques ou électroniques, identifiants nationaux (SIREN, SIRET, NIR), coordonnées bancaires, numéro de dossier interne, ou montants individualisés.
+          </p>
+          <p className="text-gray-700 leading-relaxed">
+            LEXAVO met à disposition une détection automatique de motifs sensibles (e-mails, téléphones, NIR, IBAN, SIREN/SIRET, adresses postales, civilités). Cette détection constitue un signal d&apos;aide à la vigilance ; elle ne décharge en aucun cas l&apos;utilisateur de sa responsabilité déontologique exclusive en matière de secret professionnel.
+          </p>
+        </section>
+
+        <section className="mb-10">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.9 Disponibilité du service</h2>
           <p className="text-gray-700 leading-relaxed">
             LEXAVO s&apos;engage à maintenir le service accessible 24h/24 et 7j/7, hors périodes de maintenance planifiée. En cas d&apos;interruption, LEXAVO informera les utilisateurs dans les meilleurs délais.
           </p>
@@ -103,14 +116,14 @@ export default function CGVPage() {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.9 Modification des tarifs</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.10 Modification des tarifs</h2>
           <p className="text-gray-700 leading-relaxed">
             LEXAVO se réserve le droit de modifier ses tarifs avec un préavis de 30 jours par email. L&apos;utilisateur peut résilier son abonnement sans frais si les nouveaux tarifs ne lui conviennent pas.
           </p>
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.10 Droit applicable et litiges</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.11 Droit applicable et litiges</h2>
           <p className="text-gray-700 leading-relaxed">
             Les présentes CGV sont soumises au droit français. En cas de litige, une solution amiable sera recherchée en priorité. À défaut, les tribunaux compétents du ressort de Versailles seront saisis.
           </p>
