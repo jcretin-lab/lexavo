@@ -124,7 +124,7 @@ export function PricingSection({ onChoose, loadingPlan, currentPlanId, error, mi
                   </li>
                 )
                 return (
-                  <ul className="space-y-3 mb-6 flex-1">
+                  <ul className="flex flex-col gap-3 mb-6 flex-1 justify-between">
                     {topFeatures.map(renderFeature)}
                     {unlimited && (
                       <li
