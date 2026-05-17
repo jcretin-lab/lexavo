@@ -820,7 +820,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Ancrage prix : comparaison rédacteur freelance vs Lexavo */}
+          {/* Ancrage prix : comparaison community manager vs Lexavo */}
           <div className="max-w-2xl mx-auto mb-12 fade-in">
             <div
               className="grid grid-cols-2 gap-px rounded-2xl overflow-hidden"
@@ -831,13 +831,13 @@ export default function HomePage() {
                   className="text-[10px] uppercase font-semibold mb-2"
                   style={{ fontFamily: 'var(--font-jetbrains-mono)', letterSpacing: '0.16em', color: 'var(--ink-400)' }}
                 >
-                  Rédacteur freelance
+                  Community manager
                 </p>
                 <p
                   className="font-semibold mb-1"
                   style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.5rem', color: 'var(--ink-500)', letterSpacing: '-0.01em' }}
                 >
-                  800 € – 1 500 €
+                  400 € – 600 €
                 </p>
                 <p className="text-[11px]" style={{ color: 'var(--ink-400)' }}>
                   par mois, pour un volume équivalent
