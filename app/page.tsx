@@ -2,30 +2,49 @@ import Link from 'next/link'
 import { LandingPricing } from '@/components/landing/landing-pricing'
 import { ScrollAnimationInit } from '@/components/landing/scroll-animation'
 
+const INPUT_FORMATS = [
+  {
+    icon: 'Aa',
+    titre: 'Un thème',
+    desc: 'Un sujet juridique (ex : licenciement pour faute grave).',
+  },
+  {
+    icon: '↗',
+    titre: 'Une URL d’article',
+    desc: 'Collez un lien : Lexavo extrait le texte automatiquement.',
+  },
+  {
+    icon: '¶',
+    titre: 'Un article collé',
+    desc: 'Collez directement votre texte (200 mots minimum recommandés).',
+  },
+]
+
 const PUBLICATION_ITEMS = [
   {
-    num: '01',
     icon: '✍',
     titre: 'Article de blog SEO',
-    desc: '900 à 1 200 mots structurés pour Google, avec titre H1, balises méta et mots-clés ciblés.',
+    desc: '900 à 1 200 mots structurés pour Google : H1, balises méta, mots-clés ciblés, slug optimisé.',
   },
   {
-    num: '02',
     icon: '◈',
-    titre: '3 posts prêts à publier sur LinkedIn et Facebook',
-    desc: 'Trois angles différents, optimisés pour LinkedIn (clients professionnels) et Facebook (clients particuliers).',
+    titre: '3 posts LinkedIn et Facebook',
+    desc: 'Trois angles distincts (pédagogique, cas pratique, conseil…), prêts à publier.',
   },
   {
-    num: '03',
     icon: '?',
     titre: 'FAQ juridique',
-    desc: '5 questions-réponses pour enrichir votre article et capter les recherches longue traîne.',
+    desc: '5 questions-réponses pour enrichir l’article et capter la longue traîne.',
   },
   {
-    num: '04',
     icon: '◻',
-    titre: '1 image générée par IA (ou la vôtre)',
-    desc: 'Un visuel éditorial sur-mesure pour votre publication, ou uploadez votre propre image en un clic.',
+    titre: 'Image éditoriale',
+    desc: 'Un visuel sur-mesure généré par IA, ou uploadez votre propre image en un clic.',
+  },
+  {
+    icon: '⏱',
+    titre: 'Programmation automatique',
+    desc: 'Publication immédiate ou planifiée via calendrier éditorial, sur LinkedIn et Facebook.',
   },
 ]
 
@@ -592,60 +611,84 @@ export default function HomePage() {
               className="mb-4"
               style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.875rem, 3.5vw, 2.75rem)', color: 'var(--ink-900)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
             >
-              Tout votre contenu. En une fois.
+              D’un sujet à toute votre semaine éditoriale.
             </h2>
             <p className="text-base max-w-2xl mx-auto" style={{ color: 'var(--ink-500)', lineHeight: 1.65 }}>
-              <strong style={{ color: 'var(--ink-900)', fontWeight: 600 }}>De 4 à 6 h de rédaction à 3 minutes.</strong> Un article publié par semaine, sans y penser.
+              Article SEO, 3 posts LinkedIn et Facebook, FAQ, image et programmation automatique — <strong style={{ color: 'var(--ink-900)', fontWeight: 600 }}>produits et planifiés en moins de 3 minutes.</strong>
             </p>
           </div>
 
-          {/* 01 — source centrale */}
-          <div className="flex justify-center mb-0 fade-in">
+          {/* Bloc input — 3 formats au choix */}
+          <div className="flex justify-center fade-in">
             <div
-              className="feature-card w-full max-w-xl"
-              style={{ background: 'var(--navy-900)', border: '1px solid rgba(255,255,255,0.1)' }}
+              className="feature-card w-full max-w-3xl"
+              style={{ background: 'var(--ocre-50)', border: '1px solid var(--ocre-100)' }}
             >
-              <div className="flex items-start gap-5">
-                <span
-                  className="flex-shrink-0 font-mono font-semibold"
-                  style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.04em', marginTop: '2px' }}
-                >
-                  01
-                </span>
-                <div>
-                  <p className="font-semibold mb-2" style={{ color: 'var(--white)', fontSize: '1rem' }}>
-                    Générez un article sur un thème précis ou insérez votre article existant
-                  </p>
-                  <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                    {PUBLICATION_ITEMS[0].desc}
-                  </p>
-                </div>
+              <p
+                className="mb-5 uppercase text-center"
+                style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.16em', color: 'var(--ocre-700)' }}
+              >
+                Vous fournissez
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {INPUT_FORMATS.map((fmt) => (
+                  <div key={fmt.titre} className="flex items-start gap-3">
+                    <span
+                      className="flex-shrink-0 inline-flex items-center justify-center rounded-md font-mono font-semibold"
+                      style={{ width: '28px', height: '28px', background: 'var(--ocre-100)', color: 'var(--ocre-900)', fontSize: '0.75rem', marginTop: '2px' }}
+                    >
+                      {fmt.icon}
+                    </span>
+                    <div>
+                      <p className="font-semibold mb-1" style={{ color: 'var(--ink-900)', fontSize: '0.9375rem' }}>{fmt.titre}</p>
+                      <p className="text-xs leading-relaxed" style={{ color: 'var(--ink-500)' }}>{fmt.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Connecteur visuel 01 → 02 / 03 / 04 */}
+          {/* Connecteur input → 5 livrables */}
           <div className="relative w-full hidden sm:block" style={{ height: '52px' }}>
             <div className="absolute" style={{ left: '50%', top: 0, width: '1px', height: '26px', background: 'var(--ink-200)', transform: 'translateX(-50%)' }} />
-            <div className="absolute" style={{ top: '26px', left: '16.7%', right: '16.7%', height: '1px', background: 'var(--ink-200)' }} />
-            <div className="absolute" style={{ left: '16.7%', top: '26px', width: '1px', height: '26px', background: 'var(--ink-200)' }} />
-            <div className="absolute" style={{ left: '50%', top: '26px', width: '1px', height: '26px', background: 'var(--ink-200)', transform: 'translateX(-50%)' }} />
-            <div className="absolute" style={{ right: '16.7%', top: '26px', width: '1px', height: '26px', background: 'var(--ink-200)' }} />
+            <div className="absolute" style={{ top: '26px', left: '10%', right: '10%', height: '1px', background: 'var(--ink-200)' }} />
+            {['10%', '30%', '50%', '70%', '90%'].map((leftPos) => (
+              <div key={leftPos} className="absolute" style={{ left: leftPos, top: '26px', width: '1px', height: '26px', background: 'var(--ink-200)', transform: 'translateX(-50%)' }} />
+            ))}
           </div>
           <div className="flex justify-center sm:hidden my-4">
             <div style={{ width: '1px', height: '32px', background: 'var(--ink-200)' }} />
           </div>
 
-          {/* 02, 03, 04 — résultats */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            {PUBLICATION_ITEMS.slice(1).map((item, i) => (
+          {/* 5 livrables — 3 + 2 centré en desktop */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {PUBLICATION_ITEMS.slice(0, 3).map((item, i) => (
               <div key={item.titre} className={`feature-card fade-in fade-in-delay-${i + 1}`} style={{ background: 'var(--navy-50)', border: '1px solid var(--navy-100)' }}>
                 <div className="flex items-start gap-4">
                   <span
-                    className="flex-shrink-0 font-mono font-semibold"
-                    style={{ fontSize: '0.75rem', color: 'var(--ink-300)', letterSpacing: '0.04em', marginTop: '2px' }}
+                    className="flex-shrink-0 inline-flex items-center justify-center rounded-md font-mono"
+                    style={{ width: '28px', height: '28px', background: 'var(--white)', color: 'var(--navy-900)', fontSize: '0.875rem', marginTop: '2px', border: '1px solid var(--navy-100)' }}
                   >
-                    {item.num}
+                    {item.icon}
+                  </span>
+                  <div>
+                    <p className="font-semibold mb-2" style={{ color: 'var(--ink-900)', fontSize: '0.9375rem' }}>{item.titre}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-500)' }}>{item.desc}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-5 lg:max-w-[66.66%] lg:mx-auto">
+            {PUBLICATION_ITEMS.slice(3).map((item, i) => (
+              <div key={item.titre} className={`feature-card fade-in fade-in-delay-${i + 1}`} style={{ background: 'var(--navy-50)', border: '1px solid var(--navy-100)' }}>
+                <div className="flex items-start gap-4">
+                  <span
+                    className="flex-shrink-0 inline-flex items-center justify-center rounded-md font-mono"
+                    style={{ width: '28px', height: '28px', background: 'var(--white)', color: 'var(--navy-900)', fontSize: '0.875rem', marginTop: '2px', border: '1px solid var(--navy-100)' }}
+                  >
+                    {item.icon}
                   </span>
                   <div>
                     <p className="font-semibold mb-2" style={{ color: 'var(--ink-900)', fontSize: '0.9375rem' }}>{item.titre}</p>
@@ -658,7 +701,7 @@ export default function HomePage() {
 
           <div className="mt-8 rounded-2xl px-6 py-4 text-center max-w-xl mx-auto fade-in" style={{ border: '1px solid var(--ocre-100)', background: 'var(--ocre-50)' }}>
             <p className="text-sm" style={{ color: 'var(--ocre-900)' }}>
-              Tout le contenu est modifiable avant publication
+              Tout est modifiable et programmable depuis votre dashboard avant publication.
             </p>
           </div>
         </div>
