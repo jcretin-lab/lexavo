@@ -129,7 +129,7 @@ export function PricingSection({ onChoose, loadingPlan, currentPlanId, error, mi
                     {unlimited && (
                       <li
                         key={unlimited}
-                        className="text-center py-3 my-1 rounded-lg"
+                        className="text-center py-2 rounded-lg"
                         style={{
                           fontFamily: 'var(--font-jetbrains-mono)',
                           fontSize: '0.8125rem',

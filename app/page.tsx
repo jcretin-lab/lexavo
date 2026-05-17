@@ -699,9 +699,15 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="mt-8 rounded-2xl px-6 py-4 text-center max-w-xl mx-auto fade-in" style={{ border: '1px solid var(--ocre-100)', background: 'var(--ocre-50)' }}>
-            <p className="text-sm" style={{ color: 'var(--ocre-900)' }}>
-              Tout est modifiable et programmable depuis votre dashboard avant publication.
+          <div className="mt-10 rounded-2xl px-8 py-6 text-center max-w-2xl mx-auto fade-in" style={{ border: '1px solid var(--ocre-100)', background: 'var(--ocre-50)' }}>
+            <p
+              className="mb-3"
+              style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.375rem', color: 'var(--ink-900)', letterSpacing: '-0.01em', lineHeight: 1.2 }}
+            >
+              Le brouillon, c’est nous. La voix, c’est vous.
+            </p>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--ocre-900)' }}>
+              Chaque article, post et FAQ reste entièrement modifiable avant publication. Vous reprenez le ton, ajustez les exemples, imposez vos formulations — pour que chaque contenu porte votre ligne éditoriale, pas une signature IA.
             </p>
           </div>
         </div>
