@@ -29,6 +29,10 @@ export default async function ReseauxPage() {
       <p className="text-sm text-gray-600 mb-2">
         Vous êtes satisfait des posts générés ! Activez la publication automatique sur LinkedIn (page personnelle et/ou entreprise) et/ou Facebook (page).
       </p>
+      <p className="text-sm text-amber-700 mb-2 flex items-center gap-2">
+        <span aria-hidden>⚠️</span>
+        Nous ne conseillons pas de réaliser cette configuration sur mobile.
+      </p>
       <p className="text-sm text-gray-600 mb-8">
         En cas de problème de configuration{' '}
         <a
