@@ -7,11 +7,10 @@ import { BARREAUX_FR } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
-import { ReseauxWebhookForm } from '@/components/dashboard/reseaux-webhook-form'
 
 const STEPS = [
   'Identité du cabinet',
-  'Activation des réseaux',
+  'Bienvenue sur Lexavo',
 ]
 
 function OnboardingContent() {
@@ -23,9 +22,7 @@ function OnboardingContent() {
 
   const [step, setStep] = useState(0)
   const [loading, setLoading] = useState(false)
-  const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
-  const [initialWebhookUrl, setInitialWebhookUrl] = useState<string | null>(null)
 
   // Step 1 — Identité
   const [nom, setNom] = useState('')
@@ -75,8 +72,6 @@ function OnboardingContent() {
 
       if (!cabinet) throw new Error('Erreur lors de la création du cabinet.')
 
-      setInitialWebhookUrl((cabinet as { make_webhook_url?: string | null }).make_webhook_url ?? null)
-
       // Email de bienvenue uniquement pour les nouveaux cabinets (pas les ré-onboardings ni les invités)
       if (!existing && !inviteId) {
         fetch('/api/email/bienvenue', { method: 'POST' }).catch(() => {})
@@ -103,7 +98,6 @@ function OnboardingContent() {
         }
       }
 
-      setSaved(true)
       setStep(1)
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Erreur lors de la sauvegarde')
@@ -227,77 +221,95 @@ function OnboardingContent() {
             </div>
           )}
 
-          {/* ÉTAPE 2 — Activation des réseaux (téléchargement + webhook) */}
+          {/* ÉTAPE 2 — Bienvenue (présentation du dashboard) */}
           {step === 1 && (
             <div>
-              <h2 className="text-xl font-semibold mb-1">Activez la publication automatique</h2>
+              <h2 className="text-xl font-semibold mb-1">Bienvenue sur Lexavo</h2>
               <p className="text-sm text-gray-500 mb-6">
-                Configurez en quelques minutes la publication automatique sur LinkedIn et Facebook.
+                Votre cabinet est configuré. Voici une présentation de votre espace de travail.
               </p>
 
-              <div className="space-y-5">
-                <div className="rounded-xl border border-gray-200 p-5">
-                  <div className="flex items-start gap-3">
-                    <div
-                      className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-lg"
-                      style={{ background: 'var(--navy-50)', color: 'var(--navy-900)' }}
-                      aria-hidden
-                    >
-                      ⬇️
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-base font-semibold text-gray-900 mb-1">
-                        Téléchargez le scénario et le guide
-                      </h3>
-                      <p className="text-sm text-gray-600 mb-3">
-                        Téléchargez le scénario à utiliser sur votre compte Make et le guide de configuration.
-                      </p>
-                      <div className="flex flex-wrap gap-3">
-                        <a
-                          href="/lexavo-publications.json"
-                          download="lexavo-publications.json"
-                          className="inline-flex items-center gap-2 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 border border-gray-200 px-4 py-2 rounded-lg transition-colors"
-                        >
-                          Télécharger le scénario
-                        </a>
-                        <a
-                          href="/Guide_Configuration_Make_Lexavo.pptx"
-                          download="Guide_Configuration_Make_Lexavo.pptx"
-                          className="inline-flex items-center gap-2 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 border border-gray-200 px-4 py-2 rounded-lg transition-colors"
-                        >
-                          Télécharger le guide
-                        </a>
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">
+                Votre dashboard en un coup d&apos;œil
+              </h3>
+
+              <div className="space-y-3">
+                {[
+                  {
+                    icon: '⊞',
+                    title: 'Tableau de bord',
+                    desc: 'Vue d’ensemble de votre activité, statistiques de génération et raccourcis utiles.',
+                  },
+                  {
+                    icon: '✦',
+                    title: 'Générer du contenu',
+                    desc: 'À partir d’un sujet juridique, créez 3 posts LinkedIn, une FAQ et une image éditoriale.',
+                  },
+                  {
+                    icon: '⇢',
+                    title: 'Mon article → Posts',
+                    desc: 'Transformez un article existant (URL ou texte) en posts LinkedIn, FAQ et image.',
+                  },
+                  {
+                    icon: '☰',
+                    title: 'Mes contenus',
+                    desc: 'Retrouvez, modifiez et programmez l’ensemble de vos générations.',
+                  },
+                  {
+                    icon: '◫',
+                    title: 'Calendrier',
+                    desc: 'Visualisez vos posts publiés et programmés dans le temps.',
+                  },
+                  {
+                    icon: '📅',
+                    title: 'Mes réseaux',
+                    desc: 'Configurez la publication automatique sur LinkedIn et Facebook via Make.',
+                  },
+                  {
+                    icon: '⚙',
+                    title: 'Paramètres',
+                    desc: 'Gérez votre abonnement, votre adresse e-mail et votre compte.',
+                  },
+                ].map((item) => (
+                  <div key={item.title} className="rounded-xl border border-gray-200 p-4">
+                    <div className="flex items-start gap-3">
+                      <div
+                        className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-base"
+                        style={{ background: 'var(--navy-50)', color: 'var(--navy-900)' }}
+                        aria-hidden
+                      >
+                        {item.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-semibold text-gray-900 mb-0.5">{item.title}</h4>
+                        <p className="text-sm text-gray-600">{item.desc}</p>
                       </div>
                     </div>
                   </div>
-                </div>
+                ))}
+              </div>
 
-                <div className="rounded-xl border border-gray-200 p-5">
-                  <div className="flex items-start gap-3">
-                    <div
-                      className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-lg"
-                      style={{ background: 'var(--navy-50)', color: 'var(--navy-900)' }}
-                      aria-hidden
-                    >
-                      🔗
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-base font-semibold text-gray-900 mb-1">Collez votre URL webhook</h3>
-                      <p className="text-sm text-gray-600 mb-3">
-                        Collez ici l&apos;URL webhook Make.com créée à partir du scénario importé.
-                      </p>
-                      <ReseauxWebhookForm initialUrl={initialWebhookUrl} />
-                    </div>
-                  </div>
-                </div>
+              <div
+                className="mt-6 rounded-xl p-5"
+                style={{
+                  background: 'var(--navy-50)',
+                  border: '1px solid rgba(15, 27, 61, 0.08)',
+                }}
+              >
+                <h3 className="text-sm font-semibold mb-2" style={{ color: 'var(--navy-900)' }}>
+                  Notre conseil pour démarrer
+                </h3>
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--navy-900)' }}>
+                  Profitez de votre essai (10 générations) pour découvrir l&apos;outil. Une
+                  fois satisfait des contenus produits, configurez l&apos;automatisation depuis
+                  l&apos;onglet <strong>Mes réseaux</strong> — gardez une à deux générations
+                  pour tester l&apos;activation. Choisissez ensuite l&apos;abonnement qui
+                  correspond à votre cabinet.
+                </p>
               </div>
 
               <div className="mt-8 flex justify-end">
-                <Button
-                  onClick={() => router.push('/dashboard')}
-                  size="lg"
-                  disabled={!saved && !inviteId}
-                >
+                <Button onClick={() => router.push('/dashboard')} size="lg">
                   Accéder au dashboard →
                 </Button>
               </div>
