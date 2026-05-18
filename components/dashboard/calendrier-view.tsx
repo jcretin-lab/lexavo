@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { format, addMonths, subMonths } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import { CALENDLY_URL } from '@/lib/constants'
 import { DateTimePickerFr } from '@/components/ui/datetime-picker-fr'
 
 interface CalendrierPost {
@@ -178,19 +177,9 @@ export function CalendrierView({ posts: initialPosts, reseauxConfigured }: Props
     <div>
       {/* Alerte réseaux non configurés */}
       {!reseauxConfigured && (
-        <div className="mb-6 rounded-xl bg-amber-50 border border-amber-200 px-5 py-4 flex items-center justify-between gap-3">
-          <div>
-            <p className="text-sm font-medium text-amber-800">Réseaux sociaux non configurés</p>
-            <p className="text-xs text-amber-600 mt-0.5">Réservez un appel pour activer la publication automatique sur vos réseaux.</p>
-          </div>
-          <a
-            href={CALENDLY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs font-semibold text-amber-700 hover:underline flex-shrink-0 whitespace-nowrap"
-          >
-            Réserver →
-          </a>
+        <div className="mb-6 rounded-xl bg-amber-50 border border-amber-200 px-5 py-4">
+          <p className="text-sm font-medium text-amber-800">Réseaux sociaux non configurés</p>
+          <p className="text-xs text-amber-600 mt-0.5">Allez dans Mes réseaux pour configurer la publication.</p>
         </div>
       )}
 

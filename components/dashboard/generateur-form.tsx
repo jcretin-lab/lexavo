@@ -4,7 +4,6 @@ import { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
 import { UpgradeModal } from './upgrade-modal'
 import { ConfidentialiteBandeau } from './confidentialite-bandeau'
 import { PIIWarning } from './pii-warning'
@@ -61,7 +60,6 @@ export function GenerateurForm({ cabinet: _cabinet }: Props) {
   const [specialite, setSpecialite] = useState(SPECIALITES_LISTE[0])
   const [theme, setTheme] = useState('')
   const [ton, setTon] = useState<string>('Pédagogique')
-  const [datePublication, setDatePublication] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
@@ -91,7 +89,7 @@ export function GenerateurForm({ cabinet: _cabinet }: Props) {
       const res = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ specialite, theme, ton, date_publication: datePublication || null }),
+        body: JSON.stringify({ specialite, theme, ton }),
       })
       const data = await res.json()
       if (res.status === 402 && data.trial_exhausted) {
@@ -156,14 +154,6 @@ export function GenerateurForm({ cabinet: _cabinet }: Props) {
               value={ton}
               onChange={(e) => setTon(e.target.value)}
               options={tonOptions}
-            />
-
-            <Input
-              label="Date de publication (optionnel)"
-              type="date"
-              value={datePublication}
-              onChange={(e) => setDatePublication(e.target.value)}
-              min={new Date().toISOString().split('T')[0]}
             />
 
             {error && (
