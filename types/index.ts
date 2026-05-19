@@ -122,8 +122,8 @@ export const NOM_PAR_PLAN: Record<Plan, string> = {
 }
 
 export const PRIX_PAR_PLAN: Record<Exclude<Plan, 'trial'>, string> = {
-  pro: '69 €/mois',
-  cabinet: '149 €/mois',
+  pro: '49 €/mois',
+  cabinet: '119 €/mois',
 }
 
 export const MAX_MEMBRES_PAR_PLAN: Record<Plan, number> = {

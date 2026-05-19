@@ -860,7 +860,7 @@ export default function HomePage() {
                   className="font-semibold mb-1"
                   style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.5rem', color: 'var(--navy-900)', letterSpacing: '-0.01em' }}
                 >
-                  69 €
+                  49 €
                 </p>
                 <p className="text-[11px]" style={{ color: 'var(--ink-500)' }}>
                   par mois, générations illimitées
