@@ -22,11 +22,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.lexavo.fr'),
   title: {
-    default: 'Lexavo — Publiez facilement pour faire entendre votre droit.',
+    default: 'Application avocat IA — contenu SEO & réseaux | Lexavo',
     template: '%s | Lexavo',
   },
-  description: 'Lexavo génère vos articles SEO et posts pour vos réseaux sociaux (LinkedIn et Facebook) conformes à la déontologie du barreau. Publiez facilement pour faire entendre votre droit. Essai gratuit sans carte bancaire.',
-  keywords: ['avocat', 'contenu juridique', 'réseaux sociaux avocat', 'SEO cabinet avocat', 'publication automatique', 'LinkedIn avocat', 'Facebook avocat', 'marketing juridique', 'déontologie barreau'],
+  description: "Lexavo, l'application avocat IA qui génère articles SEO, posts LinkedIn et Facebook conformes à la déontologie. Essai gratuit, sans carte bancaire.",
+  keywords: ['application avocat IA', 'avocat', 'IA pour avocat', 'contenu juridique', 'réseaux sociaux avocat', 'SEO cabinet avocat', 'publication automatique', 'LinkedIn avocat', 'Facebook avocat', 'marketing juridique', 'déontologie barreau'],
   authors: [{ name: 'Lexavo' }],
   creator: 'Lexavo',
   openGraph: {
@@ -34,13 +34,13 @@ export const metadata: Metadata = {
     locale: 'fr_FR',
     url: 'https://www.lexavo.fr',
     siteName: 'Lexavo',
-    title: 'Lexavo — Publiez facilement pour faire entendre votre droit.',
-    description: 'Lexavo génère vos articles SEO et posts pour vos réseaux sociaux (LinkedIn et Facebook) conformes à la déontologie du barreau. Publiez facilement pour faire entendre votre droit. Essai gratuit.',
+    title: 'Application avocat IA — contenu SEO & réseaux | Lexavo',
+    description: "Lexavo, l'application avocat IA qui génère articles SEO, posts LinkedIn et Facebook conformes à la déontologie. Essai gratuit, sans carte bancaire.",
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Lexavo — Publiez facilement pour faire entendre votre droit.',
-    description: 'Lexavo génère vos articles SEO et posts pour vos réseaux sociaux conformes à la déontologie du barreau. Publiez facilement pour faire entendre votre droit.',
+    title: 'Application avocat IA — contenu SEO & réseaux | Lexavo',
+    description: "Lexavo, l'application avocat IA qui génère articles SEO, posts LinkedIn et Facebook conformes à la déontologie du barreau.",
   },
   robots: {
     index: true,
