@@ -37,16 +37,16 @@ export default function CGVPage() {
           <p className="text-gray-700 leading-relaxed mb-4">Deux formules d&apos;abonnement sont disponibles :</p>
           <div className="space-y-4">
             <div className="rounded-xl border border-gray-200 p-4">
-              <p className="font-semibold text-gray-900">Plan Pro — 49 € HT/mois</p>
+              <p className="font-semibold text-gray-900">Plan Pro — 49 € / mois</p>
               <p className="text-gray-600 text-sm mt-1">1 utilisateur, génération illimitée depuis un thème ou un article existant (article SEO, posts réseaux sociaux, FAQ, 1 image IA générée ou la vôtre), publication et programmation automatique sur vos réseaux sociaux</p>
             </div>
             <div className="rounded-xl border border-gray-200 p-4">
-              <p className="font-semibold text-gray-900">Plan Cabinet — 119 € HT/mois</p>
+              <p className="font-semibold text-gray-900">Plan Cabinet — 119 € / mois</p>
               <p className="text-gray-600 text-sm mt-1">3 utilisateurs inclus, toutes les fonctionnalités Pro</p>
             </div>
           </div>
           <p className="text-gray-600 text-sm mt-4">
-            Les prix sont indiqués en euros hors taxes. La TVA applicable sera ajoutée selon la réglementation en vigueur.
+            Les prix sont indiqués en euros toutes taxes comprises. TVA non applicable, art. 293 B du CGI.
           </p>
         </section>
 

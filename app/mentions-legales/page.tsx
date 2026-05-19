@@ -20,7 +20,8 @@ export default function MentionsLegalesPage() {
             <strong>Adresse :</strong> 2 route de la Magnanerie, 78460 CHOISEL<br />
             <strong>Email :</strong> contact@lexavo.fr<br />
             <strong>SIRET :</strong> 94997889400028<br />
-            <strong>Statut :</strong> Entrepreneur individuel
+            <strong>Statut :</strong> Entrepreneur individuel<br />
+            <strong>TVA :</strong> non applicable, art. 293 B du CGI
           </p>
         </section>
 
