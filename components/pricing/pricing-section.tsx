@@ -140,44 +140,15 @@ export function PricingSection({ onChoose, loadingPlan, currentPlanId, error, mi
 
               <div className="mb-5" style={{ borderTop: `1px solid ${plan.recommande ? 'rgba(255,255,255,0.18)' : 'var(--ink-100)'}` }} />
 
-              {/* Features — "Générations illimitées" est mis en avant au milieu */}
-              {(() => {
-                const unlimited = plan.features.find(f => /illimité/i.test(f))
-                const others = plan.features.filter(f => !/illimité/i.test(f))
-                const midpoint = Math.ceil(others.length / 2)
-                const topFeatures = others.slice(0, midpoint)
-                const bottomFeatures = others.slice(midpoint)
-                const renderFeature = (f: string) => (
+              {/* Features */}
+              <ul className="flex flex-col gap-3 mb-6 flex-1">
+                {plan.features.map(f => (
                   <li key={f} className="flex items-start gap-2 text-sm" style={{ color: plan.recommande ? 'rgba(255,255,255,0.85)' : 'var(--ink-700)' }}>
                     <span className="flex-shrink-0 mt-0.5 font-bold" style={{ color: plan.recommande ? 'var(--ocre-300)' : 'var(--success)' }}>✓</span>
                     {f}
                   </li>
-                )
-                return (
-                  <ul className="flex flex-col gap-3 mb-6 flex-1 justify-between">
-                    {topFeatures.map(renderFeature)}
-                    {unlimited && (
-                      <li
-                        key={unlimited}
-                        className="text-center py-2 rounded-lg"
-                        style={{
-                          fontFamily: 'var(--font-jetbrains-mono)',
-                          fontSize: '0.8125rem',
-                          fontWeight: 700,
-                          letterSpacing: '0.12em',
-                          textTransform: 'uppercase',
-                          color: plan.recommande ? 'var(--navy-900)' : 'var(--white)',
-                          background: plan.recommande ? 'var(--ocre-500)' : 'var(--navy-900)',
-                          border: plan.recommande ? '1px solid var(--ocre-500)' : '1px solid var(--navy-900)',
-                        }}
-                      >
-                        {unlimited}
-                      </li>
-                    )}
-                    {bottomFeatures.map(renderFeature)}
-                  </ul>
-                )
-              })()}
+                ))}
+              </ul>
 
               {/* Bouton */}
               <div className="mt-auto">
