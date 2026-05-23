@@ -114,7 +114,7 @@ export function LandingPricing() {
               letterSpacing: '0.06em',
             }}
           >
-            Sur devis · 1 cabinet
+            1 cabinet
           </p>
 
           <div className="mb-5" style={{ borderTop: '1px solid var(--ink-100)' }} />
