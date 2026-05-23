@@ -11,6 +11,8 @@ export const PRICING_PLANS = [
     periode: '/mois',
     utilisateurs: '1 utilisateur',
     recommande: true,
+    landingOnly: false,
+    ctaLabel: 'Choisir',
     features: [
       'Génération SEO depuis un thème : article + 3 posts + FAQ + 1 image IA (ou la vôtre) en 3 min',
       'Transformation d\'un article existant en 3 posts adaptés',
@@ -28,6 +30,8 @@ export const PRICING_PLANS = [
     periode: '/mois',
     utilisateurs: '3 utilisateurs inclus',
     recommande: false,
+    landingOnly: false,
+    ctaLabel: 'Choisir',
     features: [
       'Tout le plan Pro',
       '3 comptes utilisateurs inclus',
@@ -35,6 +39,25 @@ export const PRICING_PLANS = [
       'Tableau de bord par utilisateur',
       'Générations illimitées',
       'Économisez 28 €/mois vs 3 abonnements Pro',
+    ],
+  },
+  {
+    id: 'pilote',
+    nom: 'Pilote',
+    tagline: 'Ma communication, entièrement gérée pour moi',
+    prix: '290 €',
+    periode: '/mois',
+    utilisateurs: 'page Facebook · page LinkedIn · profil LinkedIn',
+    recommande: false,
+    landingOnly: true,
+    ctaLabel: 'Nous contacter',
+    features: [
+      'Configuration et connexion des comptes LinkedIn + Facebook (setup offert)',
+      '1 visio mensuelle de 45 min (ligne éditoriale + bilan)',
+      'Génération de 4 semaines de contenu — 12 posts/mois',
+      'Validation par le client avant publication',
+      'Publication automatique programmée',
+      'Rapport mensuel de performance',
     ],
   },
 ]
@@ -46,14 +69,16 @@ interface Props {
   error?: string
   theme?: 'gold'
   minPlan?: 'pro' | 'cabinet'
+  showLandingPlans?: boolean
 }
 
-export function PricingSection({ onChoose, loadingPlan, currentPlanId, error, minPlan }: Props) {
+export function PricingSection({ onChoose, loadingPlan, currentPlanId, error, minPlan, showLandingPlans }: Props) {
+  const base = PRICING_PLANS.filter(p => !p.landingOnly || showLandingPlans)
   const plansToShow = minPlan === 'pro'
-    ? PRICING_PLANS.filter(p => p.id === 'pro' || p.id === 'cabinet')
+    ? base.filter(p => p.id === 'pro' || p.id === 'cabinet')
     : minPlan === 'cabinet'
-    ? PRICING_PLANS.filter(p => p.id === 'cabinet')
-    : PRICING_PLANS
+    ? base.filter(p => p.id === 'cabinet')
+    : base
 
   return (
     <div>
@@ -87,6 +112,11 @@ export function PricingSection({ onChoose, loadingPlan, currentPlanId, error, mi
                 {plan.recommande && (
                   <span className="text-xs px-2 py-0.5 rounded-full font-semibold" style={{ background: 'var(--ocre-500)', color: 'var(--navy-900)' }}>
                     Recommandé
+                  </span>
+                )}
+                {plan.id === 'pilote' && (
+                  <span className="text-xs px-2 py-0.5 rounded-full font-semibold" style={{ background: 'var(--ocre-500)', color: 'var(--navy-900)' }}>
+                    Service complet
                   </span>
                 )}
                 {isCurrent && (
@@ -166,7 +196,7 @@ export function PricingSection({ onChoose, loadingPlan, currentPlanId, error, mi
                       opacity: (!!loadingPlan && loadingPlan !== plan.id) ? 0.5 : 1,
                     }}
                   >
-                    {loadingPlan === plan.id ? '…' : 'Choisir'}
+                    {loadingPlan === plan.id ? '…' : plan.ctaLabel}
                   </button>
                 )}
               </div>
