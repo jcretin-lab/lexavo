@@ -114,7 +114,7 @@ export function LandingPricing() {
               letterSpacing: '0.06em',
             }}
           >
-            1 cabinet
+            page Facebook · page LinkedIn · profil LinkedIn
           </p>
 
           <div className="mb-5" style={{ borderTop: '1px solid var(--ink-100)' }} />
