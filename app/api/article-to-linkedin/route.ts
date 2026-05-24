@@ -177,7 +177,7 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
   },
   "posts_linkedin": [
     { "angle": "pedagogique", "texte": "string", "hashtags": ["string"] },
-    { "angle": "cas_pratique", "texte": "string", "hashtags": ["string"] },
+    { "angle": "cas_pratique", "texte": "string${cabinet.site_web ? ` — l'appel à consultation de CE post doit contenir l'URL exacte : ${cabinet.site_web}` : ''}", "hashtags": ["string"] },
     { "angle": "conseil", "texte": "string", "hashtags": ["string"] }
   ],
   "faq": [

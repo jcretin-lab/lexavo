@@ -294,7 +294,7 @@ Champs supplémentaires :
       "texte": "string (180-300 mots, 2 à 4 blocs avec sous-titres SUR MESURE, accroche tirée d'un des 4 leviers, angle parmi les 8 proposés, sauts de ligne entre blocs)",
       "hashtags": ["string", "string", "string"]
     },
-    { "texte": "string", "hashtags": ["string", "string", "string"] },
+    { "texte": "string${cabinet.site_web ? ` — l'appel à consultation de CE post doit contenir l'URL exacte : ${cabinet.site_web}` : ''}", "hashtags": ["string", "string", "string"] },
     { "texte": "string", "hashtags": ["string", "string", "string"] }
   ],
   "faq": [
