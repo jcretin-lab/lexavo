@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 
   const { data: cabinet } = await supabase
     .from('cabinets')
-    .select('id, nom, ville, plan')
+    .select('id, nom, ville, plan, site_web')
     .eq('user_id', user.id)
     .single()
 
@@ -114,7 +114,7 @@ Plan-canon. Inclure 5 à 6 sections h2 parmi les 7 ci-dessous, selon ce qui s'ap
 
 Avant la conclusion : checklist <ul> de 4 à 6 puces actionnables ("ce que vous devez faire / vérifier / conserver").
 
-Conclusion (3-4 phrases) avec <a href="#consultation">Prendre rendez-vous</a>.
+Conclusion (3-4 phrases) avec <a href="${cabinet.site_web || '#consultation'}">Prendre rendez-vous</a>.
 
 RÈGLE ACCROCHE INTRODUCTION :
 Première phrase de l'introduction tirée OBLIGATOIREMENT d'un de ces 4 leviers, jamais une formule générique :
@@ -195,7 +195,7 @@ RÈGLES FORMELLES — s'appliquent aux 3 posts :
 - Aucun paragraphe ne dépasse 3 lignes. Saut de ligne entre paragraphes et entre blocs. Voix active. Phrases courtes.
 - Aucun emoji, aucun symbole décoratif. Seul caractère toléré en tête de sous-titre : tiret long "—".
 - Aucune formule auto-promotionnelle, aucune comparaison avec d'autres avocats.
-- Appel à consultation en clôture du post, formulé DIFFÉREMMENT dans chaque post (ne jamais réutiliser une formule sur 2 posts d'une même génération).
+- Appel à consultation en clôture du post, formulé DIFFÉREMMENT dans chaque post (ne jamais réutiliser une formule sur 2 posts d'une même génération).${cabinet.site_web ? `\n- Tu peux mentionner le site du cabinet (${cabinet.site_web}) dans l'appel à consultation d'UN seul des 3 posts — pas les 3, pour ne pas répéter.` : ''}
 - Longueur : 180 à 280 mots par post, ajustée au nombre de blocs (2 blocs ≈ 180-220 mots, 3 blocs ≈ 220-260, 4 blocs ≈ 260-300). Hors hashtags.
 - 3 hashtags juridiques pertinents en fin de post, jamais plus, sur une ligne séparée.
 
