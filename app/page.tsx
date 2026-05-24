@@ -826,49 +826,6 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Ancrage prix : comparaison community manager vs Lexavo */}
-          <div className="max-w-2xl mx-auto mb-12 fade-in">
-            <div
-              className="grid grid-cols-2 gap-px rounded-2xl overflow-hidden"
-              style={{ background: 'var(--ink-200)', border: '1px solid var(--ink-200)' }}
-            >
-              <div className="p-5 text-center" style={{ background: 'var(--ink-50)' }}>
-                <p
-                  className="text-[10px] uppercase font-semibold mb-2"
-                  style={{ fontFamily: 'var(--font-jetbrains-mono)', letterSpacing: '0.16em', color: 'var(--ink-400)' }}
-                >
-                  Community manager
-                </p>
-                <p
-                  className="font-semibold mb-1"
-                  style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.5rem', color: 'var(--ink-500)', letterSpacing: '-0.01em' }}
-                >
-                  400 € – 600 €
-                </p>
-                <p className="text-[11px]" style={{ color: 'var(--ink-400)' }}>
-                  par mois, pour un volume équivalent
-                </p>
-              </div>
-              <div className="p-5 text-center" style={{ background: 'var(--white)' }}>
-                <p
-                  className="text-[10px] uppercase font-semibold mb-2"
-                  style={{ fontFamily: 'var(--font-jetbrains-mono)', letterSpacing: '0.16em', color: 'var(--ocre-700)' }}
-                >
-                  Lexavo Pro
-                </p>
-                <p
-                  className="font-semibold mb-1"
-                  style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.5rem', color: 'var(--navy-900)', letterSpacing: '-0.01em' }}
-                >
-                  49 €
-                </p>
-                <p className="text-[11px]" style={{ color: 'var(--ink-500)' }}>
-                  par mois, générations illimitées
-                </p>
-              </div>
-            </div>
-          </div>
-
           <LandingPricing />
         </div>
       </section>
