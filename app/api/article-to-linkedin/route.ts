@@ -130,7 +130,7 @@ RÈGLES FORMELLES — s'appliquent aux 3 posts :
 - Au sein d'un même bloc, les phrases s'enchaînent naturellement sans saut de ligne. Un seul saut de ligne entre les blocs. Voix active. Phrases courtes.
 - Aucun emoji, aucun symbole décoratif (✅, 👇, ▸, →). Aucun caractère en tête de sous-titre : le sous-titre commence directement par le texte, sans tiret ni puce.
 - Aucune formule auto-promotionnelle ("nous sommes les premiers à…", "je l'avais prévu…", "le meilleur cabinet…"). Aucune comparaison avec d'autres avocats.
-- Appel à consultation en clôture du post, formulé DIFFÉREMMENT dans chaque post (ne jamais réutiliser une formule sur 2 posts d'une même génération).${cabinet.site_web ? `\n- OBLIGATOIRE : inclure l'URL du cabinet (${cabinet.site_web}) dans l'appel à consultation d'exactement UN des 3 posts — ni zéro, ni deux, ni trois.` : ''}
+- Appel à consultation en clôture du post, formulé DIFFÉREMMENT dans chaque post (ne jamais réutiliser une formule sur 2 posts d'une même génération).
 - Longueur : 180 à 280 mots par post, ajustée au nombre de blocs (2 blocs ≈ 180-220 mots, 3 blocs ≈ 220-260, 4 blocs ≈ 260-300). Hors hashtags.
 - 3 hashtags juridiques pertinents en fin de post, jamais plus, sur une ligne séparée.
 
@@ -177,7 +177,7 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
   },
   "posts_linkedin": [
     { "angle": "pedagogique", "texte": "string", "hashtags": ["string"] },
-    { "angle": "cas_pratique", "texte": "string${cabinet.site_web ? ` — l'appel à consultation de CE post doit contenir l'URL exacte : ${cabinet.site_web}` : ''}", "hashtags": ["string"] },
+    { "angle": "cas_pratique", "texte": "string", "hashtags": ["string"] },
     { "angle": "conseil", "texte": "string", "hashtags": ["string"] }
   ],
   "faq": [
