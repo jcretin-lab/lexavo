@@ -22,15 +22,18 @@ export async function POST() {
     console.error('[bienvenue] Échec envoi email :', result.error)
   }
 
-  // Notification admin avec toutes les infos du cabinet
-  if (cabinet?.nom) {
-    sendNotifNouveauClient({
-      email: user.email,
-      nom: cabinet.nom,
-      plan: cabinet.plan ?? 'trial',
-      ville: cabinet.ville ?? '',
-      barreau: cabinet.barreau ?? '',
-    }).catch(err => console.error('[bienvenue] Échec notif admin :', err))
+  // Notification admin — toujours envoyée, erreurs explicites
+  const notifResult = await sendNotifNouveauClient({
+    email: user.email,
+    nom: cabinet?.nom ?? '(non renseigné)',
+    plan: cabinet?.plan ?? 'trial',
+    ville: cabinet?.ville ?? '',
+    barreau: cabinet?.barreau ?? '',
+  })
+  if (!notifResult.ok) {
+    console.error('[bienvenue] Échec notif admin :', notifResult.error)
+  } else {
+    console.log('[bienvenue] Notif admin envoyée pour', user.email)
   }
 
   return NextResponse.json({ ok: result.ok })
