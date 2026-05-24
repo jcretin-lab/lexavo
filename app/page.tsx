@@ -708,7 +708,7 @@ export default function HomePage() {
             >
               Le brouillon, c’est nous. La voix, c’est vous.
             </p>
-            <p className="text-sm leading-relaxed" style={{ color: 'var(--ocre-900)' }}>
+            <p className="text-sm leading-relaxed" style={{ color: 'rgba(232,199,136,0.65)' }}>
               Chaque article, post et FAQ reste entièrement modifiable avant publication. Vous reprenez le ton, ajustez les exemples, imposez vos formulations — pour que chaque contenu porte votre ligne éditoriale, pas une signature IA.
             </p>
           </div>
