@@ -195,7 +195,7 @@ RÈGLES FORMELLES — s'appliquent aux 3 posts :
 - Aucun paragraphe ne dépasse 3 lignes. Saut de ligne entre paragraphes et entre blocs. Voix active. Phrases courtes.
 - Aucun emoji, aucun symbole décoratif. Seul caractère toléré en tête de sous-titre : tiret long "—".
 - Aucune formule auto-promotionnelle, aucune comparaison avec d'autres avocats.
-- Appel à consultation en clôture du post, formulé DIFFÉREMMENT dans chaque post (ne jamais réutiliser une formule sur 2 posts d'une même génération).${cabinet.site_web ? `\n- Tu peux mentionner le site du cabinet (${cabinet.site_web}) dans l'appel à consultation d'UN seul des 3 posts — pas les 3, pour ne pas répéter.` : ''}
+- Appel à consultation en clôture du post, formulé DIFFÉREMMENT dans chaque post (ne jamais réutiliser une formule sur 2 posts d'une même génération).${cabinet.site_web ? `\n- OBLIGATOIRE : inclure l'URL du cabinet (${cabinet.site_web}) dans l'appel à consultation d'exactement UN des 3 posts — ni zéro, ni deux, ni trois.` : ''}
 - Longueur : 180 à 280 mots par post, ajustée au nombre de blocs (2 blocs ≈ 180-220 mots, 3 blocs ≈ 220-260, 4 blocs ≈ 260-300). Hors hashtags.
 - 3 hashtags juridiques pertinents en fin de post, jamais plus, sur une ligne séparée.
 
