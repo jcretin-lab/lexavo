@@ -714,7 +714,7 @@ export default function HomePage() {
       </section>
 
       {/* ══ Feature spotlight 2 — calendrier ════════════════ */}
-      <section className="py-28 px-6" style={{ background: 'var(--white)' }}>
+      <section className="py-28 px-6" style={{ background: 'var(--paper)' }}>
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Mockup (cache sur mobile/tablette) */}
           <div className="hidden lg:block order-2 lg:order-1 fade-in-left fade-in-delay-1">
