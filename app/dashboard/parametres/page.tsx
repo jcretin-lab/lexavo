@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { GestionAbonnement } from '@/components/dashboard/gestion-abonnement'
 import { ChangeEmailForm } from '@/components/dashboard/change-email-form'
 import { DeleteAccountButton } from '@/components/dashboard/delete-account-button'
+import { EditCabinetForm } from '@/components/dashboard/edit-cabinet-form'
 
 export default async function ParametresPage({
   searchParams,
@@ -54,29 +55,8 @@ export default async function ParametresPage({
         {/* Abonnement — masqué pour les membres invités */}
         {!isMembre && <GestionAbonnement cabinet={cabinet} />}
 
-        {/* Informations du cabinet — bandeau navy-900 + contenu blanc */}
-        <div className="rounded-2xl border border-gray-200 overflow-hidden">
-          <div className="px-6 py-3" style={{ background: 'var(--navy-900)' }}>
-            <h2 style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.125rem', fontWeight: 600, color: '#FFFFFF', letterSpacing: '-0.01em' }}>
-              Informations du cabinet
-            </h2>
-          </div>
-          <div className="bg-white p-6">
-            <dl className="space-y-3 text-sm">
-              {[
-                { label: 'Nom', value: cabinet.nom },
-                { label: 'Ville', value: cabinet.ville },
-                { label: 'Barreau', value: cabinet.barreau },
-                { label: 'Site web', value: cabinet.site_web || '—' },
-              ].map(({ label, value }) => (
-                <div key={label} className="flex justify-between gap-4">
-                  <dt className="text-gray-500 flex-shrink-0">{label}</dt>
-                  <dd className="text-gray-900 font-medium text-right">{value}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </div>
+        {/* Informations du cabinet — éditable */}
+        <EditCabinetForm cabinet={cabinet} />
 
         {/* Compte */}
         <ChangeEmailForm currentEmail={user.email ?? ''} />
