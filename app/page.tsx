@@ -769,8 +769,8 @@ export default function HomePage() {
               Tarifs
             </p>
             <h2
-              className="mb-5"
-              style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.875rem, 3.5vw, 2.75rem)', color: 'var(--white)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
+              className="mb-2"
+              style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.875rem, 3.5vw, 2.75rem)', color: 'var(--ink-900)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
             >
               Des tarifs simples, sans surprise
             </h2>
