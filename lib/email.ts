@@ -96,6 +96,31 @@ export async function sendNotifNouveauClient(data: {
   return send(ADMIN_EMAIL, `Nouveau client Lexavo — ${nom}`, html)
 }
 
+// ── 2c. Notification admin — nouvel abonnement souscrit ──────────────────────
+export async function sendNotifNouvelAbonnement(data: {
+  email: string
+  nom: string
+  plan: string
+  montantCents: number
+  currency: string
+}) {
+  const { email, nom, plan, montantCents, currency } = data
+  const nomPlan = NOM_PAR_PLAN[plan as keyof typeof NOM_PAR_PLAN] ?? plan
+  const montant = (montantCents / 100).toLocaleString('fr-FR', { style: 'currency', currency: currency.toUpperCase() })
+  const dateStr = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })
+  const html = layout(`
+    <p style="font-size:16px;font-weight:600;margin-bottom:16px;">Nouvel abonnement souscrit</p>
+    <table style="font-size:14px;color:#444;border-collapse:collapse;width:100%;">
+      <tr><td style="padding:7px 20px 7px 0;color:#888;white-space:nowrap;">Cabinet</td><td style="font-weight:600;">${nom}</td></tr>
+      <tr><td style="padding:7px 20px 7px 0;color:#888;">Email</td><td><a href="mailto:${email}" style="color:#1A3F7C;">${email}</a></td></tr>
+      <tr><td style="padding:7px 20px 7px 0;color:#888;">Plan souscrit</td><td style="font-weight:600;color:#1A3F7C;">${nomPlan}</td></tr>
+      <tr><td style="padding:7px 20px 7px 0;color:#888;">Montant</td><td style="font-weight:600;">${montant}</td></tr>
+      <tr><td style="padding:7px 20px 7px 0;color:#888;">Date</td><td>${dateStr}</td></tr>
+    </table>
+  `)
+  return send(ADMIN_EMAIL, `Nouvel abonnement Lexavo — ${nom} (${nomPlan})`, html)
+}
+
 // ── 3. Confirmation d'abonnement ─────────────────────────────────────────────
 // Mo3 — Noms de plans harmonisés avec types/index.ts
 export async function sendConfirmationAbonnement(email: string, planId: string) {

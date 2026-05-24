@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
-import { sendConfirmationAbonnement, sendResiliation } from '@/lib/email'
+import { sendConfirmationAbonnement, sendResiliation, sendNotifNouvelAbonnement } from '@/lib/email'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -61,11 +61,27 @@ export async function POST(request: NextRequest) {
           .eq('id', cabinetId)
 
         const email = session.customer_details?.email ?? session.customer_email
+
         if (email) {
           sendConfirmationAbonnement(email, plan).catch(err =>
             console.error('[stripe] Erreur email confirmation :', err)
           )
         }
+
+        // Notification admin
+        const { data: cabinet } = await supabaseAdmin
+          .from('cabinets')
+          .select('nom')
+          .eq('id', cabinetId)
+          .single()
+
+        sendNotifNouvelAbonnement({
+          email: email ?? '(inconnu)',
+          nom: cabinet?.nom ?? '(inconnu)',
+          plan,
+          montantCents: session.amount_total ?? 0,
+          currency: session.currency ?? 'eur',
+        }).catch(err => console.error('[stripe] Erreur notif admin abonnement :', err))
       }
       break
     }
