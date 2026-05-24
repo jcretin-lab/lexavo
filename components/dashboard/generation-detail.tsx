@@ -401,7 +401,7 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
                       <div className="flex flex-col items-center gap-1">
                         <span className="text-xl leading-none">{uploading ? '…' : '+'}</span>
                         <span className="text-[10px] font-medium">
-                          {uploading ? 'Upload…' : 'Uploader la mienne'}
+                          {uploading ? 'Upload…' : 'Uploader mon image'}
                         </span>
                       </div>
                     </div>
