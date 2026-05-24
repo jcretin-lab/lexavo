@@ -19,13 +19,11 @@ export function EditCabinetForm({ cabinet }: Props) {
   const [nom, setNom] = useState(cabinet.nom)
   const [ville, setVille] = useState(cabinet.ville)
   const [barreau, setBarreau] = useState(cabinet.barreau)
-  const [siteWeb, setSiteWeb] = useState(cabinet.site_web ?? '')
 
   function handleCancel() {
     setNom(cabinet.nom)
     setVille(cabinet.ville)
     setBarreau(cabinet.barreau)
-    setSiteWeb(cabinet.site_web ?? '')
     setError('')
     setEditing(false)
   }
@@ -44,7 +42,6 @@ export function EditCabinetForm({ cabinet }: Props) {
         nom: nom.trim(),
         ville: ville.trim(),
         barreau: barreau.trim(),
-        site_web: siteWeb.trim() || null,
       })
       .eq('id', cabinet.id)
 
@@ -90,7 +87,6 @@ export function EditCabinetForm({ cabinet }: Props) {
               { label: 'Nom', value: nom },
               { label: 'Ville', value: ville },
               { label: 'Barreau', value: barreau },
-              { label: 'Site web', value: siteWeb || '—' },
             ].map(({ label, value }) => (
               <div key={label} className="flex justify-between gap-4">
                 <dt className="text-gray-500 flex-shrink-0">{label}</dt>
@@ -128,16 +124,6 @@ export function EditCabinetForm({ cabinet }: Props) {
                 value={barreau}
                 onChange={e => setBarreau(e.target.value)}
                 required
-                className={inputClass}
-              />
-            </div>
-            <div className="flex flex-col gap-1">
-              <label className={labelClass}>Site web <span className="text-gray-400 font-normal">(optionnel)</span></label>
-              <input
-                type="url"
-                value={siteWeb}
-                onChange={e => setSiteWeb(e.target.value)}
-                placeholder="https://www.cabinet-dupont.fr"
                 className={inputClass}
               />
             </div>

@@ -28,7 +28,6 @@ function OnboardingContent() {
   const [nom, setNom] = useState('')
   const [ville, setVille] = useState('')
   const [barreau, setBarreau] = useState('')
-  const [siteWeb, setSiteWeb] = useState('')
 
   useEffect(() => {
     if (inviteId) {
@@ -54,7 +53,7 @@ function OnboardingContent() {
       if (existing) {
         const { data: updated, error: updateError } = await supabase
           .from('cabinets')
-          .update({ nom, ville, barreau, site_web: siteWeb || null })
+          .update({ nom, ville, barreau })
           .eq('id', existing.id)
           .select()
           .single()
@@ -63,7 +62,7 @@ function OnboardingContent() {
       } else {
         const { data: inserted, error: insertError } = await supabase
           .from('cabinets')
-          .insert({ user_id: user.id, nom, ville, barreau, site_web: siteWeb || null, specialites: [], plan: 'trial', max_membres: 1 })
+          .insert({ user_id: user.id, nom, ville, barreau, specialites: [], plan: 'trial', max_membres: 1 })
           .select()
           .single()
         if (insertError) throw insertError
@@ -196,13 +195,6 @@ function OnboardingContent() {
                   onChange={(e) => setBarreau(e.target.value)}
                   options={barreauOptions}
                   placeholder="Sélectionnez votre barreau"
-                />
-                <Input
-                  label="Site web (optionnel)"
-                  value={siteWeb}
-                  onChange={(e) => setSiteWeb(e.target.value)}
-                  placeholder="https://www.cabinet-dupont.fr"
-                  type="url"
                 />
               </div>
               <div className="mt-8 flex justify-end">
