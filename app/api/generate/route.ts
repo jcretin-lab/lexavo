@@ -173,15 +173,15 @@ OBLIGATOIRE — sous-titres taillés sur mesure :
 EXEMPLES de sous-titres bien construits (pour calibrage de style, ne pas recopier) :
 
 Sujet « Licenciement pour faute grave » :
-  "Faute grave, faute lourde" — "Le bureau vidé en 48 h" — "Ce qui sauve les indemnités"
-  "Un SMS au mauvais moment" — "Conseil de prud'hommes saisi" — "Pourquoi il a gagné en appel"
+  "Faute grave, faute lourde" / "Le bureau vidé en 48 h" / "Ce qui sauve les indemnités"
+  "Un SMS au mauvais moment" / "Conseil de prud'hommes saisi" / "Pourquoi il a gagné en appel"
 
 Sujet « Droit de rétractation » :
-  "Quatorze jours, deux exceptions" — "Le bouton qu'on ne voit pas" — "Une LRAR vaut mieux"
-  "Le piège du sur-mesure" — "Pas de retour sur commande personnalisée" — "Trois réflexes avant de cliquer"
+  "Quatorze jours, deux exceptions" / "Le bouton qu'on ne voit pas" / "Une LRAR vaut mieux"
+  "Le piège du sur-mesure" / "Pas de retour sur commande personnalisée" / "Trois réflexes avant de cliquer"
 
 Sujet « Rupture brutale relations commerciales » :
-  "Dix ans de partenariat" — "Un email, trois lignes" — "Le préavis selon les juges"
+  "Dix ans de partenariat" / "Un email, trois lignes" / "Le préavis selon les juges"
 
 RÈGLES FORMELLES — s'appliquent aux 3 posts :
 
@@ -192,8 +192,8 @@ RÈGLES FORMELLES — s'appliquent aux 3 posts :
   (d) un fait juridique méconnu, introduit sans préambule
   Les 3 posts doivent utiliser 3 leviers d'accroche différents parmi (a, b, c, d).
 - Citer au moins UN élément précis tiré du sujet, en PRIVILÉGIANT les références stables et faciles à vérifier : un délai légal chiffré (en jours, mois, années), un seuil chiffré (en euros, en effectif), un nom de procédure (référé, injonction de payer, médiation préalable…), un nom de juridiction compétente (Conseil de prud'hommes, Tribunal judiciaire, Cour d'appel…). ÉVITER les numéros d'articles de code numérotés (du type "L. 1234-9") sauf pour les rares références majeures structurantes connues du grand public. En cas de doute, paraphrase : "selon le Code de la consommation", "le droit du travail prévoit que…". Ne jamais inventer une référence.
-- Aucun paragraphe ne dépasse 3 lignes. Saut de ligne entre paragraphes et entre blocs. Voix active. Phrases courtes.
-- Aucun emoji, aucun symbole décoratif. Seul caractère toléré en tête de sous-titre : tiret long "—".
+- Au sein d'un même bloc, les phrases s'enchaînent naturellement sans saut de ligne. Un seul saut de ligne entre les blocs. Voix active. Phrases courtes.
+- Aucun emoji, aucun symbole décoratif. Aucun caractère en tête de sous-titre : le sous-titre commence directement par le texte, sans tiret ni puce.
 - Aucune formule auto-promotionnelle, aucune comparaison avec d'autres avocats.
 - Appel à consultation en clôture du post, formulé DIFFÉREMMENT dans chaque post (ne jamais réutiliser une formule sur 2 posts d'une même génération).${cabinet.site_web ? `\n- OBLIGATOIRE : inclure l'URL du cabinet (${cabinet.site_web}) dans l'appel à consultation d'exactement UN des 3 posts — ni zéro, ni deux, ni trois.` : ''}
 - Longueur : 180 à 280 mots par post, ajustée au nombre de blocs (2 blocs ≈ 180-220 mots, 3 blocs ≈ 220-260, 4 blocs ≈ 260-300). Hors hashtags.
