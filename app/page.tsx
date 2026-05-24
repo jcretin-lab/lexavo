@@ -713,52 +713,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ══ Feature spotlight 1 — génération ════════════════ */}
-      <section id="comment" className="py-28 px-6" style={{ background: 'var(--paper)' }}>
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Text */}
-            <div className="fade-in-left">
-              <p
-                className="mb-5 uppercase"
-                style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '11px', letterSpacing: '0.16em', color: 'var(--ocre-700)' }}
-              >
-                En 3 étapes
-              </p>
-              <h2
-                className="mb-8"
-                style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.875rem, 3vw, 2.625rem)', color: 'var(--ink-900)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
-              >
-                Lexavo vous aide à être régulier dans la publication de posts
-              </h2>
-
-              <div className="space-y-6">
-                {STEPS.map((step, i) => (
-                  <div key={step.num} className={`flex gap-5 fade-in fade-in-delay-${i + 1}`}>
-                    <div
-                      className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0 mt-0.5"
-                      style={{ background: 'var(--navy-900)', color: 'var(--white)', fontFamily: 'var(--font-jetbrains-mono)' }}
-                    >
-                      {i + 1}
-                    </div>
-                    <div>
-                      <p className="font-semibold mb-1" style={{ color: 'var(--ink-900)', fontSize: '0.9375rem' }}>{step.titre}</p>
-                      <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-500)' }}>{step.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Mockup (cache sur mobile/tablette) */}
-            <div className="hidden lg:block fade-in-right fade-in-delay-1">
-              <HeroMockup />
-            </div>
-          </div>
-
-        </div>
-      </section>
-
       {/* ══ Feature spotlight 2 — calendrier ════════════════ */}
       <section className="py-28 px-6" style={{ background: 'var(--white)' }}>
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
