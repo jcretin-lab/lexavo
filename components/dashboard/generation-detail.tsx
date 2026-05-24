@@ -455,18 +455,10 @@ export function GenerationDetail({ generation, reseauxConfigured }: Props) {
 
       {/* Alerte aucun réseau configuré */}
       {!reseauxConfigured && (
-        <div className="mb-5 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 flex items-center justify-between gap-3">
+        <div className="mb-5 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3">
           <p className="text-sm text-amber-700">
-            Activez la publication automatique sur vos réseaux sociaux (LinkedIn et Facebook) en réservant un appel gratuit.
+            Activez la publication automatique sur vos réseaux sociaux pour publier.
           </p>
-          <a
-            href={CALENDLY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs font-semibold text-amber-700 hover:underline flex-shrink-0 whitespace-nowrap"
-          >
-            Réserver →
-          </a>
         </div>
       )}
 
