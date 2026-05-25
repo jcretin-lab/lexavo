@@ -255,6 +255,8 @@ body {
   text-decoration: none;
   letter-spacing: -0.005em;
   box-shadow: 0 2px 8px -2px rgba(15,34,71,0.35);
+  position: relative;
+  overflow: hidden;
 }
 .landing-cta-primary:hover {
   background: #07142E;
@@ -348,3 +350,43 @@ body {
 .fade-in-delay-3 { transition-delay: 0.24s; }
 .fade-in-delay-4 { transition-delay: 0.32s; }
 .fade-in-delay-5 { transition-delay: 0.40s; }
+.fade-in-delay-6 { transition-delay: 0.48s; }
+
+/* ─── CTA primary : éclat au survol ─────────────────── */
+@keyframes cta-shine {
+  from { transform: skewX(-15deg) translateX(-150%); }
+  to   { transform: skewX(-15deg) translateX(350%); }
+}
+.landing-cta-primary::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 45%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.11), transparent);
+  transform: skewX(-15deg) translateX(-150%);
+  pointer-events: none;
+}
+.landing-cta-primary:hover::after {
+  animation: cta-shine 0.65s ease-out;
+}
+
+/* ─── Feature card dark (fond navy) hover ocre ───────── */
+.feature-card-dark {
+  transition: box-shadow 0.3s, border-color 0.3s, transform 0.25s;
+}
+.feature-card-dark:hover {
+  border-color: rgba(212,162,76,0.4) !important;
+  box-shadow:
+    0 0 0 1px rgba(212,162,76,0.10),
+    0 14px 44px -8px rgba(212,162,76,0.12);
+  transform: translateY(-3px);
+}
+
+/* ─── FAQ accordion ──────────────────────────────────── */
+@keyframes faq-reveal {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.faq-body-open {
+  animation: faq-reveal 0.22s ease-out forwards;
+}

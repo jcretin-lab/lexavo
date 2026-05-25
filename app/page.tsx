@@ -1,6 +1,7 @@
-﻿import Link from 'next/link'
+import Link from 'next/link'
 import { LandingPricing } from '@/components/landing/landing-pricing'
 import { ScrollAnimationInit } from '@/components/landing/scroll-animation'
+import { FaqAccordion } from '@/components/landing/faq-accordion'
 
 const INPUT_FORMATS = [
   {
@@ -10,7 +11,7 @@ const INPUT_FORMATS = [
   },
   {
     icon: '↗',
-    titre: 'Une URL d’article',
+    titre: "Une URL d'article",
     desc: 'Collez un lien : Lexavo extrait le texte automatiquement.',
   },
   {
@@ -34,7 +35,7 @@ const PUBLICATION_ITEMS = [
   {
     icon: '?',
     titre: 'FAQ juridique',
-    desc: '5 questions-réponses pour enrichir l’article et capter la longue traîne.',
+    desc: "5 questions-réponses pour enrichir l'article et capter la longue traîne.",
   },
   {
     icon: '◻',
@@ -108,6 +109,64 @@ const FAQ_LANDING = [
   },
 ]
 
+
+/* ─── Wave divider ──────────────────────────────────── */
+function WaveDivider({ from, to, convex = false }: { from: string; to: string; convex?: boolean }) {
+  const d = convex
+    ? 'M0,52 C480,4 960,4 1440,52 L1440,52 L0,52 Z'
+    : 'M0,0 C480,48 960,48 1440,0 L1440,52 L0,52 Z'
+  return (
+    <div style={{ lineHeight: 0, background: from }}>
+      <svg
+        viewBox="0 0 1440 52"
+        preserveAspectRatio="none"
+        style={{ display: 'block', width: '100%', height: '52px' }}
+      >
+        <path d={d} style={{ fill: to }} />
+      </svg>
+    </div>
+  )
+}
+
+/* ─── Animated connector ────────────────────────────── */
+function AnimatedConnector() {
+  const xPositions = [80, 240, 400, 560, 720]
+  return (
+    <div className="relative w-full hidden sm:block" style={{ height: '64px' }}>
+      <svg
+        viewBox="0 0 800 64"
+        preserveAspectRatio="none"
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', overflow: 'visible' }}
+      >
+        {/* Ligne verticale depuis le bloc input */}
+        <line x1="400" y1="0" x2="400" y2="32" stroke="rgba(212,162,76,0.35)" strokeWidth="1.5" strokeDasharray="3 4">
+          <animate attributeName="stroke-dashoffset" values="7;0" dur="1s" repeatCount="indefinite" />
+        </line>
+        {/* Barre horizontale de distribution */}
+        <line x1="80" y1="32" x2="720" y2="32" stroke="rgba(212,162,76,0.22)" strokeWidth="1.5" strokeDasharray="3 4">
+          <animate attributeName="stroke-dashoffset" values="7;0" dur="1s" repeatCount="indefinite" />
+        </line>
+        {/* 5 descentes vers les cards */}
+        {xPositions.map((x, i) => (
+          <g key={x}>
+            <line x1={x} y1="32" x2={x} y2="64" stroke="rgba(212,162,76,0.22)" strokeWidth="1.5" strokeDasharray="3 4">
+              <animate attributeName="stroke-dashoffset" values="7;0" dur="1s" begin={`${i * 0.08}s`} repeatCount="indefinite" />
+            </line>
+            <circle cx={x} cy="32" r="3" fill="rgba(212,162,76,0.7)">
+              <animate attributeName="r" values="2;4.5;2" dur="2.2s" begin={`${i * 0.44}s`} repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.3;1;0.3" dur="2.2s" begin={`${i * 0.44}s`} repeatCount="indefinite" />
+            </circle>
+          </g>
+        ))}
+        {/* Point pulse central (sortie du bloc input) */}
+        <circle cx="400" cy="2" r="3.5" fill="rgba(212,162,76,0.9)">
+          <animate attributeName="r" values="2.5;5.5;2.5" dur="2s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.45;1;0.45" dur="2s" repeatCount="indefinite" />
+        </circle>
+      </svg>
+    </div>
+  )
+}
 
 /* ─── Mockup hero ──────────────────────────────────────── */
 function HeroMockup() {
@@ -328,7 +387,6 @@ function CalendarMockup() {
                       {post.label} · {post.title.slice(0, 18)}…
                     </div>
                   )}
-                  {/* Random scheduled items */}
                   {(dayNum === 5 || dayNum === 9 || dayNum === 15 || dayNum === 19 || dayNum === 23) && !post && (
                     <div className="rounded px-1 py-0.5 text-[8px] font-medium" style={{ background: dayNum % 2 === 0 ? '#1877F2' : '#0A66C2', color: '#fff', opacity: 0.8 }}>
                       {dayNum % 2 === 0 ? 'FB' : 'LI'}
@@ -402,7 +460,12 @@ export default function HomePage() {
       <section
         className="pt-40 pb-16 px-6 overflow-hidden"
         style={{
-          background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(26,63,124,0.06) 0%, transparent 70%), var(--paper)',
+          backgroundColor: '#FAFAF7',
+          backgroundImage: [
+            'radial-gradient(ellipse 90% 70% at 50% -5%, rgba(26,63,124,0.09) 0%, transparent 65%)',
+            'radial-gradient(ellipse 45% 35% at 88% 12%, rgba(212,162,76,0.06) 0%, transparent 55%)',
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='14' cy='14' r='0.9' fill='%230F2247' fill-opacity='0.05'/%3E%3C/svg%3E\")",
+          ].join(', '),
         }}
       >
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center fade-in">
@@ -477,6 +540,29 @@ export default function HomePage() {
                 ))}
               </div>
             </div>
+
+            {/* Stats visuelles — visibles sur mobile/tablette quand le mockup est caché */}
+            <div className="mt-10 grid grid-cols-3 gap-3 lg:hidden fade-in fade-in-delay-3">
+              {[
+                { num: '< 3 min', label: 'Par génération' },
+                { num: '5 formats', label: 'Article · posts · FAQ · image' },
+                { num: '100%', label: 'Déontologie CNB' },
+              ].map(({ num, label }) => (
+                <div
+                  key={num}
+                  className="text-center rounded-2xl p-4"
+                  style={{ background: 'var(--white)', border: '1px solid var(--ink-200)', boxShadow: 'var(--shadow-sm)' }}
+                >
+                  <p
+                    className="mb-1"
+                    style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1rem', color: 'var(--navy-900)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
+                  >
+                    {num}
+                  </p>
+                  <p className="text-xs leading-tight" style={{ color: 'var(--ink-500)' }}>{label}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Mockup — droite (cache sur mobile/tablette : grilles trop denses) */}
@@ -503,7 +589,7 @@ export default function HomePage() {
               LinkedIn et Facebook : les 2 réseaux les plus prometteurs pour un cabinet
             </h2>
             <div className="gold-sep" />
-            <p className="text-base max-w-2xl mx-auto mt-5" style={{ color: 'rgba(232,199,136,0.65)', lineHeight: 1.65 }}>
+            <p className="text-base max-w-2xl mx-auto mt-5" style={{ color: 'var(--ink-500)', lineHeight: 1.65 }}>
               Inutile d&apos;être partout. Concentrez vos efforts là où vos futurs clients vous cherchent vraiment.
             </p>
           </div>
@@ -598,6 +684,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ══ Wave : paper → navy ══════════════════════════════ */}
+      <WaveDivider from="#FAFAF7" to="#0F2247" />
+
       {/* ══ Fonctionnalités ══════════════════════════════════ */}
       <section id="fonctionnalites" className="py-28 px-6" style={{ background: 'var(--navy-900)' }}>
         <div className="max-w-5xl mx-auto">
@@ -612,7 +701,7 @@ export default function HomePage() {
               className="mb-5"
               style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.875rem, 3.5vw, 2.75rem)', color: 'var(--white)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
             >
-              D’un sujet à toute votre semaine éditoriale.
+              D'un sujet à toute votre semaine éditoriale.
             </h2>
             <div className="gold-sep" />
             <p className="text-base max-w-2xl mx-auto mt-5" style={{ color: 'rgba(232,199,136,0.65)', lineHeight: 1.65 }}>
@@ -623,7 +712,7 @@ export default function HomePage() {
           {/* Bloc input — 3 formats au choix */}
           <div className="flex justify-center fade-in">
             <div
-              className="feature-card w-full max-w-3xl"
+              className="feature-card feature-card-dark w-full max-w-3xl"
               style={{ background: 'rgba(212,162,76,0.06)', border: '1px solid rgba(212,162,76,0.18)' }}
             >
               <p
@@ -651,14 +740,8 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Connecteur input → 5 livrables */}
-          <div className="relative w-full hidden sm:block" style={{ height: '52px' }}>
-            <div className="absolute" style={{ left: '50%', top: 0, width: '1px', height: '26px', background: 'rgba(255,255,255,0.12)', transform: 'translateX(-50%)' }} />
-            <div className="absolute" style={{ top: '26px', left: '10%', right: '10%', height: '1px', background: 'rgba(255,255,255,0.12)' }} />
-            {['10%', '30%', '50%', '70%', '90%'].map((leftPos) => (
-              <div key={leftPos} className="absolute" style={{ left: leftPos, top: '26px', width: '1px', height: '26px', background: 'rgba(255,255,255,0.12)', transform: 'translateX(-50%)' }} />
-            ))}
-          </div>
+          {/* Connecteur animé input → 5 livrables */}
+          <AnimatedConnector />
           <div className="flex justify-center sm:hidden my-4">
             <div style={{ width: '1px', height: '32px', background: 'rgba(255,255,255,0.12)' }} />
           </div>
@@ -666,7 +749,11 @@ export default function HomePage() {
           {/* 5 livrables — 3 + 2 centré en desktop */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {PUBLICATION_ITEMS.slice(0, 3).map((item, i) => (
-              <div key={item.titre} className={`feature-card fade-in fade-in-delay-${i + 1}`} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <div
+                key={item.titre}
+                className={`feature-card feature-card-dark fade-in fade-in-delay-${i + 1}`}
+                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+              >
                 <div className="flex items-start gap-4">
                   <span
                     className="flex-shrink-0 inline-flex items-center justify-center rounded-md font-mono"
@@ -684,7 +771,11 @@ export default function HomePage() {
           </div>
           <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-5 lg:max-w-[66.66%] lg:mx-auto">
             {PUBLICATION_ITEMS.slice(3).map((item, i) => (
-              <div key={item.titre} className={`feature-card fade-in fade-in-delay-${i + 1}`} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <div
+                key={item.titre}
+                className={`feature-card feature-card-dark fade-in fade-in-delay-${i + 1}`}
+                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+              >
                 <div className="flex items-start gap-4">
                   <span
                     className="flex-shrink-0 inline-flex items-center justify-center rounded-md font-mono"
@@ -706,7 +797,7 @@ export default function HomePage() {
               className="mb-3"
               style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.375rem', color: 'var(--white)', letterSpacing: '-0.01em', lineHeight: 1.2 }}
             >
-              Le brouillon, c’est nous. La voix, c’est vous.
+              Le brouillon, c'est nous. La voix, c'est vous.
             </p>
             <p className="text-sm leading-relaxed" style={{ color: 'rgba(232,199,136,0.65)' }}>
               Chaque article, post et FAQ reste entièrement modifiable avant publication. Vous reprenez le ton, ajustez les exemples, imposez vos formulations — pour que chaque contenu porte votre ligne éditoriale, pas une signature IA.
@@ -714,6 +805,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ══ Wave : navy → paper ══════════════════════════════ */}
+      <WaveDivider from="#0F2247" to="#FAFAF7" convex />
 
       {/* ══ Feature spotlight 2 — calendrier ════════════════ */}
       <section className="py-28 px-6" style={{ background: 'var(--paper)' }}>
@@ -757,7 +851,6 @@ export default function HomePage() {
         </div>
       </section>
 
-
       {/* ══ Pricing ══════════════════════════════════════════ */}
       <section id="tarifs" className="py-28 px-6" style={{ background: 'var(--white)' }}>
         <div className="max-w-5xl mx-auto">
@@ -786,6 +879,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ══ Wave : white → navy ══════════════════════════════ */}
+      <WaveDivider from="#FFFFFF" to="#0F2247" />
+
       {/* ══ Rassurance ═══════════════════════════════════════ */}
       <section className="py-28 px-6" style={{ background: 'var(--navy-900)' }}>
         <div className="max-w-5xl mx-auto">
@@ -807,7 +903,11 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             {RASSURANCE.map((item, i) => (
-              <div key={item.titre} className={`fade-in fade-in-delay-${i + 1} p-7 rounded-2xl`} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <div
+                key={item.titre}
+                className={`feature-card-dark fade-in fade-in-delay-${i + 1} p-7 rounded-2xl`}
+                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+              >
                 <div
                   className="w-10 h-10 rounded-xl mb-5 flex items-center justify-center"
                   style={{ background: 'rgba(212,162,76,0.12)', border: '1px solid rgba(212,162,76,0.2)' }}
@@ -821,6 +921,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ══ Wave : navy → paper ══════════════════════════════ */}
+      <WaveDivider from="#0F2247" to="#FAFAF7" convex />
 
       {/* ══ FAQ ══════════════════════════════════════════════ */}
       <section className="py-28 px-6" style={{ background: 'var(--paper)' }}>
@@ -840,40 +943,24 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="space-y-3">
-            {FAQ_LANDING.map(({ q, r }) => (
-              <details
-                key={q}
-                className="rounded-xl overflow-hidden group"
-                style={{ background: 'var(--white)', border: '1px solid var(--ink-200)' }}
-              >
-                <summary
-                  className="px-5 py-4 cursor-pointer flex items-center justify-between gap-4 list-none [&::-webkit-details-marker]:hidden"
-                >
-                  <span className="font-medium text-sm" style={{ color: 'var(--ink-900)' }}>{q}</span>
-                  <span
-                    aria-hidden
-                    className="text-base flex-shrink-0 transition-transform duration-200 group-open:rotate-45"
-                    style={{ color: 'var(--ink-400)' }}
-                  >
-                    +
-                  </span>
-                </summary>
-                <div className="px-5 pb-5">
-                  <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-500)' }}>{r}</p>
-                </div>
-              </details>
-            ))}
-          </div>
+          <FaqAccordion items={FAQ_LANDING} />
         </div>
       </section>
 
+      {/* ══ Wave : paper → dark navy ═════════════════════════ */}
+      <WaveDivider from="#FAFAF7" to="#060F1F" />
+
       {/* ══ CTA final ════════════════════════════════════════ */}
       <section
-        className="py-32 px-6"
-        style={{ background: 'linear-gradient(160deg, var(--navy-900) 0%, var(--navy-900) 100%)' }}
+        className="relative py-32 px-6 overflow-hidden"
+        style={{ background: 'linear-gradient(135deg, #060F1F 0%, #0F2247 50%, #162E5C 100%)' }}
       >
-        <div className="max-w-2xl mx-auto text-center fade-in">
+        {/* Radial glow derrière le texte */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse 60% 55% at 50% 65%, rgba(212,162,76,0.08) 0%, transparent 70%)' }}
+        />
+        <div className="relative max-w-2xl mx-auto text-center fade-in">
           <div className="gold-sep mb-10" />
           <h2
             className="mb-5"
@@ -895,7 +982,7 @@ export default function HomePage() {
       </section>
 
       {/* ══ Footer ═══════════════════════════════════════════ */}
-      <footer className="py-10 px-6" style={{ background: 'var(--navy-900)' }}>
+      <footer className="py-10 px-6" style={{ background: '#060F1F' }}>
         <div
           className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start justify-between gap-10"
           style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '2.5rem' }}
