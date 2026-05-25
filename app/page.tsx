@@ -283,6 +283,80 @@ function CalendarMockup() {
   )
 }
 
+/* ── Bibliothèque juridique (fond hero) ──────────────── */
+function genBooks(seed: number, yBase: number, hMin: number, hMax: number) {
+  const books: { x: number; w: number; y: number; h: number; gold: boolean }[] = []
+  let s = seed >>> 0
+  let x = 0
+  while (x < 1500) {
+    s = (Math.imul(s, 1664525) + 1013904223) >>> 0
+    const w = 19 + (s % 27)
+    s = (Math.imul(s, 1664525) + 1013904223) >>> 0
+    const h = hMin + (s % (hMax - hMin))
+    s = (Math.imul(s, 1664525) + 1013904223) >>> 0
+    const gold = s % 8 === 0
+    s = (Math.imul(s, 1664525) + 1013904223) >>> 0
+    const gap = s % 5 === 0 ? 3 : 1
+    books.push({ x, w, y: yBase - h, h, gold })
+    x += w + gap
+  }
+  return books
+}
+
+function HeroBackground() {
+  const ROW1 = genBooks(42,  820, 95,  130)
+  const ROW2 = genBooks(137, 555, 82,  118)
+  const ROW3 = genBooks(271, 295, 70,  108)
+  const PAPER = '#F3EFE5'
+  const GOLD  = '#C9973A'
+  const SHELF = '#C8C0B4'
+
+  return (
+    <div aria-hidden style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+      {/* Silhouette bibliothèque */}
+      <svg
+        viewBox="0 0 1440 900"
+        preserveAspectRatio="xMidYMid slice"
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.065 }}
+      >
+        {/* Cadre bibliothèque */}
+        <rect x={0}    y={148} width={10} height={680} fill={SHELF} />
+        <rect x={1430} y={148} width={10} height={680} fill={SHELF} />
+        <rect x={0}    y={148} width={1440} height={10} fill={SHELF} />
+        <rect x={718}  y={148} width={5}  height={680} fill={SHELF} opacity={0.6} />
+
+        {/* Rangée 3 — haut */}
+        {ROW3.map((b, i) => (
+          <rect key={i} x={b.x} y={b.y} width={b.w} height={b.h} fill={b.gold ? GOLD : PAPER} />
+        ))}
+        <rect x={0} y={296} width={1440} height={7} fill={SHELF} />
+
+        {/* Rangée 2 — milieu */}
+        {ROW2.map((b, i) => (
+          <rect key={i} x={b.x} y={b.y} width={b.w} height={b.h} fill={b.gold ? GOLD : PAPER} />
+        ))}
+        <rect x={0} y={557} width={1440} height={7} fill={SHELF} />
+
+        {/* Rangée 1 — bas */}
+        {ROW1.map((b, i) => (
+          <rect key={i} x={b.x} y={b.y} width={b.w} height={b.h} fill={b.gold ? GOLD : PAPER} />
+        ))}
+        <rect x={0} y={822} width={1440} height={7} fill={SHELF} />
+      </svg>
+
+      {/* Lueur centrale — garde le texte lisible */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: [
+          'radial-gradient(ellipse 60% 50% at 38% 40%, rgba(15,14,12,0.72) 0%, transparent 70%)',
+          'linear-gradient(to bottom, rgba(15,14,12,0.55) 0%, rgba(15,14,12,0.1) 40%, rgba(15,14,12,0.55) 100%)',
+        ].join(', '),
+      }} />
+    </div>
+  )
+}
+
 /* ── Page ────────────────────────────────────────────── */
 export default function HomePage() {
   return (
@@ -292,8 +366,9 @@ export default function HomePage() {
       <LandingNav />
 
       {/* ══ Hero ═════════════════════════════════════════════ */}
-      <section style={{ background: ED.ink, paddingTop: '5rem', overflow: 'hidden' }}>
-        <div className="max-w-6xl mx-auto px-6" style={{ paddingTop: '3rem', paddingBottom: '5rem' }}>
+      <section style={{ background: ED.ink, paddingTop: '5rem', overflow: 'hidden', position: 'relative' }}>
+        <HeroBackground />
+        <div className="max-w-6xl mx-auto px-6" style={{ paddingTop: '3rem', paddingBottom: '5rem', position: 'relative', zIndex: 1 }}>
 
           {/* Filet supérieur + label */}
           <div
