@@ -474,3 +474,65 @@ body {
 .faq-body-open {
   animation: faq-reveal 0.22s ease-out forwards;
 }
+
+/* ─── Mockup mobile scale ────────────────────────────── */
+.mockup-mobile-wrapper { overflow: hidden; }
+.mockup-mobile-inner {
+  transform: scale(0.55);
+  transform-origin: top left;
+  width: 182%;
+}
+@media (min-width: 640px) {
+  .mockup-mobile-wrapper { overflow: visible; }
+  .mockup-mobile-inner { transform: none; width: 100%; }
+}
+
+/* ─── Pages éditoriales (legal, contact) ─────────────── */
+.ed-legal-page {
+  background: #F3EFE5;
+  color: #0F0E0C;
+}
+.ed-legal-page h1 {
+  font-family: var(--font-instrument-serif);
+  font-style: italic;
+  color: #0F0E0C;
+  font-size: clamp(1.875rem, 3.5vw, 2.75rem);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+.ed-legal-page h2 {
+  font-family: var(--font-instrument-serif);
+  font-style: italic;
+  color: #0F0E0C;
+  font-size: 1.25rem;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  border-top: 1px solid #D0CBC0;
+  padding-top: 1.25rem;
+  margin-top: 2.5rem;
+  margin-bottom: 0.875rem;
+}
+.ed-legal-page p, .ed-legal-page li {
+  color: #6E6860;
+  line-height: 1.75;
+}
+.ed-legal-page strong {
+  color: #0F0E0C;
+}
+.ed-legal-page a {
+  color: #B8872A;
+  text-decoration: none;
+}
+.ed-legal-page a:hover {
+  text-decoration: underline;
+}
+.ed-legal-page ul {
+  padding-left: 1.25rem;
+}
+.ed-legal-page ul li::marker {
+  color: #B8872A;
+}
+.ed-legal-page em {
+  font-style: italic;
+}

@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { LandingPricing } from '@/components/landing/landing-pricing'
 import { ScrollAnimationInit } from '@/components/landing/scroll-animation'
 import { FaqAccordion } from '@/components/landing/faq-accordion'
+import { LandingNav } from '@/components/landing/landing-nav'
+import { LandingFooter } from '@/components/landing/landing-footer'
 
 /* ── Palette éditoriale ───────────────────────────────── */
 const ED = {
@@ -287,38 +289,7 @@ export default function HomePage() {
     <div style={{ background: ED.paper, color: ED.ink }}>
       <ScrollAnimationInit />
 
-      {/* ══ Navigation ═══════════════════════════════════════ */}
-      <nav
-        className="fixed top-0 left-0 right-0 z-50"
-        style={{ background: ED.navy, borderBottom: '1px solid rgba(255,255,255,0.07)' }}
-      >
-        <div className="max-w-6xl mx-auto px-6 h-12 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <svg width="16" height="16" viewBox="0 0 17 17" fill="none" style={{ color: 'rgba(243,239,229,0.5)', flexShrink: 0 }}>
-              <rect x="1" y="1" width="15" height="11.5" rx="2.5" stroke="currentColor" strokeWidth="1.2"/>
-              <path d="M3.5 16L6 12.5H1L3.5 16Z" fill="currentColor"/>
-            </svg>
-            <span style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', color: ED.paper, letterSpacing: '-0.02em' }}>
-              Lex<em>avo</em><span style={{ color: ED.gold }}>.</span>
-            </span>
-          </div>
-
-          <div className="hidden md:flex items-center gap-8" style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(243,239,229,0.45)' }}>
-            <a href="#fonctionnalites" className="hover:text-white transition-colors" style={{ color: 'inherit', textDecoration: 'none' }}>FONCTIONNALITÉS</a>
-            <a href="#comment" className="hover:text-white transition-colors" style={{ color: 'inherit', textDecoration: 'none' }}>COMMENT</a>
-            <a href="#tarifs" className="hover:text-white transition-colors" style={{ color: 'inherit', textDecoration: 'none' }}>TARIFS</a>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <Link href="/login" style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.15em', color: 'rgba(243,239,229,0.4)', textDecoration: 'none' }} className="hidden sm:block hover:text-white transition-colors">
-              SE CONNECTER
-            </Link>
-            <Link href="/login?mode=signup" className="ed-cta-outlined" style={{ padding: '0.5rem 1.25rem', fontSize: '0.75rem' }}>
-              Essai gratuit
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <LandingNav />
 
       {/* ══ Hero ═════════════════════════════════════════════ */}
       <section style={{ background: ED.ink, paddingTop: '5rem', overflow: 'hidden' }}>
@@ -364,7 +335,7 @@ export default function HomePage() {
               {/* Descriptif */}
               <p style={{ fontSize: '1.0625rem', color: 'rgba(243,239,229,0.65)', lineHeight: 1.75, maxWidth: '34rem' }}>
                 À partir d&apos;un sujet ou d&apos;un article déjà écrit, Lexavo génère un article SEO,
-                3&nbsp;posts adaptés à LinkedIn et Facebook, une FAQ et une image — en 3&nbsp;minutes.
+                3&nbsp;posts adaptés à LinkedIn et Facebook, une FAQ et une image en moins d&apos;1&nbsp;minute.
                 Conforme à la déontologie du barreau.
               </p>
 
@@ -489,7 +460,7 @@ export default function HomePage() {
             num="02"
             label="CE QUE VOUS OBTENEZ"
             title="D'un sujet à toute votre semaine éditoriale."
-            subtitle="Article SEO, posts, FAQ, image et programmation — produits et planifiés en moins de 3 minutes."
+            subtitle="Article SEO, posts, FAQ, image et programmation — produits et planifiés en moins d&apos;1 minute."
             dark
           />
 
@@ -549,7 +520,11 @@ export default function HomePage() {
             <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.25)', marginBottom: '1.25rem', textAlign: 'center' }}>
               APERÇU DE L&apos;INTERFACE
             </p>
-            <HeroMockup />
+            <div className="mockup-mobile-wrapper">
+              <div className="mockup-mobile-inner">
+                <HeroMockup />
+              </div>
+            </div>
           </div>
 
           {/* Citation tirée */}
@@ -668,35 +643,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ══ Footer ═══════════════════════════════════════════ */}
-      <footer style={{ background: ED.navy, padding: '2.5rem 1.5rem' }}>
-        <div
-          className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start justify-between gap-10"
-          style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '2.5rem' }}
-        >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <span style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', color: ED.paper, letterSpacing: '-0.02em' }}>
-              Lex<em>avo</em><span style={{ color: ED.gold }}>.</span>
-            </span>
-            <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', color: ED.paper, lineHeight: 1.2, letterSpacing: '-0.015em' }}>
-              Publiez facilement pour faire entendre<br />
-              <em>votre droit</em><span style={{ color: ED.gold }}>.</span>
-            </p>
-            <p style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.3)', lineHeight: 1.6, maxWidth: '22rem' }}>
-              La plateforme de communication digitale conçue pour les cabinets d&apos;avocats français.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-6" style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.35)' }}>
-            <Link href="/mentions-legales" className="hover:text-white transition-colors" style={{ textDecoration: 'none', color: 'inherit' }}>MENTIONS LÉGALES</Link>
-            <Link href="/cgv" className="hover:text-white transition-colors" style={{ textDecoration: 'none', color: 'inherit' }}>CGV</Link>
-            <Link href="/politique-confidentialite" className="hover:text-white transition-colors" style={{ textDecoration: 'none', color: 'inherit' }}>CONFIDENTIALITÉ</Link>
-            <Link href="/contact" className="hover:text-white transition-colors" style={{ textDecoration: 'none', color: 'inherit' }}>CONTACT</Link>
-          </div>
-          <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.12em', color: 'rgba(255,255,255,0.2)' }}>
-            © 2026 LEXAVO
-          </p>
-        </div>
-      </footer>
+      <LandingFooter />
     </div>
   )
 }

@@ -2,6 +2,33 @@
 
 import { useState } from 'react'
 
+const NAVY = '#0F2247'
+const INK  = '#0F0E0C'
+const MID  = '#6E6860'
+const RULE = '#D0CBC0'
+const GOLD = '#B8872A'
+
+const inputStyle = {
+  width: '100%',
+  fontSize: '0.875rem',
+  color: INK,
+  border: `1px solid ${RULE}`,
+  borderRadius: 0,
+  padding: '0.625rem 0.875rem',
+  background: '#FAF8F3',
+  outline: 'none',
+  fontFamily: 'inherit',
+}
+
+const labelStyle = {
+  display: 'block',
+  fontFamily: 'var(--font-jetbrains-mono)',
+  fontSize: '10px',
+  letterSpacing: '0.15em',
+  color: MID,
+  marginBottom: '0.5rem',
+}
+
 export function ContactForm() {
   const [form, setForm] = useState({
     nom: '',
@@ -38,7 +65,7 @@ export function ContactForm() {
       setSuccess(true)
       setForm({ nom: '', email: '', cabinet: '', sujet: 'Question générale', message: '', privacy: false })
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Erreur lors de l\'envoi')
+      setError(err instanceof Error ? err.message : "Erreur lors de l'envoi")
     } finally {
       setLoading(false)
     }
@@ -46,9 +73,9 @@ export function ContactForm() {
 
   if (success) {
     return (
-      <div className="rounded-2xl bg-green-50 border border-green-200 p-8 text-center">
-        <p className="text-green-800 font-semibold text-lg mb-1">Message envoyé !</p>
-        <p className="text-green-700 text-sm">Votre message a bien été envoyé. Nous vous répondrons sous 24h ouvrées.</p>
+      <div style={{ border: `1px solid ${GOLD}`, padding: '2rem', textAlign: 'center' }}>
+        <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', fontStyle: 'italic', color: INK, marginBottom: '0.5rem' }}>Message envoyé.</p>
+        <p style={{ fontSize: '0.875rem', color: MID }}>Notre équipe vous répondra sous 24h ouvrées.</p>
       </div>
     )
   }
@@ -56,60 +83,28 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {error && (
-        <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">{error}</div>
+        <div style={{ border: '1px solid #d97070', padding: '0.75rem 1rem', fontSize: '0.875rem', color: '#7a2020' }}>{error}</div>
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
-          <label htmlFor="nom" className="block text-sm font-medium text-gray-700 mb-1.5">Nom et prénom <span className="text-red-500">*</span></label>
-          <input
-            id="nom"
-            name="nom"
-            type="text"
-            required
-            value={form.nom}
-            onChange={handleChange}
-            className="w-full text-sm text-gray-900 border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:border-blue-400"
-            placeholder="Jean Dupont"
-          />
+          <label htmlFor="nom" style={labelStyle}>NOM ET PRÉNOM <span style={{ color: GOLD }}>*</span></label>
+          <input id="nom" name="nom" type="text" required value={form.nom} onChange={handleChange} style={inputStyle} placeholder="Jean Dupont" />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">Email <span className="text-red-500">*</span></label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            value={form.email}
-            onChange={handleChange}
-            className="w-full text-sm text-gray-900 border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:border-blue-400"
-            placeholder="jean@cabinet.fr"
-          />
+          <label htmlFor="email" style={labelStyle}>EMAIL <span style={{ color: GOLD }}>*</span></label>
+          <input id="email" name="email" type="email" required value={form.email} onChange={handleChange} style={inputStyle} placeholder="jean@cabinet.fr" />
         </div>
       </div>
 
       <div>
-        <label htmlFor="cabinet" className="block text-sm font-medium text-gray-700 mb-1.5">Nom du cabinet <span className="text-gray-400 font-normal">(optionnel)</span></label>
-        <input
-          id="cabinet"
-          name="cabinet"
-          type="text"
-          value={form.cabinet}
-          onChange={handleChange}
-          className="w-full text-sm text-gray-900 border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:border-blue-400"
-          placeholder="Cabinet Dupont & Associés"
-        />
+        <label htmlFor="cabinet" style={labelStyle}>NOM DU CABINET <span style={{ color: RULE }}>— OPTIONNEL</span></label>
+        <input id="cabinet" name="cabinet" type="text" value={form.cabinet} onChange={handleChange} style={inputStyle} placeholder="Cabinet Dupont & Associés" />
       </div>
 
       <div>
-        <label htmlFor="sujet" className="block text-sm font-medium text-gray-700 mb-1.5">Sujet <span className="text-red-500">*</span></label>
-        <select
-          id="sujet"
-          name="sujet"
-          value={form.sujet}
-          onChange={handleChange}
-          className="w-full text-sm text-gray-900 border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:border-blue-400 bg-white"
-        >
+        <label htmlFor="sujet" style={labelStyle}>SUJET <span style={{ color: GOLD }}>*</span></label>
+        <select id="sujet" name="sujet" value={form.sujet} onChange={handleChange} style={{ ...inputStyle, cursor: 'pointer' }}>
           <option>Question générale</option>
           <option>Problème technique</option>
           <option>Facturation</option>
@@ -119,42 +114,36 @@ export function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1.5">Message <span className="text-red-500">*</span></label>
-        <textarea
-          id="message"
-          name="message"
-          required
-          rows={5}
-          value={form.message}
-          onChange={handleChange}
-          className="w-full text-sm text-gray-900 border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:border-blue-400 resize-none"
-          placeholder="Votre message..."
-        />
+        <label htmlFor="message" style={labelStyle}>MESSAGE <span style={{ color: GOLD }}>*</span></label>
+        <textarea id="message" name="message" required rows={5} value={form.message} onChange={handleChange} style={{ ...inputStyle, resize: 'none' }} placeholder="Votre message..." />
       </div>
 
       <div className="flex items-start gap-3">
-        <input
-          id="privacy"
-          name="privacy"
-          type="checkbox"
-          required
-          checked={form.privacy}
-          onChange={handleChange}
-          className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-        />
-        <label htmlFor="privacy" className="text-sm text-gray-600">
+        <input id="privacy" name="privacy" type="checkbox" required checked={form.privacy} onChange={handleChange} style={{ marginTop: '0.125rem', accentColor: NAVY, width: '16px', height: '16px', flexShrink: 0 }} />
+        <label htmlFor="privacy" style={{ fontSize: '0.8125rem', color: MID }}>
           J&apos;accepte la{' '}
-          <a href="/politique-confidentialite" className="text-blue-600 hover:underline" target="_blank">politique de confidentialité</a>
-          {' '}<span className="text-red-500">*</span>
+          <a href="/politique-confidentialite" style={{ color: GOLD, textDecoration: 'none' }} className="hover:underline" target="_blank">politique de confidentialité</a>
+          {' '}<span style={{ color: GOLD }}>*</span>
         </label>
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full sm:w-auto px-8 py-3 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        style={{
+          padding: '0.75rem 2rem',
+          background: loading ? MID : NAVY,
+          color: '#F3EFE5',
+          fontFamily: 'var(--font-jetbrains-mono)',
+          fontSize: '11px',
+          letterSpacing: '0.15em',
+          border: 'none',
+          borderRadius: 0,
+          cursor: loading ? 'not-allowed' : 'pointer',
+          transition: 'background 0.2s',
+        }}
       >
-        {loading ? 'Envoi en cours…' : 'Envoyer le message'}
+        {loading ? 'ENVOI EN COURS…' : 'ENVOYER LE MESSAGE'}
       </button>
     </form>
   )

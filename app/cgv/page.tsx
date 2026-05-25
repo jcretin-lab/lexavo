@@ -1,4 +1,6 @@
 import Link from 'next/link'
+import { LandingNav } from '@/components/landing/landing-nav'
+import { LandingFooter } from '@/components/landing/landing-footer'
 
 export const metadata = {
   title: 'Conditions Générales de Vente — Lexavo',
@@ -6,9 +8,10 @@ export const metadata = {
 
 export default function CGVPage() {
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-3xl mx-auto px-6 py-16">
-        <Link href="/" className="text-sm text-blue-600 hover:underline mb-8 inline-block">← Retour à l&apos;accueil</Link>
+    <div className="min-h-screen ed-legal-page">
+      <LandingNav />
+      <div className="max-w-3xl mx-auto px-6" style={{ paddingTop: '6rem', paddingBottom: '5rem' }}>
+        <Link href="/" style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.15em', color: '#6E6860', textDecoration: 'none', display: 'inline-block', marginBottom: '2.5rem' }} className="hover:text-black transition-colors">← ACCUEIL</Link>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Conditions Générales de Vente</h1>
         <p className="text-sm text-gray-500 mb-10">Dernière mise à jour : avril 2026</p>
 
@@ -131,6 +134,7 @@ export default function CGVPage() {
           </p>
         </section>
       </div>
+      <LandingFooter />
     </div>
   )
 }
