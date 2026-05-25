@@ -423,7 +423,7 @@ export default function HomePage() {
           {/* Grille éditoriale LinkedIn / Facebook */}
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1px_1fr] gap-0 fade-in fade-in-delay-1">
             {/* LinkedIn */}
-            <div style={{ borderTop: `3px solid #0A66C2`, paddingTop: '1.75rem', paddingRight: '2.5rem', paddingBottom: '2.5rem' }}>
+            <div className="md:pr-10" style={{ borderTop: `3px solid #0A66C2`, paddingTop: '1.75rem', paddingBottom: '2.5rem' }}>
               <div className="flex items-center gap-3 mb-5">
                 <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontWeight: 700, fontSize: '0.875rem', background: '#0A66C2', color: 'white', padding: '0.2rem 0.5rem' }}>in</span>
                 <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.18em', color: '#0A66C2' }}>LINKEDIN</span>
@@ -447,7 +447,7 @@ export default function HomePage() {
             <div className="hidden md:block" style={{ background: ED.rule, margin: '1.75rem 0' }} />
 
             {/* Facebook */}
-            <div style={{ borderTop: `3px solid #1877F2`, paddingTop: '1.75rem', paddingLeft: '2.5rem', paddingBottom: '2.5rem' }}>
+            <div className="md:pl-10" style={{ borderTop: `3px solid #1877F2`, paddingTop: '1.75rem', paddingBottom: '2.5rem' }}>
               <div className="flex items-center gap-3 mb-5">
                 <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontWeight: 700, fontSize: '0.875rem', background: '#1877F2', color: 'white', padding: '0.2rem 0.5rem' }}>f</span>
                 <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.18em', color: '#1877F2' }}>FACEBOOK</span>
