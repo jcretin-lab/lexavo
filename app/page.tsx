@@ -376,7 +376,7 @@ export default function HomePage() {
                   <Link href="/login?mode=signup" className="ed-cta-primary">
                     Commencer gratuitement →
                   </Link>
-                  <a href="#comment" className="ed-cta-ghost">
+                  <a href="#fonctionnalites" className="ed-cta-ghost">
                     Voir comment ça marche
                   </a>
                 </div>
