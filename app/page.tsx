@@ -291,7 +291,7 @@ function HeroBackground() {
       <div style={{
         position: 'absolute',
         inset: 0,
-        backgroundImage: 'url(/hero-bg.jpg)',
+        backgroundImage: 'url(/hero-bg.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center 30%',
         opacity: 0.38,
