@@ -65,7 +65,7 @@ const FAQ_LANDING = [
 ]
 
 /* ── En-tête de section éditorial ────────────────────── */
-function SectionHeader({ num, label, title, subtitle, dark = false }: {
+function SectionHeader({ num: _num, label, title, subtitle, dark = false }: {
   num: string; label: string; title: string; subtitle?: string; dark?: boolean
 }) {
   const textColor = dark ? ED.paper : ED.ink
@@ -73,12 +73,9 @@ function SectionHeader({ num, label, title, subtitle, dark = false }: {
   const subColor  = dark ? 'rgba(243,239,229,0.55)' : ED.mid
   return (
     <div className="mb-16 fade-in">
-      <div style={{ borderTop: `1px solid ${ruleColor}`, paddingTop: '1.25rem', marginBottom: '1rem', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
+      <div style={{ borderTop: `1px solid ${ruleColor}`, paddingTop: '1.25rem', marginBottom: '1rem' }}>
         <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.2em', color: ED.gold }}>
           {label}
-        </span>
-        <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.15em', color: ruleColor }}>
-          {num}
         </span>
       </div>
       <h2 style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.875rem, 3.5vw, 3rem)', lineHeight: 1.05, letterSpacing: '-0.025em', color: textColor, fontStyle: 'italic', marginBottom: subtitle ? '1rem' : 0 }}>
@@ -294,15 +291,15 @@ function HeroBackground() {
         backgroundImage: 'url(/hero-bg.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center 30%',
-        opacity: 0.38,
+        opacity: 0.55,
       }} />
       {/* Dégradé — lisibilité texte + teinte éditoriale */}
       <div style={{
         position: 'absolute',
         inset: 0,
         background: [
-          'linear-gradient(to right, rgba(15,14,12,0.82) 0%, rgba(15,14,12,0.55) 55%, rgba(15,14,12,0.72) 100%)',
-          'linear-gradient(to bottom, rgba(15,14,12,0.45) 0%, rgba(15,14,12,0.15) 45%, rgba(15,14,12,0.60) 100%)',
+          'linear-gradient(to right, rgba(15,14,12,0.68) 0%, rgba(15,14,12,0.35) 55%, rgba(15,14,12,0.52) 100%)',
+          'linear-gradient(to bottom, rgba(15,14,12,0.30) 0%, rgba(15,14,12,0.08) 45%, rgba(15,14,12,0.45) 100%)',
         ].join(', '),
       }} />
     </div>
