@@ -3,100 +3,52 @@ import { LandingPricing } from '@/components/landing/landing-pricing'
 import { ScrollAnimationInit } from '@/components/landing/scroll-animation'
 import { FaqAccordion } from '@/components/landing/faq-accordion'
 
+/* ── Palette éditoriale ───────────────────────────────── */
+const ED = {
+  ink:   '#0F0E0C',
+  paper: '#F3EFE5',
+  cream: '#FAF8F3',
+  mid:   '#6E6860',
+  rule:  '#D0CBC0',
+  gold:  '#B8872A',
+}
+
+/* ── Données ─────────────────────────────────────────── */
 const INPUT_FORMATS = [
-  {
-    icon: 'Aa',
-    titre: 'Un thème',
-    desc: 'Un sujet juridique (ex : licenciement pour faute grave).',
-  },
-  {
-    icon: '↗',
-    titre: "Une URL d'article",
-    desc: 'Collez un lien : Lexavo extrait le texte automatiquement.',
-  },
-  {
-    icon: '¶',
-    titre: 'Un article collé',
-    desc: 'Collez directement votre texte (200 mots minimum recommandés).',
-  },
+  { titre: 'Un thème', desc: 'Un sujet juridique (ex : licenciement pour faute grave).' },
+  { titre: "Une URL d'article", desc: 'Collez un lien : Lexavo extrait le texte automatiquement.' },
+  { titre: 'Un article collé', desc: 'Collez directement votre texte (200 mots minimum recommandés).' },
 ]
 
 const PUBLICATION_ITEMS = [
-  {
-    icon: '✍',
-    titre: 'Article de blog SEO',
-    desc: '900 à 1 200 mots structurés pour Google : H1, balises méta, mots-clés ciblés, slug optimisé.',
-  },
-  {
-    icon: '◈',
-    titre: '3 posts LinkedIn et Facebook',
-    desc: 'Trois angles distincts (pédagogique, cas pratique, conseil…), prêts à publier.',
-  },
-  {
-    icon: '?',
-    titre: 'FAQ juridique',
-    desc: "5 questions-réponses pour enrichir l'article et capter la longue traîne.",
-  },
-  {
-    icon: '◻',
-    titre: 'Image éditoriale',
-    desc: 'Un visuel sur-mesure généré par IA, ou uploadez votre propre image en un clic.',
-  },
-  {
-    icon: '⏱',
-    titre: 'Programmation automatique',
-    desc: 'Publication immédiate ou planifiée via calendrier éditorial, sur LinkedIn et Facebook.',
-  },
-]
-
-const STEPS = [
-  {
-    num: '01',
-    titre: 'Définissez votre thème',
-    desc: 'Sélectionnez votre spécialité et saisissez un thème. Lexavo adapte le contenu à votre ville et votre domaine juridique.',
-  },
-  {
-    num: '02',
-    titre: 'Votre contenu est généré',
-    desc: 'En moins de 3 minutes : un article SEO structuré, 3 posts distincts, une FAQ et 1 visuel éditorial (ou uploadez le vôtre). Tout est modifiable avant publication. Vous pouvez aussi insérer votre article existant pour obtenir 3 posts sous 3 angles différents.',
-  },
-  {
-    num: '03',
-    titre: 'Publiez quand vous voulez',
-    desc: 'Immédiatement ou à la date de votre choix via le calendrier éditorial. Vos comptes LinkedIn et Facebook reçoivent votre contenu automatiquement.',
-  },
+  { titre: 'Article de blog SEO', desc: '900 à 1 200 mots structurés pour Google : H1, balises méta, mots-clés ciblés, slug optimisé.' },
+  { titre: '3 posts LinkedIn et Facebook', desc: 'Trois angles distincts (pédagogique, cas pratique, conseil…), prêts à publier.' },
+  { titre: 'FAQ juridique', desc: "5 questions-réponses pour enrichir l'article et capter la longue traîne." },
+  { titre: 'Image éditoriale', desc: 'Un visuel sur-mesure généré par IA, ou uploadez votre propre image en un clic.' },
+  { titre: 'Programmation automatique', desc: 'Publication immédiate ou planifiée via calendrier éditorial, sur LinkedIn et Facebook.' },
 ]
 
 const RASSURANCE = [
-  {
-    titre: 'Conforme à la déontologie',
-    desc: 'Le contenu respecte les règles de communication du Conseil National des Barreaux. Sobre, factuel, sans publicité comparative.',
-  },
-  {
-    titre: 'Données sécurisées',
-    desc: 'Hébergement en Europe, chiffrement SSL, aucune revente de vos données. Entièrement conforme au RGPD.',
-  },
-  {
-    titre: 'Sans engagement',
-    desc: 'Résiliation à tout moment en un clic. Pas de frais cachés, pas de reconduction tacite sans préavis.',
-  },
+  { titre: 'Conforme à la déontologie', desc: 'Le contenu respecte les règles de communication du Conseil National des Barreaux. Sobre, factuel, sans publicité comparative.' },
+  { titre: 'Données sécurisées', desc: 'Hébergement en Europe, chiffrement SSL, aucune revente de vos données. Entièrement conforme au RGPD.' },
+  { titre: 'Sans engagement', desc: "Résiliation à tout moment en un clic. Pas de frais cachés, pas de reconduction tacite sans préavis." },
 ]
 
 const FAQ_LANDING = [
   {
     q: 'Qui est le fondateur de Lexavo ?',
-    r: 'Lexavo est fondé par Julien Pretet, spécialiste de la création de sites internet, du SEO et de l\'automatisation pour les cabinets d\'avocats. Le produit est développé en partenariat avec une docteure en droit.',
+    r: "Lexavo est fondé par Julien Pretet, spécialiste de la création de sites internet, du SEO et de l'automatisation pour les cabinets d'avocats. Le produit est développé en partenariat avec une docteure en droit.",
   },
   {
-    q: 'Pour qui Lexavo n\'est pas conçu ?',
-    r: 'Lexavo n\'est pas adapté aux cabinets d\'affaires internationaux dont la clientèle n\'est ni sur LinkedIn ni sur Facebook (M&A, fiscalité internationale), ni aux avocats qui cherchent un contenu polémique ou comparatif — interdit par la déontologie. Nous misons sur la régularité de publication, pas sur le volume.',
+    q: "Pour qui Lexavo n'est pas conçu ?",
+    r: "Lexavo n'est pas adapté aux cabinets d'affaires internationaux dont la clientèle n'est ni sur LinkedIn ni sur Facebook (M&A, fiscalité internationale), ni aux avocats qui cherchent un contenu polémique ou comparatif — interdit par la déontologie. Nous misons sur la régularité de publication, pas sur le volume.",
   },
   {
     q: 'Est-ce que Lexavo fonctionne sans site web ?',
     r: 'Oui. Lexavo génère du contenu pour vos réseaux sociaux et votre blog indépendamment de votre site web.',
   },
   {
-    q: 'Puis-je annuler mon abonnement à tout moment ?',
+    q: "Puis-je annuler mon abonnement à tout moment ?",
     r: 'Oui, sans engagement ni frais. La résiliation prend effet à la fin du mois en cours.',
   },
   {
@@ -105,77 +57,46 @@ const FAQ_LANDING = [
   },
   {
     q: 'Comment connecter mes réseaux sociaux ?',
-    r: 'Depuis votre tableau de bord, téléchargez en un clic le scénario Make.com prêt à l\'emploi ainsi que son guide de configuration. Vous obtenez ensuite une URL webhook que vous collez dans Lexavo. Comptez environ 20 minutes pour la mise en place initiale.',
+    r: "Depuis votre tableau de bord, téléchargez en un clic le scénario Make.com prêt à l'emploi ainsi que son guide de configuration. Vous obtenez ensuite une URL webhook que vous collez dans Lexavo. Comptez environ 20 minutes pour la mise en place initiale.",
   },
 ]
 
-
-/* ─── Wave divider ──────────────────────────────────── */
-function WaveDivider({ from, to, convex = false }: { from: string; to: string; convex?: boolean }) {
-  const d = convex
-    ? 'M0,52 C480,4 960,4 1440,52 L1440,52 L0,52 Z'
-    : 'M0,0 C480,48 960,48 1440,0 L1440,52 L0,52 Z'
+/* ── En-tête de section éditorial ────────────────────── */
+function SectionHeader({ num, label, title, subtitle, dark = false }: {
+  num: string; label: string; title: string; subtitle?: string; dark?: boolean
+}) {
+  const textColor = dark ? ED.paper : ED.ink
+  const ruleColor = dark ? 'rgba(255,255,255,0.12)' : ED.rule
+  const subColor  = dark ? 'rgba(243,239,229,0.55)' : ED.mid
   return (
-    <div style={{ lineHeight: 0, background: from }}>
-      <svg
-        viewBox="0 0 1440 52"
-        preserveAspectRatio="none"
-        style={{ display: 'block', width: '100%', height: '52px' }}
-      >
-        <path d={d} style={{ fill: to }} />
-      </svg>
+    <div className="mb-16 fade-in">
+      <div style={{ borderTop: `1px solid ${ruleColor}`, paddingTop: '1.25rem', marginBottom: '1rem', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
+        <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.2em', color: ED.gold }}>
+          {label}
+        </span>
+        <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.15em', color: ruleColor }}>
+          {num}
+        </span>
+      </div>
+      <h2 style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.875rem, 3.5vw, 3rem)', lineHeight: 1.05, letterSpacing: '-0.025em', color: textColor, fontStyle: 'italic', marginBottom: subtitle ? '1rem' : 0 }}>
+        {title}
+      </h2>
+      {subtitle && (
+        <p style={{ fontSize: '1rem', color: subColor, lineHeight: 1.65, maxWidth: '38rem' }}>
+          {subtitle}
+        </p>
+      )}
     </div>
   )
 }
 
-/* ─── Animated connector ────────────────────────────── */
-function AnimatedConnector() {
-  const xPositions = [80, 240, 400, 560, 720]
-  return (
-    <div className="relative w-full hidden sm:block" style={{ height: '64px' }}>
-      <svg
-        viewBox="0 0 800 64"
-        preserveAspectRatio="none"
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', overflow: 'visible' }}
-      >
-        {/* Ligne verticale depuis le bloc input */}
-        <line x1="400" y1="0" x2="400" y2="32" stroke="rgba(212,162,76,0.35)" strokeWidth="1.5" strokeDasharray="3 4">
-          <animate attributeName="stroke-dashoffset" values="7;0" dur="1s" repeatCount="indefinite" />
-        </line>
-        {/* Barre horizontale de distribution */}
-        <line x1="80" y1="32" x2="720" y2="32" stroke="rgba(212,162,76,0.22)" strokeWidth="1.5" strokeDasharray="3 4">
-          <animate attributeName="stroke-dashoffset" values="7;0" dur="1s" repeatCount="indefinite" />
-        </line>
-        {/* 5 descentes vers les cards */}
-        {xPositions.map((x, i) => (
-          <g key={x}>
-            <line x1={x} y1="32" x2={x} y2="64" stroke="rgba(212,162,76,0.22)" strokeWidth="1.5" strokeDasharray="3 4">
-              <animate attributeName="stroke-dashoffset" values="7;0" dur="1s" begin={`${i * 0.08}s`} repeatCount="indefinite" />
-            </line>
-            <circle cx={x} cy="32" r="3" fill="rgba(212,162,76,0.7)">
-              <animate attributeName="r" values="2;4.5;2" dur="2.2s" begin={`${i * 0.44}s`} repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.3;1;0.3" dur="2.2s" begin={`${i * 0.44}s`} repeatCount="indefinite" />
-            </circle>
-          </g>
-        ))}
-        {/* Point pulse central (sortie du bloc input) */}
-        <circle cx="400" cy="2" r="3.5" fill="rgba(212,162,76,0.9)">
-          <animate attributeName="r" values="2.5;5.5;2.5" dur="2s" repeatCount="indefinite" />
-          <animate attributeName="opacity" values="0.45;1;0.45" dur="2s" repeatCount="indefinite" />
-        </circle>
-      </svg>
-    </div>
-  )
-}
-
-/* ─── Mockup hero ──────────────────────────────────────── */
+/* ── Mockup hero ─────────────────────────────────────── */
 function HeroMockup() {
   return (
     <div className="relative w-full">
-      {/* Halo derrière le mockup */}
       <div
-        className="absolute -inset-8 rounded-[40px] opacity-25 blur-3xl"
-        style={{ background: 'radial-gradient(ellipse at 50% 60%, var(--navy-500), transparent 70%)' }}
+        className="absolute -inset-8 rounded-[40px] opacity-20 blur-3xl"
+        style={{ background: 'radial-gradient(ellipse at 50% 60%, #4870B3, transparent 70%)' }}
       />
       <div
         className="relative rounded-2xl overflow-hidden"
@@ -185,11 +106,7 @@ function HeroMockup() {
           boxShadow: '0 32px 80px -20px rgba(15,34,71,0.22), 0 4px 16px -4px rgba(15,34,71,0.08)',
         }}
       >
-        {/* Browser chrome */}
-        <div
-          className="px-5 py-3 flex items-center gap-3 border-b"
-          style={{ background: 'var(--ink-50)', borderColor: 'var(--ink-200)' }}
-        >
+        <div className="px-5 py-3 flex items-center gap-3 border-b" style={{ background: 'var(--ink-50)', borderColor: 'var(--ink-200)' }}>
           <div className="flex gap-1.5 flex-shrink-0">
             <div className="w-3 h-3 rounded-full" style={{ background: '#FF5F57' }} />
             <div className="w-3 h-3 rounded-full" style={{ background: '#FFBD2E' }} />
@@ -199,51 +116,33 @@ function HeroMockup() {
             app.lexavo.fr/dashboard/generer
           </div>
         </div>
-
-        {/* App content */}
         <div className="p-5" style={{ background: 'var(--ink-50)' }}>
           <div className="grid grid-cols-5 gap-4">
-
-            {/* Sidebar nav */}
             <div className="col-span-1 rounded-xl p-3 space-y-1" style={{ background: 'var(--white)', border: '1px solid var(--ink-200)' }}>
               <div className="mb-3 px-2 py-1.5">
                 <span className="text-xs font-semibold" style={{ fontFamily: 'var(--font-instrument-serif)', color: 'var(--navy-900)' }}>Lexavo.</span>
               </div>
               {['Générer', 'Article → Post', 'Calendrier', 'Contenu', 'Paramètres'].map((item, i) => (
-                <div
-                  key={item}
-                  className="px-2 py-1.5 rounded-lg text-[10px] font-medium"
-                  style={{
-                    background: i === 0 ? 'var(--navy-50)' : 'transparent',
-                    color: i === 0 ? 'var(--navy-900)' : 'var(--ink-400)',
-                    border: i === 0 ? '1px solid var(--navy-100)' : '1px solid transparent',
-                  }}
-                >
+                <div key={item} className="px-2 py-1.5 rounded-lg text-[10px] font-medium" style={{ background: i === 0 ? 'var(--navy-50)' : 'transparent', color: i === 0 ? 'var(--navy-900)' : 'var(--ink-400)', border: i === 0 ? '1px solid var(--navy-100)' : '1px solid transparent' }}>
                   {item}
                 </div>
               ))}
             </div>
-
-            {/* Main area */}
             <div className="col-span-4 grid grid-cols-5 gap-3">
-              {/* Form */}
               <div className="col-span-2 rounded-xl p-3.5 space-y-3" style={{ background: 'var(--white)', border: '1px solid var(--ink-200)' }}>
                 <p className="text-[11px] font-semibold" style={{ color: 'var(--ink-700)' }}>Paramètres de génération</p>
-
                 <div className="space-y-1">
                   <p className="text-[9px] uppercase tracking-widest" style={{ color: 'var(--ink-400)', fontFamily: 'var(--font-jetbrains-mono)' }}>Spécialité</p>
                   <div className="rounded-lg px-2.5 py-1.5 text-[10px] flex items-center justify-between" style={{ background: 'var(--ink-50)', border: '1px solid var(--ink-200)', color: 'var(--ink-700)' }}>
                     Droit du travail <span style={{ color: 'var(--ink-400)', fontSize: '8px' }}>▾</span>
                   </div>
                 </div>
-
                 <div className="space-y-1">
                   <p className="text-[9px] uppercase tracking-widest" style={{ color: 'var(--ink-400)', fontFamily: 'var(--font-jetbrains-mono)' }}>Thème</p>
                   <div className="rounded-lg px-2.5 py-2 text-[10px] leading-relaxed h-14 overflow-hidden" style={{ background: 'var(--ink-50)', border: '1px solid var(--ink-200)', color: 'var(--ink-500)' }}>
                     Les 5 erreurs à éviter lors d&apos;un licenciement pour faute grave...
                   </div>
                 </div>
-
                 <div className="space-y-1">
                   <p className="text-[9px] uppercase tracking-widest" style={{ color: 'var(--ink-400)', fontFamily: 'var(--font-jetbrains-mono)' }}>Ton</p>
                   <div className="flex gap-1 flex-wrap">
@@ -252,13 +151,10 @@ function HeroMockup() {
                     ))}
                   </div>
                 </div>
-
                 <div className="text-[10px] font-semibold px-3 py-2 rounded-xl text-center" style={{ background: 'var(--navy-900)', color: 'var(--white)' }}>
                   ✦ Générer le contenu
                 </div>
               </div>
-
-              {/* Results */}
               <div className="col-span-3 rounded-xl overflow-hidden" style={{ background: 'var(--white)', border: '1px solid var(--ink-200)' }}>
                 <div className="flex border-b" style={{ borderColor: 'var(--ink-200)' }}>
                   {['Posts réseaux', 'Article SEO', 'FAQ', 'Image IA'].map((tab, i) => (
@@ -267,7 +163,6 @@ function HeroMockup() {
                     </div>
                   ))}
                 </div>
-
                 <div className="p-3 space-y-2">
                   <div className="rounded-xl p-3" style={{ border: '1px solid var(--ink-200)' }}>
                     <div className="flex items-center gap-2 mb-2">
@@ -283,7 +178,6 @@ function HeroMockup() {
                       <span className="text-[8px] px-1.5 py-0.5 rounded-full" style={{ color: 'var(--navy-900)', background: 'var(--navy-50)' }}>#Avocat</span>
                     </div>
                   </div>
-
                   {[['Post 2', 'Cas pratique', 'var(--ocre-50)', 'var(--ocre-700)'], ['Post 3', 'Storytelling', 'var(--success-50)', 'var(--success)']].map(([label, tag, bg, color]) => (
                     <div key={label} className="rounded-xl p-3 opacity-50" style={{ border: '1px solid var(--ink-100)' }}>
                       <div className="flex items-center gap-2 mb-2">
@@ -301,8 +195,6 @@ function HeroMockup() {
               </div>
             </div>
           </div>
-
-          {/* Bottom row: image preview */}
           <div className="mt-3 rounded-xl p-3 flex items-center gap-4" style={{ background: 'var(--white)', border: '1px solid var(--ink-200)' }}>
             <div className="w-24 h-12 rounded-xl flex-shrink-0 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--navy-100) 0%, var(--navy-500) 100%)' }}>
               <span className="text-[8px] font-medium" style={{ color: 'rgba(255,255,255,0.8)' }}>IA</span>
@@ -316,7 +208,6 @@ function HeroMockup() {
             </div>
             <div className="flex gap-2 flex-shrink-0">
               <span className="text-[9px] font-semibold px-2.5 py-1 rounded-full" style={{ color: 'var(--success)', background: 'var(--success-50)' }}>✓ Prêt</span>
-              <span className="text-[9px] font-medium px-2.5 py-1 rounded-full" style={{ color: 'var(--navy-900)', background: 'var(--navy-50)', border: '1px solid var(--navy-100)' }}>Télécharger</span>
             </div>
           </div>
         </div>
@@ -325,25 +216,16 @@ function HeroMockup() {
   )
 }
 
-/* ─── Mockup calendrier ────────────────────────────────── */
+/* ── Mockup calendrier ───────────────────────────────── */
 function CalendarMockup() {
   const days = ['L', 'M', 'M', 'J', 'V', 'S', 'D']
   const posts = [
-    { day: 1, col: 1, label: 'FB', color: '#1877F2', title: 'Licenciement abusif : vos droits' },
-    { day: 3, col: 3, label: 'LI', color: '#0A66C2', title: 'Garde d\'enfants : changements 2025' },
+    { day: 1, col: 1, label: 'FB', color: '#1877F2', title: "Licenciement abusif : vos droits" },
+    { day: 3, col: 3, label: 'LI', color: '#0A66C2', title: "Garde d'enfants : changements 2025" },
     { day: 5, col: 5, label: 'FB', color: '#1877F2', title: 'Harcèlement moral au travail' },
   ]
-
   return (
-    <div
-      className="rounded-2xl overflow-hidden"
-      style={{
-        background: 'var(--white)',
-        border: '1px solid var(--ink-200)',
-        boxShadow: '0 24px 60px -16px rgba(15,34,71,0.18)',
-      }}
-    >
-      {/* Header */}
+    <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--white)', border: '1px solid var(--ink-200)', boxShadow: '0 24px 60px -16px rgba(15,34,71,0.18)' }}>
       <div className="px-5 py-3.5 flex items-center justify-between border-b" style={{ borderColor: 'var(--ink-200)' }}>
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold" style={{ color: 'var(--ink-900)' }}>Calendrier éditorial</span>
@@ -354,15 +236,11 @@ function CalendarMockup() {
           <div className="w-5 h-5 rounded-md flex items-center justify-center text-[9px]" style={{ background: 'var(--ink-100)', color: 'var(--ink-500)' }}>›</div>
         </div>
       </div>
-
-      {/* Days header */}
       <div className="grid grid-cols-7 px-4 pt-3 pb-1 gap-1">
         {days.map((d, i) => (
           <div key={i} className="text-center text-[9px] font-semibold uppercase tracking-widest py-1" style={{ color: 'var(--ink-400)' }}>{d}</div>
         ))}
       </div>
-
-      {/* Calendar grid */}
       <div className="px-4 pb-4">
         {[0, 1, 2, 3].map((week) => (
           <div key={week} className="grid grid-cols-7 gap-1 mb-1">
@@ -371,14 +249,7 @@ function CalendarMockup() {
               const post = posts.find(p => p.day === dayNum && p.col === d)
               const isToday = dayNum === 12
               return (
-                <div
-                  key={d}
-                  className="rounded-lg p-1.5 min-h-[48px]"
-                  style={{
-                    background: isToday ? 'var(--navy-50)' : 'var(--ink-50)',
-                    border: isToday ? '1px solid var(--navy-200, #c0cfe8)' : '1px solid transparent',
-                  }}
-                >
+                <div key={d} className="rounded-lg p-1.5 min-h-[48px]" style={{ background: isToday ? 'var(--navy-50)' : 'var(--ink-50)', border: isToday ? '1px solid var(--navy-200, #c0cfe8)' : '1px solid transparent' }}>
                   <span className="text-[9px] font-medium block mb-1" style={{ color: isToday ? 'var(--navy-900)' : 'var(--ink-400)' }}>
                     {dayNum <= 30 ? dayNum : ''}
                   </span>
@@ -398,8 +269,6 @@ function CalendarMockup() {
           </div>
         ))}
       </div>
-
-      {/* Footer */}
       <div className="mx-4 mb-4 rounded-xl p-3 flex items-center justify-between" style={{ background: 'var(--success-50)', border: '1px solid #cfe6da' }}>
         <div>
           <p className="text-[10px] font-semibold" style={{ color: 'var(--success)' }}>✓ 8 publications programmées ce mois</p>
@@ -411,45 +280,39 @@ function CalendarMockup() {
   )
 }
 
-/* ─── Page ─────────────────────────────────────────────── */
+/* ── Page ────────────────────────────────────────────── */
 export default function HomePage() {
   return (
-    <div className="min-h-screen" style={{ background: 'var(--paper)', color: 'var(--ink-900)' }}>
+    <div style={{ background: ED.paper, color: ED.ink }}>
       <ScrollAnimationInit />
 
       {/* ══ Navigation ═══════════════════════════════════════ */}
       <nav
         className="fixed top-0 left-0 right-0 z-50"
-        style={{
-          background: 'var(--navy-900)',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
-        }}
+        style={{ background: ED.ink, borderBottom: '1px solid rgba(255,255,255,0.07)' }}
       >
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-6 h-12 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <svg width="18" height="18" viewBox="0 0 17 17" fill="none" style={{ color: 'rgba(255,255,255,0.65)', flexShrink: 0 }}>
+            <svg width="16" height="16" viewBox="0 0 17 17" fill="none" style={{ color: 'rgba(243,239,229,0.5)', flexShrink: 0 }}>
               <rect x="1" y="1" width="15" height="11.5" rx="2.5" stroke="currentColor" strokeWidth="1.2"/>
               <path d="M3.5 16L6 12.5H1L3.5 16Z" fill="currentColor"/>
             </svg>
-            <span
-              className="text-xl select-none"
-              style={{ fontFamily: 'var(--font-instrument-serif)', color: 'var(--white)', letterSpacing: '-0.02em' }}
-            >
-              Lex<em>avo</em><span style={{ color: 'var(--ocre-500)' }}>.</span>
+            <span style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', color: ED.paper, letterSpacing: '-0.02em' }}>
+              Lex<em>avo</em><span style={{ color: ED.gold }}>.</span>
             </span>
           </div>
 
-          <div className="hidden md:flex items-center gap-8 text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-            <a href="#fonctionnalites" className="hover:text-white transition-colors">Fonctionnalités</a>
-            <a href="#comment" className="hover:text-white transition-colors">Comment ça marche</a>
-            <a href="#tarifs" className="hover:text-white transition-colors">Tarifs</a>
+          <div className="hidden md:flex items-center gap-8" style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(243,239,229,0.45)' }}>
+            <a href="#fonctionnalites" className="hover:text-white transition-colors" style={{ color: 'inherit', textDecoration: 'none' }}>FONCTIONNALITÉS</a>
+            <a href="#comment" className="hover:text-white transition-colors" style={{ color: 'inherit', textDecoration: 'none' }}>COMMENT</a>
+            <a href="#tarifs" className="hover:text-white transition-colors" style={{ color: 'inherit', textDecoration: 'none' }}>TARIFS</a>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm hidden sm:block transition-colors hover:text-white" style={{ color: 'rgba(255,255,255,0.65)' }}>
-              Se connecter
+          <div className="flex items-center gap-4">
+            <Link href="/login" style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.15em', color: 'rgba(243,239,229,0.4)', textDecoration: 'none' }} className="hidden sm:block hover:text-white transition-colors">
+              SE CONNECTER
             </Link>
-            <Link href="/login?mode=signup" className="landing-nav-cta">
+            <Link href="/login?mode=signup" className="ed-cta-outlined" style={{ padding: '0.5rem 1.25rem', fontSize: '0.75rem' }}>
               Essai gratuit
             </Link>
           </div>
@@ -457,393 +320,276 @@ export default function HomePage() {
       </nav>
 
       {/* ══ Hero ═════════════════════════════════════════════ */}
-      <section
-        className="pt-40 pb-16 px-6 overflow-hidden"
-        style={{
-          backgroundColor: '#FAFAF7',
-          backgroundImage: [
-            'radial-gradient(ellipse 90% 70% at 50% -5%, rgba(26,63,124,0.09) 0%, transparent 65%)',
-            'radial-gradient(ellipse 45% 35% at 88% 12%, rgba(212,162,76,0.06) 0%, transparent 55%)',
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='14' cy='14' r='0.9' fill='%230F2247' fill-opacity='0.05'/%3E%3C/svg%3E\")",
-          ].join(', '),
-        }}
-      >
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center fade-in">
-          {/* Texte — gauche */}
-          <div>
-            {/* Petit titre */}
-            <p
-              className="mb-6"
-              style={{
-                fontFamily: 'var(--font-instrument-serif)',
-                fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
-                color: 'var(--ink-700)',
-                letterSpacing: '-0.01em',
-              }}
-            >
-              Publiez facilement pour faire entendre{' '}
-              <span style={{ color: 'var(--navy-900)' }}>votre droit</span>
-              <span style={{ color: 'var(--ocre-500)' }}>.</span>
-            </p>
+      <section style={{ background: ED.ink, paddingTop: '5rem', overflow: 'hidden' }}>
+        <div className="max-w-6xl mx-auto px-6" style={{ paddingTop: '3rem', paddingBottom: '5rem' }}>
 
-            {/* H1 */}
-            <h1
-              className="mb-7"
-              style={{
-                fontFamily: 'var(--font-instrument-serif)',
-                fontSize: 'clamp(1.875rem, 4.5vw, 3.5rem)',
-                lineHeight: 1.1,
-                letterSpacing: '-0.025em',
-                color: 'var(--ink-900)',
-              }}
-            >
-              Une présence régulière sur{' '}
-              <span style={{ color: '#0A66C2' }}>LinkedIn</span>
-              {' '}et{' '}
-              <span style={{ color: '#1877F2' }}>Facebook</span>
-              , sans y consacrer du temps.
-            </h1>
+          {/* Filet supérieur + label */}
+          <div
+            className="fade-in"
+            style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1.75rem', marginBottom: '2.5rem', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}
+          >
+            <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.2em', color: ED.gold }}>
+              COMMUNICATION JURIDIQUE — POUR AVOCATS FRANÇAIS
+            </span>
+            <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.2)' }}>
+              N°&thinsp;01
+            </span>
+          </div>
 
-            {/* Subtitle */}
-            <p
-              className="mb-10"
-              style={{ fontSize: 'clamp(1rem, 1.5vw, 1.125rem)', color: 'var(--ink-500)', lineHeight: 1.65, maxWidth: '36rem' }}
-            >
-              À partir d&apos;un sujet ou d&apos;un article déjà écrit, Lexavo génère un article SEO, 3 posts adaptés à <strong style={{ color: 'var(--ink-700)', fontWeight: 600 }}>LinkedIn</strong> et <strong style={{ color: 'var(--ink-700)', fontWeight: 600 }}>Facebook</strong>, une FAQ et une image — en 3 minutes. Conforme à la déontologie du barreau.
-            </p>
+          {/* Titre principal */}
+          <h1
+            className="fade-in fade-in-delay-1"
+            style={{
+              fontFamily: 'var(--font-instrument-serif)',
+              fontSize: 'clamp(2.75rem, 6.5vw, 6rem)',
+              lineHeight: 0.97,
+              letterSpacing: '-0.03em',
+              color: ED.paper,
+              fontStyle: 'italic',
+              marginBottom: '2.5rem',
+              maxWidth: '22ch',
+            }}
+          >
+            Une présence régulière sur{' '}
+            <span style={{ color: '#4A88D8' }}>LinkedIn</span>
+            {' '}et{' '}
+            <span style={{ color: '#5E9EF5' }}>Facebook</span>
+            ,{' '}sans y consacrer du temps.
+          </h1>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-3 mb-10">
-              <Link href="/login?mode=signup" className="landing-cta-primary">
-                Commencer gratuitement →
-              </Link>
-              <a href="#comment" className="landing-cta-secondary">
-                Voir comment ça marche
-              </a>
-            </div>
-
-            {/* Signes de confiance */}
-            <div className="flex flex-col gap-3">
-              <p className="text-sm" style={{ color: 'var(--ink-500)' }}>
-                Conçu avec et pour les avocats français
+          {/* Filet de séparation */}
+          <div
+            className="fade-in fade-in-delay-2"
+            style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2.5rem' }}
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+              {/* Descriptif */}
+              <p style={{ fontSize: '1.0625rem', color: 'rgba(243,239,229,0.65)', lineHeight: 1.75, maxWidth: '34rem' }}>
+                À partir d&apos;un sujet ou d&apos;un article déjà écrit, Lexavo génère un article SEO,
+                3&nbsp;posts adaptés à LinkedIn et Facebook, une FAQ et une image — en 3&nbsp;minutes.
+                Conforme à la déontologie du barreau.
               </p>
-              <div className="flex flex-wrap gap-2">
-                {['Déontologie CNB', 'Hébergement EU', 'RGPD'].map((label) => (
-                  <span
-                    key={label}
-                    className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full"
-                    style={{ background: 'var(--navy-50)', color: 'var(--navy-900)', border: '1px solid var(--navy-100)' }}
-                  >
-                    <span style={{ color: 'var(--success)' }} aria-hidden>✓</span>
-                    {label}
-                  </span>
-                ))}
+
+              {/* CTAs + badges */}
+              <div>
+                <div className="flex flex-col sm:flex-row gap-3 mb-6">
+                  <Link href="/login?mode=signup" className="ed-cta-primary">
+                    Commencer gratuitement →
+                  </Link>
+                  <a href="#comment" className="ed-cta-ghost">
+                    Voir comment ça marche
+                  </a>
+                </div>
+                <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.18em', color: 'rgba(255,255,255,0.28)', marginBottom: '0.75rem' }}>
+                  CONÇU AVEC ET POUR LES AVOCATS FRANÇAIS
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {['Déontologie CNB', 'Hébergement EU', 'RGPD'].map((label) => (
+                    <span
+                      key={label}
+                      style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.12em', color: 'rgba(255,255,255,0.38)', border: '1px solid rgba(255,255,255,0.12)', padding: '0.25rem 0.625rem' }}
+                    >
+                      ✓ {label.toUpperCase()}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Stats visuelles — visibles sur mobile/tablette quand le mockup est caché */}
-            <div className="mt-10 grid grid-cols-3 gap-3 lg:hidden fade-in fade-in-delay-3">
+            {/* Stats visuelles — mobiles uniquement */}
+            <div className="grid grid-cols-3 gap-6 mt-12 lg:hidden fade-in fade-in-delay-3">
               {[
-                { num: '< 3 min', label: 'Par génération' },
-                { num: '5 formats', label: 'Article · posts · FAQ · image' },
-                { num: '100%', label: 'Déontologie CNB' },
+                { num: '< 3 min', label: 'PAR GÉNÉRATION' },
+                { num: '5 formats', label: 'LIVRABLES INCLUS' },
+                { num: '100%', label: 'DÉONTOLOGIE CNB' },
               ].map(({ num, label }) => (
-                <div
-                  key={num}
-                  className="text-center rounded-2xl p-4"
-                  style={{ background: 'var(--white)', border: '1px solid var(--ink-200)', boxShadow: 'var(--shadow-sm)' }}
-                >
-                  <p
-                    className="mb-1"
-                    style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1rem', color: 'var(--navy-900)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
-                  >
+                <div key={num} style={{ borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: '1rem' }}>
+                  <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.25rem, 4vw, 1.875rem)', color: ED.paper, fontStyle: 'italic', letterSpacing: '-0.025em', lineHeight: 1, marginBottom: '0.5rem' }}>
                     {num}
                   </p>
-                  <p className="text-xs leading-tight" style={{ color: 'var(--ink-500)' }}>{label}</p>
+                  <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '8px', letterSpacing: '0.18em', color: 'rgba(243,239,229,0.35)' }}>
+                    {label}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
-
-          {/* Mockup — droite (cache sur mobile/tablette : grilles trop denses) */}
-          <div className="hidden lg:block fade-in-scale fade-in-delay-2">
-            <HeroMockup />
-          </div>
         </div>
       </section>
 
-      {/* ══ Positionnement LinkedIn + Facebook ═══════════════ */}
-      <section className="py-28 px-6" style={{ background: 'var(--paper)' }}>
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-14 fade-in">
-            <p
-              className="mb-4 uppercase"
-              style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '11px', letterSpacing: '0.16em', color: 'var(--ocre-700)' }}
-            >
-              Deux réseaux, toute votre clientèle
-            </p>
-            <h2
-              className="mb-5"
-              style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.875rem, 3.5vw, 2.75rem)', color: 'var(--ink-900)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
-            >
-              LinkedIn et Facebook : les 2 réseaux les plus prometteurs pour un cabinet
-            </h2>
-            <div className="gold-sep" />
-            <p className="text-base max-w-2xl mx-auto mt-5" style={{ color: 'var(--ink-500)', lineHeight: 1.65 }}>
-              Inutile d&apos;être partout. Concentrez vos efforts là où vos futurs clients vous cherchent vraiment.
-            </p>
-          </div>
+      {/* ══ Positionnement ═══════════════════════════════════ */}
+      <section id="comment" style={{ background: ED.paper, padding: '6rem 1.5rem' }}>
+        <div className="max-w-6xl mx-auto">
+          <SectionHeader
+            num="01"
+            label="DEUX RÉSEAUX, TOUTE VOTRE CLIENTÈLE"
+            title="LinkedIn et Facebook : les 2 réseaux les plus prometteurs pour un cabinet"
+            subtitle="Inutile d'être partout. Concentrez vos efforts là où vos futurs clients vous cherchent vraiment."
+          />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* LinkedIn — pros */}
-            <div
-              className="rounded-2xl p-7 fade-in fade-in-delay-1"
-              style={{ background: 'var(--white)', border: '1px solid var(--ink-200)', boxShadow: '0 4px 20px -4px rgba(15,34,71,0.06)' }}
-            >
+          {/* Grille éditoriale LinkedIn / Facebook */}
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1px_1fr] gap-0 fade-in fade-in-delay-1">
+            {/* LinkedIn */}
+            <div style={{ borderTop: `3px solid #0A66C2`, paddingTop: '1.75rem', paddingRight: '2.5rem', paddingBottom: '2.5rem' }}>
               <div className="flex items-center gap-3 mb-5">
-                <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center font-bold text-base flex-shrink-0"
-                  style={{ background: '#0A66C2', color: 'white', fontFamily: 'var(--font-jetbrains-mono)' }}
-                >
-                  in
-                </div>
-                <span
-                  className="text-xs uppercase font-semibold"
-                  style={{ fontFamily: 'var(--font-jetbrains-mono)', letterSpacing: '0.16em', color: '#0A66C2' }}
-                >
-                  LinkedIn
-                </span>
+                <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontWeight: 700, fontSize: '0.875rem', background: '#0A66C2', color: 'white', padding: '0.2rem 0.5rem' }}>in</span>
+                <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.18em', color: '#0A66C2' }}>LINKEDIN</span>
               </div>
-              <p
-                className="font-semibold mb-3"
-                style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.5rem', color: 'var(--ink-900)', letterSpacing: '-0.015em', lineHeight: 1.15 }}
-              >
+              <h3 style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.625rem', color: ED.ink, letterSpacing: '-0.015em', lineHeight: 1.15, marginBottom: '0.875rem', fontStyle: 'italic' }}>
                 Pour vos clients professionnels
-              </p>
-              <p className="text-sm mb-5" style={{ color: 'var(--ink-500)', lineHeight: 1.7 }}>
-                Décideurs, dirigeants, DRH, juristes d&apos;entreprise. C&apos;est ici que se nouent les <strong style={{ color: 'var(--ink-700)', fontWeight: 600 }}>mandats récurrents à forte valeur</strong> et que vos pairs vous prescrivent.
+              </h3>
+              <p style={{ fontSize: '0.9375rem', color: ED.mid, lineHeight: 1.75, marginBottom: '1.5rem' }}>
+                Décideurs, dirigeants, DRH, juristes d&apos;entreprise. C&apos;est ici que se nouent les <strong style={{ color: ED.ink, fontWeight: 600 }}>mandats récurrents à forte valeur</strong> et que vos pairs vous prescrivent.
               </p>
               <div className="flex flex-wrap gap-2">
-                {['Droit des affaires TPE/PME', 'Droit social', 'Immobilier pro', 'RH/Management', 'Contentieux commercial'].map(t => (
-                  <span
-                    key={t}
-                    className="text-xs px-2.5 py-1 rounded-full font-medium"
-                    style={{ background: 'var(--navy-50)', color: 'var(--navy-900)', border: '1px solid var(--navy-100)' }}
-                  >
-                    {t}
+                {['Droit des affaires', 'Droit social', 'Immobilier pro', 'RH', 'Contentieux'].map(t => (
+                  <span key={t} style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.1em', padding: '0.25rem 0.625rem', border: `1px solid ${ED.rule}`, color: ED.mid }}>
+                    {t.toUpperCase()}
                   </span>
                 ))}
               </div>
             </div>
 
-            {/* Facebook — particuliers */}
-            <div
-              className="rounded-2xl p-7 fade-in fade-in-delay-2"
-              style={{ background: 'var(--white)', border: '1px solid var(--ink-200)', boxShadow: '0 4px 20px -4px rgba(15,34,71,0.06)' }}
-            >
+            {/* Filet vertical (desktop) */}
+            <div className="hidden md:block" style={{ background: ED.rule, margin: '1.75rem 0' }} />
+
+            {/* Facebook */}
+            <div style={{ borderTop: `3px solid #1877F2`, paddingTop: '1.75rem', paddingLeft: '2.5rem', paddingBottom: '2.5rem' }}>
               <div className="flex items-center gap-3 mb-5">
-                <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center font-bold text-lg flex-shrink-0"
-                  style={{ background: '#1877F2', color: 'white', fontFamily: 'var(--font-jetbrains-mono)' }}
-                >
-                  f
-                </div>
-                <span
-                  className="text-xs uppercase font-semibold"
-                  style={{ fontFamily: 'var(--font-jetbrains-mono)', letterSpacing: '0.16em', color: '#1877F2' }}
-                >
-                  Facebook
-                </span>
+                <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontWeight: 700, fontSize: '0.875rem', background: '#1877F2', color: 'white', padding: '0.2rem 0.5rem' }}>f</span>
+                <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.18em', color: '#1877F2' }}>FACEBOOK</span>
               </div>
-              <p
-                className="font-semibold mb-3"
-                style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.5rem', color: 'var(--ink-900)', letterSpacing: '-0.015em', lineHeight: 1.15 }}
-              >
+              <h3 style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.625rem', color: ED.ink, letterSpacing: '-0.015em', lineHeight: 1.15, marginBottom: '0.875rem', fontStyle: 'italic' }}>
                 Pour vos clients particuliers
-              </p>
-              <p className="text-sm mb-5" style={{ color: 'var(--ink-500)', lineHeight: 1.7 }}>
-                Familles, salariés, locataires, consommateurs. C&apos;est le réseau du <strong style={{ color: 'var(--ink-700)', fontWeight: 600 }}>bouche-à-oreille local</strong> et des recherches juridiques de la vie courante.
+              </h3>
+              <p style={{ fontSize: '0.9375rem', color: ED.mid, lineHeight: 1.75, marginBottom: '1.5rem' }}>
+                Familles, salariés, locataires, consommateurs. C&apos;est le réseau du <strong style={{ color: ED.ink, fontWeight: 600 }}>bouche-à-oreille local</strong> et des recherches juridiques de la vie courante.
               </p>
               <div className="flex flex-wrap gap-2">
                 {['Famille', 'Travail', 'Immobilier', 'Consommation', 'Pénal'].map(t => (
-                  <span
-                    key={t}
-                    className="text-xs px-2.5 py-1 rounded-full font-medium"
-                    style={{ background: 'var(--ocre-50)', color: 'var(--ocre-700)', border: '1px solid var(--ocre-100)' }}
-                  >
-                    {t}
+                  <span key={t} style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.1em', padding: '0.25rem 0.625rem', border: `1px solid ${ED.rule}`, color: ED.mid }}>
+                    {t.toUpperCase()}
                   </span>
                 ))}
               </div>
             </div>
           </div>
 
-          <p className="mt-10 text-center text-sm fade-in" style={{ color: 'var(--ink-400)', fontStyle: 'italic' }}>
-            Pourquoi pas X ou TikTok ? Parce qu&apos;à temps égal, LinkedIn et Facebook convertissent davantage en mandats pour un cabinet d&apos;avocats.
-          </p>
+          {/* Note de bas de section */}
+          <div style={{ borderTop: `1px solid ${ED.rule}`, paddingTop: '1.5rem', marginTop: '1.5rem' }} className="fade-in">
+            <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.1em', color: 'rgba(110,104,96,0.65)', fontStyle: 'italic' }}>
+              Pourquoi pas X ou TikTok ? Parce qu&apos;à temps égal, LinkedIn et Facebook convertissent davantage en mandats pour un cabinet d&apos;avocats.
+            </p>
+          </div>
         </div>
       </section>
-
-      {/* ══ Wave : paper → navy ══════════════════════════════ */}
-      <WaveDivider from="#FAFAF7" to="#0F2247" />
 
       {/* ══ Fonctionnalités ══════════════════════════════════ */}
-      <section id="fonctionnalites" className="py-28 px-6" style={{ background: 'var(--navy-900)' }}>
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16 fade-in">
-            <p
-              className="mb-4 uppercase"
-              style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '11px', letterSpacing: '0.16em', color: 'var(--ocre-300)', opacity: 0.7 }}
-            >
-              Ce que vous obtenez
-            </p>
-            <h2
-              className="mb-5"
-              style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.875rem, 3.5vw, 2.75rem)', color: 'var(--white)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
-            >
-              D'un sujet à toute votre semaine éditoriale.
-            </h2>
-            <div className="gold-sep" />
-            <p className="text-base max-w-2xl mx-auto mt-5" style={{ color: 'rgba(232,199,136,0.65)', lineHeight: 1.65 }}>
-              Article SEO, 3 posts LinkedIn et Facebook, FAQ, image et programmation automatique — <strong style={{ color: 'var(--ocre-300)', fontWeight: 600 }}>produits et planifiés en moins de 3 minutes.</strong>
-            </p>
-          </div>
+      <section id="fonctionnalites" style={{ background: ED.ink, padding: '6rem 1.5rem' }}>
+        <div className="max-w-6xl mx-auto">
+          <SectionHeader
+            num="02"
+            label="CE QUE VOUS OBTENEZ"
+            title="D'un sujet à toute votre semaine éditoriale."
+            subtitle="Article SEO, posts, FAQ, image et programmation — produits et planifiés en moins de 3 minutes."
+            dark
+          />
 
-          {/* Bloc input — 3 formats au choix */}
-          <div className="flex justify-center fade-in">
-            <div
-              className="feature-card feature-card-dark w-full max-w-3xl"
-              style={{ background: 'rgba(212,162,76,0.06)', border: '1px solid rgba(212,162,76,0.18)' }}
-            >
-              <p
-                className="mb-5 uppercase text-center"
-                style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.16em', color: 'var(--ocre-300)', opacity: 0.7 }}
-              >
-                Vous fournissez
+          {/* Table éditoriale : VOUS FOURNISSEZ → VOUS OBTENEZ */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_56px_1fr] gap-8 lg:gap-0 mb-16 fade-in fade-in-delay-1">
+            {/* Colonne gauche : inputs */}
+            <div>
+              <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.22em', color: 'rgba(255,255,255,0.28)', marginBottom: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.875rem' }}>
+                VOUS FOURNISSEZ
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {INPUT_FORMATS.map((fmt) => (
-                  <div key={fmt.titre} className="flex items-start gap-3">
-                    <span
-                      className="flex-shrink-0 inline-flex items-center justify-center rounded-md font-mono font-semibold"
-                      style={{ width: '28px', height: '28px', background: 'rgba(212,162,76,0.12)', color: 'var(--ocre-300)', fontSize: '0.75rem', marginTop: '2px', border: '1px solid rgba(212,162,76,0.2)' }}
-                    >
-                      {fmt.icon}
-                    </span>
-                    <div>
-                      <p className="font-semibold mb-1" style={{ color: 'var(--white)', fontSize: '0.9375rem' }}>{fmt.titre}</p>
-                      <p className="text-xs leading-relaxed" style={{ color: 'rgba(232,199,136,0.65)' }}>{fmt.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              {INPUT_FORMATS.map((fmt, i) => (
+                <div
+                  key={fmt.titre}
+                  style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '1.25rem', marginBottom: '1.25rem' }}
+                >
+                  <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.125rem', color: ED.paper, marginBottom: '0.35rem', fontStyle: 'italic', letterSpacing: '-0.01em' }}>
+                    {fmt.titre}
+                  </p>
+                  <p style={{ fontSize: '0.875rem', color: 'rgba(243,239,229,0.48)', lineHeight: 1.65 }}>
+                    {fmt.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Flèche centrale (desktop) */}
+            <div className="hidden lg:flex items-center justify-center" style={{ paddingTop: '2rem' }}>
+              <svg width="32" height="20" viewBox="0 0 32 20" fill="none">
+                <path d="M1 10 H31 M23 3 L31 10 L23 17" stroke={ED.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+
+            {/* Filet de séparation (mobile) */}
+            <div className="lg:hidden" style={{ borderTop: `1px solid rgba(255,255,255,0.12)`, margin: '0.5rem 0' }} />
+
+            {/* Colonne droite : outputs */}
+            <div>
+              <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.22em', color: 'rgba(255,255,255,0.28)', marginBottom: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.875rem' }}>
+                VOUS OBTENEZ
+              </p>
+              {PUBLICATION_ITEMS.map((item) => (
+                <div
+                  key={item.titre}
+                  style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '1.25rem', marginBottom: '1.25rem' }}
+                >
+                  <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.125rem', color: ED.paper, marginBottom: '0.35rem', fontStyle: 'italic', letterSpacing: '-0.01em' }}>
+                    {item.titre}
+                  </p>
+                  <p style={{ fontSize: '0.875rem', color: 'rgba(243,239,229,0.48)', lineHeight: 1.65 }}>
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Connecteur animé input → 5 livrables */}
-          <AnimatedConnector />
-          <div className="flex justify-center sm:hidden my-4">
-            <div style={{ width: '1px', height: '32px', background: 'rgba(255,255,255,0.12)' }} />
-          </div>
-
-          {/* 5 livrables — 3 + 2 centré en desktop */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {PUBLICATION_ITEMS.slice(0, 3).map((item, i) => (
-              <div
-                key={item.titre}
-                className={`feature-card feature-card-dark fade-in fade-in-delay-${i + 1}`}
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
-              >
-                <div className="flex items-start gap-4">
-                  <span
-                    className="flex-shrink-0 inline-flex items-center justify-center rounded-md font-mono"
-                    style={{ width: '28px', height: '28px', background: 'rgba(212,162,76,0.12)', color: 'var(--ocre-300)', fontSize: '0.875rem', marginTop: '2px', border: '1px solid rgba(212,162,76,0.2)' }}
-                  >
-                    {item.icon}
-                  </span>
-                  <div>
-                    <p className="font-semibold mb-2" style={{ color: 'var(--white)', fontSize: '0.9375rem' }}>{item.titre}</p>
-                    <p className="text-sm leading-relaxed" style={{ color: 'rgba(232,199,136,0.65)' }}>{item.desc}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-5 lg:max-w-[66.66%] lg:mx-auto">
-            {PUBLICATION_ITEMS.slice(3).map((item, i) => (
-              <div
-                key={item.titre}
-                className={`feature-card feature-card-dark fade-in fade-in-delay-${i + 1}`}
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
-              >
-                <div className="flex items-start gap-4">
-                  <span
-                    className="flex-shrink-0 inline-flex items-center justify-center rounded-md font-mono"
-                    style={{ width: '28px', height: '28px', background: 'rgba(212,162,76,0.12)', color: 'var(--ocre-300)', fontSize: '0.875rem', marginTop: '2px', border: '1px solid rgba(212,162,76,0.2)' }}
-                  >
-                    {item.icon}
-                  </span>
-                  <div>
-                    <p className="font-semibold mb-2" style={{ color: 'var(--white)', fontSize: '0.9375rem' }}>{item.titre}</p>
-                    <p className="text-sm leading-relaxed" style={{ color: 'rgba(232,199,136,0.65)' }}>{item.desc}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-10 rounded-2xl px-8 py-6 text-center max-w-2xl mx-auto fade-in" style={{ border: '1px solid rgba(212,162,76,0.2)', background: 'rgba(212,162,76,0.06)' }}>
-            <p
-              className="mb-3"
-              style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.375rem', color: 'var(--white)', letterSpacing: '-0.01em', lineHeight: 1.2 }}
-            >
-              Le brouillon, c'est nous. La voix, c'est vous.
+          {/* Aperçu de l'application */}
+          <div className="max-w-4xl mx-auto fade-in fade-in-delay-2">
+            <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.25)', marginBottom: '1.25rem', textAlign: 'center' }}>
+              APERÇU DE L&apos;INTERFACE
             </p>
-            <p className="text-sm leading-relaxed" style={{ color: 'rgba(232,199,136,0.65)' }}>
-              Chaque article, post et FAQ reste entièrement modifiable avant publication. Vous reprenez le ton, ajustez les exemples, imposez vos formulations — pour que chaque contenu porte votre ligne éditoriale, pas une signature IA.
+            <HeroMockup />
+          </div>
+
+          {/* Citation tirée */}
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2.5rem', marginTop: '3rem', textAlign: 'center' }} className="fade-in">
+            <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.375rem, 2.5vw, 2rem)', color: ED.paper, fontStyle: 'italic', letterSpacing: '-0.02em', lineHeight: 1.25 }}>
+              «&thinsp;Le brouillon, c&apos;est nous. La voix, c&apos;est vous.&thinsp;»
+            </p>
+            <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.18em', color: ED.gold, marginTop: '1rem' }}>
+              CHAQUE CONTENU RESTE ENTIÈREMENT MODIFIABLE AVANT PUBLICATION
             </p>
           </div>
         </div>
       </section>
 
-      {/* ══ Wave : navy → paper ══════════════════════════════ */}
-      <WaveDivider from="#0F2247" to="#FAFAF7" convex />
-
-      {/* ══ Feature spotlight 2 — calendrier ════════════════ */}
-      <section className="py-28 px-6" style={{ background: 'var(--paper)' }}>
+      {/* ══ Calendrier éditorial ═════════════════════════════ */}
+      <section style={{ background: ED.paper, padding: '6rem 1.5rem' }}>
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Mockup (cache sur mobile/tablette) */}
-          <div className="hidden lg:block order-2 lg:order-1 fade-in-left fade-in-delay-1">
+          <div className="hidden lg:block fade-in-left fade-in-delay-1">
             <CalendarMockup />
           </div>
-
-          {/* Text */}
-          <div className="order-1 lg:order-2 fade-in-right">
-            <p
-              className="mb-5 uppercase"
-              style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '11px', letterSpacing: '0.16em', color: 'var(--ocre-700)' }}
-            >
-              Publication automatique
-            </p>
-            <h2
-              className="mb-6"
-              style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.875rem, 3vw, 2.625rem)', color: 'var(--ink-900)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
-            >
-              Publiez quand vous voulez
-            </h2>
-            <p className="mb-8 leading-relaxed" style={{ fontSize: '1rem', color: 'var(--ink-500)', lineHeight: 1.7 }}>
-              Immédiatement ou à la date de votre choix via le calendrier éditorial. Vos comptes LinkedIn et Facebook reçoivent votre contenu automatiquement.
-            </p>
-
-            <div className="space-y-3">
+          <div className="fade-in-right">
+            <SectionHeader
+              num="03"
+              label="PUBLICATION AUTOMATIQUE"
+              title="Publiez quand vous voulez."
+              subtitle="Immédiatement ou à la date de votre choix via le calendrier éditorial. Vos comptes LinkedIn et Facebook reçoivent votre contenu automatiquement."
+            />
+            <div style={{ borderTop: `1px solid ${ED.rule}`, paddingTop: '1.75rem' }}>
               {[
-                'Programmation à la date et l\'heure de votre choix',
+                "Programmation à la date et l'heure de votre choix",
                 'Publication automatique sur LinkedIn et Facebook',
                 'Calendrier éditorial visuel pour piloter votre présence',
               ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5" style={{ background: 'var(--success-50)', color: 'var(--success)' }}>✓</span>
-                  <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-600)' }}>{item}</p>
+                <div key={i} style={{ display: 'flex', gap: '1rem', marginBottom: '1.125rem' }}>
+                  <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', color: ED.gold, flexShrink: 0, paddingTop: '0.15rem' }}>0{i + 1}</span>
+                  <p style={{ fontSize: '0.9375rem', color: ED.mid, lineHeight: 1.65 }}>{item}</p>
                 </div>
               ))}
             </div>
@@ -851,170 +597,108 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ══ Pricing ══════════════════════════════════════════ */}
-      <section id="tarifs" className="py-28 px-6" style={{ background: 'var(--white)' }}>
+      {/* ══ Tarifs ═══════════════════════════════════════════ */}
+      <section id="tarifs" style={{ background: ED.cream, padding: '6rem 1.5rem' }}>
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-14 fade-in">
-            <p
-              className="mb-4 uppercase"
-              style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '11px', letterSpacing: '0.16em', color: 'var(--ocre-700)' }}
-            >
-              Tarifs
-            </p>
-            <h2
-              className="mb-2"
-              style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.875rem, 3.5vw, 2.75rem)', color: 'var(--ink-900)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
-            >
-              Des tarifs simples, sans surprise
-            </h2>
-            <p className="text-sm mb-1" style={{ color: 'var(--ink-500)' }}>
-              10 générations d&apos;essai offertes. Aucune carte bancaire requise pour commencer.
-            </p>
-            <p className="text-sm font-semibold" style={{ color: 'var(--ink-700)' }}>
-              Tous les plans sont illimités en générations.
-            </p>
-          </div>
-
+          <SectionHeader
+            num="04"
+            label="TARIFS"
+            title="Des tarifs simples, sans surprise."
+            subtitle="10 générations d'essai offertes. Aucune carte bancaire requise pour commencer. Tous les plans sont illimités en générations."
+          />
           <LandingPricing />
         </div>
       </section>
 
-      {/* ══ Wave : white → navy ══════════════════════════════ */}
-      <WaveDivider from="#FFFFFF" to="#0F2247" />
-
       {/* ══ Rassurance ═══════════════════════════════════════ */}
-      <section className="py-28 px-6" style={{ background: 'var(--navy-900)' }}>
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16 fade-in">
-            <p
-              className="mb-4 uppercase"
-              style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '11px', letterSpacing: '0.16em', color: 'var(--ocre-300)', opacity: 0.7 }}
-            >
-              Pourquoi Lexavo
-            </p>
-            <h2
-              className="mb-5"
-              style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.875rem, 3.5vw, 2.75rem)', color: 'var(--white)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
-            >
-              Conçu pour les cabinets d&apos;avocats
-            </h2>
-            <div className="gold-sep" />
-          </div>
-
+      <section style={{ background: ED.ink, padding: '6rem 1.5rem' }}>
+        <div className="max-w-6xl mx-auto">
+          <SectionHeader
+            num="05"
+            label="POURQUOI LEXAVO"
+            title="Conçu pour les cabinets d'avocats."
+            dark
+          />
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             {RASSURANCE.map((item, i) => (
               <div
                 key={item.titre}
-                className={`feature-card-dark fade-in fade-in-delay-${i + 1} p-7 rounded-2xl`}
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+                className={`fade-in fade-in-delay-${i + 1}`}
+                style={{ borderLeft: `3px solid ${ED.gold}`, paddingLeft: '1.5rem', paddingTop: '0.25rem', paddingBottom: '0.25rem' }}
               >
-                <div
-                  className="w-10 h-10 rounded-xl mb-5 flex items-center justify-center"
-                  style={{ background: 'rgba(212,162,76,0.12)', border: '1px solid rgba(212,162,76,0.2)' }}
-                >
-                  <span style={{ color: 'var(--ocre-300)', fontSize: '1rem' }}>✦</span>
-                </div>
-                <p className="font-semibold mb-3" style={{ color: 'var(--white)', fontSize: '1rem' }}>{item.titre}</p>
-                <p className="text-sm leading-relaxed" style={{ color: 'rgba(232,199,136,0.65)' }}>{item.desc}</p>
+                <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.125rem', color: ED.paper, marginBottom: '0.625rem', letterSpacing: '-0.01em', fontStyle: 'italic' }}>
+                  {item.titre}
+                </p>
+                <p style={{ fontSize: '0.875rem', color: 'rgba(243,239,229,0.55)', lineHeight: 1.75 }}>
+                  {item.desc}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ══ Wave : navy → paper ══════════════════════════════ */}
-      <WaveDivider from="#0F2247" to="#FAFAF7" convex />
-
       {/* ══ FAQ ══════════════════════════════════════════════ */}
-      <section className="py-28 px-6" style={{ background: 'var(--paper)' }}>
+      <section style={{ background: ED.paper, padding: '6rem 1.5rem' }}>
         <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-16 fade-in">
-            <p
-              className="mb-4 uppercase"
-              style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '11px', letterSpacing: '0.16em', color: 'var(--ocre-700)' }}
-            >
-              Questions fréquentes
-            </p>
-            <h2
-              className="mb-0"
-              style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.875rem, 3.5vw, 2.75rem)', color: 'var(--ink-900)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
-            >
-              Vos questions, nos réponses
-            </h2>
-          </div>
-
+          <SectionHeader
+            num="06"
+            label="QUESTIONS FRÉQUENTES"
+            title="Vos questions, nos réponses."
+          />
           <FaqAccordion items={FAQ_LANDING} />
         </div>
       </section>
 
-      {/* ══ Wave : paper → dark navy ═════════════════════════ */}
-      <WaveDivider from="#FAFAF7" to="#060F1F" />
-
       {/* ══ CTA final ════════════════════════════════════════ */}
-      <section
-        className="relative py-32 px-6 overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, #060F1F 0%, #0F2247 50%, #162E5C 100%)' }}
-      >
-        {/* Radial glow derrière le texte */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse 60% 55% at 50% 65%, rgba(212,162,76,0.08) 0%, transparent 70%)' }}
-        />
-        <div className="relative max-w-2xl mx-auto text-center fade-in">
-          <div className="gold-sep mb-10" />
-          <h2
-            className="mb-5"
-            style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(2rem, 4vw, 3.25rem)', color: 'var(--white)', letterSpacing: '-0.02em', lineHeight: 1.1 }}
-          >
+      <section style={{ background: ED.ink, padding: '7rem 1.5rem', position: 'relative', overflow: 'hidden' }}>
+        {/* Lueur subtile */}
+        <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 55% 45% at 50% 60%, rgba(184,135,42,0.07) 0%, transparent 70%)`, pointerEvents: 'none' }} />
+        <div className="relative max-w-3xl mx-auto text-center fade-in">
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2.5rem', marginBottom: '2.5rem' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.2em', color: ED.gold }}>
+              COMMENCER MAINTENANT
+            </span>
+          </div>
+          <h2 style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(2.25rem, 5vw, 4rem)', color: ED.paper, letterSpacing: '-0.03em', lineHeight: 0.97, fontStyle: 'italic', marginBottom: '1.75rem' }}>
             Prêt à publier votre premier contenu ?
           </h2>
-          <p className="mb-10" style={{ fontSize: '1rem', color: 'var(--ocre-300)', lineHeight: 1.65 }}>
+          <p style={{ fontSize: '1rem', color: 'rgba(243,239,229,0.55)', lineHeight: 1.65, marginBottom: '2.5rem' }}>
             10 publications d&apos;essai offertes. Aucune carte bancaire requise.
           </p>
-          <Link
-            href="/login?mode=signup"
-            className="landing-cta-primary"
-            style={{ fontSize: '1.0625rem', padding: '1.0625rem 2.25rem' }}
-          >
+          <Link href="/login?mode=signup" className="ed-cta-primary" style={{ fontSize: '0.875rem', padding: '1.0625rem 2.5rem' }}>
             Commencer l&apos;essai gratuit →
           </Link>
         </div>
       </section>
 
       {/* ══ Footer ═══════════════════════════════════════════ */}
-      <footer className="py-10 px-6" style={{ background: '#060F1F' }}>
+      <footer style={{ background: '#070706', padding: '2.5rem 1.5rem' }}>
         <div
           className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start justify-between gap-10"
           style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '2.5rem' }}
         >
-          <div className="flex flex-col gap-3">
-            {/* Logo */}
-            <div className="flex items-center gap-2">
-              <svg width="17" height="17" viewBox="0 0 17 17" fill="none" style={{ color: 'rgba(255,255,255,0.65)', flexShrink: 0 }}>
-                <rect x="1" y="1" width="15" height="11.5" rx="2.5" stroke="currentColor" strokeWidth="1.2"/>
-                <path d="M3.5 16L6 12.5H1L3.5 16Z" fill="currentColor"/>
-              </svg>
-              <span style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', color: 'var(--white)', letterSpacing: '-0.02em' }}>
-                Lex<em>avo</em><span style={{ color: 'var(--ocre-500)' }}>.</span>
-              </span>
-            </div>
-            {/* Tagline */}
-            <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.25rem, 2vw, 1.5rem)', color: 'var(--white)', lineHeight: 1.2, letterSpacing: '-0.015em' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <span style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', color: ED.paper, letterSpacing: '-0.02em' }}>
+              Lex<em>avo</em><span style={{ color: ED.gold }}>.</span>
+            </span>
+            <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', color: ED.paper, lineHeight: 1.2, letterSpacing: '-0.015em' }}>
               Publiez facilement pour faire entendre<br />
-              <em>votre droit</em><span style={{ color: 'var(--ocre-500)' }}>.</span>
+              <em>votre droit</em><span style={{ color: ED.gold }}>.</span>
             </p>
-            {/* Description */}
-            <p style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.42)', lineHeight: 1.6, maxWidth: '22rem' }}>
+            <p style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.3)', lineHeight: 1.6, maxWidth: '22rem' }}>
               La plateforme de communication digitale conçue pour les cabinets d&apos;avocats français.
             </p>
           </div>
-          <div className="flex flex-wrap justify-center gap-6 text-sm" style={{ color: 'var(--ink-400)' }}>
-            <Link href="/mentions-legales" className="hover:text-white transition-colors">Mentions légales</Link>
-            <Link href="/cgv" className="hover:text-white transition-colors">CGV</Link>
-            <Link href="/politique-confidentialite" className="hover:text-white transition-colors">Confidentialité</Link>
-            <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
+          <div className="flex flex-wrap gap-6" style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.35)' }}>
+            <Link href="/mentions-legales" className="hover:text-white transition-colors" style={{ textDecoration: 'none', color: 'inherit' }}>MENTIONS LÉGALES</Link>
+            <Link href="/cgv" className="hover:text-white transition-colors" style={{ textDecoration: 'none', color: 'inherit' }}>CGV</Link>
+            <Link href="/politique-confidentialite" className="hover:text-white transition-colors" style={{ textDecoration: 'none', color: 'inherit' }}>CONFIDENTIALITÉ</Link>
+            <Link href="/contact" className="hover:text-white transition-colors" style={{ textDecoration: 'none', color: 'inherit' }}>CONTACT</Link>
           </div>
-          <p className="text-xs" style={{ color: 'var(--ink-500)' }}>© 2026 Lexavo · Tous droits réservés</p>
+          <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.12em', color: 'rgba(255,255,255,0.2)' }}>
+            © 2026 LEXAVO
+          </p>
         </div>
       </footer>
     </div>
