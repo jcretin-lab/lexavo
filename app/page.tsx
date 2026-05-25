@@ -324,7 +324,7 @@ export default function HomePage() {
             className="fade-in"
             style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1.75rem', marginBottom: '2.5rem' }}
           >
-            <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.2em', color: ED.gold }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: 'clamp(0.75rem, 1.4vw, 1rem)', letterSpacing: '0.18em', color: ED.gold }}>
               COMMUNICATION JURIDIQUE — POUR AVOCATS FRANÇAIS
             </span>
           </div>
