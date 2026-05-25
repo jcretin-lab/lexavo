@@ -6,6 +6,7 @@ import { FaqAccordion } from '@/components/landing/faq-accordion'
 /* ── Palette éditoriale ───────────────────────────────── */
 const ED = {
   ink:   '#0F0E0C',
+  navy:  '#0F2247',
   paper: '#F3EFE5',
   cream: '#FAF8F3',
   mid:   '#6E6860',
@@ -289,7 +290,7 @@ export default function HomePage() {
       {/* ══ Navigation ═══════════════════════════════════════ */}
       <nav
         className="fixed top-0 left-0 right-0 z-50"
-        style={{ background: ED.ink, borderBottom: '1px solid rgba(255,255,255,0.07)' }}
+        style={{ background: ED.navy, borderBottom: '1px solid rgba(255,255,255,0.07)' }}
       >
         <div className="max-w-6xl mx-auto px-6 h-12 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -326,13 +327,10 @@ export default function HomePage() {
           {/* Filet supérieur + label */}
           <div
             className="fade-in"
-            style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1.75rem', marginBottom: '2.5rem', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}
+            style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1.75rem', marginBottom: '2.5rem' }}
           >
             <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.2em', color: ED.gold }}>
               COMMUNICATION JURIDIQUE — POUR AVOCATS FRANÇAIS
-            </span>
-            <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.2)' }}>
-              N°&thinsp;01
             </span>
           </div>
 
@@ -485,7 +483,7 @@ export default function HomePage() {
       </section>
 
       {/* ══ Fonctionnalités ══════════════════════════════════ */}
-      <section id="fonctionnalites" style={{ background: ED.ink, padding: '6rem 1.5rem' }}>
+      <section id="fonctionnalites" style={{ background: ED.navy, padding: '6rem 1.5rem' }}>
         <div className="max-w-6xl mx-auto">
           <SectionHeader
             num="02"
@@ -517,11 +515,9 @@ export default function HomePage() {
               ))}
             </div>
 
-            {/* Flèche centrale (desktop) */}
-            <div className="hidden lg:flex items-center justify-center" style={{ paddingTop: '2rem' }}>
-              <svg width="32" height="20" viewBox="0 0 32 20" fill="none">
-                <path d="M1 10 H31 M23 3 L31 10 L23 17" stroke={ED.gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+            {/* Séparateur central (desktop) */}
+            <div className="hidden lg:flex items-center justify-center">
+              <div style={{ width: '1px', height: '100%', background: 'rgba(255,255,255,0.08)' }} />
             </div>
 
             {/* Filet de séparation (mobile) */}
@@ -611,7 +607,7 @@ export default function HomePage() {
       </section>
 
       {/* ══ Rassurance ═══════════════════════════════════════ */}
-      <section style={{ background: ED.ink, padding: '6rem 1.5rem' }}>
+      <section style={{ background: ED.navy, padding: '6rem 1.5rem' }}>
         <div className="max-w-6xl mx-auto">
           <SectionHeader
             num="05"
@@ -651,7 +647,7 @@ export default function HomePage() {
       </section>
 
       {/* ══ CTA final ════════════════════════════════════════ */}
-      <section style={{ background: ED.ink, padding: '7rem 1.5rem', position: 'relative', overflow: 'hidden' }}>
+      <section style={{ background: ED.navy, padding: '7rem 1.5rem', position: 'relative', overflow: 'hidden' }}>
         {/* Lueur subtile */}
         <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 55% 45% at 50% 60%, rgba(184,135,42,0.07) 0%, transparent 70%)`, pointerEvents: 'none' }} />
         <div className="relative max-w-3xl mx-auto text-center fade-in">
@@ -673,7 +669,7 @@ export default function HomePage() {
       </section>
 
       {/* ══ Footer ═══════════════════════════════════════════ */}
-      <footer style={{ background: '#070706', padding: '2.5rem 1.5rem' }}>
+      <footer style={{ background: ED.navy, padding: '2.5rem 1.5rem' }}>
         <div
           className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start justify-between gap-10"
           style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '2.5rem' }}
