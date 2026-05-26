@@ -162,6 +162,20 @@ export async function sendPublicationReussie(email: string, nomCabinet?: string)
 }
 
 // ── 7. Résiliation d'abonnement ───────────────────────────────────────────────
+export async function sendNotifResiliation(data: { email: string; nom: string }) {
+  const { email, nom } = data
+  const dateStr = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })
+  const html = layout(`
+    <p style="font-size:16px;font-weight:600;margin-bottom:16px;">Résiliation d'abonnement</p>
+    <table style="font-size:14px;color:#444;border-collapse:collapse;width:100%;">
+      <tr><td style="padding:7px 20px 7px 0;color:#888;white-space:nowrap;">Cabinet</td><td style="font-weight:600;">${nom}</td></tr>
+      <tr><td style="padding:7px 20px 7px 0;color:#888;">Email</td><td><a href="mailto:${email}" style="color:#1A3F7C;">${email}</a></td></tr>
+      <tr><td style="padding:7px 20px 7px 0;color:#888;">Date</td><td>${dateStr}</td></tr>
+    </table>
+  `)
+  return send(ADMIN_EMAIL, `Résiliation Lexavo — ${nom}`, html)
+}
+
 export async function sendResiliation(email: string) {
   const html = layout(`
     <p style="font-size:16px;font-weight:600;margin-bottom:16px;">Votre abonnement a été résilié</p>

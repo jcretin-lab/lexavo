@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
-import { sendConfirmationAbonnement, sendResiliation, sendNotifNouvelAbonnement } from '@/lib/email'
+import { sendConfirmationAbonnement, sendResiliation, sendNotifNouvelAbonnement, sendNotifResiliation } from '@/lib/email'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -103,6 +103,28 @@ export async function POST(request: NextRequest) {
             max_membres: MAX_MEMBRES_PAR_PLAN[effectivePlan] ?? 1,
           })
           .eq('id', cabinetId)
+
+        // Annulation programmée (cancel_at_period_end vient de passer à true)
+        const prev = event.data.previous_attributes as Record<string, unknown> | undefined
+        if (sub.cancel_at_period_end && prev?.cancel_at_period_end === false) {
+          const { data: cabinet } = await supabaseAdmin
+            .from('cabinets')
+            .select('nom, user_id')
+            .eq('id', cabinetId)
+            .single()
+
+          if (cabinet?.user_id) {
+            const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(cabinet.user_id)
+            if (user?.email) {
+              sendResiliation(user.email).catch(err =>
+                console.error('[stripe] Erreur email résiliation cancel_at_period_end :', err)
+              )
+              sendNotifResiliation({ email: user.email, nom: cabinet.nom ?? '(inconnu)' }).catch(err =>
+                console.error('[stripe] Erreur notif admin résiliation :', err)
+              )
+            }
+          }
+        }
       }
       break
     }
@@ -113,10 +135,10 @@ export async function POST(request: NextRequest) {
       const cabinetId = sub.metadata?.cabinet_id
 
       if (cabinetId) {
-        // 1. Récupérer user_id AVANT le downgrade
+        // 1. Récupérer user_id et nom AVANT le downgrade
         const { data: cabinet } = await supabaseAdmin
           .from('cabinets')
-          .select('user_id')
+          .select('user_id, nom')
           .eq('id', cabinetId)
           .single()
 
@@ -126,12 +148,15 @@ export async function POST(request: NextRequest) {
           .update({ plan: 'trial', stripe_subscription_id: null, max_membres: 1 })
           .eq('id', cabinetId)
 
-        // 3. Envoyer l'email de résiliation
+        // 3. Envoyer l'email de résiliation + notif admin
         if (cabinet?.user_id) {
           const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(cabinet.user_id)
           if (user?.email) {
             sendResiliation(user.email).catch(err =>
               console.error('[stripe] Erreur email résiliation :', err)
+            )
+            sendNotifResiliation({ email: user.email, nom: cabinet.nom ?? '(inconnu)' }).catch(err =>
+              console.error('[stripe] Erreur notif admin résiliation :', err)
             )
           }
         }
