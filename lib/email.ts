@@ -59,18 +59,6 @@ export async function sendBienvenue(email: string, nomCabinet?: string) {
   return send(email, salutation, html)
 }
 
-// ── 2. Notification admin — nouvelle inscription (signup) ───────────────────
-export async function sendNotifInscription(email: string) {
-  const html = layout(`
-    <p style="font-size:16px;font-weight:600;margin-bottom:16px;">Nouvelle inscription</p>
-    <table style="font-size:14px;color:#444;border-collapse:collapse;">
-      <tr><td style="padding:6px 16px 6px 0;color:#888;">Email</td><td><a href="mailto:${email}" style="color:#1A3F7C;">${email}</a></td></tr>
-      <tr><td style="padding:6px 16px 6px 0;color:#888;">Date</td><td>${new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}</td></tr>
-    </table>
-  `)
-  return send(ADMIN_EMAIL, `Nouvelle inscription Lexavo — ${email}`, html)
-}
-
 // ── 2b. Notification admin — nouveau client après onboarding ─────────────────
 export async function sendNotifNouveauClient(data: {
   email: string

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { sendNotifInscription } from '@/lib/email'
 import { z } from 'zod'
 
 const supabaseAdmin = createClient(
@@ -39,8 +38,6 @@ export async function POST(request: NextRequest) {
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 400 })
   }
-
-  await sendNotifInscription(email).catch(err => console.error('[signup] Erreur email notif :', err))
 
   return NextResponse.json({ user: data.user })
 }
