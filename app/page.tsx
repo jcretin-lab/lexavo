@@ -358,8 +358,8 @@ export default function HomePage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               {/* Descriptif */}
               <p style={{ fontSize: '1.0625rem', color: 'rgba(243,239,229,0.65)', lineHeight: 1.75, maxWidth: '34rem' }}>
-                À partir d&apos;un sujet ou d&apos;un article déjà écrit, Lexavo génère un article SEO,
-                3&nbsp;posts adaptés à LinkedIn et Facebook, une FAQ et une image en moins d&apos;1&nbsp;minute.
+                Accélérez votre visibilité. Programmez tout votre contenu depuis un seul endroit —
+                article SEO, posts LinkedIn et Facebook, FAQ et image — en moins d&apos;1&nbsp;minute.
                 Conforme à la déontologie du barreau.
               </p>
 
@@ -417,7 +417,7 @@ export default function HomePage() {
             num="01"
             label="DEUX RÉSEAUX, TOUTE VOTRE CLIENTÈLE"
             title="LinkedIn et Facebook : les 2 réseaux les plus prometteurs pour un cabinet"
-            subtitle="Inutile d'être partout. Concentrez vos efforts là où vos futurs clients vous cherchent vraiment."
+            subtitle="Chaque post atteint d'abord vos abonnés, puis l'algorithme l'étend à des inconnus. Et la régularité est récompensée : plus vous publiez, plus votre portée grandit."
           />
 
           {/* Grille éditoriale LinkedIn / Facebook */}
