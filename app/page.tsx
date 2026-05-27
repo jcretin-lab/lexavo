@@ -411,7 +411,7 @@ export default function HomePage() {
       </section>
 
       {/* ══ Positionnement ═══════════════════════════════════ */}
-      <section id="comment" style={{ background: ED.paper, padding: '6rem 1.5rem' }}>
+      <section style={{ background: ED.paper, padding: '6rem 1.5rem' }}>
         <div className="max-w-6xl mx-auto">
           <SectionHeader
             num="01"

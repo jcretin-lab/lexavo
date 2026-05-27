@@ -23,15 +23,14 @@ export function LandingNav() {
 
         <div className="hidden md:flex items-center gap-8" style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(255,255,255,0.85)' }}>
           <Link href="/#fonctionnalites" className="hover:text-white transition-colors" style={{ color: 'inherit', textDecoration: 'none' }}>FONCTIONNALITÉS</Link>
-          <Link href="/#comment" className="hover:text-white transition-colors" style={{ color: 'inherit', textDecoration: 'none' }}>COMMENT</Link>
           <Link href="/#tarifs" className="hover:text-white transition-colors" style={{ color: 'inherit', textDecoration: 'none' }}>TARIFS</Link>
         </div>
 
         <div className="flex items-center gap-4">
-          <Link href="/login" style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }} className="hover:text-white transition-colors">
+          <Link href="/login" style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }} className="hidden sm:inline hover:text-white transition-colors">
             SE CONNECTER
           </Link>
-          <Link href="/login?mode=signup" className="ed-cta-outlined" style={{ padding: '0.5rem 1.25rem', fontSize: '0.75rem' }}>
+          <Link href="/login?mode=signup" className="ed-cta-outlined" style={{ padding: '0.375rem 0.75rem', fontSize: '0.6875rem' }}>
             Essai gratuit
           </Link>
         </div>
