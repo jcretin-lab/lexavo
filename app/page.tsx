@@ -583,6 +583,11 @@ export default function HomePage() {
             title="Des tarifs simples, sans surprise."
             subtitle="10 générations d'essai offertes. Aucune carte bancaire requise pour commencer. Tous les plans sont illimités en générations."
           />
+          <div className="flex justify-center mb-12">
+            <Link href="/login?mode=signup" className="ed-cta-primary">
+              Essai gratuit →
+            </Link>
+          </div>
           <LandingPricing />
         </div>
       </section>
