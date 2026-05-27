@@ -388,24 +388,6 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-
-            {/* Stats visuelles — mobiles uniquement */}
-            <div className="grid grid-cols-3 gap-6 mt-12 lg:hidden fade-in fade-in-delay-3">
-              {[
-                { num: '< 3 min', label: 'PAR GÉNÉRATION' },
-                { num: '5 formats', label: 'LIVRABLES INCLUS' },
-                { num: '100%', label: 'DÉONTOLOGIE CNB' },
-              ].map(({ num, label }) => (
-                <div key={num} style={{ borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: '1rem' }}>
-                  <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.25rem, 4vw, 1.875rem)', color: ED.paper, fontStyle: 'italic', letterSpacing: '-0.025em', lineHeight: 1, marginBottom: '0.5rem' }}>
-                    {num}
-                  </p>
-                  <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '8px', letterSpacing: '0.18em', color: 'rgba(243,239,229,0.35)' }}>
-                    {label}
-                  </p>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
