@@ -79,23 +79,7 @@ export default async function PreviewPage({
                   background: '#fafafa',
                 }}
               >
-                <p style={{ margin: '0 0 12px 0', whiteSpace: 'pre-wrap', lineHeight: 1.65 }}>{post.texte}</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                  {post.hashtags.map((tag, j) => (
-                    <span
-                      key={j}
-                      style={{
-                        fontSize: '12px',
-                        color: '#0A66C2',
-                        background: '#EEF3FF',
-                        padding: '2px 8px',
-                        borderRadius: '4px',
-                      }}
-                    >
-                      #{tag.replace('#', '')}
-                    </span>
-                  ))}
-                </div>
+                <p style={{ margin: 0, whiteSpace: 'pre-wrap', lineHeight: 1.65 }}>{post.texte}</p>
               </div>
             ))}
           </div>

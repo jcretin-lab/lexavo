@@ -9,6 +9,7 @@ import {
   IMAGE_STYLE_ORDER,
 } from '@/types'
 import { sendQuotaAtteint } from '@/lib/email'
+import { buildLinkedinRules, FAQ_STYLE_RULES } from '@/lib/prompts'
 import {
   buildImageSuffix,
   normalizeSceneChoice,
@@ -81,7 +82,7 @@ RÈGLES DÉONTOLOGIQUES ABSOLUES :
 - Interdit : toute comparaison avec d'autres avocats ou cabinets
 - Interdit : toute promesse de résultat ("vous gagnerez", "garanti", "assuré")
 - Interdit : tout démarchage direct ou agressif
-- Interdit : donner un avis juridique personnalisé — toujours rester dans le pédagogique général
+- Interdit : donner un avis juridique personnalisé. Toujours rester dans le pédagogique général
 - Obligatoire : positionner l'avocat comme expert pédagogue de confiance
 - Obligatoire : terminer par un appel à consultation (jamais à l'achat)
 - Ton : professionnel, rassurant, accessible à un non-juriste de niveau bac
@@ -139,72 +140,15 @@ RÈGLES SEO OBLIGATOIRES :
 - <strong> sur les termes juridiques précis (noms de procédures, noms de codes), pas sur des adjectifs
 - Longueur cible : 1200 à 1600 mots (hors balises HTML)
 
-RÈGLES POSTS LINKEDIN :
+${buildLinkedinRules(ton)}
 
-OBJECTIF : générer 3 posts qui, s'ils étaient publiés à 1 semaine d'intervalle dans le fil d'un avocat, ne donneraient JAMAIS une impression de répétition. Variabilité éditoriale = priorité absolue.
-
-CHOIX DES ANGLES (3 angles différents parmi ces 8) :
-- PÉDAGOGIQUE — expliquer une notion juridique d'apparence complexe
-- CAS PRATIQUE — raconter une situation concrète et son issue
-- CONSEIL ACTIONNABLE — un réflexe ou tip immédiatement applicable
-- FAIT MÉCONNU — révéler une règle ou jurisprudence peu connue
-- ALERTE / ERREUR CLASSIQUE — pointer une erreur fréquente et son coût
-- AVANT / APRÈS — montrer le décalage entre perception courante et réalité juridique
-- LES MOTS QUI COMPTENT — décrypter le sens juridique précis d'un terme courant
-- LA QUESTION QU'ON N'OSE PAS POSER — répondre à une interrogation pudique mais courante
-
-Choisir les 3 angles qui collent le mieux au sujet. Ne JAMAIS reprendre 3 fois "Pédagogique / Cas pratique / Conseil" par défaut.
-
-STRUCTURE DE CHAQUE POST :
-- 2 à 4 BLOCS, séparés par un saut de ligne — le nombre est libre, ajusté à l'angle et au sujet
-- Chaque bloc est introduit par un SOUS-TITRE COURT (3 à 5 mots), suivi d'un saut de ligne, puis du contenu
-- Les blocs forment une mini-narration cohérente (situation → mécanisme → action, ou révélation → conséquence)
-
-RÈGLES CRITIQUES SUR LES SOUS-TITRES :
-
-INTERDIT — sous-titres génériques recyclables :
-"Le concept", "Le contexte", "Ce qu'il faut savoir", "Pour conclure", "Ce qui change pour vous", "Le piège fréquent", "L'essentiel", "Les enjeux", "Ce que dit le droit", "La situation", "Avant d'agir", "Quand consulter", "Le bon réflexe", "Ce qu'il faut retenir".
-
-OBLIGATOIRE — sous-titres taillés sur mesure :
-- Chaque sous-titre contient un mot précis du domaine juridique traité OU une image concrète liée au sujet
-- Un sous-titre ne doit JAMAIS être réutilisable tel quel sur un autre sujet juridique
-- Les 9 sous-titres (ou plus) des 3 posts d'une même génération sont tous différents
-
-EXEMPLES de sous-titres bien construits (pour calibrage de style, ne pas recopier) :
-
-Sujet « Licenciement pour faute grave » :
-  "Faute grave, faute lourde" / "Le bureau vidé en 48 h" / "Ce qui sauve les indemnités"
-  "Un SMS au mauvais moment" / "Conseil de prud'hommes saisi" / "Pourquoi il a gagné en appel"
-
-Sujet « Droit de rétractation » :
-  "Quatorze jours, deux exceptions" / "Le bouton qu'on ne voit pas" / "Une LRAR vaut mieux"
-  "Le piège du sur-mesure" / "Pas de retour sur commande personnalisée" / "Trois réflexes avant de cliquer"
-
-Sujet « Rupture brutale relations commerciales » :
-  "Dix ans de partenariat" / "Un email, trois lignes" / "Le préavis selon les juges"
-
-RÈGLES FORMELLES — s'appliquent aux 3 posts :
-
-- Première ligne = ACCROCHE tirée OBLIGATOIREMENT d'un de ces 4 leviers, jamais une formule générique :
-  (a) un chiffre, un délai ou un seuil légal extrait du sujet
-  (b) une énumération sèche de 2 à 3 mots séparés par un point (ex : "Bail. Loyer. Préavis.")
-  (c) une question fermée provocante en 8 mots maximum
-  (d) un fait juridique méconnu, introduit sans préambule
-  Les 3 posts doivent utiliser 3 leviers d'accroche différents parmi (a, b, c, d).
-- Citer au moins UN élément précis tiré du sujet, en PRIVILÉGIANT les références stables et faciles à vérifier : un délai légal chiffré (en jours, mois, années), un seuil chiffré (en euros, en effectif), un nom de procédure (référé, injonction de payer, médiation préalable…), un nom de juridiction compétente (Conseil de prud'hommes, Tribunal judiciaire, Cour d'appel…). ÉVITER les numéros d'articles de code numérotés (du type "L. 1234-9") sauf pour les rares références majeures structurantes connues du grand public. En cas de doute, paraphrase : "selon le Code de la consommation", "le droit du travail prévoit que…". Ne jamais inventer une référence.
-- Au sein d'un même bloc, les phrases s'enchaînent naturellement sans saut de ligne. Un seul saut de ligne entre les blocs. Voix active. Phrases courtes.
-- Aucun emoji, aucun symbole décoratif. Aucun caractère en tête de sous-titre : le sous-titre commence directement par le texte, sans tiret ni puce.
-- Aucune formule auto-promotionnelle, aucune comparaison avec d'autres avocats.
-- Appel à consultation en clôture du post, formulé DIFFÉREMMENT dans chaque post (ne jamais réutiliser une formule sur 2 posts d'une même génération).
-- Longueur : 180 à 280 mots par post, ajustée au nombre de blocs (2 blocs ≈ 180-220 mots, 3 blocs ≈ 220-260, 4 blocs ≈ 260-300). Hors hashtags.
-- 3 hashtags juridiques pertinents en fin de post, jamais plus, sur une ligne séparée.
+${FAQ_STYLE_RULES}
 
 CONTEXTE DU CABINET :
 - Nom : ${cabinet.nom}
 - Spécialité : ${specialite}
 - Ville : ${cabinet.ville}
-- Thème : ${theme}
-- Ton souhaité : ${ton}`
+- Thème : ${theme}`
 
   // Prompt 1 — petit appel Claude qui ne génère QUE le prompt d'image conceptuelle.
   // Lancé en parallèle du gros appel pour démarrer la génération d'image au plus tôt.
@@ -283,7 +227,7 @@ Champs supplémentaires :
   "article_blog": {
     "titre": "string (60-70 caractères, contient le mot-clé principal)",
     "meta_description": "string (150-160 caractères, contient le mot-clé, incite au clic)",
-    "contenu": "string HTML (900-1200 mots : <h1>, <h2>, <h3>, <p>, <ul>, <strong>, <a href=\\"#consultation\\">)",
+    "contenu": "string HTML (1200-1600 mots : <h1>, <h2>, <h3>, <p>, <ul>, <strong>, <a href=\\"#consultation\\">)",
     "mots_cles": ["mot-clé principal", "secondaire 1", "secondaire 2", "secondaire 3"],
     "slug": "url-optimisee-exemple-droit-travail-avocat-paris",
     "alt_image": "string (texte alt descriptif pour l'image)",
@@ -291,11 +235,10 @@ Champs supplémentaires :
   },
   "posts_linkedin": [
     {
-      "texte": "string (180-300 mots, 2 à 4 blocs avec sous-titres SUR MESURE, accroche tirée d'un des 4 leviers, angle parmi les 8 proposés, sauts de ligne entre blocs)",
-      "hashtags": ["string", "string", "string"]
+      "texte": "string (accroche 8-12 mots + ligne vide + 2 à 3 blocs avec sous-titres SUR MESURE, 180-220 mots hors accroche, angle parmi les 8 proposés, sauts de ligne entre blocs)"
     },
-    { "texte": "string", "hashtags": ["string", "string", "string"] },
-    { "texte": "string", "hashtags": ["string", "string", "string"] }
+    { "texte": "string" },
+    { "texte": "string" }
   ],
   "faq": [
     { "question": "string", "reponse": "string (2-3 phrases)" },

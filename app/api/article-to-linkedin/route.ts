@@ -3,6 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import OpenAI from 'openai'
 import { createClient } from '@/lib/supabase/server'
 import { type ImageStyle, type ImagesByStyle, IMAGE_STYLE_ORDER } from '@/types'
+import { buildLinkedinRules, FAQ_STYLE_RULES } from '@/lib/prompts'
 import {
   buildImageSuffix,
   normalizeSceneChoice,
@@ -69,70 +70,13 @@ RÈGLES DÉONTOLOGIQUES :
 - Obligatoire : appel à consultation en fin de post
 - Ton : professionnel et accessible
 
-RÈGLES TEMPORELLES :
-- Ne jamais mentionner une année pour désigner "aujourd'hui" ou "actuellement" — utiliser "actuellement", "en vigueur", "à ce jour"
-- Les années sont autorisées uniquement pour référencer un texte précis (ex : "la loi du 14 juin 2013") ou une date historique identifiable
+RÈGLES TEMPORELLES ABSOLUES :
+- Ne jamais mentionner une année (2024, 2025, 2026...) pour désigner "aujourd'hui" ou "actuellement". Utiliser des formulations intemporelles : "actuellement", "en vigueur", "depuis la loi de...", "à ce jour"
+- Les années sont autorisées uniquement pour référencer un texte précis (ex : "la loi du 14 juin 2013", "le décret de 2008") ou une date historique identifiable
+- Exemples interdits : "en 2024, la réglementation...", "depuis 2025...", "en cette année..."
+- Exemples autorisés : "la loi Macron de 2015 prévoit...", "depuis la réforme des retraites de 2023..."
 
-RÈGLES POSTS LINKEDIN :
-
-OBJECTIF : générer 3 posts qui, s'ils étaient publiés à 1 semaine d'intervalle dans le fil d'un avocat, ne donneraient JAMAIS une impression de répétition. Variabilité éditoriale = priorité absolue.
-
-CHOIX DES ANGLES (3 angles différents parmi ces 8) :
-- PÉDAGOGIQUE — expliquer une notion juridique d'apparence complexe
-- CAS PRATIQUE — raconter une situation concrète et son issue
-- CONSEIL ACTIONNABLE — un réflexe ou tip immédiatement applicable
-- FAIT MÉCONNU — révéler une règle ou jurisprudence peu connue
-- ALERTE / ERREUR CLASSIQUE — pointer une erreur fréquente et son coût
-- AVANT / APRÈS — montrer le décalage entre perception courante et réalité juridique
-- LES MOTS QUI COMPTENT — décrypter le sens juridique précis d'un terme courant
-- LA QUESTION QU'ON N'OSE PAS POSER — répondre à une interrogation pudique mais courante
-
-Choisir les 3 angles qui collent le mieux au sujet. Ne JAMAIS reprendre 3 fois "Pédagogique / Cas pratique / Conseil" par défaut.
-
-STRUCTURE DE CHAQUE POST :
-- 2 à 4 BLOCS, séparés par un saut de ligne — le nombre est libre, ajusté à l'angle et au sujet
-- Chaque bloc est introduit par un SOUS-TITRE COURT (3 à 5 mots), suivi d'un saut de ligne, puis du contenu
-- Les blocs forment une mini-narration cohérente (ex : situation → mécanisme → action, ou révélation → conséquence)
-
-RÈGLES CRITIQUES SUR LES SOUS-TITRES :
-
-INTERDIT — sous-titres génériques recyclables :
-"Le concept", "Le contexte", "Ce qu'il faut savoir", "Pour conclure", "Ce qui change pour vous", "Le piège fréquent", "L'essentiel", "Les enjeux", "Ce que dit le droit", "La situation", "Avant d'agir", "Quand consulter", "Le bon réflexe", "Ce qu'il faut retenir".
-
-OBLIGATOIRE — sous-titres taillés sur mesure :
-- Chaque sous-titre contient un mot précis du domaine juridique traité OU une image concrète liée au sujet
-- Un sous-titre ne doit JAMAIS être réutilisable tel quel sur un autre sujet juridique
-- Les 9 sous-titres des 3 posts d'une même génération sont tous différents
-
-EXEMPLES de sous-titres bien construits (pour calibrage de style, ne pas recopier) :
-
-Sujet « Licenciement pour faute grave » :
-  Post pédagogique : "Faute grave, faute lourde" / "Le bureau vidé en 48 h" / "Ce qui sauve les indemnités"
-  Post cas pratique : "Un SMS au mauvais moment" / "Conseil de prud'hommes saisi" / "Pourquoi il a gagné en appel"
-
-Sujet « Droit de rétractation » :
-  Post fait méconnu : "Quatorze jours, deux exceptions" / "Le bouton qu'on ne voit pas" / "Une LRAR vaut mieux"
-  Post alerte : "Le piège du sur-mesure" / "Pas de retour sur commande personnalisée" / "Trois réflexes avant de cliquer"
-
-Sujet « Rupture brutale relations commerciales » :
-  Post avant/après : "Dix ans de partenariat" / "Un email, trois lignes" / "Le préavis selon les juges"
-
-RÈGLES FORMELLES — s'appliquent aux 3 posts :
-
-- Ton souhaité : ${ton}
-- Première ligne = ACCROCHE tirée OBLIGATOIREMENT d'un de ces 4 leviers, jamais une formule générique :
-  (a) un chiffre, un délai ou un seuil légal extrait du sujet
-  (b) une énumération sèche de 2 à 3 mots séparés par un point (ex : "Bail. Loyer. Préavis.")
-  (c) une question fermée provocante en 8 mots maximum
-  (d) un fait juridique méconnu, introduit sans préambule
-  Les 3 posts doivent utiliser 3 leviers d'accroche différents parmi (a, b, c, d).
-- Citer au moins UN élément précis tiré du sujet, en PRIVILÉGIANT les références stables et faciles à vérifier : un délai légal chiffré (en jours, mois, années), un seuil chiffré (en euros, en effectif), un nom de procédure (référé, injonction de payer, médiation préalable…), un nom de juridiction compétente (Conseil de prud'hommes, Tribunal judiciaire, Cour d'appel…). ÉVITER les numéros d'articles de code numérotés (du type "L. 1234-9") sauf pour les rares références majeures structurantes connues du grand public (articles fondateurs du Code civil par exemple). En cas de doute sur un numéro précis, paraphrase plutôt : "selon le Code de la consommation", "selon les textes applicables au démarchage", "le droit du travail prévoit que…". Ne jamais inventer une référence.
-- Au sein d'un même bloc, les phrases s'enchaînent naturellement sans saut de ligne. Un seul saut de ligne entre les blocs. Voix active. Phrases courtes.
-- Aucun emoji, aucun symbole décoratif (✅, 👇, ▸, →). Aucun caractère en tête de sous-titre : le sous-titre commence directement par le texte, sans tiret ni puce.
-- Aucune formule auto-promotionnelle ("nous sommes les premiers à…", "je l'avais prévu…", "le meilleur cabinet…"). Aucune comparaison avec d'autres avocats.
-- Appel à consultation en clôture du post, formulé DIFFÉREMMENT dans chaque post (ne jamais réutiliser une formule sur 2 posts d'une même génération).
-- Longueur : 180 à 280 mots par post, ajustée au nombre de blocs (2 blocs ≈ 180-220 mots, 3 blocs ≈ 220-260, 4 blocs ≈ 260-300). Hors hashtags.
-- 3 hashtags juridiques pertinents en fin de post, jamais plus, sur une ligne séparée.
+${buildLinkedinRules(ton)}
 
 Génère aussi les MÉTADONNÉES pour publier l'article importé sur un blog d'avocat :
 - titre : 60 à 70 caractères, clair et SEO, contient le mot-clé principal du sujet de l'article
@@ -141,7 +85,9 @@ Génère aussi les MÉTADONNÉES pour publier l'article importé sur un blog d'a
 - alt_image : 50 à 100 caractères, descriptif visuel sans bourrage de mot-clé
 Tu ne dois PAS réécrire ni résumer le corps de l'article : son contenu sera repris tel quel à partir du texte fourni.
 
-Génère aussi 5 questions/réponses de FAQ juridique tirées de l'article (questions concrètes que se pose un justiciable, réponses pédagogiques de 2-3 phrases conformes à la déontologie, sans avis juridique personnalisé).
+Génère aussi 5 questions/réponses de FAQ juridique tirées de l'article.
+
+${FAQ_STYLE_RULES}
 
 Génère aussi 1 prompt en anglais pour une image professionnelle (qualité magazine éditorial juridique type Le Monde, Les Échos, Forbes France).
 
@@ -176,9 +122,9 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
     "alt_image": "string (50-100 caractères)"
   },
   "posts_linkedin": [
-    { "angle": "pedagogique", "texte": "string", "hashtags": ["string"] },
-    { "angle": "cas_pratique", "texte": "string", "hashtags": ["string"] },
-    { "angle": "conseil", "texte": "string", "hashtags": ["string"] }
+    { "angle": "string (un des 8 angles proposés)", "texte": "string" },
+    { "angle": "string (un des 8 angles proposés)", "texte": "string" },
+    { "angle": "string (un des 8 angles proposés)", "texte": "string" }
   ],
   "faq": [
     { "question": "string", "reponse": "string (2-3 phrases)" },
@@ -206,7 +152,7 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
       mots_cles?: string[]
       alt_image?: string
     }
-    posts_linkedin: Array<{ angle: string; texte: string; hashtags: string[] }>
+    posts_linkedin: Array<{ angle: string; texte: string; hashtags?: string[] }>
     faq?: Array<{ question?: string; reponse?: string }>
     prompts_images: Array<{
       style?: string
@@ -361,7 +307,7 @@ Génère UNIQUEMENT un JSON valide, sans markdown, sans texte avant ou après :
     const images: ImagesByStyle = { conceptuelle }
     const defaultImageUrl = conceptuelle ?? null
 
-    const postsLinkedin = result.posts_linkedin.map(({ texte, hashtags }) => ({ texte, hashtags }))
+    const postsLinkedin = result.posts_linkedin.map(({ texte }) => ({ texte, hashtags: [] as string[] }))
     const faq = Array.isArray(result.faq)
       ? result.faq
           .filter((item): item is { question: string; reponse: string } =>
