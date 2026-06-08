@@ -76,7 +76,7 @@ export function RainingLettersBg() {
         backgroundImage: 'url(/hero-bg.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center 30%',
-        opacity: 0.25,
+        opacity: 0.10,
       }} />
       {/* Dégradé de lisibilité */}
       <div style={{
