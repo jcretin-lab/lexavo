@@ -375,7 +375,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-0 sm:divide-x sm:divide-white/10">
             {[
               { stat: '1 %', label: 'des avocats publient régulièrement sur LinkedIn' },
-              { stat: '45 %', label: 'des décideurs B2B contactent un expert après son contenu' },
+              { stat: '45 %', label: 'des décideurs B2B contactent un expert grâce à son contenu' },
               { stat: '5×', label: 'plus de visites de profil pour les créateurs actifs' },
             ].map(({ stat, label }) => (
               <div key={stat} className="flex flex-col items-center text-center sm:px-8 gap-1">
