@@ -5,6 +5,7 @@ import { FaqAccordion } from '@/components/landing/faq-accordion'
 import { LandingNav } from '@/components/landing/landing-nav'
 import { LandingFooter } from '@/components/landing/landing-footer'
 import { RainingLettersBg } from '@/components/landing/raining-letters-bg'
+import { LandingOutputTabs } from '@/components/landing/landing-output-tabs'
 
 /* ── Palette éditoriale ───────────────────────────────── */
 const ED = {
@@ -446,56 +447,7 @@ export default function HomePage() {
             dark
           />
 
-          {/* Table éditoriale : VOUS FOURNISSEZ → VOUS OBTENEZ */}
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_56px_1fr] gap-8 lg:gap-0 mb-16 fade-in fade-in-delay-1">
-            {/* Colonne gauche : inputs */}
-            <div>
-              <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.22em', color: 'rgba(255,255,255,0.28)', marginBottom: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.875rem' }}>
-                VOUS FOURNISSEZ
-              </p>
-              {INPUT_FORMATS.map((fmt, i) => (
-                <div
-                  key={fmt.titre}
-                  style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '1.25rem', marginBottom: '1.25rem' }}
-                >
-                  <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.125rem', color: ED.paper, marginBottom: '0.35rem', fontStyle: 'italic', letterSpacing: '-0.01em' }}>
-                    {fmt.titre}
-                  </p>
-                  <p style={{ fontSize: '0.875rem', color: 'rgba(243,239,229,0.48)', lineHeight: 1.65 }}>
-                    {fmt.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* Séparateur central (desktop) */}
-            <div className="hidden lg:flex items-center justify-center">
-              <div style={{ width: '1px', height: '100%', background: 'rgba(255,255,255,0.08)' }} />
-            </div>
-
-            {/* Filet de séparation (mobile) */}
-            <div className="lg:hidden" style={{ borderTop: `1px solid rgba(255,255,255,0.12)`, margin: '0.5rem 0' }} />
-
-            {/* Colonne droite : outputs */}
-            <div>
-              <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.22em', color: 'rgba(255,255,255,0.28)', marginBottom: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.875rem' }}>
-                VOUS OBTENEZ
-              </p>
-              {PUBLICATION_ITEMS.map((item) => (
-                <div
-                  key={item.titre}
-                  style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '1.25rem', marginBottom: '1.25rem' }}
-                >
-                  <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.125rem', color: ED.paper, marginBottom: '0.35rem', fontStyle: 'italic', letterSpacing: '-0.01em' }}>
-                    {item.titre}
-                  </p>
-                  <p style={{ fontSize: '0.875rem', color: 'rgba(243,239,229,0.48)', lineHeight: 1.65 }}>
-                    {item.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
+          <LandingOutputTabs />
 
           {/* Aperçu de l'application */}
           <div className="max-w-4xl mx-auto fade-in fade-in-delay-2">
