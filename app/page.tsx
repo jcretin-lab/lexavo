@@ -5,7 +5,6 @@ import { FaqAccordion } from '@/components/landing/faq-accordion'
 import { LandingNav } from '@/components/landing/landing-nav'
 import { LandingFooter } from '@/components/landing/landing-footer'
 import { RainingLettersBg } from '@/components/landing/raining-letters-bg'
-import { ScrambledHeroTitle } from '@/components/landing/scrambled-hero-title'
 
 /* ── Palette éditoriale ───────────────────────────────── */
 const ED = {
@@ -307,7 +306,7 @@ export default function HomePage() {
           </div>
 
           {/* Titre principal */}
-          <ScrambledHeroTitle
+          <h1
             className="fade-in fade-in-delay-1"
             style={{
               fontFamily: 'var(--font-instrument-serif)',
@@ -319,7 +318,13 @@ export default function HomePage() {
               marginBottom: '2.5rem',
               maxWidth: '22ch',
             }}
-          />
+          >
+            Une présence régulière sur{' '}
+            <span style={{ color: '#4A88D8' }}>LinkedIn</span>
+            {' '}et{' '}
+            <span style={{ color: '#5E9EF5' }}>Facebook</span>
+            ,{' '}sans y consacrer du temps.
+          </h1>
 
           {/* Filet de séparation */}
           <div
