@@ -449,18 +449,6 @@ export default function HomePage() {
 
           <LandingOutputTabs />
 
-          {/* Aperçu de l'application */}
-          <div className="max-w-4xl mx-auto fade-in fade-in-delay-2">
-            <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.25)', marginBottom: '1.25rem', textAlign: 'center' }}>
-              APERÇU DE L&apos;INTERFACE
-            </p>
-            <div className="mockup-mobile-wrapper">
-              <div className="mockup-mobile-inner">
-                <HeroMockup />
-              </div>
-            </div>
-          </div>
-
           {/* Citation tirée */}
           <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2.5rem', marginTop: '3rem', textAlign: 'center' }} className="fade-in">
             <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.375rem, 2.5vw, 2rem)', color: ED.paper, fontStyle: 'italic', letterSpacing: '-0.02em', lineHeight: 1.25 }}>
