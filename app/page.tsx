@@ -321,7 +321,7 @@ export default function HomePage() {
             }}
           >
             Une présence régulière sur{' '}
-            <span style={{ color: '#4A88D8' }}>LinkedIn</span>
+            <span style={{ color: '#0A66C2' }}>LinkedIn</span>
             {' '}et{' '}
             <span style={{ color: '#5E9EF5' }}>Facebook</span>
             ,{' '}sans y consacrer du temps.
