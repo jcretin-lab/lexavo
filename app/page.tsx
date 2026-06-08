@@ -4,6 +4,7 @@ import { ScrollAnimationInit } from '@/components/landing/scroll-animation'
 import { FaqAccordion } from '@/components/landing/faq-accordion'
 import { LandingNav } from '@/components/landing/landing-nav'
 import { LandingFooter } from '@/components/landing/landing-footer'
+import { RainingLettersBg } from '@/components/landing/raining-letters-bg'
 
 /* ── Palette éditoriale ───────────────────────────────── */
 const ED = {
@@ -280,31 +281,6 @@ function CalendarMockup() {
   )
 }
 
-/* ── Fond photo hero ─────────────────────────────────── */
-function HeroBackground() {
-  return (
-    <div aria-hidden style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-      {/* Photo — placer dans public/hero-bg.jpg */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        backgroundImage: 'url(/hero-bg.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center 30%',
-        opacity: 0.55,
-      }} />
-      {/* Dégradé — lisibilité texte + teinte éditoriale */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: [
-          'linear-gradient(to right, rgba(15,14,12,0.68) 0%, rgba(15,14,12,0.35) 55%, rgba(15,14,12,0.52) 100%)',
-          'linear-gradient(to bottom, rgba(15,14,12,0.30) 0%, rgba(15,14,12,0.08) 45%, rgba(15,14,12,0.45) 100%)',
-        ].join(', '),
-      }} />
-    </div>
-  )
-}
 
 /* ── Page ────────────────────────────────────────────── */
 export default function HomePage() {
@@ -316,7 +292,7 @@ export default function HomePage() {
 
       {/* ══ Hero ═════════════════════════════════════════════ */}
       <section style={{ background: ED.ink, paddingTop: '5rem', overflow: 'hidden', position: 'relative' }}>
-        <HeroBackground />
+        <RainingLettersBg />
         <div className="max-w-6xl mx-auto px-6" style={{ paddingTop: '3rem', paddingBottom: '5rem', position: 'relative', zIndex: 1 }}>
 
           {/* Filet supérieur + label */}
