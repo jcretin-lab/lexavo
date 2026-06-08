@@ -76,15 +76,15 @@ export function RainingLettersBg() {
         backgroundImage: 'url(/hero-bg.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center 30%',
-        opacity: 0.65,
+        opacity: 0.85,
       }} />
       {/* Dégradé de lisibilité */}
       <div style={{
         position: 'absolute',
         inset: 0,
         background: [
-          'linear-gradient(to right, rgba(15,14,12,0.72) 0%, rgba(15,14,12,0.38) 55%, rgba(15,14,12,0.55) 100%)',
-          'linear-gradient(to bottom, rgba(15,14,12,0.32) 0%, rgba(15,14,12,0.10) 45%, rgba(15,14,12,0.48) 100%)',
+          'linear-gradient(to right, rgba(15,14,12,0.45) 0%, rgba(15,14,12,0.18) 55%, rgba(15,14,12,0.30) 100%)',
+          'linear-gradient(to bottom, rgba(15,14,12,0.18) 0%, rgba(15,14,12,0.05) 45%, rgba(15,14,12,0.28) 100%)',
         ].join(', '),
       }} />
       {characters.map((char, index) => (
