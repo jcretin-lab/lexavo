@@ -220,15 +220,20 @@ export function LandingOutputTabs() {
         <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.22em', color: 'rgba(255,255,255,0.28)', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.75rem' }}>
           VOUS FOURNISSEZ
         </p>
-        <div className="flex flex-wrap gap-3">
-          {INPUTS.map((inp) => (
-            <div key={inp.label} className="flex items-center gap-2.5 rounded-xl px-4 py-2.5" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: ED.gold }} />
-              <div>
-                <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '0.9375rem', color: ED.paper, fontStyle: 'italic' }}>{inp.label}</p>
-                <p style={{ fontSize: '0.75rem', color: 'rgba(243,239,229,0.38)', lineHeight: 1.4 }}>{inp.desc}</p>
+        <div className="flex flex-wrap items-center gap-3">
+          {INPUTS.map((inp, i) => (
+            <>
+              <div key={inp.label} className="flex items-center gap-2.5 rounded-xl px-4 py-2.5" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: ED.gold }} />
+                <div>
+                  <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '0.9375rem', color: ED.paper, fontStyle: 'italic' }}>{inp.label}</p>
+                  <p style={{ fontSize: '0.75rem', color: 'rgba(243,239,229,0.38)', lineHeight: 1.4 }}>{inp.desc}</p>
+                </div>
               </div>
-            </div>
+              {i < INPUTS.length - 1 && (
+                <span key={`or-${i}`} style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.15em', color: 'rgba(243,239,229,0.28)' }}>OU</span>
+              )}
+            </>
           ))}
         </div>
       </div>
