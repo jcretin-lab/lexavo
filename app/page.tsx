@@ -369,6 +369,28 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ══ Bande de preuves ════════════════════════════════ */}
+      <section style={{ background: ED.navy, borderTop: `1px solid rgba(255,255,255,0.06)`, borderBottom: `1px solid rgba(255,255,255,0.06)` }}>
+        <div className="max-w-6xl mx-auto px-6 py-7">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-0 sm:divide-x sm:divide-white/10">
+            {[
+              { stat: '1 %', label: 'des avocats publient régulièrement sur LinkedIn' },
+              { stat: '45 %', label: 'des décideurs B2B contactent un expert après son contenu' },
+              { stat: '5×', label: 'plus de visites de profil pour les créateurs actifs' },
+            ].map(({ stat, label }) => (
+              <div key={stat} className="flex flex-col items-center text-center sm:px-8 gap-1">
+                <span style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(2rem, 3.5vw, 2.75rem)', color: ED.gold, fontStyle: 'italic', lineHeight: 1 }}>
+                  {stat}
+                </span>
+                <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.1em', color: 'rgba(243,239,229,0.45)', lineHeight: 1.5, maxWidth: '18ch' }}>
+                  {label.toUpperCase()}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ══ Positionnement ═══════════════════════════════════ */}
       <section style={{ background: ED.paper, padding: '6rem 1.5rem' }}>
         <div className="max-w-6xl mx-auto">
