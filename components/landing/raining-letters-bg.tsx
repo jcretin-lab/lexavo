@@ -69,6 +69,24 @@ export function RainingLettersBg() {
 
   return (
     <div aria-hidden style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+      {/* Photo de fond */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        backgroundImage: 'url(/hero-bg.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center 30%',
+        opacity: 0.45,
+      }} />
+      {/* Dégradé de lisibilité */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: [
+          'linear-gradient(to right, rgba(15,14,12,0.72) 0%, rgba(15,14,12,0.38) 55%, rgba(15,14,12,0.55) 100%)',
+          'linear-gradient(to bottom, rgba(15,14,12,0.32) 0%, rgba(15,14,12,0.10) 45%, rgba(15,14,12,0.48) 100%)',
+        ].join(', '),
+      }} />
       {characters.map((char, index) => (
         <span
           key={index}
