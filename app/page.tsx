@@ -336,7 +336,7 @@ export default function HomePage() {
               {/* Descriptif */}
               <p style={{ fontSize: '1.0625rem', color: 'rgba(243,239,229,0.65)', lineHeight: 1.75, maxWidth: '34rem' }}>
                 Accélérez votre visibilité. Programmez tout votre contenu depuis un seul endroit —
-                article SEO, posts LinkedIn et Facebook, FAQ et image — en moins d&apos;1&nbsp;minute.
+                article SEO, posts LinkedIn et Facebook, FAQ et image — en 3&nbsp;minutes.
                 Conforme à la déontologie du barreau.
               </p>
 
@@ -365,6 +365,11 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Mockup produit */}
+          <div className="mt-16 fade-in fade-in-delay-2">
+            <HeroMockup />
           </div>
         </div>
       </section>
@@ -465,7 +470,7 @@ export default function HomePage() {
             num="02"
             label="CE QUE VOUS OBTENEZ"
             title="D'un sujet à toute votre semaine éditoriale."
-            subtitle="Article SEO, posts, FAQ, image et programmation — produits et planifiés en moins d&apos;1 minute."
+            subtitle="Article SEO, posts, FAQ, image et programmation — produits et planifiés en 3 minutes."
             dark
           />
 
@@ -584,7 +589,7 @@ export default function HomePage() {
             Prêt à publier votre premier contenu ?
           </h2>
           <p style={{ fontSize: '1rem', color: 'rgba(243,239,229,0.55)', lineHeight: 1.65, marginBottom: '2.5rem' }}>
-            10 publications d&apos;essai offertes. Aucune carte bancaire requise.
+            10 générations d&apos;essai offertes. Aucune carte bancaire requise.
           </p>
           <Link href="/login?mode=signup" className="ed-cta-primary" style={{ fontSize: '0.875rem', padding: '1.0625rem 2.5rem' }}>
             Commencer l&apos;essai gratuit →
