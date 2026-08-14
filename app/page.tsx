@@ -368,7 +368,7 @@ export default function HomePage() {
           </div>
 
           {/* Mockup produit */}
-          <div className="mt-16 fade-in fade-in-delay-2">
+          <div className="hidden lg:block mt-16 fade-in fade-in-delay-2">
             <HeroMockup />
           </div>
         </div>
