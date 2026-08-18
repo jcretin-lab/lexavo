@@ -171,12 +171,12 @@ export default function HomePage() {
           </div>
 
           <p className="fade-in fade-in-delay-2 text-center" style={{ fontSize: '0.9375rem', color: 'rgba(243,239,229,0.5)', marginTop: '2.5rem' }}>
-            Publication immédiate ou programmée, automatique sur LinkedIn et Facebook.
+            Publication immédiate ou programmée, toujours modifiable, automatique sur LinkedIn et Facebook.
           </p>
 
           <div className="fade-in fade-in-delay-2" style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2.5rem', marginTop: '3rem', textAlign: 'center' }}>
             <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.375rem, 2.5vw, 2rem)', color: ED.paper, fontStyle: 'italic', letterSpacing: '-0.02em', lineHeight: 1.25 }}>
-              «&thinsp;Le brouillon, c&apos;est nous. La voix, c&apos;est vous.&thinsp;»
+              «&thinsp;Un mois de posts, préparé en une fois. LinkedIn pour vos clients pros, Facebook pour vos particuliers.&thinsp;»
             </p>
           </div>
         </div>
