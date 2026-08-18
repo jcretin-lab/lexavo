@@ -1,6 +1,5 @@
 import Link from 'next/link'
 
-const NAVY  = '#0F2247'
 const PAPER = '#F3EFE5'
 const GOLD  = '#B8872A'
 
@@ -8,7 +7,12 @@ export function LandingNav() {
   return (
     <nav
       className="fixed top-0 left-0 right-0 z-50"
-      style={{ background: NAVY, borderBottom: '1px solid rgba(255,255,255,0.07)' }}
+      style={{
+        background: 'rgba(15,34,71,0.72)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        borderBottom: '1px solid rgba(255,255,255,0.07)',
+      }}
     >
       <div className="max-w-6xl mx-auto px-6 h-12 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -26,9 +30,12 @@ export function LandingNav() {
           <Link href="/#tarifs" className="hover:text-white transition-colors" style={{ color: 'inherit', textDecoration: 'none' }}>TARIFS</Link>
         </div>
 
-        <div className="flex items-center gap-4">
-          <Link href="/login" className="ed-cta-outlined" style={{ padding: '0.375rem 0.75rem', fontSize: '0.6875rem' }}>
+        <div className="flex items-center gap-3">
+          <Link href="/login" className="hidden sm:inline-flex ed-cta-outlined" style={{ padding: '0.375rem 0.75rem', fontSize: '0.6875rem' }}>
             Se connecter
+          </Link>
+          <Link href="/login?mode=signup" className="landing-nav-cta">
+            Commencer gratuitement
           </Link>
         </div>
       </div>
