@@ -18,10 +18,6 @@ const ED = {
 }
 
 /* ── Données ─────────────────────────────────────────── */
-const INPUT_FORMATS = ['Un thème', "Une URL d'article", 'Un article collé']
-
-const OUTPUT_ITEMS = ['3 posts LinkedIn/Facebook', 'Article SEO', 'FAQ', 'Image']
-
 const FAQ_LANDING = [
   {
     q: 'Les contenus respectent-ils la déontologie du barreau ?',
@@ -78,7 +74,7 @@ export default function HomePage() {
       {/* ══ Hero — un seul écran ═════════════════════════════ */}
       <section style={{ background: ED.ink, minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden', position: 'relative' }}>
         <RainingLettersBg />
-        <div className="max-w-3xl mx-auto px-6 text-center" style={{ paddingTop: '4rem', paddingBottom: '2rem', position: 'relative', zIndex: 1 }}>
+        <div className="max-w-4xl mx-auto px-6 text-center" style={{ paddingTop: '4rem', paddingBottom: '2rem', position: 'relative', zIndex: 1 }}>
 
           <span
             className="fade-in"
@@ -91,8 +87,8 @@ export default function HomePage() {
             className="fade-in fade-in-delay-1"
             style={{
               fontFamily: 'var(--font-instrument-serif)',
-              fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-              lineHeight: 1.02,
+              fontSize: 'clamp(2.25rem, 4.5vw, 3.75rem)',
+              lineHeight: 1.1,
               letterSpacing: '-0.03em',
               color: ED.paper,
               fontStyle: 'italic',
@@ -136,7 +132,7 @@ export default function HomePage() {
       </section>
 
       {/* ══ Ce que vous obtenez ══════════════════════════════ */}
-      <section id="fonctionnalites" style={{ background: ED.navy, padding: '8rem 1.5rem' }}>
+      <section id="fonctionnalites" style={{ background: ED.navy, padding: '5rem 1.5rem' }}>
         <div className="max-w-4xl mx-auto">
           <SectionHeader
             num="01"
@@ -146,29 +142,23 @@ export default function HomePage() {
             dark
           />
 
-          <div className="fade-in fade-in-delay-1 flex flex-col md:flex-row items-center gap-6 md:gap-10">
-            <div className="flex flex-wrap gap-2 justify-center">
-              {INPUT_FORMATS.map(item => (
-                <span key={item} className="rounded-full px-4 py-2 text-sm" style={{ background: 'rgba(255,255,255,0.06)', color: ED.paper }}>
-                  {item}
-                </span>
-              ))}
-            </div>
-            <span style={{ color: ED.gold, fontSize: '1.5rem', fontFamily: 'var(--font-jetbrains-mono)' }}>→</span>
-            <div className="flex flex-wrap gap-2 justify-center">
-              {OUTPUT_ITEMS.map(item => (
-                <span key={item} className="rounded-full px-4 py-2 text-sm font-medium" style={{ background: 'rgba(184,135,42,0.15)', color: ED.gold }}>
-                  {item}
-                </span>
-              ))}
-            </div>
+          <div className="fade-in fade-in-delay-1 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-2">
+            <span style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 'clamp(1.125rem, 2.2vw, 1.5rem)', color: 'rgba(243,239,229,0.85)' }}>Un thème</span>
+            <span style={{ fontFamily: 'var(--font-jetbrains-mono)', color: ED.gold }}>+</span>
+            <span style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 'clamp(1.125rem, 2.2vw, 1.5rem)', color: 'rgba(243,239,229,0.85)' }}>une URL</span>
+            <span style={{ fontFamily: 'var(--font-jetbrains-mono)', color: ED.gold }}>+</span>
+            <span style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 'clamp(1.125rem, 2.2vw, 1.5rem)', color: 'rgba(243,239,229,0.85)' }}>un article</span>
+            <span style={{ fontFamily: 'var(--font-jetbrains-mono)', color: ED.gold, fontSize: '1.125rem', margin: '0 0.125rem' }}>=</span>
+            <span style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 'clamp(1.375rem, 3vw, 2rem)', color: ED.gold, letterSpacing: '-0.01em' }}>
+              3 posts · Article SEO · FAQ · Image
+            </span>
           </div>
 
-          <p className="fade-in fade-in-delay-2 text-center" style={{ fontSize: '0.9375rem', color: 'rgba(243,239,229,0.5)', marginTop: '2.5rem' }}>
+          <p className="fade-in fade-in-delay-2 text-center" style={{ fontSize: '0.9375rem', color: 'rgba(243,239,229,0.5)', marginTop: '2rem' }}>
             Publication immédiate ou programmée, toujours modifiable, automatique sur LinkedIn et Facebook.
           </p>
 
-          <div className="fade-in fade-in-delay-2" style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2.5rem', marginTop: '3rem', textAlign: 'center' }}>
+          <div className="fade-in fade-in-delay-2" style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2rem', marginTop: '2.5rem', textAlign: 'center' }}>
             <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.375rem, 2.5vw, 2rem)', color: ED.paper, fontStyle: 'italic', letterSpacing: '-0.02em', lineHeight: 1.25 }}>
               «&thinsp;Un mois de posts, préparé en une fois. LinkedIn pour vos clients pros, Facebook pour vos particuliers.&thinsp;»
             </p>
@@ -177,7 +167,7 @@ export default function HomePage() {
       </section>
 
       {/* ══ Message ══════════════════════════════════════════ */}
-      <section style={{ background: ED.paper, padding: '8rem 1.5rem' }}>
+      <section style={{ background: ED.paper, padding: '5rem 1.5rem' }}>
         <div className="max-w-4xl mx-auto text-center fade-in">
           <h2 style={{
             fontFamily: 'var(--font-instrument-serif)',
@@ -193,7 +183,7 @@ export default function HomePage() {
       </section>
 
       {/* ══ Tarifs ═══════════════════════════════════════════ */}
-      <section id="tarifs" style={{ background: ED.cream, padding: '8rem 1.5rem' }}>
+      <section id="tarifs" style={{ background: ED.cream, padding: '5rem 1.5rem' }}>
         <div className="max-w-5xl mx-auto">
           <SectionHeader
             num="03"
@@ -201,17 +191,12 @@ export default function HomePage() {
             title="Des tarifs simples, sans surprise."
             subtitle="10 générations offertes. Sans carte bancaire."
           />
-          <div className="flex justify-center mb-12">
-            <Link href="/login?mode=signup" className="ed-cta-primary">
-              Essai gratuit →
-            </Link>
-          </div>
           <LandingPricing />
         </div>
       </section>
 
       {/* ══ FAQ ══════════════════════════════════════════════ */}
-      <section style={{ background: ED.paper, padding: '8rem 1.5rem' }}>
+      <section style={{ background: ED.paper, padding: '5rem 1.5rem' }}>
         <div className="max-w-3xl mx-auto">
           <SectionHeader
             num="04"
@@ -223,7 +208,7 @@ export default function HomePage() {
       </section>
 
       {/* ══ CTA final ════════════════════════════════════════ */}
-      <section style={{ background: ED.navy, padding: '8rem 1.5rem', position: 'relative', overflow: 'hidden' }}>
+      <section style={{ background: ED.navy, padding: '5rem 1.5rem', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 55% 45% at 50% 60%, rgba(184,135,42,0.07) 0%, transparent 70%)`, pointerEvents: 'none' }} />
         <div className="relative max-w-3xl mx-auto text-center fade-in">
           <h2 style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(2.25rem, 5vw, 4rem)', color: ED.paper, letterSpacing: '-0.03em', lineHeight: 0.97, fontStyle: 'italic', marginBottom: '1.75rem' }}>
