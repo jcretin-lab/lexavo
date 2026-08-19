@@ -22,12 +22,6 @@ const INPUT_FORMATS = ['Un thème', "Une URL d'article", 'Un article collé']
 
 const OUTPUT_ITEMS = ['3 posts LinkedIn/Facebook', 'Article SEO', 'FAQ', 'Image']
 
-const EXAMPLE_POSTS = [
-  { angle: 'Pédagogique', color: '#0A66C2', network: 'in', excerpt: 'Le licenciement pour faute grave est une procédure aux multiples pièges. Voici les 5 erreurs les plus fréquentes que je constate en cabinet…' },
-  { angle: 'Cas pratique', color: '#B8872A', network: 'f', excerpt: "Mon client X a été licencié sans que l'employeur respecte le délai légal de convocation. Résultat : procédure annulée…" },
-  { angle: 'Conseil', color: '#1F7A4C', network: 'in', excerpt: 'Avant tout licenciement pour faute grave, vérifiez ces 3 points essentiels avec votre conseil juridique…' },
-]
-
 const FAQ_LANDING = [
   {
     q: 'Les contenus respectent-ils la déontologie du barreau ?',
@@ -182,29 +176,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ══ Exemples de posts ════════════════════════════════ */}
+      {/* ══ Message ══════════════════════════════════════════ */}
       <section style={{ background: ED.paper, padding: '8rem 1.5rem' }}>
-        <div className="max-w-5xl mx-auto">
-          <SectionHeader
-            num="02"
-            label="PREUVE PAR L'EXEMPLE"
-            title="Trois angles, un seul sujet."
-          />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 fade-in fade-in-delay-1">
-            {EXAMPLE_POSTS.map(p => (
-              <div key={p.angle} className="rounded-2xl p-4" style={{ background: 'var(--white)', border: '1px solid var(--ink-200)' }}>
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0" style={{ background: p.color }}>{p.network}</div>
-                  <div>
-                    <p className="text-xs font-semibold" style={{ color: 'var(--ink-900)' }}>Maître Dupont</p>
-                    <p className="text-[10px]" style={{ color: 'var(--ink-400)' }}>Avocat · Droit du travail</p>
-                  </div>
-                  <span className="ml-auto text-[10px] px-2 py-0.5 rounded-full font-medium" style={{ background: `${p.color}18`, color: p.color }}>{p.angle}</span>
-                </div>
-                <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-600)' }}>{p.excerpt}</p>
-              </div>
-            ))}
-          </div>
+        <div className="max-w-4xl mx-auto text-center fade-in">
+          <h2 style={{
+            fontFamily: 'var(--font-instrument-serif)',
+            fontSize: 'clamp(2rem, 4.5vw, 3.5rem)',
+            lineHeight: 1.15,
+            letterSpacing: '-0.02em',
+            color: ED.ink,
+            fontStyle: 'italic',
+          }}>
+            Publiez régulièrement et devenez l&apos;avocat visible dans un océan de confrères invisibles.
+          </h2>
         </div>
       </section>
 
