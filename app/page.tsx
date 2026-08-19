@@ -138,20 +138,19 @@ export default function HomePage() {
             num="01"
             label="CE QUE VOUS OBTENEZ"
             title="D'un sujet à toute votre semaine éditoriale."
-            subtitle="Un thème ou un article. Trois minutes. Prêt à publier."
             dark
           />
 
-          <div className="fade-in fade-in-delay-1 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-2">
-            <span style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 'clamp(1.125rem, 2.2vw, 1.5rem)', color: 'rgba(243,239,229,0.85)' }}>Un thème</span>
-            <span style={{ fontFamily: 'var(--font-jetbrains-mono)', color: ED.gold }}>+</span>
-            <span style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 'clamp(1.125rem, 2.2vw, 1.5rem)', color: 'rgba(243,239,229,0.85)' }}>une URL</span>
-            <span style={{ fontFamily: 'var(--font-jetbrains-mono)', color: ED.gold }}>+</span>
-            <span style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 'clamp(1.125rem, 2.2vw, 1.5rem)', color: 'rgba(243,239,229,0.85)' }}>un article</span>
-            <span style={{ fontFamily: 'var(--font-jetbrains-mono)', color: ED.gold, fontSize: '1.125rem', margin: '0 0.125rem' }}>=</span>
-            <span style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 'clamp(1.375rem, 3vw, 2rem)', color: ED.gold, letterSpacing: '-0.01em' }}>
-              3 posts · Article SEO · FAQ · Image
-            </span>
+          <div className="fade-in fade-in-delay-1 text-center">
+            <p style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 'clamp(1.125rem, 2.4vw, 1.625rem)', lineHeight: 1.4, color: 'rgba(243,239,229,0.85)' }}>
+              Choisissez un thème ou collez une url ou un article de blog
+            </p>
+            <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '0.75rem', letterSpacing: '0.15em', color: ED.gold, margin: '0.75rem 0' }}>
+              POUR OBTENIR
+            </p>
+            <p style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 'clamp(1.375rem, 3vw, 2rem)', color: ED.gold, letterSpacing: '-0.01em' }}>
+              3 posts + Article SEO + FAQ + Image
+            </p>
           </div>
 
           <p className="fade-in fade-in-delay-2 text-center" style={{ fontSize: '0.9375rem', color: 'rgba(243,239,229,0.5)', marginTop: '2rem' }}>
