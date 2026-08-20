@@ -409,7 +409,7 @@ Champs supplémentaires :
         theme,
         specialite,
         article_blog: content.article_blog,
-        posts_linkedin: content.posts_linkedin,
+        posts_linkedin: content.posts_linkedin.map(({ texte }) => ({ texte, hashtags: [] as string[] })),
         faq: content.faq,
         image_url: defaultImageUrl,
         images,
