@@ -17,12 +17,13 @@ export function FaqAccordion({ items }: { items: FaqItem[] }) {
         return (
           <div
             key={q}
-            className="rounded-xl overflow-hidden"
+            className="overflow-hidden"
             style={{
               background: 'var(--white)',
-              border: `1px solid ${isOpen ? 'var(--navy-200, #c0cfe8)' : 'var(--ink-200)'}`,
+              borderRadius: '20px',
+              border: `1px solid ${isOpen ? 'var(--navy-200, #c0cfe8)' : 'var(--ink-100)'}`,
               transition: 'border-color 0.2s, box-shadow 0.2s',
-              boxShadow: isOpen ? '0 4px 20px -4px rgba(15,34,71,0.08)' : 'none',
+              boxShadow: isOpen ? '0 20px 50px -18px rgba(15,34,71,0.22)' : '0 16px 40px -22px rgba(15,34,71,0.16)',
             }}
           >
             <button

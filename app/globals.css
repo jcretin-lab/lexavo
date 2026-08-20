@@ -292,7 +292,7 @@ body {
   font-weight: 600;
   color: var(--navy-900);
   padding: 0.5625rem 1.125rem;
-  border-radius: 8px;
+  border-radius: 999px;
   background: var(--ocre-500);
   border: 1px solid var(--ocre-500);
   transition: background 0.15s, box-shadow 0.15s;
@@ -366,7 +366,7 @@ body {
   letter-spacing: 0.1em;
   padding: 0.875rem 2rem;
   border: 1px solid #F3EFE5;
-  border-radius: 0;
+  border-radius: 999px;
   text-decoration: none;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
@@ -388,7 +388,7 @@ body {
   letter-spacing: 0.1em;
   padding: 0.875rem 2rem;
   border: 1px solid #B8872A;
-  border-radius: 0;
+  border-radius: 999px;
   text-decoration: none;
   transition: background 0.2s, color 0.2s;
 }
@@ -409,7 +409,7 @@ body {
   letter-spacing: 0.1em;
   padding: 0.875rem 2rem;
   border: 1px solid rgba(243,239,229,0.2);
-  border-radius: 0;
+  border-radius: 999px;
   text-decoration: none;
   transition: border-color 0.2s, color 0.2s;
 }
@@ -430,7 +430,7 @@ body {
   letter-spacing: 0.1em;
   padding: 0.875rem 2rem;
   border: 1px solid #0F0E0C;
-  border-radius: 0;
+  border-radius: 999px;
   text-decoration: none;
   transition: background 0.15s;
 }

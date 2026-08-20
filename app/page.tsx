@@ -132,48 +132,58 @@ export default function HomePage() {
       </section>
 
       {/* ══ Ce que vous obtenez ══════════════════════════════ */}
-      <section id="fonctionnalites" style={{ background: ED.navy, padding: '5rem 1.5rem' }}>
+      <section id="fonctionnalites" style={{ background: ED.cream, padding: '5rem 1.5rem' }}>
         <div className="max-w-4xl mx-auto">
           <SectionHeader
             num="01"
             label="CE QUE VOUS OBTENEZ"
             title="D'un sujet à toute votre semaine éditoriale."
-            dark
           />
 
-          <div className="fade-in fade-in-delay-1 text-center">
-            <p style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 'clamp(1.125rem, 2.4vw, 1.625rem)', lineHeight: 1.4, color: 'rgba(243,239,229,0.85)' }}>
-              Choisissez un thème ou collez une url ou un article de blog
-            </p>
-            <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '0.75rem', letterSpacing: '0.15em', color: ED.gold, margin: '0.75rem 0' }}>
-              POUR OBTENIR
-            </p>
-            <p style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 'clamp(1.375rem, 3vw, 2rem)', color: ED.gold, letterSpacing: '-0.01em' }}>
-              3 posts + Article SEO + FAQ + Image
-            </p>
-          </div>
+          <div
+            className="fade-in fade-in-delay-1"
+            style={{
+              background: 'var(--white)',
+              borderRadius: '24px',
+              padding: '3rem 2rem',
+              border: `1px solid ${ED.rule}`,
+              boxShadow: '0 16px 40px -22px rgba(15,34,71,0.16)',
+            }}
+          >
+            <div className="text-center">
+              <p style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 'clamp(1.125rem, 2.4vw, 1.625rem)', lineHeight: 1.4, color: ED.ink }}>
+                Choisissez un thème ou collez une url ou un article de blog
+              </p>
+              <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '0.75rem', letterSpacing: '0.15em', color: ED.gold, margin: '0.75rem 0' }}>
+                POUR OBTENIR
+              </p>
+              <p style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 'clamp(1.375rem, 3vw, 2rem)', color: ED.gold, letterSpacing: '-0.01em' }}>
+                3 posts + Article SEO + FAQ + Image
+              </p>
+            </div>
 
-          <p className="fade-in fade-in-delay-2 text-center" style={{ fontSize: '0.9375rem', color: 'rgba(243,239,229,0.5)', marginTop: '2rem' }}>
-            Publication immédiate ou programmée, toujours modifiable, automatique sur LinkedIn et Facebook.
-          </p>
-
-          <div className="fade-in fade-in-delay-2" style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2rem', marginTop: '2.5rem', textAlign: 'center' }}>
-            <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.375rem, 2.5vw, 2rem)', color: ED.paper, fontStyle: 'italic', letterSpacing: '-0.02em', lineHeight: 1.25 }}>
-              «&thinsp;Un mois de posts, préparé en une fois. LinkedIn pour vos clients pros, Facebook pour vos particuliers.&thinsp;»
+            <p className="text-center" style={{ fontSize: '0.9375rem', color: ED.mid, marginTop: '2rem' }}>
+              Publication immédiate ou programmée, toujours modifiable, automatique sur LinkedIn et Facebook.
             </p>
+
+            <div style={{ borderTop: `1px solid ${ED.rule}`, paddingTop: '2rem', marginTop: '2.5rem', textAlign: 'center' }}>
+              <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.375rem, 2.5vw, 2rem)', color: ED.ink, fontStyle: 'italic', letterSpacing: '-0.02em', lineHeight: 1.25 }}>
+                «&thinsp;Un mois de posts, préparé en une fois. LinkedIn pour vos clients pros, Facebook pour vos particuliers.&thinsp;»
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ══ Message ══════════════════════════════════════════ */}
-      <section style={{ background: ED.paper, padding: '5rem 1.5rem' }}>
+      <section style={{ background: ED.navy, padding: '5rem 1.5rem' }}>
         <div className="max-w-4xl mx-auto text-center fade-in">
           <h2 style={{
             fontFamily: 'var(--font-instrument-serif)',
             fontSize: 'clamp(2rem, 4.5vw, 3.5rem)',
             lineHeight: 1.15,
             letterSpacing: '-0.02em',
-            color: ED.ink,
+            color: ED.paper,
             fontStyle: 'italic',
           }}>
             Publiez régulièrement et devenez l&apos;avocat visible dans un océan de confrères invisibles.
