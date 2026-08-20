@@ -18,6 +18,52 @@ const ED = {
 }
 
 /* ── Données ─────────────────────────────────────────── */
+const OBJECTIONS = [
+  {
+    q: '« Je peux le faire moi-même avec ChatGPT »',
+    r: "Vous pouvez générer un post avec ChatGPT, c'est vrai. Mais ensuite il faut l'adapter, trouver une image, aller sur LinkedIn, publier, refaire pareil sur Facebook, et recommencer la semaine suivante — pendant des mois. Lexavo ne remplace pas votre capacité à écrire, il remplace tout le travail répétitif autour : la régularité, la publication, la mise en forme. C'est ça qui prend du temps, pas la rédaction elle-même.",
+  },
+  {
+    q: "« C'est trop cher pour ce que ça fait »",
+    r: "Comparez au coût réel : un community manager freelance démarre à 400-600€/mois. Une agence, 800-1500€/mois. Lexavo à partir de 49€/mois vous fait gagner le même résultat — une présence régulière — pour une fraction du prix, sans dépendre de la disponibilité de quelqu'un d'autre.",
+  },
+  {
+    q: "« Je n'ai pas le temps de valider du contenu chaque semaine »",
+    r: "La validation prend 5 minutes, pas plus — vous lisez, vous ajustez si besoin, vous validez. Comparez ça au temps que prendrait l'écriture complète d'un post de zéro. Et si vraiment vous manquez de temps, le forfait Pilote s'occupe de tout, y compris la validation avec vous en amont.",
+  },
+  {
+    // Réponse à valider avec la partenaire juriste avant mise en avant en RDV commercial.
+    // Ne jamais affirmer une conformité totale/certifiée : rester sur "calibré pour respecter"
+    // et "vous validez avant publication".
+    q: '« Est-ce que c\'est conforme à la déontologie du barreau ? »',
+    r: "Le contenu généré est calibré pour respecter le cadre du RIN et les recommandations du CNB — pas de démarchage, pas de comparaison, pas de promesse de résultat. Mais la validation reste entièrement entre vos mains avant chaque publication : vous restez seul responsable et décisionnaire de ce qui est publié, exactement comme si vous l'aviez écrit vous-même.",
+  },
+  {
+    q: '« Mes données et celles de mes clients sont-elles en sécurité ? »',
+    r: "Lexavo ne traite aucune donnée client confidentielle — l'outil génère du contenu marketing à partir d'un thème général, pas à partir de dossiers ou d'informations sur vos clients. Les données de connexion sont hébergées sur Supabase avec chiffrement, et les échanges avec les réseaux sociaux passent par une API officielle sécurisée.",
+  },
+  {
+    q: '« Et si le contenu généré est faux ou juridiquement inexact ? »',
+    r: "C'est exactement pour ça que la validation humaine est une étape obligatoire du processus. Lexavo produit un brouillon de qualité, mais vous restez le seul à publier — rien ne part sans votre accord. Vous gardez le contrôle total sur le fond comme sur la forme.",
+  },
+  {
+    q: "« Je n'ai pas de compétence technique, ça a l'air compliqué »",
+    r: "C'est pensé pour prendre 3 minutes, sans aucune compétence technique. Vous entrez un thème, vous obtenez un brouillon complet, vous validez. La configuration initiale de la publication automatique se fait une seule fois avec un guide pas-à-pas, ou nous pouvons le faire pour vous.",
+  },
+  {
+    q: '« Je ne suis pas sûr que ça apporte vraiment des clients »',
+    r: "Personne ne peut garantir qu'un post ramène un client précis — mais on sait une chose certaine : un avocat invisible en ligne ne sera jamais choisi par quelqu'un qui cherche sur Google ou LinkedIn. La visibilité est une condition nécessaire, même si elle n'est pas suffisante seule. Et un cabinet qui publie 3x/semaine génère 6 fois plus de visibilité que la moyenne de sa profession.",
+  },
+  {
+    q: "« J'ai déjà essayé de publier, ça n'a rien donné »",
+    r: "Souvent, ce qui a été essayé, c'est 3-4 posts isolés sur quelques semaines, puis l'abandon. Ce n'est pas un échec de la méthode, c'est un abandon avant que l'effet de régularité ne se mette en place. C'est précisément le problème que Lexavo résout : maintenir le rythme sans que ça dépende de votre motivation du moment.",
+  },
+  {
+    q: '« Pourquoi seulement LinkedIn et Facebook, pas Instagram/TikTok ? »',
+    r: "Vos clients ne vous cherchent pas sur TikTok. LinkedIn touche votre clientèle professionnelle (entreprises, dirigeants), Facebook touche votre clientèle de particuliers. Ce sont les deux réseaux où se trouve réellement votre marché — on préfère faire deux réseaux bien plutôt que cinq mal.",
+  },
+]
+
 const FAQ_LANDING = [
   {
     q: 'Les contenus respectent-ils la déontologie du barreau ?',
@@ -188,6 +234,18 @@ export default function HomePage() {
           }}>
             Publiez régulièrement et devenez l&apos;avocat visible dans un océan de confrères invisibles.
           </h2>
+        </div>
+      </section>
+
+      {/* ══ Objections ═══════════════════════════════════════ */}
+      <section style={{ background: ED.paper, padding: '5rem 1.5rem' }}>
+        <div className="max-w-3xl mx-auto">
+          <SectionHeader
+            num="02"
+            label="RETOURS DE TERRAIN"
+            title="Ce qu'on nous demande avant de se lancer."
+          />
+          <FaqAccordion items={OBJECTIONS} />
         </div>
       </section>
 
