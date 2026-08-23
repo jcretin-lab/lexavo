@@ -141,23 +141,23 @@ export default function HomePage() {
               marginBottom: '1.5rem',
             }}
           >
-            Une présence régulière sur{' '}
+            Publiez régulièrement sur{' '}
             <span style={{ color: '#0A66C2' }}>LinkedIn</span>
             {' '}et{' '}
             <span style={{ color: '#5E9EF5' }}>Facebook</span>
-            ,{' '}sans y consacrer du temps.
+            ,{' '}sans y passer de temps.
           </h1>
 
           <p
             className="fade-in fade-in-delay-1"
             style={{ fontSize: '1.0625rem', color: 'rgba(243,239,229,0.65)', lineHeight: 1.6, maxWidth: '32rem', margin: '0 auto 2.5rem' }}
           >
-            Générez article, posts et FAQ en 3 minutes, conformes à la déontologie du barreau.
+            Générez article, posts, FAQ et image en 3 minutes. Programmés et publiés automatiquement. Conforme à la déontologie du barreau.
           </p>
 
           <div className="fade-in fade-in-delay-2 flex flex-col sm:flex-row gap-3 justify-center mb-6">
             <Link href="/login?mode=signup" className="ed-cta-primary">
-              Commencer gratuitement →
+              Découvrir gratuitement →
             </Link>
             <Link href="/login" className="ed-cta-ghost">
               Se connecter

@@ -35,7 +35,7 @@ export function LandingNav() {
             Se connecter
           </Link>
           <Link href="/login?mode=signup" className="landing-nav-cta">
-            Commencer gratuitement
+            Découvrir gratuitement
           </Link>
         </div>
       </div>
