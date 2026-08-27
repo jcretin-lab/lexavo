@@ -109,6 +109,32 @@ function SectionHeader({ num: _num, label, title, subtitle, dark = false }: {
   )
 }
 
+/* ── Étape du funnel visibilité → client ──────────────── */
+function FunnelStep({ num, text }: { num: number; text: string }) {
+  return (
+    <div
+      className="flex-1 rounded-2xl p-5"
+      style={{ background: 'var(--white)', border: `1px solid ${ED.rule}`, boxShadow: '0 16px 40px -22px rgba(15,34,71,0.16)' }}
+    >
+      <span style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: '1.75rem', color: ED.gold }}>
+        {num}
+      </span>
+      <p style={{ fontSize: '0.9375rem', color: ED.ink, lineHeight: 1.5, marginTop: '0.5rem' }}>
+        {text}
+      </p>
+    </div>
+  )
+}
+
+function FunnelArrow() {
+  return (
+    <div className="flex items-center justify-center flex-shrink-0" style={{ color: ED.gold, fontSize: '1.25rem' }} aria-hidden>
+      <span className="hidden md:inline">→</span>
+      <span className="md:hidden">↓</span>
+    </div>
+  )
+}
+
 /* ── Page ────────────────────────────────────────────── */
 export default function HomePage() {
   return (
@@ -221,19 +247,36 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ══ Message ══════════════════════════════════════════ */}
-      <section style={{ background: ED.navy, padding: '5rem 1.5rem' }}>
-        <div className="max-w-4xl mx-auto text-center fade-in">
-          <h2 style={{
-            fontFamily: 'var(--font-instrument-serif)',
-            fontSize: 'clamp(2rem, 4.5vw, 3.5rem)',
-            lineHeight: 1.15,
-            letterSpacing: '-0.02em',
-            color: ED.paper,
-            fontStyle: 'italic',
-          }}>
-            Publiez régulièrement et devenez l&apos;avocat visible dans un océan de confrères invisibles.
-          </h2>
+      {/* ══ Visibilité → client ══════════════════════════════ */}
+      <section style={{ background: ED.cream, padding: '5rem 1.5rem' }}>
+        <div className="max-w-5xl mx-auto">
+          <SectionHeader
+            num="02"
+            label="DE LA VISIBILITÉ AU CLIENT"
+            title="Ce que change la visibilité, concrètement."
+          />
+
+          <div className="fade-in fade-in-delay-1" style={{ maxWidth: '42rem' }}>
+            <p style={{ fontSize: '1.0625rem', color: ED.mid, lineHeight: 1.75, marginBottom: '1rem' }}>
+              Un client ne choisit jamais un avocat qu&apos;il n&apos;a jamais vu.
+            </p>
+            <p style={{ fontSize: '1.0625rem', color: ED.mid, lineHeight: 1.75, marginBottom: '1.25rem' }}>
+              Avant de prendre rendez-vous, il cherche, compare, se renseigne. S&apos;il ne trouve rien sur vous, il ne trouve pas de raison de vous choisir plutôt qu&apos;un confrère — même si vous êtes plus compétent.
+            </p>
+            <p style={{ fontSize: '1.125rem', color: ED.ink, fontWeight: 600, lineHeight: 1.6 }}>
+              La visibilité ne remplace pas votre expertise. Elle lui donne une chance d&apos;être vue.
+            </p>
+          </div>
+
+          <div className="fade-in fade-in-delay-2 flex flex-col md:flex-row items-stretch md:items-center gap-3 mt-12">
+            <FunnelStep num={1} text="Vous publiez régulièrement" />
+            <FunnelArrow />
+            <FunnelStep num={2} text="Des clients potentiels vous découvrent en cherchant une réponse" />
+            <FunnelArrow />
+            <FunnelStep num={3} text="Ils vous perçoivent comme compétent avant même le premier contact" />
+            <FunnelArrow />
+            <FunnelStep num={4} text="Ils vous contactent en confiance — plutôt qu'un confrère invisible" />
+          </div>
         </div>
       </section>
 
@@ -241,7 +284,7 @@ export default function HomePage() {
       <section style={{ background: ED.paper, padding: '5rem 1.5rem' }}>
         <div className="max-w-3xl mx-auto">
           <SectionHeader
-            num="02"
+            num="03"
             label="RETOURS DE TERRAIN"
             title="Ce qu'on nous demande avant de se lancer."
           />
@@ -253,7 +296,7 @@ export default function HomePage() {
       <section id="tarifs" style={{ background: ED.cream, padding: '5rem 1.5rem' }}>
         <div className="max-w-5xl mx-auto">
           <SectionHeader
-            num="03"
+            num="04"
             label="TARIFS"
             title="Des tarifs simples, sans surprise."
             subtitle="10 générations offertes. Sans carte bancaire."
@@ -266,7 +309,7 @@ export default function HomePage() {
       <section style={{ background: ED.paper, padding: '5rem 1.5rem' }}>
         <div className="max-w-3xl mx-auto">
           <SectionHeader
-            num="04"
+            num="05"
             label="QUESTIONS FRÉQUENTES"
             title="Vos questions, nos réponses."
           />
