@@ -1,3 +1,12 @@
+// BROUILLON — traduction des principes de prudence transmis par la partenaire
+// juriste (hiérarchie de fiabilité des sources, ne jamais inventer de référence
+// précise). Fond juridique à valider par elle avant mise en production.
+export const LEGAL_PRUDENCE_RULES = `RÈGLES DE PRUDENCE FACTUELLE (priment sur les exigences de densité ci-dessous) :
+- Hiérarchie de fiabilité, du plus sûr au moins sûr : (1) un principe juridique général et stable, (2) une référence à un texte de loi que tu connais avec une certitude élevée, (3) une jurisprudence précise (nom d'arrêt, numéro de pourvoi, date).
+- Ne descends au niveau (3) qu'en cas de certitude totale sur la référence exacte. Au moindre doute sur un numéro d'article, un numéro de pourvoi, un nom d'arrêt ou un chiffre précis : remonte au niveau (1) ou (2) plutôt que d'inventer un détail plausible.
+- Les minimums de densité juridique sont un objectif, pas une obligation absolue : un texte juste avec moins de références précises vaut mieux qu'un texte dense mais inexact. Ne jamais combler un minimum non atteint par une référence non certaine.
+- Tu n'as accès à aucune base de données en direct. Formule avec prudence ("le droit du travail prévoit généralement…", "selon les principes applicables en la matière…") dès que tu n'es pas certain à 100 %.`
+
 export function buildLinkedinRules(ton: string): string {
   return `RÈGLES POSTS LINKEDIN :
 

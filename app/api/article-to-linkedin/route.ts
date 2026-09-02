@@ -3,7 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import OpenAI from 'openai'
 import { createClient } from '@/lib/supabase/server'
 import { type ImageStyle, type ImagesByStyle, IMAGE_STYLE_ORDER } from '@/types'
-import { buildLinkedinRules, FAQ_STYLE_RULES } from '@/lib/prompts'
+import { buildLinkedinRules, FAQ_STYLE_RULES, LEGAL_PRUDENCE_RULES } from '@/lib/prompts'
 import {
   buildImageSuffix,
   normalizeSceneChoice,
@@ -69,6 +69,8 @@ RÈGLES DÉONTOLOGIQUES :
 - Interdit : comparaison avec confrères
 - Obligatoire : appel à consultation en fin de post
 - Ton : professionnel et accessible
+
+${LEGAL_PRUDENCE_RULES}
 
 RÈGLES TEMPORELLES ABSOLUES :
 - Ne jamais mentionner une année (2024, 2025, 2026...) pour désigner "aujourd'hui" ou "actuellement". Utiliser des formulations intemporelles : "actuellement", "en vigueur", "depuis la loi de...", "à ce jour"

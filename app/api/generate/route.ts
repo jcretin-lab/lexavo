@@ -9,7 +9,7 @@ import {
   IMAGE_STYLE_ORDER,
 } from '@/types'
 import { sendQuotaAtteint } from '@/lib/email'
-import { buildLinkedinRules, FAQ_STYLE_RULES } from '@/lib/prompts'
+import { buildLinkedinRules, FAQ_STYLE_RULES, LEGAL_PRUDENCE_RULES } from '@/lib/prompts'
 import {
   buildImageSuffix,
   normalizeSceneChoice,
@@ -92,6 +92,8 @@ RÈGLES QUALITÉ JURIDIQUE :
 - Mentionner la juridiction compétente si pertinent (Conseil de prud'hommes, Tribunal judiciaire, etc.)
 - Indiquer les délais légaux clés s'ils existent sur le sujet
 - Ne jamais inventer de jurisprudence ou de chiffres — si incertain, formuler avec "en général" ou "selon les cas"
+
+${LEGAL_PRUDENCE_RULES}
 
 RÈGLES TEMPORELLES ABSOLUES :
 - Ne jamais mentionner une année (2024, 2025, 2026…) pour désigner "aujourd'hui" ou "actuellement" — utiliser des formulations intemporelles : "actuellement", "en vigueur", "depuis la loi de…", "à ce jour"
