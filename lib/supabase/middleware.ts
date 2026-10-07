@@ -29,8 +29,14 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
-  // Routes publiques
-  const publicRoutes = ['/', '/login', '/update-password']
+  // Routes publiques : lisibles sans être connecté. Les pages légales et de contact doivent l'être
+  // (mentions légales obligatoires, CGV, politique de confidentialité), ainsi que robots.txt et
+  // sitemap.xml, que les moteurs de recherche lisent sans compte.
+  const publicRoutes = [
+    '/', '/login', '/update-password',
+    '/cgv', '/mentions-legales', '/politique-confidentialite', '/contact',
+    '/robots.txt', '/sitemap.xml',
+  ]
   const isPublic = publicRoutes.includes(pathname)
     || pathname.startsWith('/api/')
     || pathname.startsWith('/auth/')
