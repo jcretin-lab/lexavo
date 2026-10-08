@@ -5,6 +5,7 @@ import { FaqAccordion } from '@/components/landing/faq-accordion'
 import { LandingNav } from '@/components/landing/landing-nav'
 import { LandingFooter } from '@/components/landing/landing-footer'
 import { RainingLettersBg } from '@/components/landing/raining-letters-bg'
+import { VeilleEncart } from '@/components/landing/veille-encart'
 
 /* ── Palette éditoriale ───────────────────────────────── */
 const ED = {
@@ -202,6 +203,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ══ Encart : newsletter Veille Lexavo ════════════════ */}
+      <VeilleEncart />
 
       {/* ══ Ce que vous obtenez ══════════════════════════════ */}
       <section id="fonctionnalites" style={{ background: ED.cream, padding: '5rem 1.5rem' }}>

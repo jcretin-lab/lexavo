@@ -13,7 +13,7 @@ export default function PolitiqueConfidentialitePage() {
       <div className="max-w-3xl mx-auto px-6" style={{ paddingTop: '6rem', paddingBottom: '5rem' }}>
         <Link href="/" style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.15em', color: '#6E6860', textDecoration: 'none', display: 'inline-block', marginBottom: '2.5rem' }} className="hover:text-black transition-colors">← ACCUEIL</Link>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Politique de confidentialité</h1>
-        <p className="text-sm text-gray-500 mb-10">Dernière mise à jour : mai 2026</p>
+        <p className="text-sm text-gray-500 mb-10">Dernière mise à jour : octobre 2026</p>
 
         <section className="mb-10">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">3.1 Responsable du traitement</h2>
@@ -190,6 +190,44 @@ export default function PolitiqueConfidentialitePage() {
             Politiques à jour des fournisseurs :{' '}
             <a href="https://www.anthropic.com/legal" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Anthropic</a>{' '}·{' '}
             <a href="https://openai.com/policies" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">OpenAI</a>
+          </p>
+        </section>
+
+        <section className="mb-10">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">3.10 Newsletter « Veille Lexavo »</h2>
+          <p className="text-gray-700 leading-relaxed mb-3">
+            La veille Lexavo est une lettre hebdomadaire d&apos;information juridique : modifications de textes relatifs aux baux d&apos;habitation
+            et à la copropriété, et décisions de justice récentes qui les citent. On s&apos;y inscrit sur{' '}
+            <a href="https://veille.lexavo.fr" className="text-blue-600 hover:underline">veille.lexavo.fr</a>. Cette section complète les
+            précédentes pour ce seul traitement.
+          </p>
+          <ul className="list-disc list-inside text-gray-700 space-y-2 pl-2 mb-4">
+            <li>
+              <strong>Données traitées :</strong> votre adresse e-mail (obligatoire) ; votre nom et votre profession (facultatifs) ; le texte du
+              consentement que vous avez accepté, et les dates de votre demande, de votre confirmation et, le cas échéant, de votre désinscription.
+            </li>
+            <li>
+              <strong>Finalité :</strong> vous envoyer la veille et vous répondre. Votre adresse n&apos;est ni cédée, ni utilisée à une autre fin.
+            </li>
+            <li>
+              <strong>Base légale :</strong> votre consentement, donné en cochant une case puis confirmé par un e-mail (double confirmation) :
+              sans clic sur le lien de confirmation, vous n&apos;êtes pas inscrit. Vous pouvez le retirer à tout moment, en un clic depuis
+              chaque message, ou en écrivant à{' '}
+              <a href="mailto:contact@lexavo.fr" className="text-blue-600 hover:underline">contact@lexavo.fr</a>. Le retrait ne remet pas en
+              cause les envois déjà effectués.
+            </li>
+            <li>
+              <strong>Sous-traitants :</strong> Supabase (hébergement de la liste d&apos;abonnés), Resend (envoi des e-mails) et Vercel
+              (hébergement du site), dans les conditions décrites en 3.5.
+            </li>
+            <li>
+              <strong>Conservation :</strong> votre adresse est conservée tant que vous restez inscrit. Une demande non confirmée est supprimée
+              au bout de 30 jours. Après votre désinscription, seuls votre adresse et la date de désinscription sont conservées pendant 3 ans,
+              pour respecter votre choix, puis supprimées.
+            </li>
+          </ul>
+          <p className="text-gray-700 leading-relaxed">
+            Vos droits (accès, rectification, effacement, opposition, limitation, portabilité) et le recours auprès de la CNIL sont décrits en 3.7.
           </p>
         </section>
       </div>
