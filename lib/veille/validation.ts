@@ -4,9 +4,9 @@ import { createHash, randomBytes, timingSafeEqual } from 'node:crypto'
 
 /** Version et texte EXACTS du consentement affichés sur le formulaire. Le serveur enregistre sa propre copie du texte
  *  (jamais celle envoyée par le navigateur) : c'est la preuve de ce que la personne a accepté. Changer le texte = changer la version. */
-export const CONSENTEMENT_VERSION = '2026-10-v1'
+export const CONSENTEMENT_VERSION = '2026-10-v2'    // v1 : « … par e-mail (test gratuit). Mon adresse… » (inscriptions avant le 10 octobre 2026)
 export const CONSENTEMENT_TEXTE =
-  "J'accepte de recevoir chaque semaine la veille Lexavo par e-mail (test gratuit). Mon adresse sert uniquement à cet envoi, " +
+  "J'accepte de recevoir chaque semaine la veille Lexavo par e-mail. Mon adresse sert uniquement à cet envoi, " +
   'et je peux me désinscrire à tout moment, en un clic.'
 
 export const PROFILS = ['avocat', 'syndic', 'gestionnaire', 'bailleur', 'notaire', 'autre'] as const
