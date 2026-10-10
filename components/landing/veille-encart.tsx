@@ -29,7 +29,7 @@ export function VeilleEncart() {
         >
           <div className="flex-1">
             <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.2em', color: ED.gold }}>
-              NOUVEAU · TEST GRATUIT
+              NOUVEAU · LA VEILLE LEXAVO
             </span>
             <h2
               id="veille-titre"
