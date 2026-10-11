@@ -11,7 +11,7 @@ import {
 } from './listes.ts'
 
 test('les sept veilles sont déclarées, avec des slugs valides et uniques', () => {
-  assert.equal(LISTES.length, 7)
+  assert.equal(LISTES.length, 5)
   const slugs = LISTES.map((l) => l.slug)
   assert.equal(new Set(slugs).size, slugs.length)
   for (const slug of slugs) assert.match(slug, /^[a-z0-9]+(-[a-z0-9]+)*$/)         // le même format que la contrainte SQL de la colonne liste

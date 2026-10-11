@@ -19,43 +19,32 @@ export const LISTES: readonly Liste[] = [
   {
     slug: 'baux-copropriete',
     nom: "Baux d'habitation et copropriété",
-    description: "les arrêts récents qui citent les textes sur les baux d'habitation et la copropriété, et les modifications de ces textes quand il y en a",
+    description: "les arrêts récents de la Cour de cassation qui citent les textes sur les baux d'habitation et la copropriété, et les modifications de ces textes quand il y en a",
     ouverte: true,
   },
+  // Regroupements du 11 octobre 2026 : « baux commerciaux et fonds » rejoint les sociétés, « construction et urbanisme » rejoint l'assurance.
   {
-    slug: 'baux-commerciaux-fonds',
-    nom: 'Baux commerciaux et fonds de commerce',
-    description: 'les arrêts récents qui citent le Code de commerce sur le fonds de commerce et le bail commercial, et les modifications de ces articles quand il y en a',
+    slug: 'societes-fonds-baux-commerciaux',
+    nom: 'Sociétés, fonds de commerce et baux commerciaux',
+    description: 'les arrêts récents de la Cour de cassation qui citent le Code de commerce sur les sociétés, les fonds de commerce et les baux commerciaux, et le Code civil sur la société et la vente, et les modifications de ces textes quand il y en a',
     ouverte: false,
   },
   {
-    slug: 'construction-urbanisme',
-    nom: 'Construction et urbanisme',
-    description: "les arrêts récents qui citent les textes de la construction et de l'urbanisme, et les modifications de ces textes quand il y en a",
-    ouverte: false,
-  },
-  {
-    slug: 'assurance-dommage-corporel',
-    nom: 'Assurance, responsabilité civile et dommage corporel',
-    description: 'les arrêts récents qui citent le Code des assurances, la loi du 5 juillet 1985 et le Code civil sur la responsabilité, et les modifications de ces textes quand il y en a',
-    ouverte: false,
-  },
-  {
-    slug: 'societes-cessions',
-    nom: "Sociétés et cessions d'entreprise",
-    description: 'les arrêts récents qui citent le Code de commerce sur les sociétés et les fonds de commerce, et le Code civil sur la société et la vente, et les modifications de ces textes quand il y en a',
-    ouverte: false,
-  },
-  {
-    slug: 'entreprises-en-difficulte',
-    nom: 'Entreprises en difficulté',
-    description: 'les arrêts récents qui citent le livre VI du Code de commerce, et les modifications de ces articles quand il y en a',
+    slug: 'assurance-responsabilite-construction',
+    nom: 'Assurance, responsabilité et construction',
+    description: 'les arrêts récents de la Cour de cassation qui citent le Code des assurances, la loi du 5 juillet 1985, la responsabilité civile et les textes de la construction, et les modifications de ces textes quand il y en a',
     ouverte: false,
   },
   {
     slug: 'contrats-cour-de-cassation',
     nom: 'Contrats, Cour de cassation',
-    description: 'les arrêts récents de la Cour de cassation sur le droit commun des contrats, et les modifications des articles 1101 à 1233 du Code civil',
+    description: 'les arrêts récents de la Cour de cassation qui citent le droit commun des contrats, et les modifications des articles 1101 à 1233 du Code civil quand il y en a',
+    ouverte: false,
+  },
+  {
+    slug: 'entreprises-en-difficulte',
+    nom: 'Entreprises en difficulté',
+    description: 'les arrêts récents de la Cour de cassation qui citent le livre VI du Code de commerce, et les modifications de ces articles quand il y en a',
     ouverte: false,
   },
 ]
