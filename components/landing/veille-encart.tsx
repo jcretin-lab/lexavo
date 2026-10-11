@@ -46,7 +46,7 @@ export function VeilleEncart() {
               Veille juridique : baux d&apos;habitation et copropriété.
             </h2>
             <p style={{ fontSize: '0.9375rem', color: ED.mid, lineHeight: 1.6, maxWidth: '40rem', margin: 0 }}>
-              Chaque semaine, les modifications des textes, l&apos;ancienne et la nouvelle version côte à côte, et les arrêts récents qui les
+              Tous les quinze jours, les modifications des textes, l&apos;ancienne et la nouvelle version côte à côte, et les arrêts récents qui les
               citent, avec l&apos;extrait officiel et le lien vers la décision.
             </p>
           </div>

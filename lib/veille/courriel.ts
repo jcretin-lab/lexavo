@@ -15,7 +15,7 @@ export function htmlConfirmation(lien: string): string {
       <p style="font-family: Arial, sans-serif; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #52606d; margin: 0 0 28px;">Veille · baux d'habitation et copropriété</p>
       <p style="font-size: 17px; line-height: 1.6; margin: 0 0 14px;">Bonjour,</p>
       <p style="font-size: 17px; line-height: 1.6; margin: 0 0 14px;">
-        Vous avez demandé à recevoir chaque semaine la veille Lexavo : les modifications des textes sur les baux d'habitation et
+        Vous avez demandé à recevoir la veille Lexavo tous les quinze jours : les modifications des textes sur les baux d'habitation et
         la copropriété, et les arrêts récents qui les citent.
       </p>
       <p style="font-size: 17px; line-height: 1.6; margin: 0 0 22px;">Pour terminer votre inscription, confirmez votre adresse :</p>
