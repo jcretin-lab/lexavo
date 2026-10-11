@@ -38,6 +38,11 @@ export function creerDepotSupabase(): Depot {
       if (error) throw new Error(`[veille] liste impossible : ${error.message}`)
       return (data ?? []) as Abonne[]
     },
+    async listerParEmail(email) {
+      const { data, error } = await supabase.from(TABLE).select('*').eq('email', email).order('cree_le', { ascending: true })
+      if (error) throw new Error(`[veille] lecture impossible : ${error.message}`)
+      return (data ?? []) as Abonne[]
+    },
     async supprimerAnciens({ enAttenteAvant, desinscritsAvant }) {
       const a = await supabase.from(TABLE).delete({ count: 'exact' }).eq('statut', 'en_attente').lt('derniere_demande_le', enAttenteAvant)
       if (a.error) throw new Error(`[veille] purge impossible : ${a.error.message}`)

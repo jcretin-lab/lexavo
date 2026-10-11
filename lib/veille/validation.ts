@@ -35,7 +35,11 @@ function nettoyerNom(valeur: unknown): string | null {
   return nom.length === 0 ? null : nom.slice(0, LONGUEUR_MAX_NOM)
 }
 
-export type Inscription = { email: string; nom: string | null; profil: Profil; liste: string }
+/** `listes` : les veilles choisies (slugs, sans doublon), toutes ouvertes aux inscriptions. */
+export type Inscription = { email: string; nom: string | null; profil: Profil; listes: string[] }
+
+/** Nombre maximal de veilles dans une même demande (il n'y en a que cinq : tout ce qui dépasse est un abus). */
+const NB_LISTES_MAX = 10
 
 /** Champ caché du formulaire, invisible pour un humain : s'il est rempli, c'est un robot. */
 export function estPiege(corps: unknown): boolean {
@@ -44,7 +48,11 @@ export function estPiege(corps: unknown): boolean {
   return typeof piege === 'string' && piege.trim().length > 0
 }
 
-/** `resoudreListe` : renvoie la liste demandée si elle existe et est ouverte aux inscriptions (voir listes.ts : listeOuverte), sinon null. */
+/**
+ * `resoudreListe` : renvoie la liste demandée si elle existe et est ouverte aux inscriptions (voir listes.ts : listeOuverte), sinon null.
+ * Le formulaire envoie `listes` (tableau de slugs, une ou plusieurs veilles). L'ancien formulaire envoyait `liste` (une seule, absente = veille d'origine) :
+ * il reste accepté, pour les pages encore en cache.
+ */
 export function validerInscription(
   corps: unknown,
   resoudreListe: (valeur: unknown) => { slug: string } | null,
@@ -53,11 +61,21 @@ export function validerInscription(
   const c = corps as Record<string, unknown>
   const email = normaliserEmail(c.email)
   if (!email) return { ok: false, erreur: "L'adresse e-mail n'est pas valide." }
-  if (c.consentement !== true) return { ok: false, erreur: 'Le consentement est nécessaire pour recevoir la veille.' }
   const profil = PROFILS.includes(c.profil as Profil) ? (c.profil as Profil) : 'autre'
-  const liste = resoudreListe(c.liste)
-  if (!liste) return { ok: false, erreur: "Cette veille n'est pas disponible." }
-  return { ok: true, valeur: { email, nom: nettoyerNom(c.nom), profil, liste: liste.slug } }
+  let demandees: unknown[]
+  if (c.listes === undefined) demandees = [c.liste]
+  else if (Array.isArray(c.listes) && c.listes.every((v) => typeof v === 'string' && v.length > 0)) demandees = c.listes
+  else return { ok: false, erreur: "Cette veille n'est pas disponible." }
+  if (demandees.length === 0) return { ok: false, erreur: 'Choisissez au moins une veille.' }
+  if (demandees.length > NB_LISTES_MAX) return { ok: false, erreur: 'Requête invalide.' }
+  const listes: string[] = []
+  for (const valeur of demandees) {
+    const liste = resoudreListe(valeur)
+    if (!liste) return { ok: false, erreur: "Cette veille n'est pas disponible." }
+    if (!listes.includes(liste.slug)) listes.push(liste.slug)
+  }
+  if (c.consentement !== true) return { ok: false, erreur: 'Le consentement est nécessaire pour recevoir la veille.' }
+  return { ok: true, valeur: { email, nom: nettoyerNom(c.nom), profil, listes } }
 }
 
 export function nouveauJeton(): string {

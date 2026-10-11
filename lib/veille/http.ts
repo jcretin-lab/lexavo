@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { envoyerConfirmationVeille } from './courriel'
 import { creerDepotSupabase } from './depot-supabase'
 import type { Outils } from './service'
-import { LISTE_PAR_DEFAUT, consentementPour, trouverListe } from './listes'
+import { CONSENTEMENT } from './listes'
 import { entetesCors, nouveauJeton } from './validation'
 
 export function reponse(corps: unknown, statut: number, origine: string | null): NextResponse {
@@ -25,6 +25,6 @@ export function creerOutils(): Outils {
     envoyerConfirmation: envoyerConfirmationVeille,
     nouveauJeton,
     maintenant: () => new Date(),
-    consentement: (liste) => consentementPour(trouverListe(liste) ?? trouverListe(LISTE_PAR_DEFAUT)!),
+    consentement: () => CONSENTEMENT,
   }
 }

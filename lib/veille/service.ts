@@ -30,18 +30,20 @@ export interface Depot {
   mettreAJour(id: string, champs: Partial<Omit<Abonne, 'id'>>): Promise<void>
   /** Les abonnés d'une liste, tous statuts confondus. */
   lister(liste: string): Promise<Abonne[]>
+  /** Toutes les lignes d'une adresse (une par veille), tous statuts confondus. */
+  listerParEmail(email: string): Promise<Abonne[]>
   /** Supprime les demandes en attente dont la dernière demande précède `enAttenteAvant`, et les désinscrits désinscrits avant `desinscritsAvant`. */
   supprimerAnciens(limites: { enAttenteAvant: string; desinscritsAvant: string }): Promise<{ enAttente: number; desinscrits: number }>
 }
 
 export interface Outils {
   depot: Depot
-  /** Envoie l'e-mail de confirmation ; renvoie faux en cas d'échec. */
-  envoyerConfirmation(email: string, jetonConfirmation: string, liste: string): Promise<boolean>
+  /** Envoie UN e-mail de confirmation pour toutes les veilles demandées en même temps ; renvoie faux en cas d'échec. `jetonConfirmation` : celui de la première. */
+  envoyerConfirmation(email: string, jetonConfirmation: string, listes: string[]): Promise<boolean>
   nouveauJeton(): string
   maintenant(): Date
-  /** Version et texte exacts du consentement affiché sur le formulaire de cette liste. */
-  consentement(liste: string): { version: string; texte: string }
+  /** Version et texte exacts du consentement affiché sous la liste des veilles du formulaire. */
+  consentement(): { version: string; texte: string }
 }
 
 /** Un lien de confirmation est valable 7 jours. */
@@ -55,53 +57,67 @@ export const DELAI_CONSERVATION_DESINSCRIT_MS = 3 * 365 * 24 * 60 * 60 * 1000
 
 export type ResultatInscription = 'confirmation_envoyee' | 'deja_confirme' | 'trop_tot' | 'echec_envoi'
 
+/**
+ * Inscription à une ou plusieurs veilles (`listes`, sans doublon) : une ligne, des jetons et un consentement par veille, mais UN SEUL e-mail de confirmation
+ * qui les énumère toutes, et un seul clic pour les confirmer (voir `confirmer`). Une veille déjà confirmée, ou demandée il y a moins de 10 minutes, est
+ * laissée de côté sans rien révéler : s'il n'en reste aucune à confirmer, aucun e-mail n'est envoyé.
+ */
 export async function inscrire(
   o: Outils,
-  demande: { email: string; nom: string | null; profil: string; liste: string },
+  demande: { email: string; nom: string | null; profil: string; listes: string[] },
 ): Promise<ResultatInscription> {
   const maintenant = o.maintenant()
   const iso = maintenant.toISOString()
-  const consentement = o.consentement(demande.liste)
-  const existant = await o.depot.trouverParEmailEtListe(demande.email, demande.liste)
+  const consentement = o.consentement()
+  const aConfirmer: { liste: string; jeton: string }[] = []
+  let dejaConfirmee = false
 
-  if (existant?.statut === 'confirme') return 'deja_confirme'
-  if (existant?.statut === 'en_attente' && maintenant.getTime() - Date.parse(existant.derniere_demande_le) < DELAI_RENVOI_MS) {
-    return 'trop_tot'
+  for (const liste of demande.listes) {
+    const existant = await o.depot.trouverParEmailEtListe(demande.email, liste)
+    if (existant?.statut === 'confirme') {
+      dejaConfirmee = true
+      continue
+    }
+    if (existant?.statut === 'en_attente' && maintenant.getTime() - Date.parse(existant.derniere_demande_le) < DELAI_RENVOI_MS) continue
+
+    const jetonConfirmation = o.nouveauJeton()
+    if (!existant) {
+      await o.depot.creer({
+        email: demande.email,
+        liste,
+        nom: demande.nom,
+        profil: demande.profil,
+        statut: 'en_attente',
+        jeton_confirmation: jetonConfirmation,
+        jeton_desinscription: o.nouveauJeton(),
+        consentement_version: consentement.version,
+        consentement_texte: consentement.texte,
+        cree_le: iso,
+        derniere_demande_le: iso,
+        confirme_le: null,
+        desinscrit_le: null,
+      })
+    } else {
+      // en attente depuis plus de 10 minutes, ou désinscrit qui revient : nouvelle demande, nouveaux jetons, nouveau consentement
+      await o.depot.mettreAJour(existant.id, {
+        nom: demande.nom ?? existant.nom,
+        profil: demande.profil,
+        statut: 'en_attente',
+        jeton_confirmation: jetonConfirmation,
+        jeton_desinscription: existant.statut === 'desinscrit' ? o.nouveauJeton() : existant.jeton_desinscription,
+        consentement_version: consentement.version,
+        consentement_texte: consentement.texte,
+        derniere_demande_le: iso,
+        confirme_le: null,
+        desinscrit_le: null,
+      })
+    }
+    aConfirmer.push({ liste, jeton: jetonConfirmation })
   }
 
-  const jetonConfirmation = o.nouveauJeton()
-  if (!existant) {
-    await o.depot.creer({
-      email: demande.email,
-      liste: demande.liste,
-      nom: demande.nom,
-      profil: demande.profil,
-      statut: 'en_attente',
-      jeton_confirmation: jetonConfirmation,
-      jeton_desinscription: o.nouveauJeton(),
-      consentement_version: consentement.version,
-      consentement_texte: consentement.texte,
-      cree_le: iso,
-      derniere_demande_le: iso,
-      confirme_le: null,
-      desinscrit_le: null,
-    })
-  } else {
-    // en attente depuis plus de 10 minutes, ou désinscrit qui revient : nouvelle demande, nouveaux jetons, nouveau consentement
-    await o.depot.mettreAJour(existant.id, {
-      nom: demande.nom ?? existant.nom,
-      profil: demande.profil,
-      statut: 'en_attente',
-      jeton_confirmation: jetonConfirmation,
-      jeton_desinscription: existant.statut === 'desinscrit' ? o.nouveauJeton() : existant.jeton_desinscription,
-      consentement_version: consentement.version,
-      consentement_texte: consentement.texte,
-      derniere_demande_le: iso,
-      confirme_le: null,
-      desinscrit_le: null,
-    })
-  }
-  return (await o.envoyerConfirmation(demande.email, jetonConfirmation, demande.liste)) ? 'confirmation_envoyee' : 'echec_envoi'
+  if (aConfirmer.length === 0) return dejaConfirmee ? 'deja_confirme' : 'trop_tot'
+  const envoye = await o.envoyerConfirmation(demande.email, aConfirmer[0].jeton, aConfirmer.map((a) => a.liste))
+  return envoye ? 'confirmation_envoyee' : 'echec_envoi'
 }
 
 export type ResultatConfirmation = 'confirme' | 'deja_confirme' | 'expire' | 'invalide'
@@ -113,7 +129,13 @@ export async function confirmer(o: Outils, jeton: string): Promise<ResultatConfi
   if (abonne.statut === 'desinscrit') return 'invalide'
   const maintenant = o.maintenant()
   if (maintenant.getTime() - Date.parse(abonne.derniere_demande_le) > DELAI_CONFIRMATION_MS) return 'expire'
-  await o.depot.mettreAJour(abonne.id, { statut: 'confirme', confirme_le: maintenant.toISOString() })
+  const iso = maintenant.toISOString()
+  await o.depot.mettreAJour(abonne.id, { statut: 'confirme', confirme_le: iso })
+  // Les autres veilles demandées avec celle-ci (même adresse, même instant de demande) sont énumérées dans le même e-mail : le même clic les confirme.
+  const memeDemande = (await o.depot.listerParEmail(abonne.email)).filter(
+    (a) => a.id !== abonne.id && a.statut === 'en_attente' && a.derniere_demande_le === abonne.derniere_demande_le,
+  )
+  for (const autre of memeDemande) await o.depot.mettreAJour(autre.id, { statut: 'confirme', confirme_le: iso })
   return 'confirme'
 }
 

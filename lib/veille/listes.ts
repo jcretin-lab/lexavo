@@ -60,16 +60,14 @@ export function listeOuverte(valeur: unknown): Liste | null {
   return liste?.ouverte ? liste : null
 }
 
-export const CONSENTEMENT_VERSION_LISTE = '2026-10-v3'
-
 /**
- * Texte EXACT du consentement affiché sur le formulaire d'une liste, enregistré comme preuve. Celui de la veille d'origine est inchangé depuis la
- * version 2026-10-v3 ; les autres suivent le même modèle avec le nom de la veille. Le formulaire de chaque page doit afficher ce texte à l'identique.
+ * Texte EXACT du consentement affiché sous la liste des veilles du formulaire (une seule page d'inscription pour toutes les veilles, avec une case par
+ * veille), enregistré comme preuve avec chaque inscription. Les veilles choisies sont les lignes enregistrées (une par veille cochée). La page doit
+ * afficher ce texte à l'identique (scripts/phase7/verifier_listes.py du projet de veille le vérifie).
+ * Versions : 2026-10-v3 = « la veille Lexavo » (une seule veille, avant le 12 octobre 2026) ; 2026-10-v4 = formulaire à choix multiple.
  */
-export function consentementPour(liste: Liste): { version: string; texte: string } {
-  const objet = liste.slug === LISTE_PAR_DEFAUT ? 'la veille Lexavo' : `la veille Lexavo « ${liste.nom} »`
-  return {
-    version: CONSENTEMENT_VERSION_LISTE,
-    texte: `J'accepte de recevoir ${objet} par e-mail, tous les quinze jours. Mon adresse sert uniquement à cet envoi, et je peux me désinscrire à tout moment, en un clic.`,
-  }
-}
+export const CONSENTEMENT = {
+  version: '2026-10-v4',
+  texte:
+    "J'accepte de recevoir par e-mail, tous les quinze jours, la ou les veilles Lexavo cochées ci-dessus. Mon adresse sert uniquement à ces envois, et je peux me désinscrire à tout moment, en un clic.",
+} as const
