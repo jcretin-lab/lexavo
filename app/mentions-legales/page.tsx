@@ -20,7 +20,7 @@ export default function MentionsLegalesPage() {
             Le site <strong>lexavo.fr</strong> est édité par :<br />
             <strong>Nom :</strong> PRETET Julien<br />
             <strong>Nom commercial :</strong> LEXAVO<br />
-            <strong>Adresse :</strong> 2 route de la Magnanerie, 78460 CHOISEL<br />
+            <strong>Adresse :</strong> 8 rue de Villarceaux, 78770 THOIRY<br />
             <strong>Email :</strong> contact@lexavo.fr<br />
             <strong>SIRET :</strong> 94997889400028<br />
             <strong>Statut :</strong> Entrepreneur individuel<br />

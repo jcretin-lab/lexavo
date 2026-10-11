@@ -19,7 +19,7 @@ export default function PolitiqueConfidentialitePage() {
           <h2 className="text-xl font-semibold text-gray-900 mb-4">3.1 Responsable du traitement</h2>
           <p className="text-gray-700 leading-relaxed">
             PRETET Julien — LEXAVO<br />
-            2 route de la Magnanerie, 78460 CHOISEL<br />
+            8 rue de Villarceaux, 78770 THOIRY<br />
             <a href="mailto:contact@lexavo.fr" className="text-blue-600 hover:underline">contact@lexavo.fr</a>
           </p>
         </section>
