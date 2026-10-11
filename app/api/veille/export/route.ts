@@ -1,10 +1,12 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { creerOutils } from '@/lib/veille/http'
+import { LISTE_PAR_DEFAUT, trouverListe } from '@/lib/veille/listes'
 import { exporter, purger } from '@/lib/veille/service'
 import { secretValide } from '@/lib/veille/validation'
 
 // Liste des abonnés confirmés et des désinscrits, lue par le programme qui envoie la veille avant chaque envoi (pour ne jamais
 // écrire à quelqu'un qui s'est désinscrit). Protégée par un secret (VEILLE_EXPORT_SECRET) : sans lui, la route reste fermée.
+// `?liste=<slug>` choisit la veille (par défaut la veille d'origine) ; toutes les listes connues sont exportables, ouvertes ou non.
 
 const SANS_CACHE = { 'Cache-Control': 'no-store' }
 
@@ -15,11 +17,15 @@ export async function GET(request: NextRequest) {
   const fourni = request.headers.get('authorization')?.replace(/^Bearer\s+/i, '') ?? null
   if (!secretValide(fourni, attendu)) return NextResponse.json({ error: 'Accès refusé.' }, { status: 401, headers: SANS_CACHE })
 
+  const demandee = request.nextUrl.searchParams.get('liste') ?? LISTE_PAR_DEFAUT
+  const liste = trouverListe(demandee)
+  if (!liste) return NextResponse.json({ error: 'Liste inconnue.' }, { status: 400, headers: SANS_CACHE })
+
   try {
     const outils = creerOutils()
     // Ménage prévu par la politique de confidentialité (demandes jamais confirmées, anciens désinscrits) : une panne ici ne bloque pas l'export.
     await purger(outils).catch((erreur) => console.error('[veille/purge]', erreur instanceof Error ? erreur.message : erreur))
-    return NextResponse.json(await exporter(outils), { headers: SANS_CACHE })
+    return NextResponse.json(await exporter(outils, liste.slug), { headers: SANS_CACHE })
   } catch (erreur) {
     console.error('[veille/export]', erreur instanceof Error ? erreur.message : erreur)
     return NextResponse.json({ error: 'Service momentanément indisponible.' }, { status: 503, headers: SANS_CACHE })

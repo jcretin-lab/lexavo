@@ -1,5 +1,6 @@
 // E-mail de confirmation d'inscription à la veille (double confirmation). Utilise l'envoi Resend déjà configuré pour l'application.
 import { send } from '@/lib/email'
+import { LISTE_PAR_DEFAUT, trouverListe, type Liste } from './listes'
 
 /** Adresse du site de la veille (pages de confirmation et de désinscription). */
 export const BASE_VEILLE = process.env.VEILLE_BASE_URL ?? 'https://veille.lexavo.fr'
@@ -8,15 +9,14 @@ export function lienConfirmation(jeton: string): string {
   return `${BASE_VEILLE}/confirmer.html?jeton=${encodeURIComponent(jeton)}`
 }
 
-export function htmlConfirmation(lien: string): string {
+export function htmlConfirmation(lien: string, liste: Liste = trouverListe(LISTE_PAR_DEFAUT)!): string {
   return `
     <div style="font-family: Georgia, 'Times New Roman', serif; max-width: 520px; margin: 0 auto; padding: 32px 24px; color: #0E1320;">
       <p style="font-family: Georgia, serif; font-style: italic; font-size: 28px; color: #1A3F7C; margin: 0 0 4px;">Lexavo<span style="color:#D4A24C;">.</span></p>
-      <p style="font-family: Arial, sans-serif; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #52606d; margin: 0 0 28px;">Veille · baux d'habitation et copropriété</p>
+      <p style="font-family: Arial, sans-serif; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #52606d; margin: 0 0 28px;">Veille · ${liste.nom}</p>
       <p style="font-size: 17px; line-height: 1.6; margin: 0 0 14px;">Bonjour,</p>
       <p style="font-size: 17px; line-height: 1.6; margin: 0 0 14px;">
-        Vous avez demandé à recevoir la veille Lexavo tous les quinze jours : les modifications des textes sur les baux d'habitation et
-        la copropriété, et les arrêts récents qui les citent.
+        Vous avez demandé à recevoir la veille Lexavo tous les quinze jours : ${liste.description}.
       </p>
       <p style="font-size: 17px; line-height: 1.6; margin: 0 0 22px;">Pour terminer votre inscription, confirmez votre adresse :</p>
       <p style="margin: 0 0 22px;">
@@ -40,7 +40,13 @@ export function htmlConfirmation(lien: string): string {
   `
 }
 
-export async function envoyerConfirmationVeille(email: string, jeton: string): Promise<boolean> {
-  const resultat = await send(email, 'Confirmez votre inscription à la veille Lexavo', htmlConfirmation(lienConfirmation(jeton)))
+/** Objet du message : inchangé pour la veille d'origine, avec le nom de la veille pour les autres. */
+export function sujetConfirmation(liste: Liste): string {
+  return liste.slug === LISTE_PAR_DEFAUT ? 'Confirmez votre inscription à la veille Lexavo' : `Confirmez votre inscription à la veille Lexavo « ${liste.nom} »`
+}
+
+export async function envoyerConfirmationVeille(email: string, jeton: string, slug: string = LISTE_PAR_DEFAUT): Promise<boolean> {
+  const liste = trouverListe(slug) ?? trouverListe(LISTE_PAR_DEFAUT)!
+  const resultat = await send(email, sujetConfirmation(liste), htmlConfirmation(lienConfirmation(jeton), liste))
   return resultat.ok
 }

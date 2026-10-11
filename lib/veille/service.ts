@@ -1,4 +1,4 @@
-// Newsletter « Veille Lexavo » — règles métier de l'inscription (double confirmation) et de la désinscription.
+// Newsletters « Veille Lexavo » (une liste d'abonnés par veille) — règles métier de l'inscription (double confirmation) et de la désinscription.
 // Aucun import : la base de données, l'envoi d'e-mail, l'horloge et les jetons sont fournis par l'appelant (`Outils`),
 // ce qui permet de tester toutes les règles avec de fausses dépendances (voir service.test.ts).
 
@@ -7,6 +7,8 @@ export type Statut = 'en_attente' | 'confirme' | 'desinscrit'
 export type Abonne = {
   id: string
   email: string
+  /** Veille à laquelle la personne est inscrite (slug, voir listes.ts) : la même adresse peut figurer dans plusieurs listes. */
+  liste: string
   nom: string | null
   profil: string
   statut: Statut
@@ -21,12 +23,13 @@ export type Abonne = {
 }
 
 export interface Depot {
-  trouverParEmail(email: string): Promise<Abonne | null>
+  trouverParEmailEtListe(email: string, liste: string): Promise<Abonne | null>
   trouverParJetonConfirmation(jeton: string): Promise<Abonne | null>
   trouverParJetonDesinscription(jeton: string): Promise<Abonne | null>
   creer(abonne: Omit<Abonne, 'id'>): Promise<void>
   mettreAJour(id: string, champs: Partial<Omit<Abonne, 'id'>>): Promise<void>
-  lister(): Promise<Abonne[]>
+  /** Les abonnés d'une liste, tous statuts confondus. */
+  lister(liste: string): Promise<Abonne[]>
   /** Supprime les demandes en attente dont la dernière demande précède `enAttenteAvant`, et les désinscrits désinscrits avant `desinscritsAvant`. */
   supprimerAnciens(limites: { enAttenteAvant: string; desinscritsAvant: string }): Promise<{ enAttente: number; desinscrits: number }>
 }
@@ -34,10 +37,11 @@ export interface Depot {
 export interface Outils {
   depot: Depot
   /** Envoie l'e-mail de confirmation ; renvoie faux en cas d'échec. */
-  envoyerConfirmation(email: string, jetonConfirmation: string): Promise<boolean>
+  envoyerConfirmation(email: string, jetonConfirmation: string, liste: string): Promise<boolean>
   nouveauJeton(): string
   maintenant(): Date
-  consentement: { version: string; texte: string }
+  /** Version et texte exacts du consentement affiché sur le formulaire de cette liste. */
+  consentement(liste: string): { version: string; texte: string }
 }
 
 /** Un lien de confirmation est valable 7 jours. */
@@ -53,11 +57,12 @@ export type ResultatInscription = 'confirmation_envoyee' | 'deja_confirme' | 'tr
 
 export async function inscrire(
   o: Outils,
-  demande: { email: string; nom: string | null; profil: string },
+  demande: { email: string; nom: string | null; profil: string; liste: string },
 ): Promise<ResultatInscription> {
   const maintenant = o.maintenant()
   const iso = maintenant.toISOString()
-  const existant = await o.depot.trouverParEmail(demande.email)
+  const consentement = o.consentement(demande.liste)
+  const existant = await o.depot.trouverParEmailEtListe(demande.email, demande.liste)
 
   if (existant?.statut === 'confirme') return 'deja_confirme'
   if (existant?.statut === 'en_attente' && maintenant.getTime() - Date.parse(existant.derniere_demande_le) < DELAI_RENVOI_MS) {
@@ -68,13 +73,14 @@ export async function inscrire(
   if (!existant) {
     await o.depot.creer({
       email: demande.email,
+      liste: demande.liste,
       nom: demande.nom,
       profil: demande.profil,
       statut: 'en_attente',
       jeton_confirmation: jetonConfirmation,
       jeton_desinscription: o.nouveauJeton(),
-      consentement_version: o.consentement.version,
-      consentement_texte: o.consentement.texte,
+      consentement_version: consentement.version,
+      consentement_texte: consentement.texte,
       cree_le: iso,
       derniere_demande_le: iso,
       confirme_le: null,
@@ -88,14 +94,14 @@ export async function inscrire(
       statut: 'en_attente',
       jeton_confirmation: jetonConfirmation,
       jeton_desinscription: existant.statut === 'desinscrit' ? o.nouveauJeton() : existant.jeton_desinscription,
-      consentement_version: o.consentement.version,
-      consentement_texte: o.consentement.texte,
+      consentement_version: consentement.version,
+      consentement_texte: consentement.texte,
       derniere_demande_le: iso,
       confirme_le: null,
       desinscrit_le: null,
     })
   }
-  return (await o.envoyerConfirmation(demande.email, jetonConfirmation)) ? 'confirmation_envoyee' : 'echec_envoi'
+  return (await o.envoyerConfirmation(demande.email, jetonConfirmation, demande.liste)) ? 'confirmation_envoyee' : 'echec_envoi'
 }
 
 export type ResultatConfirmation = 'confirme' | 'deja_confirme' | 'expire' | 'invalide'
@@ -135,8 +141,8 @@ export type Export = {
   desinscrits: string[]
 }
 
-export async function exporter(o: Outils): Promise<Export> {
-  const tous = await o.depot.lister()
+export async function exporter(o: Outils, liste: string): Promise<Export> {
+  const tous = await o.depot.lister(liste)
   return {
     genere_le: o.maintenant().toISOString(),
     abonnes: tous

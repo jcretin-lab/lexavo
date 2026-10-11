@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server'
 import { adresseIp, creerOutils, reponse, reponseOptions } from '@/lib/veille/http'
 import { creerLimiteur } from '@/lib/veille/limite'
+import { listeOuverte } from '@/lib/veille/listes'
 import { inscrire } from '@/lib/veille/service'
 import { estPiege, origineAutorisee, validerInscription } from '@/lib/veille/validation'
 
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
 
   if (estPiege(corps)) return reponse(REPONSE_GENERIQUE, 200, origine)       // robot : même réponse, aucune action
 
-  const validation = validerInscription(corps)
+  const validation = validerInscription(corps, listeOuverte)
   if (!validation.ok) return reponse({ error: validation.erreur }, 400, origine)
 
   try {

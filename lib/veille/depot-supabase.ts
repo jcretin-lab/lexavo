@@ -1,4 +1,4 @@
-// Accès à la table `veille_abonnes` avec la clé de service (côté serveur uniquement : cette clé ne doit jamais atteindre le navigateur).
+// Accès à la table `veille_abonnes` (colonne `liste` : voir supabase-migration-veille-listes.sql, à exécuter AVANT de déployer ce code) avec la clé de service (côté serveur uniquement : cette clé ne doit jamais atteindre le navigateur).
 // La table n'a aucune politique d'accès publique (voir supabase-migration-veille-abonnes.sql) : seules ces routes serveur y touchent.
 import { createClient } from '@supabase/supabase-js'
 import type { Abonne, Depot } from './service'
@@ -18,7 +18,11 @@ export function creerDepotSupabase(): Depot {
   }
 
   return {
-    trouverParEmail: (email) => un('email', email),
+    async trouverParEmailEtListe(email, liste) {
+      const { data, error } = await supabase.from(TABLE).select('*').eq('email', email).eq('liste', liste).maybeSingle()
+      if (error) throw new Error(`[veille] lecture impossible : ${error.message}`)
+      return (data as Abonne | null) ?? null
+    },
     trouverParJetonConfirmation: (jeton) => un('jeton_confirmation', jeton),
     trouverParJetonDesinscription: (jeton) => un('jeton_desinscription', jeton),
     async creer(abonne) {
@@ -29,8 +33,8 @@ export function creerDepotSupabase(): Depot {
       const { error } = await supabase.from(TABLE).update(champs).eq('id', id)
       if (error) throw new Error(`[veille] mise à jour impossible : ${error.message}`)
     },
-    async lister() {
-      const { data, error } = await supabase.from(TABLE).select('*').order('cree_le', { ascending: true })
+    async lister(liste) {
+      const { data, error } = await supabase.from(TABLE).select('*').eq('liste', liste).order('cree_le', { ascending: true })
       if (error) throw new Error(`[veille] liste impossible : ${error.message}`)
       return (data ?? []) as Abonne[]
     },

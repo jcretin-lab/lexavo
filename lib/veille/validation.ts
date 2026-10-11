@@ -2,14 +2,7 @@
 // Ce module n'importe rien du projet : il est testé directement par `npm test` (voir validation.test.ts).
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto'
 
-/** Version et texte EXACTS du consentement affichés sur le formulaire. Le serveur enregistre sa propre copie du texte
- *  (jamais celle envoyée par le navigateur) : c'est la preuve de ce que la personne a accepté. Changer le texte = changer la version. */
-// Versions : v1 (avant le 10 octobre 2026) « … chaque semaine … par e-mail (test gratuit) » ; v2 (10 octobre) « … chaque semaine … par e-mail » ;
-// v3 (11 octobre) « … par e-mail, tous les quinze jours ». Chaque inscription garde le texte de sa version.
-export const CONSENTEMENT_VERSION = '2026-10-v3'
-export const CONSENTEMENT_TEXTE =
-  "J'accepte de recevoir la veille Lexavo par e-mail, tous les quinze jours. Mon adresse sert uniquement à cet envoi, " +
-  'et je peux me désinscrire à tout moment, en un clic.'
+// Le consentement (version et texte EXACTS affichés sur le formulaire, enregistrés comme preuve) dépend de la liste : voir listes.ts, consentementPour.
 
 export const PROFILS = ['avocat', 'syndic', 'gestionnaire', 'bailleur', 'notaire', 'autre'] as const
 export type Profil = (typeof PROFILS)[number]
@@ -42,7 +35,7 @@ function nettoyerNom(valeur: unknown): string | null {
   return nom.length === 0 ? null : nom.slice(0, LONGUEUR_MAX_NOM)
 }
 
-export type Inscription = { email: string; nom: string | null; profil: Profil }
+export type Inscription = { email: string; nom: string | null; profil: Profil; liste: string }
 
 /** Champ caché du formulaire, invisible pour un humain : s'il est rempli, c'est un robot. */
 export function estPiege(corps: unknown): boolean {
@@ -51,14 +44,20 @@ export function estPiege(corps: unknown): boolean {
   return typeof piege === 'string' && piege.trim().length > 0
 }
 
-export function validerInscription(corps: unknown): { ok: true; valeur: Inscription } | { ok: false; erreur: string } {
+/** `resoudreListe` : renvoie la liste demandée si elle existe et est ouverte aux inscriptions (voir listes.ts : listeOuverte), sinon null. */
+export function validerInscription(
+  corps: unknown,
+  resoudreListe: (valeur: unknown) => { slug: string } | null,
+): { ok: true; valeur: Inscription } | { ok: false; erreur: string } {
   if (typeof corps !== 'object' || corps === null) return { ok: false, erreur: 'Requête invalide.' }
   const c = corps as Record<string, unknown>
   const email = normaliserEmail(c.email)
   if (!email) return { ok: false, erreur: "L'adresse e-mail n'est pas valide." }
   if (c.consentement !== true) return { ok: false, erreur: 'Le consentement est nécessaire pour recevoir la veille.' }
   const profil = PROFILS.includes(c.profil as Profil) ? (c.profil as Profil) : 'autre'
-  return { ok: true, valeur: { email, nom: nettoyerNom(c.nom), profil } }
+  const liste = resoudreListe(c.liste)
+  if (!liste) return { ok: false, erreur: "Cette veille n'est pas disponible." }
+  return { ok: true, valeur: { email, nom: nettoyerNom(c.nom), profil, liste: liste.slug } }
 }
 
 export function nouveauJeton(): string {

@@ -1,9 +1,8 @@
 // Tests de la logique pure de la newsletter : `npm test`
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
+import { LISTE_PAR_DEFAUT, consentementPour, trouverListe } from './listes.ts'
 import {
-  CONSENTEMENT_TEXTE,
-  CONSENTEMENT_VERSION,
   entetesCors,
   estPiege,
   jetonValide,
@@ -13,6 +12,9 @@ import {
   secretValide,
   validerInscription,
 } from './validation.ts'
+
+// Résolution de liste simulée : absente ou vide = « liste-a », « liste-b » ouverte, tout le reste refusé.
+const resoudre = (valeur: unknown) => (valeur === undefined || valeur === '' ? { slug: 'liste-a' } : valeur === 'liste-b' ? { slug: 'liste-b' } : null)
 
 test('normaliserEmail : minuscules, espaces retirés', () => {
   assert.equal(normaliserEmail('  Prenom.Nom@Exemple.FR '), 'prenom.nom@exemple.fr')
@@ -29,28 +31,28 @@ test('normaliserEmail : refuse les adresses invalides', () => {
 })
 
 test('validerInscription : cas nominal et valeurs par défaut', () => {
-  const r = validerInscription({ email: 'A@Exemple.fr', consentement: true })
-  assert.deepEqual(r, { ok: true, valeur: { email: 'a@exemple.fr', nom: null, profil: 'autre' } })
+  const r = validerInscription({ email: 'A@Exemple.fr', consentement: true }, resoudre)
+  assert.deepEqual(r, { ok: true, valeur: { email: 'a@exemple.fr', nom: null, profil: 'autre', liste: 'liste-a' } })
 })
 
 test('validerInscription : nom nettoyé, profil connu conservé, profil inconnu ramené à « autre »', () => {
-  const r = validerInscription({ email: 'a@exemple.fr', consentement: true, nom: '  Marie \n  Dupont\u0007 ', profil: 'avocat' })
-  assert.deepEqual(r, { ok: true, valeur: { email: 'a@exemple.fr', nom: 'Marie Dupont', profil: 'avocat' } })
-  const inconnu = validerInscription({ email: 'a@exemple.fr', consentement: true, profil: 'juge' })
+  const r = validerInscription({ email: 'a@exemple.fr', consentement: true, nom: '  Marie \n  Dupont\u0007 ', profil: 'avocat' }, resoudre)
+  assert.deepEqual(r, { ok: true, valeur: { email: 'a@exemple.fr', nom: 'Marie Dupont', profil: 'avocat', liste: 'liste-a' } })
+  const inconnu = validerInscription({ email: 'a@exemple.fr', consentement: true, profil: 'juge' }, resoudre)
   assert.equal(inconnu.ok && inconnu.valeur.profil, 'autre')
-  const long = validerInscription({ email: 'a@exemple.fr', consentement: true, nom: 'x'.repeat(500) })
+  const long = validerInscription({ email: 'a@exemple.fr', consentement: true, nom: 'x'.repeat(500) }, resoudre)
   assert.equal(long.ok && long.valeur.nom?.length, 100)
 })
 
 test('validerInscription : le consentement est obligatoire et doit valoir exactement vrai', () => {
   for (const consentement of [undefined, false, 'true', 1, 'oui', null]) {
-    const r = validerInscription({ email: 'a@exemple.fr', consentement })
+    const r = validerInscription({ email: 'a@exemple.fr', consentement }, resoudre)
     assert.equal(r.ok, false)
   }
 })
 
 test('validerInscription : corps invalide', () => {
-  for (const corps of [null, undefined, 'texte', 12, []]) assert.equal(validerInscription(corps).ok, false)
+  for (const corps of [null, undefined, 'texte', 12, []]) assert.equal(validerInscription(corps, resoudre).ok, false)
 })
 
 test('estPiege : champ caché rempli = robot', () => {
@@ -92,7 +94,19 @@ test('secretValide : comparaison stricte, secret absent = refus', () => {
 })
 
 test('consentement : version et texte définis, et le texte parle de désinscription et d\'usage unique', () => {
-  assert.match(CONSENTEMENT_VERSION, /^\d{4}-\d{2}-v\d+$/)
-  assert.match(CONSENTEMENT_TEXTE, /désinscrire/)
-  assert.match(CONSENTEMENT_TEXTE, /uniquement/)
+  const { version, texte } = consentementPour(trouverListe(LISTE_PAR_DEFAUT)!)
+  assert.match(version, /^\d{4}-\d{2}-v\d+$/)
+  assert.match(texte, /désinscrire/)
+  assert.match(texte, /uniquement/)
+})
+
+test("validerInscription : la liste demandée est conservée, la liste par défaut s'applique si elle est absente, une liste fermée ou inconnue est refusée", () => {
+  const defaut = validerInscription({ email: 'a@exemple.fr', consentement: true }, resoudre)
+  assert.ok(defaut.ok && defaut.valeur.liste === 'liste-a')
+  const autre = validerInscription({ email: 'a@exemple.fr', consentement: true, liste: 'liste-b' }, resoudre)
+  assert.ok(autre.ok && autre.valeur.liste === 'liste-b')
+  for (const mauvaise of ['liste-fermee', 42, {}, ['liste-b']]) {
+    const r = validerInscription({ email: 'a@exemple.fr', consentement: true, liste: mauvaise }, resoudre)
+    assert.equal(r.ok, false, `devrait refuser : ${JSON.stringify(mauvaise)}`)
+  }
 })

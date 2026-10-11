@@ -196,8 +196,8 @@ export default function PolitiqueConfidentialitePage() {
         <section className="mb-10">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">3.10 Newsletter « Veille Lexavo »</h2>
           <p className="text-gray-700 leading-relaxed mb-3">
-            La veille Lexavo est une lettre d&apos;information juridique envoyée tous les quinze jours : modifications de textes relatifs aux baux d&apos;habitation
-            et à la copropriété, et décisions de justice récentes qui les citent. On s&apos;y inscrit sur{' '}
+            La veille Lexavo est une lettre d&apos;information juridique envoyée tous les quinze jours : décisions de justice récentes qui citent des textes
+            relatifs aux baux d&apos;habitation et à la copropriété, et modifications de ces textes lorsqu&apos;il y en a. On s&apos;y inscrit sur{' '}
             <a href="https://veille.lexavo.fr" className="text-blue-600 hover:underline">veille.lexavo.fr</a>. Cette section complète les
             précédentes pour ce seul traitement.
           </p>

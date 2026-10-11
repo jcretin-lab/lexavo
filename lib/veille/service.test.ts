@@ -19,11 +19,11 @@ import {
 class DepotMemoire implements Depot {
   lignes: Abonne[] = []
   private compteur = 0
-  async trouverParEmail(email: string) { return this.lignes.find((a) => a.email === email) ?? null }
+  async trouverParEmailEtListe(email: string, liste: string) { return this.lignes.find((a) => a.email === email && a.liste === liste) ?? null }
   async trouverParJetonConfirmation(j: string) { return this.lignes.find((a) => a.jeton_confirmation === j) ?? null }
   async trouverParJetonDesinscription(j: string) { return this.lignes.find((a) => a.jeton_desinscription === j) ?? null }
   async creer(a: Omit<Abonne, 'id'>) {
-    if (this.lignes.some((l) => l.email === a.email)) throw new Error('doublon')
+    if (this.lignes.some((l) => l.email === a.email && l.liste === a.liste)) throw new Error('doublon')
     this.lignes.push({ id: `id-${++this.compteur}`, ...a })
   }
   async mettreAJour(id: string, champs: Partial<Omit<Abonne, 'id'>>) {
@@ -31,7 +31,7 @@ class DepotMemoire implements Depot {
     if (!ligne) throw new Error('introuvable')
     Object.assign(ligne, champs)
   }
-  async lister() { return [...this.lignes] }
+  async lister(liste: string) { return this.lignes.filter((a) => a.liste === liste) }
   async supprimerAnciens(l: { enAttenteAvant: string; desinscritsAvant: string }) {
     const enAttente = this.lignes.filter((a) => a.statut === 'en_attente' && a.derniere_demande_le < l.enAttenteAvant)
     const desinscrits = this.lignes.filter((a) => a.statut === 'desinscrit' && (a.desinscrit_le ?? '') < l.desinscritsAvant)
@@ -41,21 +41,21 @@ class DepotMemoire implements Depot {
 }
 
 function monde(debut = '2026-10-08T10:00:00.000Z') {
-  const etat = { maintenant: new Date(debut), envois: [] as { email: string; jeton: string }[], echecEnvoi: false, n: 0 }
+  const etat = { maintenant: new Date(debut), envois: [] as { email: string; jeton: string; liste: string }[], echecEnvoi: false, n: 0 }
   const outils: Outils = {
     depot: new DepotMemoire(),
-    async envoyerConfirmation(email, jeton) {
-      etat.envois.push({ email, jeton })
+    async envoyerConfirmation(email, jeton, liste) {
+      etat.envois.push({ email, jeton, liste })
       return !etat.echecEnvoi
     },
     nouveauJeton: () => String(++etat.n).padStart(48, '0'),
     maintenant: () => etat.maintenant,
-    consentement: { version: 'v-test', texte: 'texte de test' },
+    consentement: (liste) => ({ version: 'v-test', texte: liste === 'liste-a' ? 'texte de test' : `texte de ${liste}` }),
   }
   const avancer = (ms: number) => { etat.maintenant = new Date(etat.maintenant.getTime() + ms) }
   return { etat, outils, depot: outils.depot as DepotMemoire, avancer }
 }
-const demande = { email: 'a@exemple.fr', nom: 'A', profil: 'avocat' }
+const demande = { email: 'a@exemple.fr', nom: 'A', profil: 'avocat', liste: 'liste-a' }
 
 test('première inscription : ligne en attente, consentement enregistré, e-mail de confirmation envoyé', async () => {
   const { etat, outils, depot } = monde()
@@ -92,7 +92,7 @@ test('aucune confirmation sans clic : l\'inscription seule ne rend jamais l\'abo
   await inscrire(outils, demande)
   await inscrire(outils, demande)
   assert.equal(depot.lignes[0].statut, 'en_attente')
-  assert.equal((await exporter(outils)).abonnes.length, 0)
+  assert.equal((await exporter(outils, 'liste-a')).abonnes.length, 0)
 })
 
 test('même adresse redemandée trop tôt : pas de nouvel e-mail ; après 10 minutes : nouveau jeton, l\'ancien est invalidé', async () => {
@@ -159,12 +159,12 @@ test('échec d\'envoi de l\'e-mail : signalé (la personne pourra réessayer)', 
 
 test('export : seulement les confirmés, avec leur jeton de désinscription ; les désinscrits listés à part ; rien d\'autre', async () => {
   const { outils, depot } = monde()
-  for (const email of ['c@exemple.fr', 'p@exemple.fr', 'd@exemple.fr']) await inscrire(outils, { email, nom: null, profil: 'syndic' })
+  for (const email of ['c@exemple.fr', 'p@exemple.fr', 'd@exemple.fr']) await inscrire(outils, { email, nom: null, profil: 'syndic', liste: 'liste-a' })
   const [c, , d] = depot.lignes
   await confirmer(outils, c.jeton_confirmation)
   await confirmer(outils, d.jeton_confirmation)
   await desinscrire(outils, d.jeton_desinscription)
-  const e = await exporter(outils)
+  const e = await exporter(outils, 'liste-a')
   assert.deepEqual(e.abonnes.map((a) => a.email), ['c@exemple.fr'])
   assert.equal(e.abonnes[0].jeton_desinscription, c.jeton_desinscription)
   assert.deepEqual(e.desinscrits, ['d@exemple.fr'])
@@ -174,8 +174,8 @@ test('export : seulement les confirmés, avec leur jeton de désinscription ; le
 
 test('ménage : une demande jamais confirmée disparaît après 30 jours, un abonné confirmé jamais', async () => {
   const { outils, depot, avancer } = monde()
-  await inscrire(outils, { email: 'attente@exemple.fr', nom: null, profil: 'autre' })
-  await inscrire(outils, { email: 'confirme@exemple.fr', nom: null, profil: 'autre' })
+  await inscrire(outils, { email: 'attente@exemple.fr', nom: null, profil: 'autre', liste: 'liste-a' })
+  await inscrire(outils, { email: 'confirme@exemple.fr', nom: null, profil: 'autre', liste: 'liste-a' })
   await confirmer(outils, depot.lignes[1].jeton_confirmation)
   avancer(DELAI_PURGE_EN_ATTENTE_MS - 1000)
   assert.deepEqual(await purger(outils), { enAttente: 0, desinscrits: 0 })              // pas encore 30 jours
@@ -196,4 +196,44 @@ test('ménage : un désinscrit est effacé 3 ans après sa désinscription, pas 
   avancer(2000)
   assert.deepEqual(await purger(outils), { enAttente: 0, desinscrits: 1 })
   assert.equal(depot.lignes.length, 0)
+})
+
+test('plusieurs veilles : la même adresse a une ligne, des jetons et un consentement par liste', async () => {
+  const { etat, outils, depot } = monde()
+  assert.equal(await inscrire(outils, demande), 'confirmation_envoyee')
+  assert.equal(await inscrire(outils, { ...demande, liste: 'liste-b' }), 'confirmation_envoyee')   // pas « trop tôt » ni « déjà confirmé » : autre liste
+  assert.equal(depot.lignes.length, 2)
+  assert.deepEqual(depot.lignes.map((a) => a.liste), ['liste-a', 'liste-b'])
+  assert.deepEqual(depot.lignes.map((a) => a.consentement_texte), ['texte de test', 'texte de liste-b'])   // chaque liste garde le texte qu'elle a montré
+  assert.deepEqual(etat.envois.map((e) => e.liste), ['liste-a', 'liste-b'])
+  assert.notEqual(depot.lignes[0].jeton_desinscription, depot.lignes[1].jeton_desinscription)
+})
+
+test("plusieurs veilles : confirmer ou se désinscrire d'une liste ne touche pas l'autre", async () => {
+  const { outils, depot } = monde()
+  await inscrire(outils, demande)
+  await inscrire(outils, { ...demande, liste: 'liste-b' })
+  const [a, b] = depot.lignes
+  await confirmer(outils, a.jeton_confirmation)
+  await confirmer(outils, b.jeton_confirmation)
+  await desinscrire(outils, a.jeton_desinscription)
+  assert.deepEqual(depot.lignes.map((l) => l.statut), ['desinscrit', 'confirme'])
+  assert.equal(await inscrire(outils, demande), 'confirmation_envoyee')                    // retour dans la liste A seulement
+  assert.equal(await inscrire(outils, { ...demande, liste: 'liste-b' }), 'deja_confirme')
+})
+
+test("plusieurs veilles : l'export d'une liste ne contient ni les abonnés ni les désinscrits des autres", async () => {
+  const { outils, depot } = monde()
+  await inscrire(outils, demande)
+  await inscrire(outils, { email: 'b@exemple.fr', nom: null, profil: 'notaire', liste: 'liste-b' })
+  await inscrire(outils, { email: 'c@exemple.fr', nom: null, profil: 'notaire', liste: 'liste-b' })
+  for (const l of depot.lignes) await confirmer(outils, l.jeton_confirmation)
+  await desinscrire(outils, depot.lignes[2].jeton_desinscription)
+  const a = await exporter(outils, 'liste-a')
+  const b = await exporter(outils, 'liste-b')
+  assert.deepEqual(a.abonnes.map((x) => x.email), ['a@exemple.fr'])
+  assert.deepEqual(a.desinscrits, [])
+  assert.deepEqual(b.abonnes.map((x) => x.email), ['b@exemple.fr'])
+  assert.deepEqual(b.desinscrits, ['c@exemple.fr'])
+  assert.deepEqual((await exporter(outils, 'liste-inconnue')).abonnes, [])
 })
