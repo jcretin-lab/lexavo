@@ -10,7 +10,7 @@ const ED = {
   gold: '#B8872A',
 }
 
-export const URL_VEILLE = 'https://veille.lexavo.fr'
+export const URL_VEILLE = 'https://veille.lexavo.fr/baux-copropriete'
 
 export function VeilleEncart() {
   return (
