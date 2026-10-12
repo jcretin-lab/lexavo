@@ -1,8 +1,9 @@
 // Les veilles Lexavo (une « liste » d'abonnés par newsletter). Aucun import : module pur, testé par `npm test` (voir listes.test.ts).
 //
-// Une veille n'accepte d'inscriptions que si `ouverte` est vrai. Les autres sont préparées mais dormantes : leur page n'est pas en ligne et
-// la route d'inscription les refuse. Pour en ouvrir une : relecteur du domaine ayant validé sa liste de textes, puis `ouverte: true` ici
-// et déploiement (voir notes/activation-newsletters.md du projet de veille). Les `slug` sont ceux de config/newsletters/<slug>.toml du projet de veille.
+// Une veille n'accepte d'inscriptions que si `ouverte` est vrai : la route d'inscription refuse les autres, et leur case est grisée « Bientôt » sur la
+// page de veille.lexavo.fr. Les cinq veilles sont ouvertes depuis le 12 octobre 2026 (demande de l'utilisatrice ou de l'utilisateur, avant la relecture
+// de leur liste de textes par un avocat du domaine). `ouverte` doit rester égal au statut « actif » de config/newsletters/<slug>.toml du projet de veille
+// (scripts/phase7/verifier_listes.py le contrôle ; voir notes/activation-newsletters.md). Les `slug` sont ceux de ces fichiers.
 
 export type Liste = {
   slug: string
@@ -27,25 +28,25 @@ export const LISTES: readonly Liste[] = [
     slug: 'societes-fonds-baux-commerciaux',
     nom: 'Sociétés, fonds de commerce et baux commerciaux',
     description: 'les arrêts récents de la Cour de cassation qui citent le Code de commerce sur les sociétés, les fonds de commerce et les baux commerciaux, et le Code civil sur la société et la vente, et les modifications de ces textes quand il y en a',
-    ouverte: false,
+    ouverte: true,
   },
   {
     slug: 'assurance-responsabilite-construction',
     nom: 'Assurance, responsabilité et construction',
     description: 'les arrêts récents de la Cour de cassation qui citent le Code des assurances, la loi du 5 juillet 1985, la responsabilité civile et les textes de la construction, et les modifications de ces textes quand il y en a',
-    ouverte: false,
+    ouverte: true,
   },
   {
     slug: 'contrats-cour-de-cassation',
     nom: 'Contrats, Cour de cassation',
     description: 'les arrêts récents de la Cour de cassation qui citent le droit commun des contrats, et les modifications des articles 1101 à 1233 du Code civil quand il y en a',
-    ouverte: false,
+    ouverte: true,
   },
   {
     slug: 'entreprises-en-difficulte',
     nom: 'Entreprises en difficulté',
     description: 'les arrêts récents de la Cour de cassation qui citent le livre VI du Code de commerce, et les modifications de ces articles quand il y en a',
-    ouverte: false,
+    ouverte: true,
   },
 ]
 

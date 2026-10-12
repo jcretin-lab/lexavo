@@ -11,14 +11,16 @@ test('les cinq veilles sont déclarées, avec des slugs valides et uniques', () 
   assert.equal(LISTES[0].slug, LISTE_PAR_DEFAUT)
 })
 
-test("seule la veille d'origine est ouverte aux inscriptions : les autres sont dormantes", () => {
-  assert.deepEqual(LISTES.filter((l) => l.ouverte).map((l) => l.slug), ['baux-copropriete'])
+test('les cinq veilles présentées sont ouvertes aux inscriptions (décision du 12 octobre 2026)', () => {
+  assert.deepEqual(LISTES.filter((l) => l.ouverte).map((l) => l.slug), LISTES.map((l) => l.slug))
+  for (const l of LISTES) assert.equal(listeOuverte(l.slug)?.slug, l.slug)
 })
 
-test('listeOuverte : absente ou vide = veille d\'origine ; fermée, inconnue ou de mauvais type = refusée', () => {
+test("listeOuverte : absente ou vide = veille d'origine ; inconnue, supprimée ou de mauvais type = refusée", () => {
   for (const defaut of [undefined, null, '']) assert.equal(listeOuverte(defaut)?.slug, 'baux-copropriete')
   assert.equal(listeOuverte('baux-copropriete')?.slug, 'baux-copropriete')
-  for (const refusee of ['contrats-cour-de-cassation', 'baux-commerciaux-fonds', 'inconnue', 'BAUX-COPROPRIETE', 42, {}, ['baux-copropriete']]) {
+  // les deux anciennes veilles regroupées le 11 octobre 2026 n'existent plus
+  for (const refusee of ['baux-commerciaux-fonds', 'construction-urbanisme', 'societes-cessions', 'inconnue', 'BAUX-COPROPRIETE', 42, {}, ['baux-copropriete']]) {
     assert.equal(listeOuverte(refusee), null, `devrait refuser : ${JSON.stringify(refusee)}`)
   }
 })
