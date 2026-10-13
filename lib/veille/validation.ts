@@ -38,7 +38,7 @@ function nettoyerNom(valeur: unknown): string | null {
 /** `listes` : les veilles choisies (slugs, sans doublon), toutes ouvertes aux inscriptions. */
 export type Inscription = { email: string; nom: string | null; profil: Profil; listes: string[] }
 
-/** Nombre maximal de veilles dans une même demande (il n'y en a que quatre : tout ce qui dépasse est un abus). */
+/** Nombre maximal de veilles dans une même demande (il n'y en a que cinq : tout ce qui dépasse est un abus). */
 const NB_LISTES_MAX = 10
 
 /** Champ caché du formulaire, invisible pour un humain : s'il est rempli, c'est un robot. */

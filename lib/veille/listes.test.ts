@@ -3,8 +3,8 @@ import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { CONSENTEMENT, LISTES, LISTE_PAR_DEFAUT, listeOuverte, trouverListe } from './listes.ts'
 
-test('les quatre veilles sont déclarées, avec des slugs valides et uniques', () => {
-  assert.equal(LISTES.length, 4)
+test('les cinq veilles sont déclarées, avec des slugs valides et uniques', () => {
+  assert.equal(LISTES.length, 5)
   const slugs = LISTES.map((l) => l.slug)
   assert.equal(new Set(slugs).size, slugs.length)
   for (const slug of slugs) assert.match(slug, /^[a-z0-9]+(-[a-z0-9]+)*$/)         // le même format que la contrainte SQL de la colonne liste
@@ -27,6 +27,7 @@ test("listeOuverte : absente ou vide = veille d'origine ; inconnue, supprimée o
 
 test("trouverListe : connaît toutes les veilles, ouvertes ou non (l'export en a besoin)", () => {
   assert.equal(trouverListe('contrats-cour-de-cassation')?.nom, 'Contrats, Cour de cassation')
+  assert.equal(trouverListe('famille-regimes-successions')?.nom, 'Famille, régimes matrimoniaux et successions')
   assert.equal(trouverListe('x'), null)
   assert.equal(trouverListe(undefined), null)
 })

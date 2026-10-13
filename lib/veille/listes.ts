@@ -43,6 +43,13 @@ export const LISTES: readonly Liste[] = [
     description: 'les arrêts récents de la Cour de cassation qui citent le droit commun des contrats, et les modifications des articles 1101 à 1233 du Code civil quand il y en a',
     ouverte: true,
   },
+  // Ouverte le 13 octobre 2026, avant la relecture de sa liste d'articles par un avocat en droit de la famille et un notaire.
+  {
+    slug: 'famille-regimes-successions',
+    nom: 'Famille, régimes matrimoniaux et successions',
+    description: "les arrêts récents de la Cour de cassation qui citent les articles du Code civil sur le mariage, le divorce, la filiation, l'autorité parentale, la protection des majeurs, les successions, les libéralités et les régimes matrimoniaux, et les modifications de ces articles quand il y en a",
+    ouverte: true,
+  },
 ]
 
 export function trouverListe(slug: unknown): Liste | null {
