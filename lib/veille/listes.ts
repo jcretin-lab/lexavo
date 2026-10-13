@@ -1,7 +1,7 @@
 // Les veilles Lexavo (une « liste » d'abonnés par newsletter). Aucun import : module pur, testé par `npm test` (voir listes.test.ts).
 //
 // Une veille n'accepte d'inscriptions que si `ouverte` est vrai : la route d'inscription refuse les autres, et leur case est grisée « Bientôt » sur la
-// page de veille.lexavo.fr. Les cinq veilles sont ouvertes depuis le 12 octobre 2026 (demande de l'utilisatrice ou de l'utilisateur, avant la relecture
+// page de veille.lexavo.fr. Les veilles présentées sont toutes ouvertes depuis le 12 octobre 2026 (demande de l'utilisatrice ou de l'utilisateur, avant la relecture
 // de leur liste de textes par un avocat du domaine). `ouverte` doit rester égal au statut « actif » de config/newsletters/<slug>.toml du projet de veille
 // (scripts/phase7/verifier_listes.py le contrôle ; voir notes/activation-newsletters.md). Les `slug` sont ceux de ces fichiers.
 
@@ -24,6 +24,7 @@ export const LISTES: readonly Liste[] = [
     ouverte: true,
   },
   // Regroupements du 11 octobre 2026 : « baux commerciaux et fonds » rejoint les sociétés, « construction et urbanisme » rejoint l'assurance.
+  // La veille « entreprises en difficulté » (livre VI du Code de commerce) a été supprimée le 13 octobre 2026, sans abonné confirmé.
   {
     slug: 'societes-fonds-baux-commerciaux',
     nom: 'Sociétés, fonds de commerce et baux commerciaux',
@@ -40,12 +41,6 @@ export const LISTES: readonly Liste[] = [
     slug: 'contrats-cour-de-cassation',
     nom: 'Contrats, Cour de cassation',
     description: 'les arrêts récents de la Cour de cassation qui citent le droit commun des contrats, et les modifications des articles 1101 à 1233 du Code civil quand il y en a',
-    ouverte: true,
-  },
-  {
-    slug: 'entreprises-en-difficulte',
-    nom: 'Entreprises en difficulté',
-    description: 'les arrêts récents de la Cour de cassation qui citent le livre VI du Code de commerce, et les modifications de ces articles quand il y en a',
     ouverte: true,
   },
 ]

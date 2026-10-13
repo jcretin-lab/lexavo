@@ -3,15 +3,15 @@ import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { CONSENTEMENT, LISTES, LISTE_PAR_DEFAUT, listeOuverte, trouverListe } from './listes.ts'
 
-test('les cinq veilles sont déclarées, avec des slugs valides et uniques', () => {
-  assert.equal(LISTES.length, 5)
+test('les quatre veilles sont déclarées, avec des slugs valides et uniques', () => {
+  assert.equal(LISTES.length, 4)
   const slugs = LISTES.map((l) => l.slug)
   assert.equal(new Set(slugs).size, slugs.length)
   for (const slug of slugs) assert.match(slug, /^[a-z0-9]+(-[a-z0-9]+)*$/)         // le même format que la contrainte SQL de la colonne liste
   assert.equal(LISTES[0].slug, LISTE_PAR_DEFAUT)
 })
 
-test('les cinq veilles présentées sont ouvertes aux inscriptions (décision du 12 octobre 2026)', () => {
+test('les veilles présentées sont toutes ouvertes aux inscriptions (décision du 12 octobre 2026)', () => {
   assert.deepEqual(LISTES.filter((l) => l.ouverte).map((l) => l.slug), LISTES.map((l) => l.slug))
   for (const l of LISTES) assert.equal(listeOuverte(l.slug)?.slug, l.slug)
 })
@@ -19,8 +19,8 @@ test('les cinq veilles présentées sont ouvertes aux inscriptions (décision du
 test("listeOuverte : absente ou vide = veille d'origine ; inconnue, supprimée ou de mauvais type = refusée", () => {
   for (const defaut of [undefined, null, '']) assert.equal(listeOuverte(defaut)?.slug, 'baux-copropriete')
   assert.equal(listeOuverte('baux-copropriete')?.slug, 'baux-copropriete')
-  // les deux anciennes veilles regroupées le 11 octobre 2026 n'existent plus
-  for (const refusee of ['baux-commerciaux-fonds', 'construction-urbanisme', 'societes-cessions', 'inconnue', 'BAUX-COPROPRIETE', 42, {}, ['baux-copropriete']]) {
+  // les deux anciennes veilles regroupées le 11 octobre 2026 et la veille supprimée le 13 octobre 2026 n'existent plus
+  for (const refusee of ['baux-commerciaux-fonds', 'construction-urbanisme', 'entreprises-en-difficulte', 'societes-cessions', 'inconnue', 'BAUX-COPROPRIETE', 42, {}, ['baux-copropriete']]) {
     assert.equal(listeOuverte(refusee), null, `devrait refuser : ${JSON.stringify(refusee)}`)
   }
 })
