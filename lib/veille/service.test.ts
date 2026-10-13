@@ -2,6 +2,7 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import {
+  DELAI_ALERTE_MS,
   DELAI_CONFIRMATION_MS,
   DELAI_CONSERVATION_DESINSCRIT_MS,
   DELAI_PURGE_EN_ATTENTE_MS,
@@ -13,6 +14,7 @@ import {
   purger,
   type Abonne,
   type Depot,
+  type NouvelAbonne,
   type Outils,
 } from './service.ts'
 
@@ -308,4 +310,86 @@ test("plusieurs veilles : l'export d'une liste ne contient ni les abonnés ni le
   assert.deepEqual(b.abonnes.map((x) => x.email), ['b@exemple.fr'])
   assert.deepEqual(b.desinscrits, ['c@exemple.fr'])
   assert.deepEqual((await exporter(outils, 'liste-inconnue')).abonnes, [])
+})
+
+// ---------- Alerte « nouvel abonné » (prévenir l'éditeur) ----------
+
+function mondeAvecAlerte(comportement: 'ok' | 'erreur' | 'lent' = 'ok') {
+  const m = monde()
+  const alertes: NouvelAbonne[] = []
+  m.outils.prevenir = async (a) => {
+    alertes.push(a)
+    if (comportement === 'erreur') throw new Error('Resend indisponible')
+    if (comportement === 'lent') await new Promise((resolve) => { setTimeout(resolve, DELAI_ALERTE_MS * 4).unref() })     // unref : ne retient pas la fin des tests
+  }
+  return { ...m, alertes }
+}
+
+test("alerte : une confirmation prévient l'éditeur, avec l'adresse, le profil, la veille et le nombre d'abonnés confirmés", async () => {
+  const { outils, depot, alertes } = mondeAvecAlerte()
+  await inscrire(outils, demande)
+  await inscrire(outils, { email: 'b@exemple.fr', nom: null, profil: 'notaire', listes: ['liste-a'] })
+  assert.equal(await confirmer(outils, depot.lignes[0].jeton_confirmation), 'confirme')
+  assert.equal(await confirmer(outils, depot.lignes[1].jeton_confirmation), 'confirme')
+  assert.equal(alertes.length, 2)
+  assert.deepEqual(alertes[0], { email: 'a@exemple.fr', nom: 'A', profil: 'avocat', listes: ['liste-a'], confirme_le: '2026-10-08T10:00:00.000Z', effectifs: { 'liste-a': 1 } })
+  assert.deepEqual([alertes[1].email, alertes[1].nom, alertes[1].effectifs], ['b@exemple.fr', null, { 'liste-a': 2 }])
+})
+
+test("alerte : plusieurs veilles confirmées d'un clic = UNE seule alerte qui les énumère toutes", async () => {
+  const { outils, depot, alertes } = mondeAvecAlerte()
+  await inscrire(outils, { ...demande, listes: ['liste-a', 'liste-b'] })
+  await confirmer(outils, depot.lignes[0].jeton_confirmation)
+  assert.equal(alertes.length, 1)
+  assert.deepEqual(alertes[0].listes, ['liste-a', 'liste-b'])
+  assert.deepEqual(alertes[0].effectifs, { 'liste-a': 1, 'liste-b': 1 })
+})
+
+test("alerte : jamais pour un second clic, un lien périmé ou un lien inconnu", async () => {
+  const { outils, depot, alertes, avancer } = mondeAvecAlerte()
+  await confirmer(outils, 'x'.repeat(48))                                    // inconnu
+  await inscrire(outils, demande)
+  const jeton = depot.lignes[0].jeton_confirmation
+  avancer(DELAI_CONFIRMATION_MS + 1000)
+  await confirmer(outils, jeton)                                             // périmé
+  assert.equal(alertes.length, 0)
+  await inscrire(outils, { email: 'b@exemple.fr', nom: null, profil: 'notaire', listes: ['liste-a'] })
+  const jetonB = depot.lignes[1].jeton_confirmation
+  await confirmer(outils, jetonB)
+  await confirmer(outils, jetonB)                                            // second clic : déjà confirmé
+  assert.equal(alertes.length, 1)
+})
+
+test("alerte : une erreur de l'envoi n'empêche jamais la confirmation", async () => {
+  const { outils, depot, alertes } = mondeAvecAlerte('erreur')
+  await inscrire(outils, demande)
+  const erreurs: unknown[][] = []
+  const original = console.error
+  console.error = (...args: unknown[]) => { erreurs.push(args) }
+  try {
+    assert.equal(await confirmer(outils, depot.lignes[0].jeton_confirmation), 'confirme')
+  } finally {
+    console.error = original
+  }
+  assert.equal(depot.lignes[0].statut, 'confirme')
+  assert.equal(alertes.length, 1)
+  assert.equal(erreurs.length, 1)
+  assert.ok(!JSON.stringify(erreurs).includes('a@exemple.fr'), "le journal d'erreurs ne contient pas l'adresse de la personne")
+})
+
+test("alerte : une messagerie lente ne retarde pas la confirmation au-delà du délai", async () => {
+  const { outils, depot } = mondeAvecAlerte('lent')
+  await inscrire(outils, demande)
+  const debut = Date.now()
+  assert.equal(await confirmer(outils, depot.lignes[0].jeton_confirmation), 'confirme')
+  const duree = Date.now() - debut
+  assert.ok(duree < DELAI_ALERTE_MS + 2000, `confirmation en ${duree} ms`)
+  assert.ok(duree >= DELAI_ALERTE_MS - 100, `l'attente maximale est bien le délai (${duree} ms)`)
+})
+
+test("alerte : sans outil d'alerte, la confirmation se fait comme avant", async () => {
+  const { outils, depot } = monde()
+  assert.equal(outils.prevenir, undefined)
+  await inscrire(outils, demande)
+  assert.equal(await confirmer(outils, depot.lignes[0].jeton_confirmation), 'confirme')
 })

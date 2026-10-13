@@ -1,6 +1,6 @@
 // Assistants communs aux routes /api/veille/* : réponses JSON avec en-têtes CORS, adresse IP, assemblage des dépendances réelles.
 import { NextResponse, type NextRequest } from 'next/server'
-import { envoyerConfirmationVeille } from './courriel'
+import { envoyerConfirmationVeille, prevenirNouvelAbonne } from './courriel'
 import { creerDepotSupabase } from './depot-supabase'
 import type { Outils } from './service'
 import { CONSENTEMENT } from './listes'
@@ -23,6 +23,7 @@ export function creerOutils(): Outils {
   return {
     depot: creerDepotSupabase(),
     envoyerConfirmation: envoyerConfirmationVeille,
+    prevenir: prevenirNouvelAbonne,
     nouveauJeton,
     maintenant: () => new Date(),
     consentement: () => CONSENTEMENT,

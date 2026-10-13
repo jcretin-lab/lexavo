@@ -36,10 +36,27 @@ export interface Depot {
   supprimerAnciens(limites: { enAttenteAvant: string; desinscritsAvant: string }): Promise<{ enAttente: number; desinscrits: number }>
 }
 
+/** Ce que l'éditeur apprend quand une personne confirme son inscription (voir `Outils.prevenir`). */
+export type NouvelAbonne = {
+  email: string
+  nom: string | null
+  profil: string
+  /** Les veilles confirmées par ce clic (slugs). */
+  listes: string[]
+  confirme_le: string
+  /** Nombre d'abonnés confirmés de chacune de ces veilles, celui-ci compris. */
+  effectifs: Record<string, number>
+}
+
+/** L'alerte n'attend pas plus longtemps : une messagerie lente ne doit pas retarder la page de confirmation. */
+export const DELAI_ALERTE_MS = 5000
+
 export interface Outils {
   depot: Depot
   /** Envoie UN e-mail de confirmation pour toutes les veilles demandées en même temps ; renvoie faux en cas d'échec. `jetonConfirmation` : celui de la première. */
   envoyerConfirmation(email: string, jetonConfirmation: string, listes: string[]): Promise<boolean>
+  /** Facultatif : prévient l'éditeur qu'une personne vient de confirmer. Au mieux : une erreur ou un délai dépassé n'empêchent jamais la confirmation. */
+  prevenir?(abonne: NouvelAbonne): Promise<void>
   nouveauJeton(): string
   maintenant(): Date
   /** Version et texte exacts du consentement affiché sous la liste des veilles du formulaire. */
@@ -136,7 +153,30 @@ export async function confirmer(o: Outils, jeton: string): Promise<ResultatConfi
     (a) => a.id !== abonne.id && a.statut === 'en_attente' && a.derniere_demande_le === abonne.derniere_demande_le,
   )
   for (const autre of memeDemande) await o.depot.mettreAJour(autre.id, { statut: 'confirme', confirme_le: iso })
+  if (o.prevenir) await alerter(o, abonne, [abonne, ...memeDemande], iso)
   return 'confirme'
+}
+
+function signalerEchecAlerte(erreur: unknown): void {
+  console.error('[veille] alerte « nouvel abonné » non envoyée :', erreur instanceof Error ? erreur.message : 'erreur')   // jamais l'adresse de la personne
+}
+
+/** Prévient l'éditeur d'une nouvelle confirmation. N'échoue jamais : l'inscription est déjà enregistrée, l'alerte n'est qu'un confort. */
+async function alerter(o: Outils, abonne: Abonne, confirmees: Abonne[], confirmeLe: string): Promise<void> {
+  let minuteur: ReturnType<typeof setTimeout> | undefined
+  try {
+    const effectifs: Record<string, number> = {}
+    for (const a of confirmees) effectifs[a.liste] = (await o.depot.lister(a.liste)).filter((x) => x.statut === 'confirme').length
+    // l'erreur est rattachée tout de suite : si le délai l'emporte, l'alerte qui échoue plus tard ne doit pas devenir une erreur non gérée
+    const alerte = Promise.resolve(o.prevenir!({ email: abonne.email, nom: abonne.nom, profil: abonne.profil, listes: confirmees.map((a) => a.liste), confirme_le: confirmeLe, effectifs }))
+      .catch(signalerEchecAlerte)
+    const delai = new Promise<void>((resolve) => { minuteur = setTimeout(resolve, DELAI_ALERTE_MS) })
+    await Promise.race([alerte, delai])
+  } catch (erreur) {
+    signalerEchecAlerte(erreur)
+  } finally {
+    if (minuteur) clearTimeout(minuteur)
+  }
 }
 
 export type ResultatDesinscription = 'desinscrit' | 'deja_desinscrit' | 'invalide'

@@ -1,10 +1,15 @@
 // E-mail de confirmation d'inscription à la veille (double confirmation). Utilise l'envoi Resend déjà configuré pour l'application.
 import { send } from '@/lib/email'
-import { phraseProchainNumero } from './calendrier'
+import { htmlAlerte, sujetAlerte } from './alerte'
+import { phraseProchainNumero, prochainNumero } from './calendrier'
 import { LISTE_PAR_DEFAUT, trouverListe, type Liste } from './listes'
+import type { NouvelAbonne } from './service'
 
 /** Adresse du site de la veille (pages de confirmation et de désinscription). */
 export const BASE_VEILLE = process.env.VEILLE_BASE_URL ?? 'https://veille.lexavo.fr'
+
+/** Adresse qui reçoit l'alerte « nouvel abonné » : VEILLE_ALERTE_EMAIL, sinon ADMIN_EMAIL (déjà utilisé par le site), sinon contact@lexavo.fr. */
+const ADRESSE_ALERTE = process.env.VEILLE_ALERTE_EMAIL ?? process.env.ADMIN_EMAIL ?? 'contact@lexavo.fr'
 
 export function lienConfirmation(jeton: string): string {
   return `${BASE_VEILLE}/confirmer.html?jeton=${encodeURIComponent(jeton)}`
@@ -59,6 +64,21 @@ export function htmlConfirmation(lien: string, listes: Liste[] = [trouverListe(L
 export function sujetConfirmation(listes: Liste[]): string {
   if (listes.length > 1) return 'Confirmez votre inscription aux veilles Lexavo'
   return listes[0].slug === LISTE_PAR_DEFAUT ? 'Confirmez votre inscription à la veille Lexavo' : `Confirmez votre inscription à la veille Lexavo « ${listes[0].nom} »`
+}
+
+/** Prévient l'éditeur qu'une personne vient de confirmer son inscription (voir `Outils.prevenir` dans service.ts). Lève une erreur si l'envoi est refusé. */
+export async function prevenirNouvelAbonne(a: NouvelAbonne): Promise<void> {
+  const veilles = a.listes.map((slug) => ({ nom: trouverListe(slug)?.nom ?? slug, effectif: a.effectifs[slug] ?? 0 }))
+  const html = htmlAlerte({
+    email: a.email,
+    nom: a.nom,
+    profil: a.profil,
+    veilles,
+    confirmeLe: a.confirme_le,
+    premierNumero: prochainNumero(new Date(a.confirme_le)).envoi,
+  })
+  const resultat = await send(ADRESSE_ALERTE, sujetAlerte(veilles), html)
+  if (!resultat.ok) throw new Error('envoi refusé par le service de messagerie')
 }
 
 export async function envoyerConfirmationVeille(email: string, jeton: string, slugs: string[] = [LISTE_PAR_DEFAUT]): Promise<boolean> {
