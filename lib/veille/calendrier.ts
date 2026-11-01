@@ -6,12 +6,13 @@
 // personne qui confirme après le début d'une préparation se voit annoncer le numéro suivant. C'est prudent : elle le reçoit parfois plus tôt que
 // promis (l'envoi lit la liste des abonnés au moment où il est programmé), jamais plus tard.
 //
-// Ces constantes doivent rester celles de la tâche planifiée du projet de veille (scripts/phase3/planifier.ps1 -Debut 2026-11-01 -Heure 12:00 : passage
-// le dimanche 1er novembre 2026 à 12 h puis toutes les deux semaines ; envoi programmé le lundi à 8 h 30, voir notes/phase6-envoi.md § 22 et § 24).
+// Ces constantes doivent rester celles de la tâche planifiée du projet de veille (scripts/phase3/planifier.ps1 -Debut 2026-11-08 -Heure 12:00 : passage
+// le dimanche 8 novembre 2026 à 12 h puis toutes les deux semaines ; envoi programmé le lundi à 8 h 30, voir notes/phase6-envoi.md § 22, § 24 et § 25).
 // Si ce rythme change là-bas, changer ici PREMIER_PASSAGE et PERIODE_JOURS (et dans site-veille/veille.js), sinon la date annoncée est fausse.
 
-/** Premier passage : dimanche 1er novembre 2026, 12 h (avancé de 20 h à 12 h le 25 octobre 2026, pour relire les cinq numéros dans la journée). */
-const PREMIER_PASSAGE = { annee: 2026, mois: 11, jour: 1, heure: 12 }
+/** Premier passage : dimanche 8 novembre 2026, 12 h, donc premier numéro le lundi 9 novembre (reporté d'une semaine le 1er novembre 2026, avant tout envoi,
+ *  pour modifier les newsletters ; l'heure avait été avancée de 20 h à 12 h le 25 octobre 2026). */
+const PREMIER_PASSAGE = { annee: 2026, mois: 11, jour: 8, heure: 12 }
 const PERIODE_JOURS = 14
 const JOUR_MS = 24 * 3600 * 1000
 
@@ -32,7 +33,7 @@ function heureMuraleDeParis(instant: Date): number {
 
 const REFERENCE = Date.UTC(PREMIER_PASSAGE.annee, PREMIER_PASSAGE.mois - 1, PREMIER_PASSAGE.jour, PREMIER_PASSAGE.heure, 0)
 
-/** Un jour du calendrier, en toutes lettres : « lundi 2 novembre 2026 » (« 1er » pour le premier du mois). */
+/** Un jour du calendrier, en toutes lettres : « lundi 9 novembre 2026 » (« 1er » pour le premier du mois). */
 function enToutesLettres(heureMurale: number): string {
   const d = new Date(heureMurale)
   const jour = d.getUTCDate()
@@ -44,7 +45,7 @@ export type ProchainNumero = {
   envoi: string
 }
 
-/** Prochain numéro d'une personne qui confirme à l'instant `maintenant` : celui du premier passage à venir (le 1er novembre 2026 au plus tôt). */
+/** Prochain numéro d'une personne qui confirme à l'instant `maintenant` : celui du premier passage à venir (le 8 novembre 2026 au plus tôt). */
 export function prochainNumero(maintenant: Date): ProchainNumero {
   const murale = heureMuraleDeParis(maintenant)
   const passage = murale <= REFERENCE ? REFERENCE : REFERENCE + Math.ceil((murale - REFERENCE) / (PERIODE_JOURS * JOUR_MS)) * PERIODE_JOURS * JOUR_MS

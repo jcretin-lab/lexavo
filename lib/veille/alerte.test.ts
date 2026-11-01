@@ -9,7 +9,7 @@ const base = {
   profil: 'avocat',
   veilles: [{ nom: "Baux d'habitation et copropriété", effectif: 3 }],
   confirmeLe: '2026-10-13T19:05:00.000Z',
-  premierNumero: 'lundi 2 novembre 2026',
+  premierNumero: 'lundi 9 novembre 2026',
 }
 
 test('l\'objet ne contient jamais l\'adresse : le nom de la veille, ou le nombre de veilles', () => {
@@ -19,7 +19,7 @@ test('l\'objet ne contient jamais l\'adresse : le nom de la veille, ou le nombre
 
 test('le message donne l\'adresse, le nom, le profil, la veille et son effectif, la date et le premier numéro', () => {
   const html = htmlAlerte(base)
-  for (const attendu of ['a@exemple.fr', 'Alice Martin', 'avocat', 'Baux d&#39;habitation et copropriété', '3 abonnés confirmés', '13 octobre 2026', 'lundi 2 novembre 2026']) {
+  for (const attendu of ['a@exemple.fr', 'Alice Martin', 'avocat', 'Baux d&#39;habitation et copropriété', '3 abonnés confirmés', '13 octobre 2026', 'lundi 9 novembre 2026']) {
     assert.ok(html.includes(attendu), `devrait contenir « ${attendu} »`)
   }
 })
