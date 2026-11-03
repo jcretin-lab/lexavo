@@ -1,8 +1,8 @@
 // E-mail de confirmation d'inscription à la veille (double confirmation). Utilise l'envoi Resend déjà configuré pour l'application.
 import { send } from '@/lib/email'
 import { htmlAlerte, sujetAlerte } from './alerte'
-import { phraseProchainNumero, prochainNumero } from './calendrier'
 import { LISTE_PAR_DEFAUT, trouverListe, type Liste } from './listes'
+import { PHRASE_CONFIRMATION } from './rythme'
 import type { NouvelAbonne } from './service'
 
 /** Adresse du site de la veille (pages de confirmation et de désinscription). */
@@ -26,8 +26,7 @@ function paragrapheVeilles(listes: Liste[]): string {
   return `Vous avez demandé à recevoir tous les quinze jours les veilles Lexavo suivantes :</p><ul style="font-size: 16px; line-height: 1.55; margin: 0 0 14px; padding-left: 22px;">${lignes}</ul><p style="font-size: 17px; line-height: 1.6; margin: 0 0 14px;">Un seul clic confirme toutes ces inscriptions.`
 }
 
-/** `maintenant` : l'instant d'envoi du message, qui détermine à quel numéro l'abonné peut s'attendre (voir calendrier.ts). */
-export function htmlConfirmation(lien: string, listes: Liste[] = [trouverListe(LISTE_PAR_DEFAUT)!], maintenant: Date = new Date()): string {
+export function htmlConfirmation(lien: string, listes: Liste[] = [trouverListe(LISTE_PAR_DEFAUT)!]): string {
   const bandeau = listes.length === 1 ? `Veille · ${listes[0].nom}` : 'Veilles Lexavo'
   return `
     <div style="font-family: Georgia, 'Times New Roman', serif; max-width: 520px; margin: 0 auto; padding: 32px 24px; color: #0E1320;">
@@ -41,7 +40,7 @@ export function htmlConfirmation(lien: string, listes: Liste[] = [trouverListe(L
       <p style="margin: 0 0 22px;">
         <a href="${lien}" style="display:inline-block;background:#1A3F7C;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-weight:bold;font-size:15px;padding:13px 24px;border-radius:6px;">Confirmer mon inscription</a>
       </p>
-      <p style="font-size: 16px; line-height: 1.55; margin: 0 0 22px;">${phraseProchainNumero(maintenant)}</p>
+      <p style="font-size: 16px; line-height: 1.55; margin: 0 0 22px;">${PHRASE_CONFIRMATION}</p>
       <p style="font-family: Arial, sans-serif; font-size: 13px; line-height: 1.6; color: #52606d; margin: 0 0 8px;">
         Ce lien est valable 7 jours. Si le bouton ne fonctionne pas, copiez cette adresse dans votre navigateur :<br>
         <span style="word-break: break-all;">${lien}</span>
@@ -75,7 +74,6 @@ export async function prevenirNouvelAbonne(a: NouvelAbonne): Promise<void> {
     profil: a.profil,
     veilles,
     confirmeLe: a.confirme_le,
-    premierNumero: prochainNumero(new Date(a.confirme_le)).envoi,
   })
   const resultat = await send(ADRESSE_ALERTE, sujetAlerte(veilles), html)
   if (!resultat.ok) throw new Error('envoi refusé par le service de messagerie')

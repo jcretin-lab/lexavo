@@ -9,8 +9,6 @@ export type AlerteAbonne = {
   veilles: { nom: string; effectif: number }[]
   /** Instant de la confirmation (ISO 8601). */
   confirmeLe: string
-  /** Jour d'envoi du premier numéro de cet abonné, en toutes lettres (voir calendrier.ts). */
-  premierNumero: string
 }
 
 /** Les champs saisis par une personne (nom, adresse…) arrivent dans l'e-mail de l'éditeur : rien n'y est interprété comme du HTML. */
@@ -43,7 +41,6 @@ export function htmlAlerte(a: AlerteAbonne): string {
         ${ligne('Profil', echapper(a.profil))}
         ${ligne(a.veilles.length === 1 ? 'Veille' : 'Veilles', veilles)}
         ${ligne('Confirmé le', echapper(quandEnClair(a.confirmeLe)) + ' (heure de Paris)')}
-        ${ligne('Premier numéro', echapper(a.premierNumero))}
       </table>
       <p style="font-size: 13px; color: #52606d; margin: 0;">Message automatique du site Lexavo, envoyé à chaque confirmation d'inscription. Les abonnés confirmés sont lus par le projet de veille au moment de la préparation de chaque numéro.</p>
     </div>
