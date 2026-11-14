@@ -11,6 +11,7 @@ import { Sceau } from '@/components/landing/sceau'
 import { FORFAITS, MENTION_TVA } from '@/lib/offre'
 
 import photoColonnes from '@/public/photos/colonnes.jpg'
+import photoColonnesPlan from '@/public/photos/colonnes-plan.jpg'
 import gravureJustice from '@/public/photos/justitia.webp'
 import photoBustes from '@/public/photos/bibliotheque-bustes.jpg'
 import photoFacade from '@/public/photos/facade-haussmann.jpg'
@@ -232,8 +233,18 @@ export default function HomePage() {
               ))}
             </div>
           </div>
-          <div className="lx-constat__photo lx-reveal-image">
+          {/* La photo « analysée » : une ligne de balayage dorée transforme le palais en plan au-dessus d'elle */}
+          <div className="lx-constat__photo lx-scan lx-reveal-image">
             <Image src={photoColonnes} alt="Colonnes et fronton sculpté d’un palais de justice, vus en contre-plongée" fill sizes="(min-width: 1024px) 40vw, 100vw" placeholder="blur" />
+            <div className="lx-scan__plan" aria-hidden="true">
+              <Image src={photoColonnesPlan} alt="" fill sizes="(min-width: 1024px) 40vw, 100vw" />
+              <div className="lx-scan__grille" />
+            </div>
+            <div className="lx-scan__ligne" aria-hidden="true" />
+            <span className="lx-scan__coin lx-scan__coin--hg" aria-hidden="true" />
+            <span className="lx-scan__coin lx-scan__coin--hd" aria-hidden="true" />
+            <span className="lx-scan__coin lx-scan__coin--bg" aria-hidden="true" />
+            <span className="lx-scan__coin lx-scan__coin--bd" aria-hidden="true" />
           </div>
         </div>
       </section>
