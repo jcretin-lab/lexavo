@@ -7,6 +7,7 @@ import { LandingEffets } from '@/components/landing/landing-effets'
 import { FaqAccordion } from '@/components/landing/faq-accordion'
 import { VeilleEncart } from '@/components/landing/veille-encart'
 import { TitreFrappe } from '@/components/landing/titre-frappe'
+import { Sceau } from '@/components/landing/sceau'
 import { FORFAITS, MENTION_TVA } from '@/lib/offre'
 
 import photoBustes from '@/public/photos/bibliotheque-bustes.jpg'
@@ -195,11 +196,12 @@ export default function HomePage() {
           </p>
         </div>
 
+        {/* Trois sceaux apposés au bas de la feuille, à cheval sur la section suivante */}
         <div className="lx-hero__pied">
-          <div className="lx-wrap lx-hero__faits">
-            <div><strong>48 h</strong>pour recevoir votre devis</div>
-            <div><strong>3 semaines</strong>pour être en ligne</div>
-            <div><strong>Module inclus</strong>textes, blog, SEO et GEO, gérés par vous</div>
+          <div className="lx-sceaux">
+            <Sceau id="sceau-devis" centre="48 h" sousCentre="devis" anneau="pour recevoir votre devis · sans engagement · " texteAccessible="48 h pour recevoir votre devis, sans engagement." />
+            <Sceau id="sceau-delai" variante="laiton" centre="3" sousCentre="semaines" anneau="pour être en ligne · site livré clé en main · " texteAccessible="3 semaines pour être en ligne, site livré clé en main." />
+            <Sceau id="sceau-module" centre="Module" sousCentre="inclus" anneau="textes · blog · SEO et GEO · gérés par vous · " texteAccessible="Module inclus : textes, blog, SEO et GEO, gérés par vous." />
           </div>
         </div>
       </section>
