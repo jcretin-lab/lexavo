@@ -213,7 +213,7 @@ export default function HomePage() {
             corrections={[
               { faux: 'avec abonnement', vrai: 'sans abonnement' },
               { faux: 'introuvable sur Google', vrai: 'prêt pour Google et les IA' },
-              { faux: 'figé', vrai: 'modifiable en quelques clics' },
+              { faux: 'dépendant d’un webmaster', vrai: 'modifiable en quelques clics' },
             ]}
           />
           <p className="lx-hero__texte">
