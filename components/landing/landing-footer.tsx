@@ -33,7 +33,7 @@ export function LandingFooter() {
             </ul>
           </div>
         </div>
-        <p className="lx-pied__bas">© Lexavo. Photographies : Unsplash. Gravure de la Justice : Rijksmuseum, domaine public.</p>
+        <p className="lx-pied__bas">© Lexavo. Photographies : Unsplash. Gravure de la Justice : Rijksmuseum, domaine public. Hologramme du palais : image générée par IA.</p>
       </div>
     </footer>
   )
