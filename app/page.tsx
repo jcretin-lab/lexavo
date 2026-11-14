@@ -9,6 +9,7 @@ import { VeilleEncart } from '@/components/landing/veille-encart'
 import { FORFAITS, MENTION_TVA } from '@/lib/offre'
 
 import photoColonnes from '@/public/photos/colonnes.jpg'
+import photoColonnesPlan from '@/public/photos/colonnes-plan.jpg'
 import photoBustes from '@/public/photos/bibliotheque-bustes.jpg'
 import photoFacade from '@/public/photos/facade-haussmann.jpg'
 import photoBibliotheque from '@/public/photos/bibliotheque.jpg'
@@ -176,8 +177,19 @@ export default function HomePage() {
 
       {/* ══ Hero ═══════════════════════════════════════════ */}
       <section className="lx-hero">
-        <div className="lx-hero__media">
+        <div className="lx-hero__media" data-halo>
           <Image src={photoColonnes} alt="Colonnes d’un palais de justice vues en contre-plongée" fill priority sizes="100vw" placeholder="blur" />
+          {/* Le « plan » du palais : visible en entier à l'ouverture, puis seulement sous le halo qui suit la souris */}
+          <div className="lx-hero__plan" aria-hidden="true">
+            <Image src={photoColonnesPlan} alt="" fill priority sizes="100vw" />
+            <div className="lx-hero__grille" />
+            <span className="lx-cote" style={{ top: '22%', left: '58%' }}>&lt;header&gt;</span>
+            <span className="lx-cote" style={{ top: '38%', left: '74%' }}>schema.org/LegalService</span>
+            <span className="lx-cote" style={{ top: '56%', left: '52%' }}>&lt;meta name=&quot;description&quot;&gt;</span>
+            <span className="lx-cote" style={{ top: '68%', left: '80%' }}>&lt;section id=&quot;domaines&quot;&gt;</span>
+            <span className="lx-cote" style={{ top: '30%', left: '86%' }}>GEO · llms.txt</span>
+            <span className="lx-cote" style={{ top: '80%', left: '62%' }}>&lt;article&gt; blog</span>
+          </div>
         </div>
         <div className="lx-hero__voile" />
 

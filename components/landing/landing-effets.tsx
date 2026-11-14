@@ -70,7 +70,38 @@ export function LandingEffets() {
     window.addEventListener('scroll', auDefilement, { passive: true })
     window.addEventListener('resize', auDefilement)
 
+    // Hero : le halo du « plan » suit la souris, avec un léger retard (souris uniquement)
+    const hero = document.querySelector<HTMLElement>('.lx-hero')
+    const plan = document.querySelector<HTMLElement>('.lx-hero__plan')
+    let suivreHalo: ((e: PointerEvent) => void) | null = null
+    let rafHalo = 0
+    if (hero && plan && !reduit && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      let cx = 0, cy = 0, tx = 0, ty = 0, actif = false
+      const boucle = () => {
+        cx += (tx - cx) * 0.12
+        cy += (ty - cy) * 0.12
+        plan.style.setProperty('--halo-x', `${cx.toFixed(1)}px`)
+        plan.style.setProperty('--halo-y', `${cy.toFixed(1)}px`)
+        rafHalo = Math.abs(tx - cx) + Math.abs(ty - cy) > 0.5 ? requestAnimationFrame(boucle) : 0
+      }
+      suivreHalo = (e: PointerEvent) => {
+        const r = hero.getBoundingClientRect()
+        tx = e.clientX - r.left
+        ty = e.clientY - r.top
+        if (!actif) {
+          actif = true
+          cx = r.width * 0.72
+          cy = r.height * 0.42
+          plan.classList.add('is-suivi')
+        }
+        if (!rafHalo) rafHalo = requestAnimationFrame(boucle)
+      }
+      hero.addEventListener('pointermove', suivreHalo)
+    }
+
     return () => {
+      if (hero && suivreHalo) hero.removeEventListener('pointermove', suivreHalo)
+      cancelAnimationFrame(rafHalo)
       apparition.disconnect()
       vitrine.disconnect()
       window.removeEventListener('scroll', auDefilement)

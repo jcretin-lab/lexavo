@@ -156,6 +156,60 @@ html[data-scrolled='true'] .lx-nav,
   transform: scale(1.28);
   animation: lx-recul 2.6s var(--ease-out) 0.15s forwards, lx-derive 24s ease-in-out 2.8s infinite alternate;
 }
+/* « La lampe de l'architecte » : sous la photo, le plan du palais.
+   À l'ouverture, le plan couvre tout, puis se condense en un halo qui suit la souris
+   (dérive lente quand il n'y a pas de souris). */
+@property --halo-r { syntax: '<length>'; inherits: true; initial-value: 0px; }
+@property --halo-x { syntax: '<length-percentage>'; inherits: true; initial-value: 72%; }
+@property --halo-y { syntax: '<length-percentage>'; inherits: true; initial-value: 42%; }
+.lx-hero__media[data-halo] {
+  --halo-r: 160vmax;
+  --halo-fin: 300px;
+  animation: lx-ouverture 1.7s var(--ease) 0.15s forwards, lx-condense 1.9s var(--ease) 2.1s forwards;
+}
+@media (max-width: 767px) { .lx-hero__media[data-halo] { --halo-fin: 140px; } }
+@keyframes lx-condense { to { --halo-r: var(--halo-fin); } }
+/* La photo n'apparaît qu'une fois le plan dessiné ; ensuite le plan devient translucide, comme une loupe */
+.lx-hero__media[data-halo] > img {
+  opacity: 0;
+  animation: lx-recul 2.6s var(--ease-out) 0.15s forwards, lx-derive 24s ease-in-out 2.8s infinite alternate, lx-apparition 1.8s ease 2.1s forwards;
+}
+.lx-hero__plan {
+  position: absolute; inset: 0;
+  -webkit-mask-image: radial-gradient(circle var(--halo-r) at var(--halo-x) var(--halo-y), #000 0%, #000 50%, transparent 100%);
+          mask-image: radial-gradient(circle var(--halo-r) at var(--halo-x) var(--halo-y), #000 0%, #000 50%, transparent 100%);
+  animation: lx-derive-halo 18s ease-in-out 4s infinite alternate;
+}
+.lx-hero__plan.is-suivi { animation: none; }
+.lx-hero__plan > img {
+  animation: lx-recul 2.6s var(--ease-out) 0.15s forwards, lx-derive 24s ease-in-out 2.8s infinite alternate, lx-attenue 1.9s var(--ease) 2.1s forwards;
+}
+@keyframes lx-attenue { to { opacity: 0.88; } }
+@keyframes lx-derive-halo {
+  0%   { --halo-x: 72%; --halo-y: 42%; }
+  35%  { --halo-x: 60%; --halo-y: 64%; }
+  70%  { --halo-x: 84%; --halo-y: 58%; }
+  100% { --halo-x: 80%; --halo-y: 26%; }
+}
+.lx-hero__grille {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(205, 170, 112, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(205, 170, 112, 0.14) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+.lx-cote {
+  position: absolute; transform: translate(-50%, -50%);
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace; font-size: 11px; letter-spacing: 0.02em;
+  color: var(--laiton-clair); white-space: nowrap;
+  padding: 3px 7px; border: 1px solid rgba(205, 170, 112, 0.5); background: rgba(14, 24, 46, 0.72);
+}
+@media (max-width: 767px) { .lx-cote { display: none; } }
+.lx-cote::before {
+  content: ''; position: absolute; left: -4px; top: 50%; width: 7px; height: 7px; margin-top: -3.5px;
+  background: var(--laiton-clair); transform: rotate(45deg);
+}
+
 .lx-hero__voile {
   position: absolute; inset: 0;
   background:
@@ -589,6 +643,8 @@ html[data-scrolled='true'] .lx-nav,
 @media (prefers-reduced-motion: reduce) {
   .lx *, .lx *::before, .lx *::after { animation-duration: 0.01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .lx-hero__media, .lx-devis__photo { clip-path: none; }
+  .lx-hero__plan { display: none; }
+  .lx-hero__media[data-halo] > img { opacity: 1; }
   .lx-devis__photo img { transform: none; }
   .lx-hero__media img { transform: scale(1.04); }
   .lx-reveal { opacity: 1; transform: none; }
