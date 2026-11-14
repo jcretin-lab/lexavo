@@ -184,12 +184,11 @@ export default function HomePage() {
         <div className="lx-wrap lx-hero__contenu">
           <p className="lx-hero__accroche">Création de sites internet pour avocats</p>
           <h1 className="lx-display">
-            <span className="lx-ligne"><span>Un site à la</span></span>
-            <span className="lx-ligne"><span>hauteur de</span></span>
-            <span className="lx-ligne"><span>votre cabinet.</span></span>
+            <span className="lx-ligne"><span>Plaidez aussi</span></span>
+            <span className="lx-ligne"><span>en ligne.</span></span>
           </h1>
           <p className="lx-hero__texte">
-            Nous concevons, rédigeons et mettons en ligne le site de votre cabinet, dans le respect des règles de la profession. Vous relisez, nous faisons le reste.
+            Nous créons le site de votre cabinet. Ensuite, c&apos;est vous qui le faites vivre&nbsp;: textes, blog, référencement SEO et GEO, en quelques clics.
           </p>
           <div className="lx-hero__actions">
             <Link href="/contact" className="lx-btn lx-btn--laiton">
