@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
+import { NOM_PAR_PLAN, type Plan } from '@/types'
 
 interface NavProps {
   cabinet: { id: string; nom: string; plan: string; make_webhook_url?: string | null }
@@ -28,7 +29,6 @@ export function DashboardNav({ cabinet }: NavProps) {
     { href: '/dashboard/article-vers-linkedin', label: 'Mon article → Posts', icon: '⇢' },
     { href: '/dashboard/contenu', label: 'Mes contenus', icon: '☰' },
     { href: '/dashboard/calendrier', label: 'Calendrier', icon: '◫' },
-    ...(cabinet.plan === 'cabinet' ? [{ href: '/dashboard/equipe', label: 'Équipe', icon: '⊕' }] : []),
     { href: '/dashboard/parametres', label: 'Paramètres', icon: '⚙' },
   ]
 
@@ -137,8 +137,8 @@ export function DashboardNav({ cabinet }: NavProps) {
 
         {/* Footer */}
         <div className="px-4 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-          <div className="px-3 py-2 rounded-lg text-xs font-medium capitalize mb-3" style={{ background: 'rgba(255,255,255,0.08)', color: 'var(--ocre-300)', fontFamily: 'var(--font-jetbrains-mono)', letterSpacing: '0.06em' }}>
-            Plan {cabinet.plan}
+          <div className="px-3 py-2 rounded-lg text-xs font-medium mb-3" style={{ background: 'rgba(255,255,255,0.08)', color: 'var(--ocre-300)', fontFamily: 'var(--font-jetbrains-mono)', letterSpacing: '0.06em' }}>
+            {NOM_PAR_PLAN[cabinet.plan as Plan]}
           </div>
           <button
             onClick={handleLogout}

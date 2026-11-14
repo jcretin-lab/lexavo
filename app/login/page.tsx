@@ -5,12 +5,12 @@ type Mode = 'login' | 'signup' | 'reset'
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ mode?: string; invite?: string; email?: string }>
+  searchParams: Promise<{ mode?: string; email?: string }>
 }) {
-  const { mode: modeParam, invite, email } = await searchParams
+  const { mode: modeParam, email } = await searchParams
 
   let initialMode: Mode = 'login'
-  if (invite || modeParam === 'signup') {
+  if (modeParam === 'signup') {
     initialMode = 'signup'
   } else if (modeParam === 'reset') {
     initialMode = 'reset'
@@ -41,10 +41,9 @@ export default async function LoginPage({
         </div>
 
         <LoginForm
-          key={`${initialMode}|${invite ?? ''}`}
+          key={initialMode}
           initialMode={initialMode}
           initialEmail={email ? decodeURIComponent(email) : ''}
-          inviteId={invite ?? null}
         />
 
         <p className="mt-6 text-center text-xs" style={{ color: 'var(--ink-400)' }}>

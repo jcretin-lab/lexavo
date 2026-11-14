@@ -11,14 +11,12 @@ const supabaseAdmin = createSupabaseClient(
   { auth: { autoRefreshToken: false, persistSession: false } }
 )
 
+// Plan unique : les deux prix pointent vers 'pro'. STRIPE_PRICE_ACTIF (49 €) est
+// conservé pour que les abonnements souscrits avant la bascule tarifaire restent
+// reconnus ; STRIPE_PRICE_UNIQUE (29 €) est le prix des nouvelles souscriptions.
 const PLAN_PAR_PRICE: Record<string, string> = {
-  [process.env.STRIPE_PRICE_ACTIF!]:   'pro',
-  [process.env.STRIPE_PRICE_CABINET!]: 'cabinet',
-}
-
-const MAX_MEMBRES_PAR_PLAN: Record<string, number> = {
-  pro: 1,
-  cabinet: 3,
+  [process.env.STRIPE_PRICE_ACTIF!]:  'pro',
+  [process.env.STRIPE_PRICE_UNIQUE!]: 'pro',
 }
 
 export async function POST(request: NextRequest) {
@@ -56,7 +54,6 @@ export async function POST(request: NextRequest) {
           .update({
             plan,
             stripe_subscription_id: session.subscription as string,
-            max_membres: MAX_MEMBRES_PAR_PLAN[plan] ?? 1,
           })
           .eq('id', cabinetId)
 
@@ -90,6 +87,7 @@ export async function POST(request: NextRequest) {
       const sub = event.data.object as Stripe.Subscription
       const cabinetId = sub.metadata?.cabinet_id
       const priceId = sub.items.data[0]?.price.id
+      // Plan unique : tout prix reconnu comme non reconnu aboutit au même plan.
       const plan = PLAN_PAR_PRICE[priceId] || 'pro'
 
       if (cabinetId) {
@@ -100,7 +98,6 @@ export async function POST(request: NextRequest) {
           .update({
             plan: effectivePlan,
             stripe_subscription_id: sub.id,
-            max_membres: MAX_MEMBRES_PAR_PLAN[effectivePlan] ?? 1,
           })
           .eq('id', cabinetId)
 
@@ -145,7 +142,7 @@ export async function POST(request: NextRequest) {
         // 2. Downgrader le plan
         await supabaseAdmin
           .from('cabinets')
-          .update({ plan: 'trial', stripe_subscription_id: null, max_membres: 1 })
+          .update({ plan: 'trial', stripe_subscription_id: null })
           .eq('id', cabinetId)
 
         // 3. Envoyer l'email de résiliation + notif admin

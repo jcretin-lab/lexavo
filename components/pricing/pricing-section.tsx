@@ -1,17 +1,14 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-
 export const PRICING_PLANS = [
   {
     id: 'pro',
-    nom: 'Pro',
+    nom: 'Abonnement',
     tagline: 'Je crée et diffuse mon contenu sur LinkedIn et Facebook',
-    prix: '49 €',
+    prix: '29 €',
     periode: '/mois',
     utilisateurs: '1 utilisateur',
     recommande: true,
-    landingOnly: false,
     ctaLabel: 'Choisir',
     features: [
       'Génération SEO depuis un thème : article + 3 posts + FAQ + 1 image IA (ou la vôtre) en 3 min',
@@ -22,44 +19,6 @@ export const PRICING_PLANS = [
       'Générations illimitées',
     ],
   },
-  {
-    id: 'cabinet',
-    nom: 'Cabinet',
-    tagline: 'Tout mon cabinet communique',
-    prix: '119 €',
-    periode: '/mois',
-    utilisateurs: '3 utilisateurs inclus',
-    recommande: false,
-    landingOnly: false,
-    ctaLabel: 'Choisir',
-    features: [
-      'Tout le plan Pro',
-      '3 comptes utilisateurs inclus',
-      'Chacun son espace LinkedIn et Facebook indépendant',
-      'Tableau de bord par utilisateur',
-      'Générations illimitées',
-      'Économisez 28 €/mois vs 3 abonnements Pro',
-    ],
-  },
-  {
-    id: 'pilote',
-    nom: 'Pilote',
-    tagline: 'Ma communication, entièrement gérée pour moi',
-    prix: '290 €',
-    periode: '/mois',
-    utilisateurs: 'page Facebook · page LinkedIn · profil LinkedIn',
-    recommande: false,
-    landingOnly: true,
-    ctaLabel: 'Nous contacter',
-    features: [
-      'Configuration et connexion des comptes LinkedIn + Facebook (setup offert)',
-      '1 visio mensuelle de 45 min (ligne éditoriale + bilan)',
-      'Génération de 4 semaines de contenu — 12 posts/mois',
-      'Validation par le client avant publication',
-      'Publication automatique programmée',
-      'Rapport mensuel de performance',
-    ],
-  },
 ]
 
 interface Props {
@@ -67,19 +26,9 @@ interface Props {
   loadingPlan: string | null
   currentPlanId?: string
   error?: string
-  theme?: 'gold'
-  minPlan?: 'pro' | 'cabinet'
-  showLandingPlans?: boolean
 }
 
-export function PricingSection({ onChoose, loadingPlan, currentPlanId, error, minPlan, showLandingPlans }: Props) {
-  const base = PRICING_PLANS.filter(p => !p.landingOnly || showLandingPlans)
-  const plansToShow = minPlan === 'pro'
-    ? base.filter(p => p.id === 'pro' || p.id === 'cabinet')
-    : minPlan === 'cabinet'
-    ? base.filter(p => p.id === 'cabinet')
-    : base
-
+export function PricingSection({ onChoose, loadingPlan, currentPlanId, error }: Props) {
   return (
     <div>
       {error && (
@@ -88,8 +37,8 @@ export function PricingSection({ onChoose, loadingPlan, currentPlanId, error, mi
         </div>
       )}
 
-      <div className={`grid grid-cols-1 gap-6 ${plansToShow.length === 3 ? 'sm:grid-cols-3' : plansToShow.length === 2 ? 'sm:grid-cols-2' : ''}`}>
-        {plansToShow.map(plan => {
+      <div className="grid grid-cols-1 gap-6 max-w-md mx-auto">
+        {PRICING_PLANS.map(plan => {
           const isCurrent = plan.id === currentPlanId
           return (
             <div
@@ -112,11 +61,6 @@ export function PricingSection({ onChoose, loadingPlan, currentPlanId, error, mi
                 {plan.recommande && (
                   <span className="text-xs px-2 py-0.5 rounded-full font-semibold" style={{ background: 'var(--ocre-500)', color: 'var(--navy-900)' }}>
                     Recommandé
-                  </span>
-                )}
-                {plan.id === 'pilote' && (
-                  <span className="text-xs px-2 py-0.5 rounded-full font-semibold" style={{ background: 'var(--ocre-500)', color: 'var(--navy-900)' }}>
-                    Service complet
                   </span>
                 )}
                 {isCurrent && (

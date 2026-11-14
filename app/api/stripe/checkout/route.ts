@@ -15,9 +15,10 @@ export async function POST(request: NextRequest) {
     const stripeKey = process.env.STRIPE_SECRET_KEY.trim()
     const stripe = new Stripe(stripeKey, { maxNetworkRetries: 1, timeout: 20000 })
 
+    // Plan unique. STRIPE_PRICE_ACTIF (49 €) reste mappé côté webhook pour les
+    // abonnements legacy, mais toute nouvelle souscription passe par le prix unique.
     const PRICE_IDS: Record<string, string> = {
-      pro:     process.env.STRIPE_PRICE_ACTIF!,
-      cabinet: process.env.STRIPE_PRICE_CABINET!,
+      pro: process.env.STRIPE_PRICE_UNIQUE!,
     }
 
     const supabase = await createClient()

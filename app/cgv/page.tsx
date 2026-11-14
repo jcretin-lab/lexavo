@@ -37,15 +37,11 @@ export default function CGVPage() {
 
         <section className="mb-10">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">2.3 Abonnements et tarifs</h2>
-          <p className="text-gray-700 leading-relaxed mb-4">Deux formules d&apos;abonnement sont disponibles :</p>
+          <p className="text-gray-700 leading-relaxed mb-4">Une formule d&apos;abonnement unique est disponible :</p>
           <div className="space-y-4">
             <div className="rounded-xl border border-gray-200 p-4">
-              <p className="font-semibold text-gray-900">Plan Pro — 49 € / mois</p>
+              <p className="font-semibold text-gray-900">Abonnement Lexavo — 29 € / mois</p>
               <p className="text-gray-600 text-sm mt-1">1 utilisateur, génération illimitée depuis un thème ou un article existant (article SEO, posts réseaux sociaux, FAQ, 1 image IA générée ou la vôtre), publication et programmation automatique sur vos réseaux sociaux</p>
-            </div>
-            <div className="rounded-xl border border-gray-200 p-4">
-              <p className="font-semibold text-gray-900">Plan Cabinet — 119 € / mois</p>
-              <p className="text-gray-600 text-sm mt-1">3 utilisateurs inclus, toutes les fonctionnalités Pro</p>
             </div>
           </div>
           <p className="text-gray-600 text-sm mt-4">

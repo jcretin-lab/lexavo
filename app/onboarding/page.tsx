@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useState, Suspense } from 'react'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { BARREAUX_FR } from '@/types'
 import { Button } from '@/components/ui/button'
@@ -15,10 +15,7 @@ const STEPS = [
 
 function OnboardingContent() {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const supabase = createClient()
-
-  const inviteId = searchParams.get('invite')
 
   const [step, setStep] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -28,12 +25,6 @@ function OnboardingContent() {
   const [nom, setNom] = useState('')
   const [ville, setVille] = useState('')
   const [barreau, setBarreau] = useState('')
-
-  useEffect(() => {
-    if (inviteId) {
-      // On pourrait fetch les données de l'invitation, mais on laisse l'utilisateur remplir
-    }
-  }, [inviteId])
 
   async function handleSaveAndContinue() {
     setLoading(true)
@@ -62,7 +53,7 @@ function OnboardingContent() {
       } else {
         const { data: inserted, error: insertError } = await supabase
           .from('cabinets')
-          .insert({ user_id: user.id, nom, ville, barreau, specialites: [], plan: 'trial', max_membres: 1 })
+          .insert({ user_id: user.id, nom, ville, barreau, specialites: [], plan: 'trial' })
           .select()
           .single()
         if (insertError) throw insertError
@@ -71,30 +62,9 @@ function OnboardingContent() {
 
       if (!cabinet) throw new Error('Erreur lors de la création du cabinet.')
 
-      // Email de bienvenue uniquement pour les nouveaux cabinets (pas les ré-onboardings ni les invités)
-      if (!existing && !inviteId) {
+      // Email de bienvenue uniquement pour les nouveaux cabinets (pas les ré-onboardings)
+      if (!existing) {
         fetch('/api/email/bienvenue', { method: 'POST' }).catch(() => {})
-      }
-
-      // Si l'utilisateur vient d'une invitation, le lier au cabinet admin
-      if (inviteId && cabinet) {
-        const { data: membre } = await supabase
-          .from('membres')
-          .select('id, cabinet_id')
-          .eq('id', inviteId)
-          .maybeSingle()
-
-        if (membre) {
-          await supabase
-            .from('membres')
-            .update({ user_id: user.id, statut: 'actif', nom })
-            .eq('id', inviteId)
-
-          await supabase
-            .from('cabinets')
-            .update({ plan: 'pro', max_membres: 1 })
-            .eq('id', cabinet.id)
-        }
       }
 
       setStep(1)
@@ -129,7 +99,7 @@ function OnboardingContent() {
         {/* Sous-titre */}
         <div className="text-center mb-8">
           <p className="text-gray-500 text-sm">
-            {inviteId ? 'Créez votre espace personnel' : 'Configuration de votre cabinet'}
+            Configuration de votre cabinet
           </p>
         </div>
 

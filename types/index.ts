@@ -1,4 +1,4 @@
-export type Plan = 'trial' | 'pro' | 'cabinet'
+export type Plan = 'trial' | 'pro'
 
 export interface Cabinet {
   id: string
@@ -11,19 +11,7 @@ export interface Cabinet {
   stripe_customer_id?: string
   stripe_subscription_id?: string
   plan: Plan
-  max_membres: number
   make_webhook_url?: string | null
-  created_at: string
-}
-
-export interface Membre {
-  id: string
-  cabinet_id: string
-  user_id?: string | null
-  nom: string
-  email: string
-  role: 'admin' | 'membre'
-  statut: 'invite' | 'actif'
   created_at: string
 }
 
@@ -117,17 +105,9 @@ export const BARREAUX_FR = [
 
 export const NOM_PAR_PLAN: Record<Plan, string> = {
   trial: 'Essai gratuit',
-  pro: 'Pro',
-  cabinet: 'Cabinet',
+  pro: 'Abonnement',
 }
 
 export const PRIX_PAR_PLAN: Record<Exclude<Plan, 'trial'>, string> = {
-  pro: '49 €/mois',
-  cabinet: '119 €/mois',
-}
-
-export const MAX_MEMBRES_PAR_PLAN: Record<Plan, number> = {
-  trial: 1,
-  pro: 1,
-  cabinet: 3,
+  pro: '29 €/mois',
 }

@@ -11,10 +11,9 @@ type Mode = 'login' | 'signup' | 'reset'
 interface Props {
   initialMode: Mode
   initialEmail?: string
-  inviteId?: string | null
 }
 
-export function LoginForm({ initialMode, initialEmail = '', inviteId = null }: Props) {
+export function LoginForm({ initialMode, initialEmail = '' }: Props) {
   const router = useRouter()
   const supabase = createClient()
 
@@ -49,7 +48,7 @@ export function LoginForm({ initialMode, initialEmail = '', inviteId = null }: P
         if (!res.ok) throw new Error(data.error)
         const { error: loginError } = await supabase.auth.signInWithPassword({ email, password })
         if (loginError) throw loginError
-        router.push(inviteId ? `/onboarding?invite=${inviteId}` : '/onboarding')
+        router.push('/onboarding')
         router.refresh()
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password })

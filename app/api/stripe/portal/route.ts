@@ -19,11 +19,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Aucun abonnement actif' }, { status: 400 })
   }
 
-  const appUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
-
+  // Même origine que le checkout : évite de renvoyer les clients vers localhost
+  // si la variable d'environnement d'URL n'est pas définie côté Vercel.
   const session = await stripe.billingPortal.sessions.create({
     customer: cabinet.stripe_customer_id,
-    return_url: `${appUrl}/dashboard/parametres`,
+    return_url: `${request.nextUrl.origin}/dashboard/parametres`,
   })
 
   return NextResponse.json({ url: session.url })

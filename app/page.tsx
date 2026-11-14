@@ -26,11 +26,11 @@ const OBJECTIONS = [
   },
   {
     q: "« C'est trop cher pour ce que ça fait »",
-    r: "Comparez au coût réel : un community manager freelance démarre à 400-600€/mois. Une agence, 800-1500€/mois. Lexavo à partir de 49€/mois vous fait gagner le même résultat — une présence régulière — pour une fraction du prix, sans dépendre de la disponibilité de quelqu'un d'autre.",
+    r: "Comparez au coût réel : un community manager freelance démarre à 400-600€/mois. Une agence, 800-1500€/mois. Lexavo à 29€/mois vous fait gagner le même résultat — une présence régulière — pour une fraction du prix, sans dépendre de la disponibilité de quelqu'un d'autre.",
   },
   {
     q: "« Je n'ai pas le temps de valider du contenu chaque semaine »",
-    r: "La validation prend 5 minutes, pas plus — vous lisez, vous ajustez si besoin, vous validez. Comparez ça au temps que prendrait l'écriture complète d'un post de zéro. Et si vraiment vous manquez de temps, le forfait Pilote s'occupe de tout, y compris la validation avec vous en amont.",
+    r: "La validation prend 5 minutes, pas plus — vous lisez, vous ajustez si besoin, vous validez. Comparez ça au temps que prendrait l'écriture complète d'un post de zéro.",
   },
   {
     // Réponse à valider avec la partenaire juriste avant mise en avant en RDV commercial.

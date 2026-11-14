@@ -43,7 +43,6 @@ export async function DELETE() {
     // Supprimer toutes les données liées
     await supabaseAdmin.from('calendrier').delete().eq('cabinet_id', cabinet.id)
     await supabaseAdmin.from('generations').delete().eq('cabinet_id', cabinet.id)
-    await supabaseAdmin.from('membres').delete().eq('cabinet_id', cabinet.id)
     await supabaseAdmin.from('cabinets').delete().eq('id', cabinet.id)
   }
 

@@ -15,7 +15,7 @@ FAQ et image éditoriale pour avocats français. Site déployé sur https://www.
 - **Supabase** (Postgres + Auth + Storage) via `@supabase/ssr`. Client serveur :
   `lib/supabase/server.ts`. Client navigateur : `lib/supabase/client.ts`.
   Middleware de session : `lib/supabase/middleware.ts` appelé depuis `proxy.ts`.
-- **Stripe** pour l'abonnement (`pro` 69 €/mois, `cabinet` 149 €/mois).
+- **Stripe** pour l'abonnement : plan unique `pro` à 29 €/mois, 1 utilisateur.
 - **Anthropic SDK** (`claude-sonnet-4-6`) pour le texte, **OpenAI**
   (`gpt-image-1`) pour les images.
 - **Resend** pour les e-mails transactionnels.
@@ -31,14 +31,15 @@ FAQ et image éditoriale pour avocats français. Site déployé sur https://www.
 
 - Un `user` Supabase → un ou plusieurs `cabinets` (UI utilise toujours le
   premier par `created_at`).
-- Un cabinet a un `plan` : `trial` | `pro` | `cabinet` (voir `types/index.ts`).
+- Un cabinet a un `plan` : `trial` | `pro` (voir `types/index.ts`). Un seul
+  utilisateur par cabinet — la table `membres` et la fonctionnalité Équipe ont
+  été retirées en `supabase-migration-v10.sql`.
 - **Quota trial : 10 générations totales par cabinet.** Vérifié avant et
   re-vérifié juste avant insert pour éviter les races (verrou en mémoire
   `inProgress` par cabinet_id dans les routes de génération).
 - Une `generation` contient : 3 posts LinkedIn (angles pédagogique / cas
   pratique / conseil), 5 entrées FAQ, 1 image conceptuelle stockée dans le
   bucket Supabase `images`. Statuts : `brouillon` | `publie` | `programme`.
-- Le plan `cabinet` autorise jusqu'à 3 membres (`MAX_MEMBRES_PAR_PLAN`).
 
 ## Arborescence
 
@@ -109,7 +110,9 @@ années restent autorisées pour citer un texte précis ou une date historique.
   `SUPABASE_SERVICE_ROLE_KEY`
 - `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`
 - `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`,
-  `NEXT_PUBLIC_STRIPE_PRICE_PRO`, `NEXT_PUBLIC_STRIPE_PRICE_CABINET`
+  `STRIPE_PRICE_UNIQUE` (prix courant 29 €, utilisé par le checkout),
+  `STRIPE_PRICE_ACTIF` (ancien prix 49 €, conservé pour que le webhook
+  reconnaisse les abonnements souscrits avant la bascule tarifaire)
 - `RESEND_API_KEY`
 - `NEXT_PUBLIC_CALENDLY_URL` (fallback dans `lib/constants.ts`)
 - `CRON_SECRET` (vérifié dans `/api/cron/publish-due`)
