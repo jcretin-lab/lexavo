@@ -180,7 +180,7 @@ export default function HomePage() {
       <section className="lx-hero">
         {/* La feuille d'acte : papier, lignes réglées et double marge dorée */}
         <div className="lx-acte" aria-hidden="true" />
-        {/* Justitia en filigrane : gravure de l'école de Marcantonio Raimondi (v. 1510-1527), Rijksmuseum, domaine public (CC0) */}
+        {/* Justitia en filigrane : « Iustitia », gravure d'après Hendrick Goltzius (v. 1585-1637), Rijksmuseum RP-P-1882-A-6499, domaine public (CC0) */}
         <div className="lx-justice" aria-hidden="true">
           <Image src={gravureJustice} alt="" fill sizes="(min-width: 768px) 30vw, 60vw" />
         </div>
