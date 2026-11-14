@@ -71,8 +71,10 @@ export function TitreFrappe({ fixe, rotation, className }: { fixe: string; rotat
         <span className="lx-frappe__reste">{fixe.slice(f)}</span>
       </span>
       <span className="lx-frappe__ligne lx-frappe__ligne--rotation" aria-hidden="true">
+        {/* la partie pas encore tapée reste en place (invisible) : le texte centré ne tremble pas */}
         {fixeFini && `${rotation[r]}.`.slice(0, c)}
         {fixeFini && curseur}
+        {fixeFini && <span className="lx-frappe__reste">{`${rotation[r]}.`.slice(c)}</span>}
       </span>
     </h1>
   )
