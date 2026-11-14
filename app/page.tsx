@@ -229,7 +229,7 @@ export default function HomePage() {
           <div className="lx-wrap lx-hero__faits">
             <div><strong>48 h</strong>pour recevoir votre devis</div>
             <div><strong>3 semaines</strong>pour être en ligne</div>
-            <div><strong>Sans abonnement</strong>votre site vous appartient</div>
+            <div><strong>Module inclus</strong>textes, blog, SEO et GEO, gérés par vous</div>
           </div>
         </div>
       </section>
