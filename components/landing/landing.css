@@ -165,6 +165,21 @@ html[data-scrolled='true'] .lx-nav,
   animation: lx-marge 1.4s var(--ease) 0.3s forwards;
 }
 @keyframes lx-marge { to { transform: scaleY(1); } }
+/* Justitia en filigrane, à gauche de la feuille : encre très pâle qui se fond vers le bas et vers le texte */
+.lx-justice {
+  position: absolute; bottom: 0; left: clamp(0.5rem, 6vw, 7rem);
+  height: 94%; aspect-ratio: 640 / 1320; pointer-events: none;
+  /* fondu en ellipse autour de la silhouette : les bords de la plaque gravée disparaissent */
+  -webkit-mask-image: radial-gradient(ellipse 48% 46% at 46% 52%, #000 45%, transparent 100%);
+          mask-image: radial-gradient(ellipse 48% 46% at 46% 52%, #000 45%, transparent 100%);
+  opacity: 0; animation: lx-justice 2.4s ease 0.6s forwards;
+}
+.lx-justice img { object-fit: contain; object-position: bottom left; }
+@keyframes lx-justice { to { opacity: 0.11; } }
+@media (max-width: 767px) {
+  .lx-justice { left: -12%; height: 70%; }
+  @keyframes lx-justice { to { opacity: 0.06; } }
+}
 @media (max-width: 640px) { .lx-acte::before { left: 0.5rem; width: 4px; } }
 
 /* Titre tapé : curseur de traitement de texte */
@@ -674,6 +689,7 @@ html[data-scrolled='true'] .lx-nav,
   .lx *, .lx *::before, .lx *::after { animation-duration: 0.01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .lx-hero__media, .lx-devis__photo { clip-path: none; }
   .lx-acte::before { transform: none; }
+  .lx-justice { opacity: 0.11; }
   .lx-sceau { opacity: 1; transform: rotate(var(--tourne)); }
   .lx-devis__photo img { transform: none; }
   .lx-hero__media img { transform: scale(1.04); }

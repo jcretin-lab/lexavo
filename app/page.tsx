@@ -10,6 +10,7 @@ import { TitreFrappe } from '@/components/landing/titre-frappe'
 import { Sceau } from '@/components/landing/sceau'
 import { FORFAITS, MENTION_TVA } from '@/lib/offre'
 
+import gravureJustice from '@/public/photos/justitia.webp'
 import photoBustes from '@/public/photos/bibliotheque-bustes.jpg'
 import photoFacade from '@/public/photos/facade-haussmann.jpg'
 import photoBibliotheque from '@/public/photos/bibliotheque.jpg'
@@ -179,6 +180,10 @@ export default function HomePage() {
       <section className="lx-hero">
         {/* La feuille d'acte : papier, lignes réglées et double marge dorée */}
         <div className="lx-acte" aria-hidden="true" />
+        {/* Justitia en filigrane : gravure de l'école de Marcantonio Raimondi (v. 1510-1527), Rijksmuseum, domaine public (CC0) */}
+        <div className="lx-justice" aria-hidden="true">
+          <Image src={gravureJustice} alt="" fill sizes="(min-width: 768px) 30vw, 60vw" />
+        </div>
 
         <div className="lx-wrap lx-hero__contenu">
           <p className="lx-hero__accroche">Création de sites internet pour avocats</p>
