@@ -18,6 +18,7 @@ export function TitreFrappe({ fixe, corrections, className }: { fixe: string; co
     let minuteur = 0
     const planifier = (fn: () => void, ms: number) => { minuteur = window.setTimeout(fn, ms) }
     const frappe = () => 55 + Math.random() * 45
+    const frappeRapide = () => 32 + Math.random() * 26 // les mentions s'écrivent plus vite que le titre
     const texte = (r: number, vrai: boolean) => `${vrai ? corrections[r].vrai : corrections[r].faux}.`
 
     // Mouvement réduit : seules les bonnes mentions, qui changent sans animation
@@ -43,15 +44,15 @@ export function TitreFrappe({ fixe, corrections, className }: { fixe: string; co
     const taper = () => {
       c += 1
       maj('frappe')
-      if (c < texte(r, vrai).length) planifier(taper, frappe())
+      if (c < texte(r, vrai).length) planifier(taper, frappeRapide())
       else {
         maj('pause')
-        planifier(vrai ? sortir : rayer, vrai ? 2600 : 800)
+        planifier(vrai ? sortir : rayer, vrai ? 1700 : 380)
       }
     }
     const rayer = () => {
       maj('rature')
-      planifier(sortir, 1000)
+      planifier(sortir, 650)
     }
     const sortir = () => {
       maj('sortie')
@@ -60,8 +61,8 @@ export function TitreFrappe({ fixe, corrections, className }: { fixe: string; co
         vrai = !vrai
         c = 0
         maj('frappe')
-        planifier(taper, 240)
-      }, 480)
+        planifier(taper, 120)
+      }, 340)
     }
     planifier(taperFixe, 650)
     return () => window.clearTimeout(minuteur)

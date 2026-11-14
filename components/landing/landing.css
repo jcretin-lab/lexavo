@@ -184,9 +184,9 @@ html[data-scrolled='true'] .lx-nav,
   background: linear-gradient(var(--laiton), var(--laiton)) no-repeat 0 54% / 0% 0.06em;
   -webkit-box-decoration-break: clone;
           box-decoration-break: clone;
-  transition: background-size 0.6s var(--ease), opacity 0.45s ease, filter 0.45s ease;
+  transition: background-size 0.42s var(--ease), opacity 0.32s ease, filter 0.32s ease;
 }
-.lx-rature:not(.is-rayee) { transition: opacity 0.45s ease, filter 0.45s ease; } /* le trait disparaît d'un coup pour l'avantage suivant */
+.lx-rature:not(.is-rayee) { transition: opacity 0.32s ease, filter 0.32s ease; } /* le trait disparaît d'un coup pour l'avantage suivant */
 .lx-rature.is-rayee { background-size: 100% 0.06em; }
 .lx-rature.is-sortie { opacity: 0; filter: blur(4px); }
 .lx-rature.is-faux { color: rgba(20, 33, 61, 0.42); }
