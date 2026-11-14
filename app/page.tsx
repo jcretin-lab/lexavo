@@ -210,7 +210,11 @@ export default function HomePage() {
           <TitreFrappe
             className="lx-display"
             fixe="Le site de votre cabinet,"
-            rotation={['sans abonnement', 'prêt pour Google et les IA', 'modifiable en quelques clics']}
+            corrections={[
+              { faux: 'avec abonnement', vrai: 'sans abonnement' },
+              { faux: 'introuvable sur Google', vrai: 'prêt pour Google et les IA' },
+              { faux: 'figé', vrai: 'modifiable en quelques clics' },
+            ]}
           />
           <p className="lx-hero__texte">
             Nous créons le site de votre cabinet. Ensuite, c&apos;est vous qui le faites vivre&nbsp;: textes, blog, référencement SEO et GEO, en quelques clics.
