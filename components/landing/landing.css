@@ -142,10 +142,53 @@ html[data-scrolled='true'] .lx-nav,
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  background: var(--robe);
+  background:
+    radial-gradient(ellipse 70% 60% at 85% 15%, rgba(54, 78, 128, 0.45) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 10% 100%, rgba(168, 130, 74, 0.10) 0%, transparent 70%),
+    #0F1A33;
   color: var(--blanc);
   overflow: hidden;
 }
+
+/* Filigrane : le droit et le code défilent lentement derrière le titre */
+.lx-filigrane {
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0.35) 0%, #000 55%), linear-gradient(0deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+          mask-image: linear-gradient(90deg, rgba(0,0,0,0.35) 0%, #000 55%), linear-gradient(0deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  -webkit-mask-composite: source-in;
+          mask-composite: intersect;
+  opacity: 0; animation: lx-apparition 2.4s ease 0.2s forwards;
+}
+.lx-filigrane__piste { animation: lx-defile 90s linear infinite; }
+.lx-filigrane__bloc { padding: 0 1.5rem; }
+@media (min-width: 768px) { .lx-filigrane__bloc { padding: 0 2.5rem 0 38%; } }
+.lx-filigrane p { margin: 0; padding: 1.1rem 0; white-space: nowrap; }
+.lx-filigrane__loi {
+  font-family: var(--font-instrument-serif), Georgia, serif; font-style: italic;
+  font-size: clamp(1.25rem, 2.4vw, 2.25rem); color: rgba(205, 170, 112, 0.13);
+}
+.lx-filigrane__code {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: clamp(0.8125rem, 1.15vw, 1.0625rem); color: rgba(255, 255, 255, 0.10);
+  padding-left: 3rem !important;
+}
+@media (max-width: 767px) {
+  .lx-filigrane__loi { color: rgba(205, 170, 112, 0.08); }
+  .lx-filigrane__code { color: rgba(255, 255, 255, 0.06); }
+}
+@keyframes lx-defile { to { transform: translateY(-50%); } }
+
+/* Titre tapé : curseur de traitement de texte */
+.lx-frappe__ligne { display: block; white-space: nowrap; }
+.lx-frappe__reste { visibility: hidden; }
+.lx-frappe__curseur { display: inline-block; position: relative; width: 0; height: 1em; vertical-align: -0.12em; }
+.lx-frappe__curseur::after {
+  content: ''; position: absolute; left: 0.04em; top: 0.02em; bottom: -0.04em; width: 0.055em;
+  background: var(--laiton-clair);
+}
+.lx-frappe__curseur.is-fini::after { animation: lx-clignote 1.1s steps(1) infinite; }
+@keyframes lx-clignote { 50% { opacity: 0; } }
+
 .lx-hero__media {
   position: absolute; inset: 0;
   clip-path: inset(16% 24% 16% 24%);
@@ -156,60 +199,6 @@ html[data-scrolled='true'] .lx-nav,
   transform: scale(1.28);
   animation: lx-recul 2.6s var(--ease-out) 0.15s forwards, lx-derive 24s ease-in-out 2.8s infinite alternate;
 }
-/* « La lampe de l'architecte » : sous la photo, le plan du palais.
-   À l'ouverture, le plan couvre tout, puis se condense en un halo qui suit la souris
-   (dérive lente quand il n'y a pas de souris). */
-@property --halo-r { syntax: '<length>'; inherits: true; initial-value: 0px; }
-@property --halo-x { syntax: '<length-percentage>'; inherits: true; initial-value: 72%; }
-@property --halo-y { syntax: '<length-percentage>'; inherits: true; initial-value: 42%; }
-.lx-hero__media[data-halo] {
-  --halo-r: 160vmax;
-  --halo-fin: 300px;
-  animation: lx-ouverture 1.7s var(--ease) 0.15s forwards, lx-condense 1.9s var(--ease) 2.1s forwards;
-}
-@media (max-width: 767px) { .lx-hero__media[data-halo] { --halo-fin: 140px; } }
-@keyframes lx-condense { to { --halo-r: var(--halo-fin); } }
-/* La photo n'apparaît qu'une fois le plan dessiné ; ensuite le plan devient translucide, comme une loupe */
-.lx-hero__media[data-halo] > img {
-  opacity: 0;
-  animation: lx-recul 2.6s var(--ease-out) 0.15s forwards, lx-derive 24s ease-in-out 2.8s infinite alternate, lx-apparition 1.8s ease 2.1s forwards;
-}
-.lx-hero__plan {
-  position: absolute; inset: 0;
-  -webkit-mask-image: radial-gradient(circle var(--halo-r) at var(--halo-x) var(--halo-y), #000 0%, #000 50%, transparent 100%);
-          mask-image: radial-gradient(circle var(--halo-r) at var(--halo-x) var(--halo-y), #000 0%, #000 50%, transparent 100%);
-  animation: lx-derive-halo 18s ease-in-out 4s infinite alternate;
-}
-.lx-hero__plan.is-suivi { animation: none; }
-.lx-hero__plan > img {
-  animation: lx-recul 2.6s var(--ease-out) 0.15s forwards, lx-derive 24s ease-in-out 2.8s infinite alternate, lx-attenue 1.9s var(--ease) 2.1s forwards;
-}
-@keyframes lx-attenue { to { opacity: 0.88; } }
-@keyframes lx-derive-halo {
-  0%   { --halo-x: 72%; --halo-y: 42%; }
-  35%  { --halo-x: 60%; --halo-y: 64%; }
-  70%  { --halo-x: 84%; --halo-y: 58%; }
-  100% { --halo-x: 80%; --halo-y: 26%; }
-}
-.lx-hero__grille {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(205, 170, 112, 0.14) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(205, 170, 112, 0.14) 1px, transparent 1px);
-  background-size: 56px 56px;
-}
-.lx-cote {
-  position: absolute; transform: translate(-50%, -50%);
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace; font-size: 11px; letter-spacing: 0.02em;
-  color: var(--laiton-clair); white-space: nowrap;
-  padding: 3px 7px; border: 1px solid rgba(205, 170, 112, 0.5); background: rgba(14, 24, 46, 0.72);
-}
-@media (max-width: 767px) { .lx-cote { display: none; } }
-.lx-cote::before {
-  content: ''; position: absolute; left: -4px; top: 50%; width: 7px; height: 7px; margin-top: -3.5px;
-  background: var(--laiton-clair); transform: rotate(45deg);
-}
-
 .lx-hero__voile {
   position: absolute; inset: 0;
   background:
@@ -224,13 +213,12 @@ html[data-scrolled='true'] .lx-nav,
 .lx-hero__contenu { position: relative; z-index: 1; padding-top: 8rem; padding-bottom: 3rem; }
 .lx-hero__accroche {
   font-size: 1rem; color: var(--laiton-clair); margin: 0 0 1.5rem;
-  opacity: 0; animation: lx-apparition 0.9s ease 1.25s forwards;
+  opacity: 0; animation: lx-apparition 0.9s ease 0.2s forwards;
 }
 .lx-hero h1 {
-  font-size: clamp(3rem, 8.4vw, 7.25rem);
-  line-height: 0.98;
-  margin: 0 0 2rem;
-  max-width: 12ch;
+  font-size: clamp(3.25rem, 11vw, 10rem);
+  line-height: 0.95;
+  margin: 0 0 2.25rem;
 }
 .lx-ligne { display: block; overflow: hidden; padding-bottom: 0.06em; }
 .lx-ligne > span {
@@ -243,16 +231,16 @@ html[data-scrolled='true'] .lx-nav,
 .lx-ligne:nth-child(3) > span { animation-delay: 1.29s; }
 .lx-hero__texte {
   max-width: 34rem; font-size: 1.125rem; color: rgba(255, 255, 255, 0.82); margin: 0 0 2.5rem;
-  opacity: 0; animation: lx-apparition 0.9s ease 1.5s forwards;
+  opacity: 0; animation: lx-apparition 0.9s ease 2.4s forwards;
 }
 .lx-hero__actions {
   display: flex; flex-wrap: wrap; gap: 0.875rem;
-  opacity: 0; animation: lx-apparition 0.9s ease 1.65s forwards;
+  opacity: 0; animation: lx-apparition 0.9s ease 2.6s forwards;
 }
 .lx-hero__pied {
   position: relative; z-index: 1;
   border-top: 1px solid rgba(255, 255, 255, 0.16);
-  opacity: 0; animation: lx-apparition 0.9s ease 1.9s forwards;
+  opacity: 0; animation: lx-apparition 0.9s ease 2.8s forwards;
 }
 .lx-hero__faits {
   display: grid; grid-template-columns: repeat(3, 1fr);
@@ -643,8 +631,7 @@ html[data-scrolled='true'] .lx-nav,
 @media (prefers-reduced-motion: reduce) {
   .lx *, .lx *::before, .lx *::after { animation-duration: 0.01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .lx-hero__media, .lx-devis__photo { clip-path: none; }
-  .lx-hero__plan { display: none; }
-  .lx-hero__media[data-halo] > img { opacity: 1; }
+  .lx-filigrane__piste { animation: none; }
   .lx-devis__photo img { transform: none; }
   .lx-hero__media img { transform: scale(1.04); }
   .lx-reveal { opacity: 1; transform: none; }

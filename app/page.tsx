@@ -6,10 +6,9 @@ import { LandingFooter } from '@/components/landing/landing-footer'
 import { LandingEffets } from '@/components/landing/landing-effets'
 import { FaqAccordion } from '@/components/landing/faq-accordion'
 import { VeilleEncart } from '@/components/landing/veille-encart'
+import { TitreFrappe } from '@/components/landing/titre-frappe'
 import { FORFAITS, MENTION_TVA } from '@/lib/offre'
 
-import photoColonnes from '@/public/photos/colonnes.jpg'
-import photoColonnesPlan from '@/public/photos/colonnes-plan.jpg'
 import photoBustes from '@/public/photos/bibliotheque-bustes.jpg'
 import photoFacade from '@/public/photos/facade-haussmann.jpg'
 import photoBibliotheque from '@/public/photos/bibliotheque.jpg'
@@ -19,6 +18,22 @@ import photoPalais from '@/public/photos/palais-justice.jpg'
 import photoRue from '@/public/photos/rue-paris.jpg'
 
 /* ── Contenus ────────────────────────────────────────── */
+// Filigrane du hero : le droit et le code, mêlés. Citations exactes (Code civil, DDHC).
+const FILIGRANE: { texte: string; code?: boolean }[] = [
+  { texte: 'Art. 1103 — Les contrats légalement formés tiennent lieu de loi à ceux qui les ont faits.' },
+  { texte: '<title>Cabinet Delmas — Avocat au barreau de Lyon</title>', code: true },
+  { texte: 'Art. 9 — Chacun a droit au respect de sa vie privée.' },
+  { texte: '"@type": "LegalService", "areaServed": "Lyon"', code: true },
+  { texte: 'Art. 1104 — Les contrats doivent être négociés, formés et exécutés de bonne foi.' },
+  { texte: '<meta name="description" content="Droit de la famille, droit du travail…">', code: true },
+  { texte: 'DDHC, art. 11 — La libre communication des pensées et des opinions est un des droits les plus précieux de l’Homme.' },
+  { texte: '<h2>Domaines d’intervention</h2>', code: true },
+  { texte: 'Art. 1240 — Tout fait quelconque de l’homme, qui cause à autrui un dommage, oblige celui par la faute duquel il est arrivé à le réparer.' },
+  { texte: '<article class="blog"> <time datetime="…">', code: true },
+  { texte: 'Art. 544 — La propriété est le droit de jouir et disposer des choses de la manière la plus absolue…' },
+  { texte: 'llms.txt · sitemap.xml · robots.txt', code: true },
+]
+
 const CONSTATS = [
   {
     titre: 'On vous cherche avant de vous appeler',
@@ -177,28 +192,22 @@ export default function HomePage() {
 
       {/* ══ Hero ═══════════════════════════════════════════ */}
       <section className="lx-hero">
-        <div className="lx-hero__media" data-halo>
-          <Image src={photoColonnes} alt="Colonnes d’un palais de justice vues en contre-plongée" fill priority sizes="100vw" placeholder="blur" />
-          {/* Le « plan » du palais : visible en entier à l'ouverture, puis seulement sous le halo qui suit la souris */}
-          <div className="lx-hero__plan" aria-hidden="true">
-            <Image src={photoColonnesPlan} alt="" fill priority sizes="100vw" />
-            <div className="lx-hero__grille" />
-            <span className="lx-cote" style={{ top: '22%', left: '58%' }}>&lt;header&gt;</span>
-            <span className="lx-cote" style={{ top: '38%', left: '74%' }}>schema.org/LegalService</span>
-            <span className="lx-cote" style={{ top: '56%', left: '52%' }}>&lt;meta name=&quot;description&quot;&gt;</span>
-            <span className="lx-cote" style={{ top: '68%', left: '80%' }}>&lt;section id=&quot;domaines&quot;&gt;</span>
-            <span className="lx-cote" style={{ top: '30%', left: '86%' }}>GEO · llms.txt</span>
-            <span className="lx-cote" style={{ top: '80%', left: '62%' }}>&lt;article&gt; blog</span>
+        {/* Filigrane : articles de loi et lignes de code qui défilent lentement */}
+        <div className="lx-filigrane" aria-hidden="true">
+          <div className="lx-filigrane__piste">
+            {[0, 1].map((copie) => (
+              <div key={copie} className="lx-filigrane__bloc">
+                {FILIGRANE.map((l, i) => (
+                  <p key={i} className={l.code ? 'lx-filigrane__code' : 'lx-filigrane__loi'}>{l.texte}</p>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
-        <div className="lx-hero__voile" />
 
         <div className="lx-wrap lx-hero__contenu">
           <p className="lx-hero__accroche">Création de sites internet pour avocats</p>
-          <h1 className="lx-display">
-            <span className="lx-ligne"><span>Plaidez aussi</span></span>
-            <span className="lx-ligne"><span>en ligne.</span></span>
-          </h1>
+          <TitreFrappe className="lx-display" lignes={['Plaidez aussi', 'en ligne.']} />
           <p className="lx-hero__texte">
             Nous créons le site de votre cabinet. Ensuite, c&apos;est vous qui le faites vivre&nbsp;: textes, blog, référencement SEO et GEO, en quelques clics.
           </p>
