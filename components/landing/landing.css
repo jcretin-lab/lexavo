@@ -286,7 +286,7 @@ html[data-scrolled='true'] .lx-nav,
 }
 /* Sceau discret : papier, encre bleu nuit fine, une seule touche dorée (le filet intérieur et la petite ligne) */
 .lx-sceau svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.lx-sceau__fond { fill: #FCFBF8; stroke: rgba(20, 33, 61, 0.55); stroke-width: 1; }
+.lx-sceau__fond { fill: #FCFBF8; stroke: var(--robe); stroke-width: 1.5; } /* même bleu nuit que le titre */
 .lx-sceau__perles { fill: none; stroke: rgba(20, 33, 61, 0.35); stroke-width: 2; stroke-dasharray: 0.1 6.4; stroke-linecap: round; }
 .lx-sceau__filet { fill: none; stroke: rgba(20, 33, 61, 0.35); stroke-width: 0.75; }
 .lx-sceau__filet--dore { stroke: var(--laiton); stroke-width: 1; }
