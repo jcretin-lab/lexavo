@@ -10,6 +10,7 @@ import { TitreFrappe } from '@/components/landing/titre-frappe'
 import { Sceau } from '@/components/landing/sceau'
 import { FORFAITS, MENTION_TVA } from '@/lib/offre'
 
+import photoColonnes from '@/public/photos/colonnes.jpg'
 import gravureJustice from '@/public/photos/justitia.webp'
 import photoBustes from '@/public/photos/bibliotheque-bustes.jpg'
 import photoFacade from '@/public/photos/facade-haussmann.jpg'
@@ -213,17 +214,22 @@ export default function HomePage() {
 
       {/* ══ Constat ════════════════════════════════════════ */}
       <section className="lx-constat">
-        <div className="lx-wrap">
-          <p className="lx-constat__phrase lx-reveal">
-            Un client ne choisit jamais un avocat qu&apos;il n&apos;a jamais vu. Votre site est <em>souvent la première rencontre</em> avec votre cabinet.
-          </p>
-          <div className="lx-constat__grille">
-            {CONSTATS.map(({ titre, texte }) => (
-              <div key={titre} className="lx-reveal">
-                <h3>{titre}</h3>
-                <p>{texte}</p>
-              </div>
-            ))}
+        <div className="lx-wrap lx-constat__mise">
+          <div className="lx-constat__texte">
+            <p className="lx-constat__phrase lx-reveal">
+              Un client ne choisit jamais un avocat qu&apos;il n&apos;a jamais vu. Votre site est <em>souvent la première rencontre</em> avec votre cabinet.
+            </p>
+            <div className="lx-constat__grille">
+              {CONSTATS.map(({ titre, texte }) => (
+                <div key={titre} className="lx-reveal">
+                  <h3>{titre}</h3>
+                  <p>{texte}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="lx-constat__photo lx-reveal-image">
+            <Image src={photoColonnes} alt="Colonnes et fronton sculpté d’un palais de justice, vus en contre-plongée" fill sizes="(min-width: 1024px) 40vw, 100vw" placeholder="blur" />
           </div>
         </div>
       </section>
