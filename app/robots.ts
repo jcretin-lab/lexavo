@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/dashboard/', '/onboarding/', '/login/', '/paiement/'],
+      disallow: ['/api/'],
     },
     sitemap: 'https://www.lexavo.fr/sitemap.xml',
   }

@@ -2,122 +2,62 @@
 
 # Lexavo (lexcontent) — Contexte projet
 
-SaaS qui transforme un sujet juridique ou un article existant en posts LinkedIn,
-FAQ et image éditoriale pour avocats français. Site déployé sur https://www.lexavo.fr.
+Site vitrine de **Lexavo, création de sites internet pour avocats** (offre de
+service, pas de logiciel). Déployé sur https://www.lexavo.fr. L'ancien SaaS de
+génération de posts LinkedIn a été retiré en novembre 2026 (historique git :
+commit « chore: retrait de la fonctionnalité Équipe » et précédents).
+
+Le projet héberge aussi l'**API de la veille juridique** (newsletter
+« Veille Lexavo ») : le site d'inscription est sur veille.lexavo.fr et appelle
+les routes `/api/veille/*` de ce projet.
 
 ## Stack
 
-- **Next.js 16.2 App Router** (React 19). Pas de Pages Router. `proxy.ts` à la
-  racine remplace `middleware.ts` (rebranding Next 16). Lis
-  `node_modules/next/dist/docs/` avant tout changement framework — l'API a
-  cassé sur plusieurs points par rapport à Next 14/15.
-- **Tailwind 4** (config dans `postcss.config.mjs`, pas de `tailwind.config.js`).
-- **Supabase** (Postgres + Auth + Storage) via `@supabase/ssr`. Client serveur :
-  `lib/supabase/server.ts`. Client navigateur : `lib/supabase/client.ts`.
-  Middleware de session : `lib/supabase/middleware.ts` appelé depuis `proxy.ts`.
-- **Stripe** pour l'abonnement : plan unique `pro` à 29 €/mois, 1 utilisateur.
-- **Anthropic SDK** (`claude-sonnet-4-6`) pour le texte, **OpenAI**
-  (`gpt-image-1`) pour les images.
-- **Resend** pour les e-mails transactionnels.
-- **Make** côté client : chaque cabinet renseigne son `make_webhook_url` pour
-  publier sur ses réseaux ; on n'orchestre pas la publication nous-mêmes.
-- Déploiement **Vercel** via **Git Integration** : tout `git push` sur `main`
-  déclenche un build production automatique (alias `www.lexavo.fr`), un push
-  sur une autre branche crée une preview. `vercel --prod` à la main reste
-  utile pour tester un build local ou forcer un redeploy sans push. Cron
-  unique : `/api/cron/publish-due` toutes les 5 min (`vercel.json`).
-
-## Modèle métier
-
-- Un `user` Supabase → un ou plusieurs `cabinets` (UI utilise toujours le
-  premier par `created_at`).
-- Un cabinet a un `plan` : `trial` | `pro` (voir `types/index.ts`). Un seul
-  utilisateur par cabinet — la table `membres` et la fonctionnalité Équipe ont
-  été retirées en `supabase-migration-v10.sql`.
-- **Quota trial : 10 générations totales par cabinet.** Vérifié avant et
-  re-vérifié juste avant insert pour éviter les races (verrou en mémoire
-  `inProgress` par cabinet_id dans les routes de génération).
-- Une `generation` contient : 3 posts LinkedIn (angles pédagogique / cas
-  pratique / conseil), 5 entrées FAQ, 1 image conceptuelle stockée dans le
-  bucket Supabase `images`. Statuts : `brouillon` | `publie` | `programme`.
+- **Next.js 16.2 App Router** (React 19). Lis `node_modules/next/dist/docs/`
+  avant tout changement framework — l'API a cassé sur plusieurs points par
+  rapport à Next 14/15 (ex. `searchParams` est une Promise).
+- **Tailwind 4** (config dans `postcss.config.mjs`).
+- **Resend** pour les e-mails (formulaire de devis, veille).
+- **Supabase** (`@supabase/supabase-js`, clé service role) uniquement pour la
+  liste d'abonnés de la veille (`lib/veille/depot-supabase.ts`).
+- Déploiement **Vercel** via Git Integration : `git push` sur `main` →
+  production ; autre branche → preview. Plus aucun cron.
 
 ## Arborescence
 
-- `app/` — App Router. Pages publiques (`/`, `/cgv`, `/mentions-legales`…),
-  auth (`/login`, `/update-password`), `/onboarding`, `/paiement`,
-  `/preview/[token]`, `/dashboard/*`.
-- `app/api/`
-  - `article-to-linkedin/` — génère posts/FAQ/image à partir d'un texte
-  - `fetch-article-url/` — récupère un article depuis une URL (cheerio)
-  - `generate/` — génération à partir d'un thème
-  - `publish/`, `content/`, `calendrier/` — gestion des contenus
-  - `stripe/checkout`, `stripe/portal`, `webhooks/stripe`
-  - `cron/publish-due` — exécuté par Vercel Cron
-  - `auth/signup`, `account/`, `equipe/`, `email/bienvenue`, `update-webhook`,
-    `contact`
-- `components/dashboard/` — UI authentifiée (formulaires, listes, modales).
-- `components/landing/`, `components/onboarding/`, `components/pricing/` — UI
-  publique.
-- `components/ui/` — primitives Tailwind (button, input, select). Pas de
-  shadcn installé, pas de design system externe.
-- `lib/supabase/{client,server,middleware}.ts`, `lib/email.ts`,
-  `lib/constants.ts`, `lib/utils.ts`.
-- `types/index.ts` — source de vérité pour `Plan`, `Cabinet`, `Generation`,
-  `PostLinkedin`, `FaqItem`, `ImagesByStyle`, etc.
-- `supabase-schema.sql` + `supabase-migration-v2.sql` … `v9.sql` — historique
-  des migrations. Toute évolution de schéma passe par un nouveau fichier
-  `supabase-migration-vN.sql`, jamais par modification d'un fichier existant.
+- `app/page.tsx` — landing (hero, pourquoi, méthode, déontologie, forfaits,
+  FAQ, encart veille, CTA).
+- `app/contact/` — formulaire de demande de devis (`?forfait=<id>`
+  présélectionne un forfait) → `app/api/contact/route.ts` (Resend vers
+  `ADMIN_EMAIL`).
+- `app/cgv`, `app/mentions-legales`, `app/politique-confidentialite`.
+- `lib/offre.ts` — **source unique des forfaits, prix, délais et maintenance**.
+  Utilisée par la landing, la page contact et les CGV.
+- `app/api/veille/*` + `lib/veille/*` — veille juridique (tests :
+  `npm test`). Ne pas casser : des abonnés réels en dépendent.
+- `components/landing/` — nav, footer, FAQ accordéon, animations, encart veille.
+- `next.config.ts` — headers de sécurité + redirections 308 des anciennes
+  routes du SaaS (`/login`, `/dashboard`…) vers `/`.
+- `supabase-*.sql` — historique des migrations (append-only).
 
-## Conventions UI
+## Conventions UI et contenu
 
-- Charte navy-900 (#0F1B3D environ) + ocre + off-white. Police Geist (next/font).
-- Ton sobre, professionnel, juridique. Aucun emoji dans les écrans produit.
-- Tailwind direct dans le JSX, pas de styles globaux ad hoc (sauf
-  `app/globals.css`).
-- Composants client préfixés `'use client'`. Préférer pages serveur qui
-  redirigent (`redirect('/login')`) puis injectent un composant client.
-
-## Règles déontologiques produit (barreau français)
-
-Les prompts LLM et les UI **ne doivent jamais** :
-- promettre un résultat juridique
-- comparer le cabinet à des confrères
-- omettre l'appel à consultation en fin de post LinkedIn
-
-Les prompts en place dans `app/api/article-to-linkedin/route.ts` et
-`app/api/generate/route.ts` encodent déjà ces contraintes — ne pas les
-affaiblir lors d'un refactor.
-
-Règle temporelle : ne jamais mentionner une année pour désigner "aujourd'hui"
-ou "actuellement" — utiliser "actuellement", "en vigueur", "à ce jour". Les
-années restent autorisées pour citer un texte précis ou une date historique.
-
-## À ne pas casser
-
-- **Quota trial** : double check (avant génération + juste avant insert).
-- **Verrou `inProgress`** par cabinet_id sur les routes de génération.
-- **Migrations SQL** : append-only, jamais modifier une migration déjà
-  appliquée en prod.
-- **Webhook Stripe** (`app/api/webhooks/stripe`) : pas de changement sans
-  tester en mode Stripe CLI/test.
-- **Headers de sécurité** dans `next.config.ts` (X-Frame-Options DENY, etc.).
-- **`remotePatterns`** images : si on change le bucket Supabase, mettre à jour
-  `next.config.ts`.
+- Palette éditoriale navy `#0F2247` + or `#B8872A` + papier `#F3EFE5`.
+  Polices via `next/font` (variables `--font-instrument-serif`,
+  `--font-jetbrains-mono`, `--font-inter`). Classes CTA dans `globals.css`
+  (`ed-cta-primary`, `ed-cta-outlined`, `ed-cta-ghost`, `landing-nav-cta`).
+- Ton sobre, professionnel. Aucun emoji.
+- Pas de faux témoignages, fausses références ou chiffres inventés.
+- Déontologie : ne jamais promettre de résultat (clients, position Google), ni
+  affirmer une conformité « garantie » — l'avocat valide et reste responsable
+  de sa communication (RIN art. 10).
+- Règle temporelle : ne jamais écrire une année pour dire « aujourd'hui ».
 
 ## Variables d'environnement attendues
 
-- `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
-  `SUPABASE_SERVICE_ROLE_KEY`
-- `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`
-- `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`,
-  `STRIPE_PRICE_UNIQUE` (prix courant 29 €, utilisé par le checkout),
-  `STRIPE_PRICE_ACTIF` (ancien prix 49 €, conservé pour que le webhook
-  reconnaisse les abonnements souscrits avant la bascule tarifaire)
-- `RESEND_API_KEY`
-- `NEXT_PUBLIC_CALENDLY_URL` (fallback dans `lib/constants.ts`)
-- `CRON_SECRET` (vérifié dans `/api/cron/publish-due`)
-
-Synchroniser avec Vercel via `vercel env pull .env.local`.
+- `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `ADMIN_EMAIL`
+- `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (veille)
+- Variables propres à la veille : voir `lib/veille/` (`VEILLE_BASE_URL`…)
 
 ## Commandes utiles
 
@@ -125,7 +65,6 @@ Synchroniser avec Vercel via `vercel env pull .env.local`.
 npm run dev           # serveur dev (http://localhost:3000)
 npm run build         # build prod local
 npm run lint          # eslint
+npm test              # tests de la veille
 npx tsc --noEmit      # type-check
-git push              # auto-deploy prod via Vercel Git Integration
-vercel --prod         # deploy CLI manuel (optionnel, sans push)
 ```

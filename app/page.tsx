@@ -1,11 +1,10 @@
 import Link from 'next/link'
-import { LandingPricing } from '@/components/landing/landing-pricing'
 import { ScrollAnimationInit } from '@/components/landing/scroll-animation'
 import { FaqAccordion } from '@/components/landing/faq-accordion'
 import { LandingNav } from '@/components/landing/landing-nav'
 import { LandingFooter } from '@/components/landing/landing-footer'
-import { RainingLettersBg } from '@/components/landing/raining-letters-bg'
 import { VeilleEncart } from '@/components/landing/veille-encart'
+import { FORFAITS, MAINTENANCE, MENTION_TVA } from '@/lib/offre'
 
 /* ── Palette éditoriale ───────────────────────────────── */
 const ED = {
@@ -19,78 +18,75 @@ const ED = {
 }
 
 /* ── Données ─────────────────────────────────────────── */
-const OBJECTIONS = [
+const CONSTATS = [
   {
-    q: '« Je peux le faire moi-même avec ChatGPT »',
-    r: "Vous pouvez générer un post avec ChatGPT, c'est vrai. Mais ensuite il faut l'adapter, trouver une image, aller sur LinkedIn, publier, refaire pareil sur Facebook, et recommencer la semaine suivante — pendant des mois. Lexavo ne remplace pas votre capacité à écrire, il remplace tout le travail répétitif autour : la régularité, la publication, la mise en forme. C'est ça qui prend du temps, pas la rédaction elle-même.",
+    titre: 'Vos futurs clients vous cherchent avant de vous appeler.',
+    texte: "Un nom recommandé par un proche, une recherche « avocat droit de la famille » suivie du nom de votre ville : dans les deux cas, la première étape est votre site. S'il est absent, daté ou illisible sur téléphone, la recherche continue ailleurs.",
   },
   {
-    q: "« C'est trop cher pour ce que ça fait »",
-    r: "Comparez au coût réel : un community manager freelance démarre à 400-600€/mois. Une agence, 800-1500€/mois. Lexavo à 29€/mois vous fait gagner le même résultat — une présence régulière — pour une fraction du prix, sans dépendre de la disponibilité de quelqu'un d'autre.",
+    titre: 'Un site d’avocat obéit à des règles particulières.',
+    texte: "Nom de domaine, mentions obligatoires, présentation des spécialisations, honoraires, absence de sollicitation : la communication de l'avocat est encadrée par le RIN. Une agence généraliste ne les connaît pas toujours.",
   },
   {
-    q: "« Je n'ai pas le temps de valider du contenu chaque semaine »",
-    r: "La validation prend 5 minutes, pas plus — vous lisez, vous ajustez si besoin, vous validez. Comparez ça au temps que prendrait l'écriture complète d'un post de zéro.",
+    titre: 'Vous n’avez pas le temps de piloter un prestataire.',
+    texte: "Vous voulez un site qui vous ressemble, sans y passer vos soirées. Nous vous demandons une heure d'entretien et quelques relectures : le reste est pour nous.",
   },
-  {
-    // Réponse à valider avec la partenaire juriste avant mise en avant en RDV commercial.
-    // Ne jamais affirmer une conformité totale/certifiée : rester sur "calibré pour respecter"
-    // et "vous validez avant publication".
-    q: '« Est-ce que c\'est conforme à la déontologie du barreau ? »',
-    r: "Le contenu généré est calibré pour respecter le cadre du RIN et les recommandations du CNB — pas de démarchage, pas de comparaison, pas de promesse de résultat. Mais la validation reste entièrement entre vos mains avant chaque publication : vous restez seul responsable et décisionnaire de ce qui est publié, exactement comme si vous l'aviez écrit vous-même.",
-  },
-  {
-    q: '« Mes données et celles de mes clients sont-elles en sécurité ? »',
-    r: "Lexavo ne traite aucune donnée client confidentielle — l'outil génère du contenu marketing à partir d'un thème général, pas à partir de dossiers ou d'informations sur vos clients. Les données de connexion sont hébergées sur Supabase avec chiffrement, et les échanges avec les réseaux sociaux passent par une API officielle sécurisée.",
-  },
-  {
-    q: '« Et si le contenu généré est faux ou juridiquement inexact ? »',
-    r: "C'est exactement pour ça que la validation humaine est une étape obligatoire du processus. Lexavo produit un brouillon de qualité, mais vous restez le seul à publier — rien ne part sans votre accord. Vous gardez le contrôle total sur le fond comme sur la forme.",
-  },
-  {
-    q: "« Je n'ai pas de compétence technique, ça a l'air compliqué »",
-    r: "C'est pensé pour prendre 3 minutes, sans aucune compétence technique. Vous entrez un thème, vous obtenez un brouillon complet, vous validez. La configuration initiale de la publication automatique se fait une seule fois avec un guide pas-à-pas, ou nous pouvons le faire pour vous.",
-  },
-  {
-    q: '« Je ne suis pas sûr que ça apporte vraiment des clients »',
-    r: "Personne ne peut garantir qu'un post ramène un client précis — mais on sait une chose certaine : un avocat invisible en ligne ne sera jamais choisi par quelqu'un qui cherche sur Google ou LinkedIn. La visibilité est une condition nécessaire, même si elle n'est pas suffisante seule. Et un cabinet qui publie 3x/semaine génère 6 fois plus de visibilité que la moyenne de sa profession.",
-  },
-  {
-    q: "« J'ai déjà essayé de publier, ça n'a rien donné »",
-    r: "Souvent, ce qui a été essayé, c'est 3-4 posts isolés sur quelques semaines, puis l'abandon. Ce n'est pas un échec de la méthode, c'est un abandon avant que l'effet de régularité ne se mette en place. C'est précisément le problème que Lexavo résout : maintenir le rythme sans que ça dépende de votre motivation du moment.",
-  },
-  {
-    q: '« Pourquoi seulement LinkedIn et Facebook, pas Instagram/TikTok ? »',
-    r: "Vos clients ne vous cherchent pas sur TikTok. LinkedIn touche votre clientèle professionnelle (entreprises, dirigeants), Facebook touche votre clientèle de particuliers. Ce sont les deux réseaux où se trouve réellement votre marché — on préfère faire deux réseaux bien plutôt que cinq mal.",
-  },
+]
+
+const ETAPES = [
+  { titre: 'Entretien', texte: "Un appel de 30 minutes pour comprendre votre cabinet, votre clientèle et vos domaines d'intervention. Devis ferme sous 48 h." },
+  { titre: 'Maquette', texte: 'Une première version de la page d’accueil à vos couleurs. Vous commentez, nous ajustons.' },
+  { titre: 'Contenus', texte: 'Nous rédigeons ou reprenons vos textes. Vous relisez et validez chaque page avant la mise en ligne.' },
+  { titre: 'Mise en ligne', texte: 'Nom de domaine, HTTPS, référencement, formulaire : tout est branché. Nous vous préparons les éléments à transmettre à votre Ordre.' },
+]
+
+const DEONTOLOGIE = [
+  'Nom de domaine construit sur votre nom ou celui du cabinet, sans terme générique',
+  'Mentions obligatoires : barreau, structure d’exercice, coordonnées, médiateur de la consommation',
+  'Spécialisations mentionnées uniquement si elles sont certifiées',
+  'Information sur les honoraires, sans promesse de résultat',
+  'Aucune publicité tierce, aucun lien vers des sites contraires aux principes essentiels',
+  'Formulaire de contact conforme au RGPD et au secret professionnel',
 ]
 
 const FAQ_LANDING = [
   {
-    q: 'Les contenus respectent-ils la déontologie du barreau ?',
-    r: 'Oui. Lexavo intègre les règles du RIN et du décret du 12 juillet 2005 dans chaque génération. Nous vous recommandons toutefois de relire chaque contenu avant publication.',
+    q: 'Combien de temps faut-il pour avoir mon site ?',
+    r: "Comptez trois semaines pour le forfait Essentiel et quatre à cinq semaines pour le forfait Cabinet, à partir de l'entretien de lancement. Le délai dépend surtout du temps de relecture de votre côté : nous vous donnons un calendrier précis avec le devis.",
   },
   {
-    q: "Pour qui Lexavo n'est pas conçu ?",
-    r: "Lexavo n'est pas adapté aux cabinets d'affaires internationaux dont la clientèle n'est ni sur LinkedIn ni sur Facebook, ni aux avocats qui cherchent un contenu polémique ou comparatif — interdit par la déontologie.",
+    q: 'Le site sera-t-il conforme aux règles de la profession ?',
+    r: "Nous construisons chaque site en tenant compte des règles de communication de l'avocat (RIN, article 10) : nom de domaine, mentions, spécialisations, honoraires. Vous validez chaque page avant la mise en ligne et vous restez responsable de votre communication auprès de votre Ordre, comme pour tout support.",
   },
   {
-    q: 'Puis-je annuler mon abonnement à tout moment ?',
-    r: 'Oui, sans engagement ni frais. La résiliation prend effet à la fin du mois en cours.',
+    q: 'Je n’ai aucun texte, aucune photo. Est-ce un problème ?',
+    r: "Non. Avec le forfait Cabinet, nous rédigeons les textes à partir d'un entretien avec vous. Pour les visuels, nous utilisons des photos libres de droits choisies avec soin, ou nous vous orientons vers un photographe si vous souhaitez un portrait.",
   },
   {
-    q: 'Comment connecter mes réseaux sociaux ?',
-    r: "Depuis votre tableau de bord, téléchargez le scénario Make.com prêt à l'emploi et son guide de configuration. Comptez environ 20 minutes pour la mise en place initiale.",
+    q: 'Le site m’appartient-il ?',
+    r: "Oui. Le nom de domaine est enregistré à votre nom et le site vous appartient une fois réglé. Si vous arrêtez la maintenance, nous vous remettons l'ensemble des fichiers et les accès.",
+  },
+  {
+    q: 'Pourrai-je modifier le site moi-même ?',
+    r: "Les petites modifications (horaires, actualité, nouvel associé) sont incluses dans la maintenance : un e-mail suffit. Si vous préférez gérer vous-même une rubrique actualités, nous pouvons la rendre modifiable depuis une interface simple.",
+  },
+  {
+    q: 'J’ai déjà un site. Pouvez-vous le refaire ?',
+    r: "Oui. Nous reprenons ce qui fonctionne (textes, adresse, référencement acquis) et nous mettons en place les redirections pour ne pas perdre votre position sur Google.",
+  },
+  {
+    q: 'Comment se passe le paiement ?',
+    r: "40 % à la signature du devis, le solde à la mise en ligne. La maintenance est mensuelle et sans engagement au-delà des douze premiers mois.",
   },
 ]
 
 /* ── En-tête de section éditorial ────────────────────── */
-function SectionHeader({ num: _num, label, title, subtitle, dark = false }: {
-  num: string; label: string; title: string; subtitle?: string; dark?: boolean
+function SectionHeader({ label, title, subtitle, dark = false }: {
+  label: string; title: string; subtitle?: string; dark?: boolean
 }) {
   const textColor = dark ? ED.paper : ED.ink
   const ruleColor = dark ? 'rgba(255,255,255,0.12)' : ED.rule
-  const subColor  = dark ? 'rgba(243,239,229,0.55)' : ED.mid
+  const subColor  = dark ? 'rgba(243,239,229,0.6)' : ED.mid
   return (
     <div className="mb-12 fade-in">
       <div style={{ borderTop: `1px solid ${ruleColor}`, paddingTop: '1.25rem', marginBottom: '1rem' }}>
@@ -110,28 +106,63 @@ function SectionHeader({ num: _num, label, title, subtitle, dark = false }: {
   )
 }
 
-/* ── Étape du funnel visibilité → client ──────────────── */
-function FunnelStep({ num, text }: { num: number; text: string }) {
+/* ── Aperçu d'un site de cabinet (illustration du hero) ── */
+function ApercuSite() {
+  const barre = (w: string, c = 'rgba(15,34,71,0.12)') => (
+    <div style={{ height: 7, width: w, background: c, borderRadius: 4 }} />
+  )
   return (
     <div
-      className="flex-1 rounded-2xl p-5"
-      style={{ background: 'var(--white)', border: `1px solid ${ED.rule}`, boxShadow: '0 16px 40px -22px rgba(15,34,71,0.16)' }}
+      aria-hidden
+      style={{
+        background: ED.cream,
+        borderRadius: 14,
+        boxShadow: '0 40px 80px -30px rgba(0,0,0,0.6)',
+        overflow: 'hidden',
+        border: '1px solid rgba(255,255,255,0.08)',
+        maxWidth: 460,
+        width: '100%',
+      }}
     >
-      <span style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: '1.75rem', color: ED.gold }}>
-        {num}
-      </span>
-      <p style={{ fontSize: '0.9375rem', color: ED.ink, lineHeight: 1.5, marginTop: '0.5rem' }}>
-        {text}
-      </p>
-    </div>
-  )
-}
-
-function FunnelArrow() {
-  return (
-    <div className="flex items-center justify-center flex-shrink-0" style={{ color: ED.gold, fontSize: '1.25rem' }} aria-hidden>
-      <span className="hidden md:inline">→</span>
-      <span className="md:hidden">↓</span>
+      <div style={{ background: '#E6E1D6', padding: '0.6rem 0.9rem', display: 'flex', alignItems: 'center', gap: 6 }}>
+        {['#D9776A', '#E2B65B', '#8DB47A'].map((c) => (
+          <span key={c} style={{ width: 9, height: 9, borderRadius: 999, background: c }} />
+        ))}
+        <span style={{ marginLeft: 10, flex: 1, background: ED.cream, borderRadius: 6, padding: '0.2rem 0.6rem', fontFamily: 'var(--font-jetbrains-mono)', fontSize: 10, color: ED.mid }}>
+          martin-avocat.fr
+        </span>
+      </div>
+      <div style={{ padding: '1.1rem 1.25rem 1.4rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.4rem' }}>
+          <span style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 15, color: ED.navy }}>
+            Cabinet Martin
+          </span>
+          <div style={{ display: 'flex', gap: 8 }}>
+            {barre('28px')}{barre('34px')}{barre('24px')}
+          </div>
+        </div>
+        <div style={{ background: ED.navy, borderRadius: 10, padding: '1.25rem', marginBottom: '1rem' }}>
+          <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: 8, letterSpacing: '0.18em', color: ED.gold }}>
+            AVOCAT AU BARREAU DE LYON
+          </span>
+          <p style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 19, color: ED.paper, lineHeight: 1.15, margin: '0.5rem 0 0.9rem' }}>
+            Droit de la famille et des personnes.
+          </p>
+          <span style={{ display: 'inline-block', background: ED.gold, color: ED.navy, fontSize: 10, fontWeight: 600, padding: '0.35rem 0.75rem', borderRadius: 6 }}>
+            Prendre rendez-vous
+          </span>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+          {['Divorce', 'Autorité parentale', 'Successions'].map((t) => (
+            <div key={t} style={{ background: '#fff', border: `1px solid ${ED.rule}`, borderRadius: 8, padding: '0.6rem' }}>
+              <p style={{ fontSize: 10, fontWeight: 600, color: ED.ink, marginBottom: 6 }}>{t}</p>
+              {barre('90%', 'rgba(15,34,71,0.08)')}
+              <div style={{ height: 4 }} />
+              {barre('65%', 'rgba(15,34,71,0.08)')}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
@@ -144,201 +175,229 @@ export default function HomePage() {
 
       <LandingNav />
 
-      {/* ══ Hero — un seul écran ═════════════════════════════ */}
+      {/* ══ Hero ═════════════════════════════════════════════ */}
       <section style={{ background: ED.ink, minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden', position: 'relative' }}>
-        <RainingLettersBg />
-        <div className="max-w-4xl mx-auto px-6 text-center" style={{ paddingTop: '4rem', paddingBottom: '2rem', position: 'relative', zIndex: 1 }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 50% at 75% 50%, rgba(184,135,42,0.10) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div className="max-w-6xl mx-auto px-6 w-full grid md:grid-cols-2 gap-12 items-center" style={{ paddingTop: '6rem', paddingBottom: '4rem', position: 'relative', zIndex: 1 }}>
+          <div>
+            <span
+              className="fade-in"
+              style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: 'clamp(0.6875rem, 1.4vw, 0.8125rem)', letterSpacing: '0.18em', color: ED.gold, display: 'block', marginBottom: '1.75rem' }}
+            >
+              CRÉATION DE SITES POUR AVOCATS
+            </span>
 
-          <span
-            className="fade-in"
-            style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: 'clamp(0.6875rem, 1.4vw, 0.875rem)', letterSpacing: '0.18em', color: ED.gold, display: 'block', marginBottom: '2rem' }}
-          >
-            POUR AVOCATS FRANÇAIS
-          </span>
+            <h1
+              className="fade-in fade-in-delay-1"
+              style={{
+                fontFamily: 'var(--font-instrument-serif)',
+                fontSize: 'clamp(2.25rem, 4.5vw, 3.5rem)',
+                lineHeight: 1.08,
+                letterSpacing: '-0.03em',
+                color: ED.paper,
+                fontStyle: 'italic',
+                marginBottom: '1.5rem',
+              }}
+            >
+              Un site à la hauteur de votre cabinet<span style={{ color: ED.gold }}>.</span>
+            </h1>
 
-          <h1
-            className="fade-in fade-in-delay-1"
-            style={{
-              fontFamily: 'var(--font-instrument-serif)',
-              fontSize: 'clamp(2.25rem, 4.5vw, 3.75rem)',
-              lineHeight: 1.1,
-              letterSpacing: '-0.03em',
-              color: ED.paper,
-              fontStyle: 'italic',
-              marginBottom: '1.5rem',
-            }}
-          >
-            Publiez régulièrement sur{' '}
-            <span style={{ color: '#0A66C2' }}>LinkedIn</span>
-            {' '}et{' '}
-            <span style={{ color: '#5E9EF5' }}>Facebook</span>
-            ,{' '}sans y passer de temps.
-          </h1>
+            <p
+              className="fade-in fade-in-delay-1"
+              style={{ fontSize: '1.0625rem', color: 'rgba(243,239,229,0.7)', lineHeight: 1.65, maxWidth: '30rem', marginBottom: '2.25rem' }}
+            >
+              Nous concevons, rédigeons et mettons en ligne le site de votre cabinet, dans le respect des règles de communication de la profession. Vous relisez, nous faisons le reste.
+            </p>
 
-          <p
-            className="fade-in fade-in-delay-1"
-            style={{ fontSize: '1.0625rem', color: 'rgba(243,239,229,0.65)', lineHeight: 1.6, maxWidth: '32rem', margin: '0 auto 2.5rem' }}
-          >
-            Générez article, posts, FAQ et image en 3 minutes. Programmés et publiés automatiquement. Conforme à la déontologie du barreau.
-          </p>
+            <div className="fade-in fade-in-delay-2 flex flex-col sm:flex-row gap-3 mb-6">
+              <Link href="/contact" className="ed-cta-primary">
+                Demander un devis →
+              </Link>
+              <Link href="/#tarifs" className="ed-cta-ghost">
+                Voir les forfaits
+              </Link>
+            </div>
 
-          <div className="fade-in fade-in-delay-2 flex flex-col sm:flex-row gap-3 justify-center mb-6">
-            <Link href="/login?mode=signup" className="ed-cta-primary">
-              Découvrir gratuitement →
-            </Link>
-            <Link href="/login" className="ed-cta-ghost">
-              Se connecter
-            </Link>
+            <div className="fade-in fade-in-delay-2 flex flex-wrap gap-2">
+              {['Devis sous 48 h', 'En ligne en 3 semaines', 'Règles du RIN'].map((label) => (
+                <span
+                  key={label}
+                  style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.12em', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.14)', padding: '0.25rem 0.625rem' }}
+                >
+                  ✓ {label.toUpperCase()}
+                </span>
+              ))}
+            </div>
           </div>
 
-          <div className="fade-in fade-in-delay-2 flex flex-wrap gap-2 justify-center">
-            {['Déontologie CNB', 'Hébergement EU', 'RGPD'].map((label) => (
-              <span
-                key={label}
-                style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.12em', color: 'rgba(255,255,255,0.38)', border: '1px solid rgba(255,255,255,0.12)', padding: '0.25rem 0.625rem' }}
+          <div className="fade-in fade-in-delay-2 flex justify-center md:justify-end">
+            <ApercuSite />
+          </div>
+        </div>
+      </section>
+
+      {/* ══ Pourquoi ═════════════════════════════════════════ */}
+      <section id="pourquoi" style={{ background: ED.cream, padding: '5rem 1.5rem' }}>
+        <div className="max-w-5xl mx-auto">
+          <SectionHeader label="POURQUOI UN SITE" title="Votre site travaille quand vous plaidez." />
+          <div className="grid md:grid-cols-3 gap-5">
+            {CONSTATS.map(({ titre, texte }, i) => (
+              <div
+                key={titre}
+                className={`fade-in fade-in-delay-${Math.min(i + 1, 2)} rounded-2xl p-6`}
+                style={{ background: '#fff', border: `1px solid ${ED.rule}`, boxShadow: '0 16px 40px -22px rgba(15,34,71,0.16)' }}
               >
-                ✓ {label.toUpperCase()}
-              </span>
+                <p style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: '1.25rem', lineHeight: 1.25, color: ED.navy, marginBottom: '0.75rem' }}>
+                  {titre}
+                </p>
+                <p style={{ fontSize: '0.9375rem', color: ED.mid, lineHeight: 1.65 }}>{texte}</p>
+              </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ══ Méthode ══════════════════════════════════════════ */}
+      <section id="methode" style={{ background: ED.paper, padding: '5rem 1.5rem' }}>
+        <div className="max-w-5xl mx-auto">
+          <SectionHeader
+            label="MÉTHODE"
+            title="Quatre étapes, une heure de votre temps."
+            subtitle="Un seul interlocuteur du premier appel à la mise en ligne. Vous validez chaque étape avant que nous passions à la suivante."
+          />
+          <ol className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 fade-in fade-in-delay-1" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            {ETAPES.map(({ titre, texte }, i) => (
+              <li key={titre} style={{ borderTop: `2px solid ${ED.gold}`, paddingTop: '1.25rem' }}>
+                <span style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: '1.75rem', color: ED.gold }}>
+                  {i + 1}
+                </span>
+                <p style={{ fontWeight: 600, fontSize: '1rem', color: ED.ink, margin: '0.4rem 0 0.5rem' }}>{titre}</p>
+                <p style={{ fontSize: '0.9rem', color: ED.mid, lineHeight: 1.6 }}>{texte}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ══ Déontologie ══════════════════════════════════════ */}
+      <section id="deontologie" style={{ background: ED.navy, padding: '5rem 1.5rem' }}>
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-start">
+          <SectionHeader
+            dark
+            label="DÉONTOLOGIE"
+            title="Pensé pour la profession, pas adapté après coup."
+            subtitle="Nous travaillons pour les avocats depuis le lancement de Lexavo et publions une veille de jurisprudence. Les règles de communication de la profession sont intégrées dès la maquette."
+          />
+          <ul className="fade-in fade-in-delay-1 space-y-4" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            {DEONTOLOGIE.map((item) => (
+              <li key={item} className="flex gap-3" style={{ fontSize: '0.9688rem', color: 'rgba(243,239,229,0.85)', lineHeight: 1.55 }}>
+                <span aria-hidden style={{ color: ED.gold, flexShrink: 0 }}>✓</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* ══ Tarifs ═══════════════════════════════════════════ */}
+      <section id="tarifs" style={{ background: ED.cream, padding: '5rem 1.5rem' }}>
+        <div className="max-w-6xl mx-auto">
+          <SectionHeader
+            label="FORFAITS"
+            title="Un prix clair avant de commencer."
+            subtitle="Chaque projet fait l'objet d'un devis ferme après l'entretien de lancement. Pas de frais cachés, pas de surprise à la livraison."
+          />
+          <div className="grid md:grid-cols-3 gap-5 items-stretch">
+            {FORFAITS.map((f) => (
+              <div
+                key={f.id}
+                className="fade-in fade-in-delay-1 rounded-2xl p-7 flex flex-col"
+                style={{
+                  background: f.misEnAvant ? ED.navy : '#fff',
+                  color: f.misEnAvant ? ED.paper : ED.ink,
+                  border: f.misEnAvant ? `1px solid ${ED.navy}` : `1px solid ${ED.rule}`,
+                  boxShadow: '0 16px 40px -22px rgba(15,34,71,0.22)',
+                }}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.2em', color: ED.gold }}>
+                    {f.nom.toUpperCase()}
+                  </span>
+                  {f.misEnAvant && (
+                    <span style={{ fontSize: '0.6875rem', fontWeight: 600, background: ED.gold, color: ED.navy, padding: '0.2rem 0.6rem', borderRadius: 999 }}>
+                      Le plus demandé
+                    </span>
+                  )}
+                </div>
+                <p style={{ fontSize: '0.75rem', color: f.misEnAvant ? 'rgba(243,239,229,0.6)' : ED.mid, minHeight: '1rem' }}>
+                  {f.aPartirDe ? 'À partir de' : ' '}
+                </p>
+                <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '2.25rem', letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: '0.5rem' }}>
+                  {f.prix}
+                </p>
+                <p style={{ fontSize: '0.9375rem', color: f.misEnAvant ? 'rgba(243,239,229,0.75)' : ED.mid, marginBottom: '1.5rem' }}>
+                  {f.accroche}
+                </p>
+                <ul className="space-y-2 mb-6 flex-1" style={{ listStyle: 'none', padding: 0 }}>
+                  {f.inclus.map((ligne) => (
+                    <li key={ligne} className="flex gap-2" style={{ fontSize: '0.875rem', lineHeight: 1.5 }}>
+                      <span aria-hidden style={{ color: ED.gold, flexShrink: 0 }}>✓</span>
+                      {ligne}
+                    </li>
+                  ))}
+                </ul>
+                <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.12em', color: f.misEnAvant ? 'rgba(243,239,229,0.55)' : ED.mid, marginBottom: '1rem' }}>
+                  DÉLAI : {f.delai.toUpperCase()}
+                </p>
+                <Link
+                  href={`/contact?forfait=${f.id}`}
+                  className={f.misEnAvant ? 'ed-cta-primary' : 'ed-cta-outlined'}
+                  style={{ textAlign: 'center' }}
+                >
+                  {f.aPartirDe ? 'Demander un devis' : 'Parlons de votre projet'}
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <div
+            className="fade-in mt-6 rounded-2xl p-6 flex flex-col md:flex-row md:items-center gap-4"
+            style={{ border: `1px dashed ${ED.rule}`, background: ED.paper }}
+          >
+            <div style={{ flexShrink: 0 }}>
+              <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.2em', color: ED.gold }}>MAINTENANCE</span>
+              <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.5rem', color: ED.ink }}>{MAINTENANCE.prix}</p>
+            </div>
+            <p style={{ fontSize: '0.9375rem', color: ED.mid, lineHeight: 1.6 }}>{MAINTENANCE.inclus}</p>
+          </div>
+          <p style={{ fontSize: '0.75rem', color: ED.mid, marginTop: '1rem' }}>{MENTION_TVA}</p>
+        </div>
+      </section>
+
+      {/* ══ FAQ ══════════════════════════════════════════════ */}
+      <section id="faq" style={{ background: ED.paper, padding: '5rem 1.5rem' }}>
+        <div className="max-w-3xl mx-auto">
+          <SectionHeader label="QUESTIONS FRÉQUENTES" title="Avant de vous lancer." />
+          <FaqAccordion items={FAQ_LANDING} />
         </div>
       </section>
 
       {/* ══ Encart : newsletter Veille Lexavo ════════════════ */}
       <VeilleEncart />
 
-      {/* ══ Ce que vous obtenez ══════════════════════════════ */}
-      <section id="fonctionnalites" style={{ background: ED.cream, padding: '5rem 1.5rem' }}>
-        <div className="max-w-4xl mx-auto">
-          <SectionHeader
-            num="01"
-            label="CE QUE VOUS OBTENEZ"
-            title="D'un sujet à toute votre semaine éditoriale."
-          />
-
-          <div
-            className="fade-in fade-in-delay-1"
-            style={{
-              background: 'var(--white)',
-              borderRadius: '24px',
-              padding: '3rem 2rem',
-              border: `1px solid ${ED.rule}`,
-              boxShadow: '0 16px 40px -22px rgba(15,34,71,0.16)',
-            }}
-          >
-            <div className="text-center">
-              <p style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 'clamp(1.125rem, 2.4vw, 1.625rem)', lineHeight: 1.4, color: ED.ink }}>
-                Choisissez un thème ou collez une url ou un article de blog
-              </p>
-              <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '0.75rem', letterSpacing: '0.15em', color: ED.gold, margin: '0.75rem 0' }}>
-                POUR OBTENIR
-              </p>
-              <p style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: 'clamp(1.375rem, 3vw, 2rem)', color: ED.gold, letterSpacing: '-0.01em' }}>
-                3 posts + Article SEO + FAQ + Image
-              </p>
-            </div>
-
-            <p className="text-center" style={{ fontSize: '0.9375rem', color: ED.mid, marginTop: '2rem' }}>
-              Publication immédiate ou programmée, toujours modifiable, automatique sur LinkedIn et Facebook.
-            </p>
-
-            <div style={{ borderTop: `1px solid ${ED.rule}`, paddingTop: '2rem', marginTop: '2.5rem', textAlign: 'center' }}>
-              <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.375rem, 2.5vw, 2rem)', color: ED.ink, fontStyle: 'italic', letterSpacing: '-0.02em', lineHeight: 1.25 }}>
-                «&thinsp;Un mois de posts, préparé en une fois. LinkedIn pour vos clients pros, Facebook pour vos particuliers.&thinsp;»
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ══ Visibilité → client ══════════════════════════════ */}
-      <section style={{ background: ED.cream, padding: '5rem 1.5rem' }}>
-        <div className="max-w-5xl mx-auto">
-          <SectionHeader
-            num="02"
-            label="DE LA VISIBILITÉ AU CLIENT"
-            title="Ce que change la visibilité, concrètement."
-          />
-
-          <div className="fade-in fade-in-delay-1" style={{ maxWidth: '42rem' }}>
-            <p style={{ fontSize: '1.0625rem', color: ED.mid, lineHeight: 1.75, marginBottom: '1rem' }}>
-              Un client ne choisit jamais un avocat qu&apos;il n&apos;a jamais vu.
-            </p>
-            <p style={{ fontSize: '1.0625rem', color: ED.mid, lineHeight: 1.75, marginBottom: '1.25rem' }}>
-              Avant de prendre rendez-vous, il cherche, compare, se renseigne. S&apos;il ne trouve rien sur vous, il ne trouve pas de raison de vous choisir plutôt qu&apos;un confrère — même si vous êtes plus compétent.
-            </p>
-            <p style={{ fontSize: '1.125rem', color: ED.ink, fontWeight: 600, lineHeight: 1.6 }}>
-              La visibilité ne remplace pas votre expertise. Elle lui donne une chance d&apos;être vue.
-            </p>
-          </div>
-
-          <div className="fade-in fade-in-delay-2 flex flex-col md:flex-row items-stretch md:items-center gap-3 mt-12">
-            <FunnelStep num={1} text="Vous publiez régulièrement" />
-            <FunnelArrow />
-            <FunnelStep num={2} text="Des clients potentiels vous découvrent en cherchant une réponse" />
-            <FunnelArrow />
-            <FunnelStep num={3} text="Ils vous perçoivent comme compétent avant même le premier contact" />
-            <FunnelArrow />
-            <FunnelStep num={4} text="Ils vous contactent en confiance — plutôt qu'un confrère invisible" />
-          </div>
-        </div>
-      </section>
-
-      {/* ══ Objections ═══════════════════════════════════════ */}
-      <section style={{ background: ED.paper, padding: '5rem 1.5rem' }}>
-        <div className="max-w-3xl mx-auto">
-          <SectionHeader
-            num="03"
-            label="RETOURS DE TERRAIN"
-            title="Ce qu'on nous demande avant de se lancer."
-          />
-          <FaqAccordion items={OBJECTIONS} />
-        </div>
-      </section>
-
-      {/* ══ Tarifs ═══════════════════════════════════════════ */}
-      <section id="tarifs" style={{ background: ED.cream, padding: '5rem 1.5rem' }}>
-        <div className="max-w-5xl mx-auto">
-          <SectionHeader
-            num="04"
-            label="TARIFS"
-            title="Des tarifs simples, sans surprise."
-            subtitle="10 générations offertes. Sans carte bancaire."
-          />
-          <LandingPricing />
-        </div>
-      </section>
-
-      {/* ══ FAQ ══════════════════════════════════════════════ */}
-      <section style={{ background: ED.paper, padding: '5rem 1.5rem' }}>
-        <div className="max-w-3xl mx-auto">
-          <SectionHeader
-            num="05"
-            label="QUESTIONS FRÉQUENTES"
-            title="Vos questions, nos réponses."
-          />
-          <FaqAccordion items={FAQ_LANDING} />
-        </div>
-      </section>
-
       {/* ══ CTA final ════════════════════════════════════════ */}
       <section style={{ background: ED.navy, padding: '5rem 1.5rem', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 55% 45% at 50% 60%, rgba(184,135,42,0.07) 0%, transparent 70%)`, pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 55% 45% at 50% 60%, rgba(184,135,42,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
         <div className="relative max-w-3xl mx-auto text-center fade-in">
-          <h2 style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(2.25rem, 5vw, 4rem)', color: ED.paper, letterSpacing: '-0.03em', lineHeight: 0.97, fontStyle: 'italic', marginBottom: '1.75rem' }}>
-            Prêt à publier votre premier contenu ?
+          <h2 style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(2.25rem, 5vw, 3.75rem)', color: ED.paper, letterSpacing: '-0.03em', lineHeight: 1, fontStyle: 'italic', marginBottom: '1.5rem' }}>
+            Parlons de votre site.
           </h2>
-          <p style={{ fontSize: '1rem', color: 'rgba(243,239,229,0.55)', lineHeight: 1.65, marginBottom: '2.5rem' }}>
-            10 générations offertes. Sans carte bancaire.
+          <p style={{ fontSize: '1rem', color: 'rgba(243,239,229,0.6)', lineHeight: 1.65, marginBottom: '2.5rem' }}>
+            Décrivez votre cabinet en quelques lignes : nous revenons vers vous sous 48 h ouvrées avec une proposition.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/login?mode=signup" className="ed-cta-primary" style={{ fontSize: '0.875rem', padding: '1.0625rem 2.5rem' }}>
-              Commencer l&apos;essai gratuit →
-            </Link>
-            <Link href="/login" className="ed-cta-ghost" style={{ fontSize: '0.875rem', padding: '1.0625rem 2.5rem' }}>
-              Se connecter
-            </Link>
-          </div>
+          <Link href="/contact" className="ed-cta-primary" style={{ fontSize: '0.875rem', padding: '1.0625rem 2.5rem' }}>
+            Demander un devis gratuit →
+          </Link>
         </div>
       </section>
 

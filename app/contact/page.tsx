@@ -2,38 +2,29 @@ import Link from 'next/link'
 import { ContactForm } from './contact-form'
 import { LandingNav } from '@/components/landing/landing-nav'
 import { LandingFooter } from '@/components/landing/landing-footer'
+import { EMAIL_CONTACT, FORFAITS } from '@/lib/offre'
 
 export const metadata = {
-  title: 'Contact — Lexavo',
+  title: 'Demander un devis',
+  description: 'Décrivez votre cabinet et votre projet de site internet : réponse sous 48 h ouvrées avec une proposition.',
 }
 
-const FAQ = [
-  {
-    q: 'Est-ce que Lexavo fonctionne sans site web ?',
-    r: 'Oui. Lexavo génère du contenu pour vos réseaux sociaux et votre blog indépendamment de votre site web.',
-  },
-  {
-    q: 'Puis-je annuler mon abonnement à tout moment ?',
-    r: 'Oui, sans engagement ni frais. La résiliation prend effet à la fin du mois en cours.',
-  },
-  {
-    q: 'Les contenus respectent-ils la déontologie du barreau ?',
-    r: 'Oui. Lexavo intègre les règles du RIN et du décret du 12 juillet 2005 dans chaque génération. Nous vous recommandons toutefois de relire chaque contenu avant publication.',
-  },
-  {
-    q: 'Comment connecter mes réseaux sociaux ?',
-    r: "Depuis votre tableau de bord, téléchargez en un clic le scénario Make.com prêt à l'emploi ainsi que son guide de configuration. Vous obtenez ensuite une URL webhook que vous collez dans Lexavo. Comptez environ 20 minutes pour la mise en place initiale.",
-  },
-]
-
-const NAVY  = '#0F2247'
 const PAPER = '#F3EFE5'
 const INK   = '#0F0E0C'
 const MID   = '#6E6860'
 const RULE  = '#D0CBC0'
 const GOLD  = '#B8872A'
 
-export default function ContactPage() {
+const APRES = [
+  'Nous lisons votre demande et regardons votre site actuel, si vous en avez un.',
+  'Nous vous proposons un créneau de 30 minutes pour en parler.',
+  'Vous recevez un devis ferme sous 48 h après cet échange.',
+]
+
+export default async function ContactPage({ searchParams }: { searchParams: Promise<{ forfait?: string }> }) {
+  const { forfait } = await searchParams
+  const forfaitInitial = FORFAITS.find((f) => f.id === forfait)?.id ?? ''
+
   return (
     <div style={{ background: PAPER, minHeight: '100vh', color: INK }}>
       <LandingNav />
@@ -44,46 +35,41 @@ export default function ContactPage() {
         <div style={{ borderTop: `1px solid ${RULE}`, paddingTop: '1.5rem', marginBottom: '3rem' }}>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
             <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.2em', color: GOLD }}>
-              CONTACT
+              DEMANDE DE DEVIS
             </span>
             <Link href="/" style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.15em', color: MID, textDecoration: 'none' }} className="hover:text-black transition-colors">
               ← ACCUEIL
             </Link>
           </div>
           <h1 style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: 'clamp(1.875rem, 4vw, 2.75rem)', fontStyle: 'italic', fontWeight: 400, color: INK, letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '0.75rem' }}>
-            Contactez-nous.
+            Parlons de votre site.
           </h1>
           <p style={{ fontSize: '1rem', color: MID, lineHeight: 1.65 }}>
-            Une question sur Lexavo ? Notre équipe vous répond sous 24h ouvrées.
+            Quelques lignes suffisent : votre cabinet, vos domaines d&apos;intervention, ce que vous attendez du site. Le devis est gratuit et sans engagement.
           </p>
-          <a href="mailto:contact@lexavo.fr" style={{ display: 'inline-block', marginTop: '0.75rem', fontFamily: 'var(--font-jetbrains-mono)', fontSize: '12px', letterSpacing: '0.12em', color: GOLD, textDecoration: 'none' }} className="hover:underline">
-            contact@lexavo.fr
+          <a href={`mailto:${EMAIL_CONTACT}`} style={{ display: 'inline-block', marginTop: '0.75rem', fontFamily: 'var(--font-jetbrains-mono)', fontSize: '12px', letterSpacing: '0.12em', color: GOLD, textDecoration: 'none' }} className="hover:underline">
+            {EMAIL_CONTACT}
           </a>
         </div>
 
         {/* Formulaire */}
         <div style={{ borderTop: `1px solid ${RULE}`, paddingTop: '2rem', marginBottom: '3.5rem' }}>
-          <ContactForm />
+          <ContactForm forfaitInitial={forfaitInitial} forfaits={FORFAITS.map(({ id, nom }) => ({ id, nom }))} />
         </div>
 
-        {/* FAQ */}
-        <div>
-          <div style={{ borderTop: `1px solid ${RULE}`, paddingTop: '1.5rem', marginBottom: '1.75rem', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-            <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.2em', color: GOLD }}>
-              QUESTIONS FRÉQUENTES
-            </span>
-          </div>
-          <h2 style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.5rem', fontStyle: 'italic', fontWeight: 400, color: INK, letterSpacing: '-0.02em', marginBottom: '1.75rem' }}>
-            Vos questions, nos réponses.
-          </h2>
-          <div className="space-y-3">
-            {FAQ.map(({ q, r }) => (
-              <div key={q} style={{ borderTop: `1px solid ${RULE}`, paddingTop: '1.125rem', paddingBottom: '1.125rem' }}>
-                <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1rem', fontStyle: 'italic', color: INK, marginBottom: '0.5rem', letterSpacing: '-0.01em' }}>{q}</p>
-                <p style={{ fontSize: '0.875rem', color: MID, lineHeight: 1.7 }}>{r}</p>
-              </div>
+        {/* Et ensuite */}
+        <div style={{ borderTop: `1px solid ${RULE}`, paddingTop: '1.5rem' }}>
+          <span style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.2em', color: GOLD }}>
+            ET ENSUITE ?
+          </span>
+          <ol className="mt-5 space-y-4" style={{ listStyle: 'none', padding: 0 }}>
+            {APRES.map((texte, i) => (
+              <li key={texte} className="flex gap-4" style={{ fontSize: '0.9375rem', color: MID, lineHeight: 1.6 }}>
+                <span style={{ fontFamily: 'var(--font-instrument-serif)', fontStyle: 'italic', fontSize: '1.25rem', color: GOLD, lineHeight: 1.2 }}>{i + 1}</span>
+                {texte}
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </div>
 

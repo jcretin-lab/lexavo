@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { LandingNav } from '@/components/landing/landing-nav'
 import { LandingFooter } from '@/components/landing/landing-footer'
+import { FORFAITS, MAINTENANCE, MENTION_TVA } from '@/lib/offre'
 
 export const metadata = {
   title: 'Conditions Générales de Vente — Lexavo',
@@ -13,120 +14,108 @@ export default function CGVPage() {
       <div className="max-w-3xl mx-auto px-6" style={{ paddingTop: '6rem', paddingBottom: '5rem' }}>
         <Link href="/" style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.15em', color: '#6E6860', textDecoration: 'none', display: 'inline-block', marginBottom: '2.5rem' }} className="hover:text-black transition-colors">← ACCUEIL</Link>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Conditions Générales de Vente</h1>
-        <p className="text-sm text-gray-500 mb-10">Dernière mise à jour : avril 2026</p>
+        <p className="text-sm text-gray-500 mb-10">Dernière mise à jour : novembre 2026</p>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.1 Objet</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">1. Objet</h2>
           <p className="text-gray-700 leading-relaxed">
-            Les présentes Conditions Générales de Vente (CGV) régissent les relations contractuelles entre LEXAVO (PRETET Julien, SIRET 94997889400028) et tout professionnel souscrivant à un abonnement sur le site lexavo.fr.
+            Les présentes Conditions Générales de Vente (CGV) régissent les prestations de conception, de réalisation et de maintenance de sites internet fournies par LEXAVO (PRETET Julien, entrepreneur individuel, SIRET 94997889400028) à tout client professionnel (ci-après « le Client »). Toute commande implique l&apos;acceptation sans réserve des présentes CGV, qui prévalent sur tout autre document, sauf dérogation écrite figurant au devis.
           </p>
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.2 Services proposés</h2>
-          <p className="text-gray-700 leading-relaxed mb-3">
-            LEXAVO propose un service SaaS (Software as a Service) permettant aux cabinets d&apos;avocats de :
-          </p>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">2. Prestations</h2>
+          <p className="text-gray-700 leading-relaxed mb-3">LEXAVO propose les formules suivantes, dont le contenu exact est précisé dans le devis :</p>
           <ul className="list-disc list-inside text-gray-700 space-y-1 pl-2">
-            <li>Générer automatiquement du contenu marketing (articles de blog, posts pour réseaux sociaux, FAQ)</li>
-            <li>Publier automatiquement du contenu sur les réseaux sociaux du cabinet (LinkedIn et Facebook)</li>
-            <li>Programmer des publications via un calendrier éditorial</li>
-            <li>Transformer des articles existants en posts pour réseaux sociaux</li>
+            {FORFAITS.map((f) => (
+              <li key={f.id}>
+                <strong>{f.nom}</strong> — {f.aPartirDe ? `à partir de ${f.prix}` : f.prix} : {f.accroche.toLowerCase()}
+              </li>
+            ))}
+            <li><strong>Maintenance</strong> — {MAINTENANCE.prix} : {MAINTENANCE.inclus.charAt(0).toLowerCase() + MAINTENANCE.inclus.slice(1)}</li>
           </ul>
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.3 Abonnements et tarifs</h2>
-          <p className="text-gray-700 leading-relaxed mb-4">Une formule d&apos;abonnement unique est disponible :</p>
-          <div className="space-y-4">
-            <div className="rounded-xl border border-gray-200 p-4">
-              <p className="font-semibold text-gray-900">Abonnement Lexavo — 29 € / mois</p>
-              <p className="text-gray-600 text-sm mt-1">1 utilisateur, génération illimitée depuis un thème ou un article existant (article SEO, posts réseaux sociaux, FAQ, 1 image IA générée ou la vôtre), publication et programmation automatique sur vos réseaux sociaux</p>
-            </div>
-          </div>
-          <p className="text-gray-600 text-sm mt-4">
-            Les prix sont indiqués en euros toutes taxes comprises. TVA non applicable, art. 293 B du CGI.
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">3. Devis et commande</h2>
+          <p className="text-gray-700 leading-relaxed">
+            Chaque prestation fait l&apos;objet d&apos;un devis gratuit, valable 30 jours, qui décrit le périmètre, le prix et le calendrier prévisionnel. La commande est ferme à réception du devis signé et du paiement de l&apos;acompte. Toute demande sortant du périmètre du devis fait l&apos;objet d&apos;un devis complémentaire.
           </p>
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.4 Période d&apos;essai</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">4. Prix et paiement</h2>
           <p className="text-gray-700 leading-relaxed">
-            Tout nouvel utilisateur bénéficie de 10 publications gratuites sans engagement ni saisie de coordonnées bancaires. À l&apos;issue de cette période d&apos;essai, la souscription à un plan payant est nécessaire pour continuer à utiliser le service.
-          </p>
-        </section>
-
-        <section className="mb-10">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.5 Facturation et paiement</h2>
-          <p className="text-gray-700 leading-relaxed">
-            Les abonnements sont facturés mensuellement par prélèvement automatique via Stripe. La facturation intervient à la date de souscription puis chaque mois à la même date.
+            Les prix sont exprimés en euros. {MENTION_TVA} Sauf mention contraire au devis, un acompte de 40 % est dû à la signature et le solde à la mise en ligne. La maintenance est facturée mensuellement, à terme à échoir. Les factures sont payables à réception, par virement.
           </p>
           <p className="text-gray-700 leading-relaxed mt-3">
-            En cas d&apos;échec de paiement, LEXAVO se réserve le droit de suspendre l&apos;accès au service jusqu&apos;à régularisation.
+            Tout retard de paiement entraîne de plein droit des pénalités au taux de trois fois le taux d&apos;intérêt légal et une indemnité forfaitaire pour frais de recouvrement de 40 € (articles L.441-10 et D.441-5 du Code de commerce). LEXAVO peut suspendre la mise en ligne ou la maintenance jusqu&apos;à régularisation.
           </p>
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.6 Résiliation</h2>
-          <p className="text-gray-700 leading-relaxed">
-            L&apos;abonnement est sans engagement. L&apos;utilisateur peut résilier à tout moment depuis son espace personnel (<em>Paramètres &gt; Facturation</em>). La résiliation prend effet à la fin de la période de facturation en cours. Aucun remboursement au prorata n&apos;est effectué.
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">5. Déroulement et obligations du Client</h2>
+          <p className="text-gray-700 leading-relaxed mb-3">
+            Le calendrier figurant au devis suppose la collaboration du Client. Celui-ci s&apos;engage à :
           </p>
-        </section>
-
-        <section className="mb-10">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.7 Responsabilité de l&apos;utilisateur</h2>
-          <p className="text-gray-700 leading-relaxed mb-3">L&apos;utilisateur est seul responsable :</p>
           <ul className="list-disc list-inside text-gray-700 space-y-1 pl-2">
-            <li>De la relecture et validation des contenus générés avant publication</li>
-            <li>Du respect des règles déontologiques applicables à sa profession</li>
-            <li>De la conformité de ses publications avec la réglementation en vigueur</li>
-            <li>De la sécurité de ses identifiants de connexion</li>
+            <li>fournir dans les délais convenus les informations, textes, logos et photographies nécessaires ;</li>
+            <li>disposer des droits sur les éléments qu&apos;il fournit ;</li>
+            <li>relire et valider la maquette puis chaque page avant mise en ligne ;</li>
+            <li>vérifier la conformité du contenu du site aux règles de sa profession.</li>
           </ul>
           <p className="text-gray-700 leading-relaxed mt-3">
-            LEXAVO fournit un outil d&apos;assistance à la rédaction. Les contenus générés par intelligence artificielle ne constituent pas un conseil juridique et ne sauraient engager la responsabilité de LEXAVO.
+            Un retard du Client décale d&apos;autant le calendrier. Sans retour du Client dans les 15 jours suivant une demande de validation, l&apos;étape concernée est réputée validée.
           </p>
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.8 Secret professionnel et confidentialité</h2>
-          <p className="text-gray-700 leading-relaxed mb-3">
-            LEXAVO est destiné à produire du contenu pédagogique générique à destination du public. Il ne constitue ni un espace de travail confidentiel, ni un outil de gestion de dossier client.
-          </p>
-          <p className="text-gray-700 leading-relaxed mb-3">
-            L&apos;utilisateur, en sa qualité d&apos;avocat soumis à l&apos;article 66-5 de la loi n° 71-1130 du 31 décembre 1971 et à l&apos;article 4 du Règlement Intérieur National de la profession d&apos;avocat, s&apos;interdit de saisir dans les champs de génération toute information permettant d&apos;identifier directement ou indirectement un client, un adversaire ou un dossier en cours, notamment : nom et prénom, adresse postale, coordonnées téléphoniques ou électroniques, identifiants nationaux (SIREN, SIRET, NIR), coordonnées bancaires, numéro de dossier interne, ou montants individualisés.
-          </p>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">6. Règles déontologiques</h2>
           <p className="text-gray-700 leading-relaxed">
-            LEXAVO met à disposition une détection automatique de motifs sensibles (e-mails, téléphones, NIR, IBAN, SIREN/SIRET, adresses postales, civilités). Cette détection constitue un signal d&apos;aide à la vigilance ; elle ne décharge en aucun cas l&apos;utilisateur de sa responsabilité déontologique exclusive en matière de secret professionnel.
+            LEXAVO conçoit les sites en tenant compte des règles de communication applicables aux avocats, notamment l&apos;article 10 du Règlement Intérieur National. Le Client, seul tenu à ces obligations, reste responsable du contenu publié et des démarches auprès de son Ordre (notamment l&apos;information relative au nom de domaine). La validation des pages par le Client vaut acceptation de leur contenu.
           </p>
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.9 Disponibilité du service</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">7. Recette et mise en ligne</h2>
           <p className="text-gray-700 leading-relaxed">
-            LEXAVO s&apos;engage à maintenir le service accessible 24h/24 et 7j/7, hors périodes de maintenance planifiée. En cas d&apos;interruption, LEXAVO informera les utilisateurs dans les meilleurs délais.
-          </p>
-          <p className="text-gray-700 leading-relaxed mt-3">
-            LEXAVO ne pourra être tenu responsable des interruptions dues à des tiers (hébergeur, API tierces, etc.).
+            Une fois le site achevé, LEXAVO le présente au Client sur une adresse de prévisualisation. Le Client dispose de 10 jours pour signaler les anomalies par rapport au devis. À défaut, ou dès la mise en ligne à sa demande, le site est réputé accepté. Les anomalies signalées pendant ce délai sont corrigées sans frais.
           </p>
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.10 Modification des tarifs</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">8. Propriété</h2>
           <p className="text-gray-700 leading-relaxed">
-            LEXAVO se réserve le droit de modifier ses tarifs avec un préavis de 30 jours par email. L&apos;utilisateur peut résilier son abonnement sans frais si les nouveaux tarifs ne lui conviennent pas.
+            Le nom de domaine est enregistré au nom du Client. À complet paiement, LEXAVO cède au Client les droits d&apos;exploitation sur les éléments créés spécifiquement pour son site (maquette, textes rédigés, code propre au site), pour la durée de la protection et pour le monde entier. Les composants génériques, bibliothèques logicielles et outils de LEXAVO restent sa propriété ou celle de leurs auteurs et sont concédés en licence pour les besoins du site. LEXAVO peut mentionner le site parmi ses références, sauf opposition écrite du Client.
           </p>
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">2.11 Droit applicable et litiges</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">9. Maintenance et résiliation</h2>
           <p className="text-gray-700 leading-relaxed">
-            Les présentes CGV sont soumises au droit français. En cas de litige, une solution amiable sera recherchée en priorité. À défaut, les tribunaux compétents du ressort de Versailles seront saisis.
+            Sauf mention contraire au devis, la maintenance est souscrite pour une durée initiale de 12 mois, puis reconduite mois par mois. Chaque partie peut la résilier par e-mail avec un préavis d&apos;un mois à l&apos;issue de la période initiale. En cas de résiliation, LEXAVO remet au Client les fichiers du site et les accès au nom de domaine dans un délai de 15 jours.
           </p>
-          <p className="text-gray-700 leading-relaxed mt-3">
-            Conformément à l&apos;article L.612-1 du Code de la consommation, tout litige peut être soumis à un médiateur. LEXAVO adhère au service de médiation :{' '}
-            <a href="https://www.mediation-consommation.fr" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
-              Médiateur de la consommation
-            </a>
+        </section>
+
+        <section className="mb-10">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">10. Responsabilité</h2>
+          <p className="text-gray-700 leading-relaxed">
+            LEXAVO est tenu d&apos;une obligation de moyens. Il ne garantit ni un positionnement dans les moteurs de recherche, ni un volume de contacts. Sa responsabilité, toutes causes confondues, est limitée au montant payé par le Client au titre de la prestation concernée. LEXAVO ne répond pas des interruptions imputables aux hébergeurs, registres de noms de domaine ou autres prestataires tiers.
+          </p>
+        </section>
+
+        <section className="mb-10">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">11. Données personnelles</h2>
+          <p className="text-gray-700 leading-relaxed">
+            Le traitement des données du Client est décrit dans la{' '}
+            <Link href="/politique-confidentialite" className="text-blue-600 hover:underline">politique de confidentialité</Link>. Pour les données des visiteurs du site du Client, celui-ci est responsable de traitement ; lorsque LEXAVO assure l&apos;hébergement ou la maintenance, il agit en qualité de sous-traitant au sens de l&apos;article 28 du RGPD.
+          </p>
+        </section>
+
+        <section className="mb-10">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">12. Droit applicable et litiges</h2>
+          <p className="text-gray-700 leading-relaxed">
+            Les présentes CGV sont soumises au droit français. En cas de litige, les parties rechercheront d&apos;abord une solution amiable. À défaut, les tribunaux compétents du ressort de Versailles seront saisis.
           </p>
         </section>
       </div>

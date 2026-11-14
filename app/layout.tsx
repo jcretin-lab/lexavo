@@ -22,11 +22,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.lexavo.fr'),
   title: {
-    default: 'Application avocat IA — contenu SEO & réseaux | Lexavo',
+    default: 'Création de site internet pour avocat | Lexavo',
     template: '%s | Lexavo',
   },
-  description: "Lexavo, l'application avocat IA qui génère articles SEO, posts LinkedIn et Facebook conformes à la déontologie. Essai gratuit, sans carte bancaire.",
-  keywords: ['application avocat IA', 'avocat', 'IA pour avocat', 'contenu juridique', 'réseaux sociaux avocat', 'SEO cabinet avocat', 'publication automatique', 'LinkedIn avocat', 'Facebook avocat', 'marketing juridique', 'déontologie barreau'],
+  description: "Lexavo conçoit, rédige et met en ligne le site de votre cabinet d'avocats, dans le respect des règles de communication de la profession. Devis sous 48 h.",
+  keywords: ['création site internet avocat', 'site avocat', 'site cabinet avocat', 'agence web avocat', 'refonte site avocat', 'référencement avocat', 'déontologie communication avocat'],
   authors: [{ name: 'Lexavo' }],
   creator: 'Lexavo',
   openGraph: {
@@ -34,13 +34,13 @@ export const metadata: Metadata = {
     locale: 'fr_FR',
     url: 'https://www.lexavo.fr',
     siteName: 'Lexavo',
-    title: 'Application avocat IA — contenu SEO & réseaux | Lexavo',
-    description: "Lexavo, l'application avocat IA qui génère articles SEO, posts LinkedIn et Facebook conformes à la déontologie. Essai gratuit, sans carte bancaire.",
+    title: 'Création de site internet pour avocat | Lexavo',
+    description: "Lexavo conçoit, rédige et met en ligne le site de votre cabinet d'avocats, dans le respect des règles de communication de la profession. Devis sous 48 h.",
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Application avocat IA — contenu SEO & réseaux | Lexavo',
-    description: "Lexavo, l'application avocat IA qui génère articles SEO, posts LinkedIn et Facebook conformes à la déontologie du barreau.",
+    title: 'Création de site internet pour avocat | Lexavo',
+    description: "Lexavo conçoit, rédige et met en ligne le site de votre cabinet d'avocats, dans le respect des règles de communication de la profession. Devis sous 48 h.",
   },
   robots: {
     index: true,

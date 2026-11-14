@@ -29,15 +29,11 @@ const labelStyle = {
   marginBottom: '0.5rem',
 }
 
-export function ContactForm() {
-  const [form, setForm] = useState({
-    nom: '',
-    email: '',
-    cabinet: '',
-    sujet: 'Question générale',
-    message: '',
-    privacy: false,
-  })
+type ForfaitOption = { id: string; nom: string }
+
+export function ContactForm({ forfaitInitial = '', forfaits }: { forfaitInitial?: string; forfaits: ForfaitOption[] }) {
+  const vide = { nom: '', email: '', cabinet: '', forfait: forfaitInitial, siteActuel: '', message: '', privacy: false }
+  const [form, setForm] = useState(vide)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -63,7 +59,7 @@ export function ContactForm() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
       setSuccess(true)
-      setForm({ nom: '', email: '', cabinet: '', sujet: 'Question générale', message: '', privacy: false })
+      setForm(vide)
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Erreur lors de l'envoi")
     } finally {
@@ -74,8 +70,8 @@ export function ContactForm() {
   if (success) {
     return (
       <div style={{ border: `1px solid ${GOLD}`, padding: '2rem', textAlign: 'center' }}>
-        <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', fontStyle: 'italic', color: INK, marginBottom: '0.5rem' }}>Message envoyé.</p>
-        <p style={{ fontSize: '0.875rem', color: MID }}>Notre équipe vous répondra sous 24h ouvrées.</p>
+        <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', fontStyle: 'italic', color: INK, marginBottom: '0.5rem' }}>Demande envoyée.</p>
+        <p style={{ fontSize: '0.875rem', color: MID }}>Nous revenons vers vous sous 48 h ouvrées.</p>
       </div>
     )
   }
@@ -102,20 +98,25 @@ export function ContactForm() {
         <input id="cabinet" name="cabinet" type="text" value={form.cabinet} onChange={handleChange} style={inputStyle} placeholder="Cabinet Dupont & Associés" />
       </div>
 
-      <div>
-        <label htmlFor="sujet" style={labelStyle}>SUJET <span style={{ color: GOLD }}>*</span></label>
-        <select id="sujet" name="sujet" value={form.sujet} onChange={handleChange} style={{ ...inputStyle, cursor: 'pointer' }}>
-          <option>Question générale</option>
-          <option>Problème technique</option>
-          <option>Facturation</option>
-          <option>Partenariat</option>
-          <option>Autre</option>
-        </select>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label htmlFor="forfait" style={labelStyle}>FORFAIT ENVISAGÉ</label>
+          <select id="forfait" name="forfait" value={form.forfait} onChange={handleChange} style={{ ...inputStyle, cursor: 'pointer' }}>
+            <option value="">Je ne sais pas encore</option>
+            {forfaits.map((f) => (
+              <option key={f.id} value={f.id}>{f.nom}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="siteActuel" style={labelStyle}>SITE ACTUEL <span style={{ color: RULE }}>— OPTIONNEL</span></label>
+          <input id="siteActuel" name="siteActuel" type="text" value={form.siteActuel} onChange={handleChange} style={inputStyle} placeholder="www.cabinet-dupont.fr" />
+        </div>
       </div>
 
       <div>
-        <label htmlFor="message" style={labelStyle}>MESSAGE <span style={{ color: GOLD }}>*</span></label>
-        <textarea id="message" name="message" required rows={5} value={form.message} onChange={handleChange} style={{ ...inputStyle, resize: 'none' }} placeholder="Votre message..." />
+        <label htmlFor="message" style={labelStyle}>VOTRE PROJET <span style={{ color: GOLD }}>*</span></label>
+        <textarea id="message" name="message" required rows={5} value={form.message} onChange={handleChange} style={{ ...inputStyle, resize: 'none' }} placeholder="Votre barreau, vos domaines d'intervention, ce que vous attendez du site, un délai souhaité…" />
       </div>
 
       <div className="flex items-start gap-3">
@@ -143,7 +144,7 @@ export function ContactForm() {
           transition: 'background 0.2s',
         }}
       >
-        {loading ? 'ENVOI EN COURS…' : 'ENVOYER LE MESSAGE'}
+        {loading ? 'ENVOI EN COURS…' : 'ENVOYER MA DEMANDE'}
       </button>
     </form>
   )

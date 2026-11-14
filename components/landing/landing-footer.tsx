@@ -16,11 +16,11 @@ export function LandingFooter() {
             Lex<em>avo</em><span style={{ color: GOLD }}>.</span>
           </span>
           <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', color: PAPER, lineHeight: 1.2, letterSpacing: '-0.015em' }}>
-            Publiez facilement pour faire entendre<br />
-            <em>votre droit</em><span style={{ color: GOLD }}>.</span>
+            Un site à la hauteur<br />
+            <em>de votre cabinet</em><span style={{ color: GOLD }}>.</span>
           </p>
           <p style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, maxWidth: '22rem' }}>
-            La plateforme de communication digitale conçue pour les cabinets d&apos;avocats français.
+            Création de sites internet pour avocats et cabinets d&apos;avocats.
           </p>
         </div>
 
