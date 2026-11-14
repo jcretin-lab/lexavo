@@ -200,7 +200,7 @@ export default function HomePage() {
         <div className="lx-hero__pied">
           <div className="lx-sceaux">
             <Sceau id="sceau-devis" centre="48 h" sousCentre="devis" anneau="pour recevoir votre devis · sans engagement · " texteAccessible="48 h pour recevoir votre devis, sans engagement." />
-            <Sceau id="sceau-delai" variante="laiton" centre="3" sousCentre="semaines" anneau="pour être en ligne · site livré clé en main · " texteAccessible="3 semaines pour être en ligne, site livré clé en main." />
+            <Sceau id="sceau-delai" centre="3" sousCentre="semaines" anneau="pour être en ligne · site livré clé en main · " texteAccessible="3 semaines pour être en ligne, site livré clé en main." />
             <Sceau id="sceau-module" centre="Module" sousCentre="inclus" anneau="textes · blog · SEO et GEO · gérés par vous · " texteAccessible="Module inclus : textes, blog, SEO et GEO, gérés par vous." />
           </div>
         </div>

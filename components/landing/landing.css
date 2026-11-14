@@ -256,34 +256,28 @@ html[data-scrolled='true'] .lx-nav,
   display: flex; justify-content: center; gap: clamp(0.75rem, 5vw, 4.5rem); padding: 0 1rem;
 }
 .lx-sceau {
-  width: clamp(6.75rem, 12vw, 11rem); aspect-ratio: 1;
-  filter: drop-shadow(0 10px 18px rgba(20, 33, 61, 0.18));
+  width: clamp(5.75rem, 9vw, 8.5rem); aspect-ratio: 1;
   opacity: 0;
-  animation: lx-tampon 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.25) forwards;
+  animation: lx-tampon 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.2) forwards;
 }
-.lx-sceau:nth-child(1) { --tourne: -7deg; animation-delay: 2.7s; }
-.lx-sceau:nth-child(2) { --tourne: 4deg; animation-delay: 2.95s; margin-top: -0.75rem; }
-.lx-sceau:nth-child(3) { --tourne: -3deg; animation-delay: 3.2s; }
+.lx-sceau:nth-child(1) { --tourne: -6deg; animation-delay: 2.7s; }
+.lx-sceau:nth-child(2) { --tourne: 3deg; animation-delay: 2.95s; }
+.lx-sceau:nth-child(3) { --tourne: -2deg; animation-delay: 3.2s; }
 @keyframes lx-tampon {
-  0%   { opacity: 0; transform: scale(1.5) rotate(var(--tourne)); }
-  60%  { opacity: 1; transform: scale(0.94) rotate(var(--tourne)); }
+  0%   { opacity: 0; transform: scale(1.25) rotate(var(--tourne)); }
+  60%  { opacity: 1; transform: scale(0.97) rotate(var(--tourne)); }
   100% { opacity: 1; transform: scale(1) rotate(var(--tourne)); }
 }
+/* Sceau discret : papier, encre bleu nuit fine, une seule touche dorée (le filet intérieur et la petite ligne) */
 .lx-sceau svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.lx-sceau__perles { fill: none; stroke-width: 3; stroke-dasharray: 0.1 6.4; stroke-linecap: round; }
-.lx-sceau__filet { fill: none; stroke-width: 1; }
-.lx-sceau__anneau { font-family: var(--font-inter), system-ui, sans-serif; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
-.lx-sceau__centre { font-family: var(--font-instrument-serif), Georgia, serif; font-size: 40px; }
+.lx-sceau__fond { fill: #FCFBF8; stroke: rgba(20, 33, 61, 0.55); stroke-width: 1; }
+.lx-sceau__perles { fill: none; stroke: rgba(20, 33, 61, 0.35); stroke-width: 2; stroke-dasharray: 0.1 6.4; stroke-linecap: round; }
+.lx-sceau__filet { fill: none; stroke: rgba(20, 33, 61, 0.35); stroke-width: 0.75; }
+.lx-sceau__filet--dore { stroke: var(--laiton); stroke-width: 1; }
+.lx-sceau__anneau { font-family: var(--font-inter), system-ui, sans-serif; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; fill: rgba(20, 33, 61, 0.7); }
+.lx-sceau__centre { font-family: var(--font-instrument-serif), Georgia, serif; font-size: 40px; fill: var(--robe); }
 .lx-sceau__centre--long { font-size: 27px; }
-.lx-sceau__souscentre { font-family: var(--font-instrument-serif), Georgia, serif; font-style: italic; font-size: 17px; }
-.lx-sceau--robe .lx-sceau__fond { fill: var(--robe); }
-.lx-sceau--robe .lx-sceau__perles, .lx-sceau--robe .lx-sceau__filet { stroke: var(--laiton-clair); }
-.lx-sceau--robe .lx-sceau__anneau, .lx-sceau--robe .lx-sceau__souscentre { fill: var(--laiton-clair); }
-.lx-sceau--robe .lx-sceau__centre { fill: var(--blanc); }
-.lx-sceau--laiton .lx-sceau__fond { fill: var(--laiton); }
-.lx-sceau--laiton .lx-sceau__perles, .lx-sceau--laiton .lx-sceau__filet { stroke: var(--robe); }
-.lx-sceau--laiton .lx-sceau__anneau, .lx-sceau--laiton .lx-sceau__souscentre { fill: var(--robe); }
-.lx-sceau--laiton .lx-sceau__centre { fill: var(--robe); }
+.lx-sceau__souscentre { font-family: var(--font-instrument-serif), Georgia, serif; font-style: italic; font-size: 17px; fill: var(--laiton-fonce); }
 .lx-hero__faits {
   display: grid; grid-template-columns: repeat(3, 1fr);
   font-size: 0.875rem; color: var(--gris);

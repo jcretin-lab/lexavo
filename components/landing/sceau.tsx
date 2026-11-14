@@ -6,12 +6,11 @@ type Props = {
   sousCentre?: string // petite ligne sous le centre
   anneau: string      // texte qui court en cercle
   texteAccessible: string
-  variante?: 'robe' | 'laiton'
 }
 
-export function Sceau({ id, centre, sousCentre, anneau, texteAccessible, variante = 'robe' }: Props) {
+export function Sceau({ id, centre, sousCentre, anneau, texteAccessible }: Props) {
   return (
-    <div className={`lx-sceau lx-sceau--${variante}`}>
+    <div className="lx-sceau">
       <span className="sr-only">{texteAccessible}</span>
       <svg viewBox="0 0 200 200" aria-hidden="true">
         <defs>
@@ -20,7 +19,7 @@ export function Sceau({ id, centre, sousCentre, anneau, texteAccessible, variant
         <circle cx="100" cy="100" r="98" className="lx-sceau__fond" />
         <circle cx="100" cy="100" r="92" className="lx-sceau__perles" />
         <circle cx="100" cy="100" r="86" className="lx-sceau__filet" />
-        <circle cx="100" cy="100" r="58" className="lx-sceau__filet" />
+        <circle cx="100" cy="100" r="58" className="lx-sceau__filet lx-sceau__filet--dore" />
         <text className="lx-sceau__anneau">
           <textPath href={`#${id}`} startOffset="0" textLength="446" lengthAdjust="spacing">
             {anneau}
