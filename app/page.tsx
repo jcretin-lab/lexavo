@@ -6,7 +6,7 @@ import { LandingFooter } from '@/components/landing/landing-footer'
 import { LandingEffets } from '@/components/landing/landing-effets'
 import { FaqAccordion } from '@/components/landing/faq-accordion'
 import { VeilleEncart } from '@/components/landing/veille-encart'
-import { FORFAITS, MAINTENANCE, MENTION_TVA } from '@/lib/offre'
+import { FORFAITS, MENTION_TVA } from '@/lib/offre'
 
 import photoColonnes from '@/public/photos/colonnes.jpg'
 import photoBustes from '@/public/photos/bibliotheque-bustes.jpg'
@@ -82,11 +82,11 @@ const FAQ_LANDING = [
   },
   {
     q: 'Le site m’appartient-il ?',
-    r: "Oui. Le nom de domaine est enregistré à votre nom et le site vous appartient une fois réglé. Si vous arrêtez la maintenance, nous vous remettons les fichiers et les accès.",
+    r: "Oui. Le nom de domaine est enregistré à votre nom et le site vous appartient une fois réglé. Vous n'avez aucun abonnement à payer pour le garder.",
   },
   {
     q: 'Pourrai-je modifier le site moi-même ?',
-    r: "Les petites modifications (horaires, actualité, nouvel associé) sont incluses dans la maintenance : un e-mail suffit. Vous pouvez aussi gérer vous-même une rubrique actualités depuis une interface simple.",
+    r: "Oui. Votre site est livré avec un espace d'administration simple : vous modifiez vos textes, publiez des articles de blog et réglez le référencement SEO et GEO de chaque page, quand vous le souhaitez.",
   },
   {
     q: 'J’ai déjà un site. Pouvez-vous le refaire ?',
@@ -94,7 +94,7 @@ const FAQ_LANDING = [
   },
   {
     q: 'Comment se passe le paiement ?',
-    r: "40 % à la signature du devis, le solde à la mise en ligne. La maintenance est mensuelle, sans engagement au-delà des douze premiers mois.",
+    r: "40 % à la signature du devis, le solde à la mise en ligne. Ensuite, aucun abonnement.",
   },
 ]
 
@@ -337,10 +337,6 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="lx-maintenance lx-reveal">
-            <strong>Maintenance · {MAINTENANCE.prix}</strong>
-            <p>{MAINTENANCE.inclus}</p>
-          </div>
           <p className="lx-mention">{MENTION_TVA}</p>
         </div>
       </section>

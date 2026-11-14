@@ -143,7 +143,7 @@ export default function PolitiqueConfidentialitePage() {
         <section className="mb-10">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">3.9 Sites réalisés pour nos clients</h2>
           <p className="text-gray-700 leading-relaxed">
-            Pour les sites que nous réalisons, le cabinet client est responsable du traitement des données de ses propres visiteurs. Lorsque Lexavo en assure l&apos;hébergement ou la maintenance, il agit en qualité de sous-traitant au sens de l&apos;article 28 du RGPD.
+            Pour les sites que nous réalisons, le cabinet client est responsable du traitement des données de ses propres visiteurs. Lorsque Lexavo intervient sur le site ou en assure l&apos;hébergement, il agit en qualité de sous-traitant au sens de l&apos;article 28 du RGPD.
           </p>
         </section>
 

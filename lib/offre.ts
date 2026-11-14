@@ -64,11 +64,6 @@ export const FORFAITS: Forfait[] = [
   },
 ]
 
-export const MAINTENANCE = {
-  prix: '49 € / mois',
-  inclus: 'Hébergement, nom de domaine, certificat HTTPS, sauvegardes, mises à jour de sécurité et petites modifications de contenu.',
-}
-
 export const MENTION_TVA = 'TVA non applicable, art. 293 B du CGI.'
 
 export const EMAIL_CONTACT = 'contact@lexavo.fr'

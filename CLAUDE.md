@@ -31,7 +31,7 @@ les routes `/api/veille/*` de ce projet.
   présélectionne un forfait) → `app/api/contact/route.ts` (Resend vers
   `ADMIN_EMAIL`).
 - `app/cgv`, `app/mentions-legales`, `app/politique-confidentialite`.
-- `lib/offre.ts` — **source unique des forfaits, prix, délais et maintenance**.
+- `lib/offre.ts` — **source unique des forfaits, prix et délais (offre sans abonnement)**.
   Utilisée par la landing, la page contact et les CGV.
 - `app/api/veille/*` + `lib/veille/*` — veille juridique (tests :
   `npm test`). Ne pas casser : des abonnés réels en dépendent.

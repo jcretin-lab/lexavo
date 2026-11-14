@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { LandingNav } from '@/components/landing/landing-nav'
 import { LandingFooter } from '@/components/landing/landing-footer'
-import { FORFAITS, MAINTENANCE, MENTION_TVA } from '@/lib/offre'
+import { FORFAITS, MENTION_TVA } from '@/lib/offre'
 
 export const metadata = {
   title: 'Conditions Générales de Vente — Lexavo',
@@ -19,7 +19,7 @@ export default function CGVPage() {
         <section className="mb-10">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">1. Objet</h2>
           <p className="text-gray-700 leading-relaxed">
-            Les présentes Conditions Générales de Vente (CGV) régissent les prestations de conception, de réalisation et de maintenance de sites internet fournies par LEXAVO (PRETET Julien, entrepreneur individuel, SIRET 94997889400028) à tout client professionnel (ci-après « le Client »). Toute commande implique l&apos;acceptation sans réserve des présentes CGV, qui prévalent sur tout autre document, sauf dérogation écrite figurant au devis.
+            Les présentes Conditions Générales de Vente (CGV) régissent les prestations de conception et de réalisation de sites internet fournies par LEXAVO (PRETET Julien, entrepreneur individuel, SIRET 94997889400028) à tout client professionnel (ci-après « le Client »). Toute commande implique l&apos;acceptation sans réserve des présentes CGV, qui prévalent sur tout autre document, sauf dérogation écrite figurant au devis.
           </p>
         </section>
 
@@ -32,7 +32,6 @@ export default function CGVPage() {
                 <strong>{f.nom}</strong> — {f.aPartirDe ? `à partir de ${f.prix}` : f.prix} : {f.accroche.toLowerCase()}
               </li>
             ))}
-            <li><strong>Maintenance</strong> — {MAINTENANCE.prix} : {MAINTENANCE.inclus.charAt(0).toLowerCase() + MAINTENANCE.inclus.slice(1)}</li>
           </ul>
         </section>
 
@@ -46,10 +45,10 @@ export default function CGVPage() {
         <section className="mb-10">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">4. Prix et paiement</h2>
           <p className="text-gray-700 leading-relaxed">
-            Les prix sont exprimés en euros. {MENTION_TVA} Sauf mention contraire au devis, un acompte de 40 % est dû à la signature et le solde à la mise en ligne. La maintenance est facturée mensuellement, à terme à échoir. Les factures sont payables à réception, par virement.
+            Les prix sont exprimés en euros. {MENTION_TVA} Sauf mention contraire au devis, un acompte de 40 % est dû à la signature et le solde à la mise en ligne. Aucun abonnement n&apos;est facturé après la mise en ligne. Les factures sont payables à réception, par virement.
           </p>
           <p className="text-gray-700 leading-relaxed mt-3">
-            Tout retard de paiement entraîne de plein droit des pénalités au taux de trois fois le taux d&apos;intérêt légal et une indemnité forfaitaire pour frais de recouvrement de 40 € (articles L.441-10 et D.441-5 du Code de commerce). LEXAVO peut suspendre la mise en ligne ou la maintenance jusqu&apos;à régularisation.
+            Tout retard de paiement entraîne de plein droit des pénalités au taux de trois fois le taux d&apos;intérêt légal et une indemnité forfaitaire pour frais de recouvrement de 40 € (articles L.441-10 et D.441-5 du Code de commerce). LEXAVO peut suspendre la mise en ligne jusqu&apos;à régularisation.
           </p>
         </section>
 
@@ -91,9 +90,9 @@ export default function CGVPage() {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">9. Maintenance et résiliation</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">9. Après la mise en ligne</h2>
           <p className="text-gray-700 leading-relaxed">
-            Sauf mention contraire au devis, la maintenance est souscrite pour une durée initiale de 12 mois, puis reconduite mois par mois. Chaque partie peut la résilier par e-mail avec un préavis d&apos;un mois à l&apos;issue de la période initiale. En cas de résiliation, LEXAVO remet au Client les fichiers du site et les accès au nom de domaine dans un délai de 15 jours.
+            La prestation ne comporte aucun abonnement. Le site est livré avec un espace d&apos;administration permettant au Client de modifier lui-même ses contenus. Les éventuels frais d&apos;hébergement et de nom de domaine sont précisés au devis. Sur simple demande, LEXAVO remet au Client les fichiers du site et les accès au nom de domaine dans un délai de 15 jours. Toute intervention ultérieure demandée par le Client fait l&apos;objet d&apos;un devis séparé.
           </p>
         </section>
 
@@ -108,7 +107,7 @@ export default function CGVPage() {
           <h2 className="text-xl font-semibold text-gray-900 mb-4">11. Données personnelles</h2>
           <p className="text-gray-700 leading-relaxed">
             Le traitement des données du Client est décrit dans la{' '}
-            <Link href="/politique-confidentialite" className="text-blue-600 hover:underline">politique de confidentialité</Link>. Pour les données des visiteurs du site du Client, celui-ci est responsable de traitement ; lorsque LEXAVO assure l&apos;hébergement ou la maintenance, il agit en qualité de sous-traitant au sens de l&apos;article 28 du RGPD.
+            <Link href="/politique-confidentialite" className="text-blue-600 hover:underline">politique de confidentialité</Link>. Pour les données des visiteurs du site du Client, celui-ci est responsable de traitement ; lorsque LEXAVO intervient sur le site ou en assure l&apos;hébergement, il agit en qualité de sous-traitant au sens de l&apos;article 28 du RGPD.
           </p>
         </section>
 

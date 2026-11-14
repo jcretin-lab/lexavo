@@ -415,12 +415,6 @@ html[data-scrolled='true'] .lx-nav,
 .lx-forfait__delai { font-size: 0.875rem; color: var(--gris); margin-bottom: 1.25rem; }
 .lx-forfait--phare .lx-forfait__delai { color: rgba(255, 255, 255, 0.6); }
 .lx-forfait .lx-btn { width: 100%; }
-.lx-maintenance {
-  display: grid; gap: 1rem; margin-top: 2.5rem; padding: 1.75rem 0; border-top: 1px solid var(--pierre); border-bottom: 1px solid var(--pierre);
-}
-@media (min-width: 768px) { .lx-maintenance { grid-template-columns: 14rem 1fr; align-items: center; } }
-.lx-maintenance strong { font-family: var(--font-instrument-serif), Georgia, serif; font-weight: 400; font-size: 1.625rem; color: var(--robe); }
-.lx-maintenance p { margin: 0; color: var(--gris); font-size: 0.9375rem; }
 .lx-mention { font-size: 0.8125rem; color: var(--gris); margin-top: 1rem; }
 
 /* ─── FAQ ────────────────────────────────────────────────────── */
