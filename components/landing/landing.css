@@ -475,10 +475,127 @@ html[data-scrolled='true'] .lx-nav,
 .lx-pied a { color: inherit; }
 .lx-pied__bas { padding-top: 2rem; font-size: 0.8125rem; color: rgba(255, 255, 255, 0.5); }
 
+/* ─── Page devis ─────────────────────────────────────────────── */
+.lx-devis { min-height: 100vh; }
+.lx-devis__grille { display: grid; }
+@media (min-width: 1024px) { .lx-devis__grille { grid-template-columns: 5fr 7fr; } }
+
+.lx-devis__aside {
+  position: relative; overflow: hidden;
+  background: var(--robe); color: var(--blanc);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  min-height: 34rem;
+}
+@media (min-width: 1024px) {
+  .lx-devis__aside { position: sticky; top: 0; height: 100vh; min-height: 0; align-self: start; }
+}
+.lx-devis__photo {
+  position: absolute; inset: 0;
+  clip-path: inset(10% 14% 10% 14%);
+  animation: lx-ouverture 1.5s var(--ease) 0.1s forwards;
+}
+.lx-devis__photo img {
+  object-fit: cover; object-position: 40% 50%;
+  transform: scale(1.22);
+  animation: lx-recul 2.4s var(--ease-out) 0.1s forwards;
+}
+.lx-devis__voile {
+  position: absolute; inset: 0;
+  background: linear-gradient(0deg, rgba(20, 33, 61, 0.97) 0%, rgba(20, 33, 61, 0.86) 48%, rgba(20, 33, 61, 0.35) 100%);
+  opacity: 0;
+  animation: lx-apparition 1s ease 0.8s forwards;
+}
+.lx-devis__aside-contenu { position: relative; z-index: 1; padding: 8rem 1.5rem 3rem; }
+@media (min-width: 768px) { .lx-devis__aside-contenu { padding: 9rem 3rem 3.5rem; } }
+.lx-devis__titre { font-size: clamp(2.75rem, 5.2vw, 4.75rem); margin: 0 0 1.5rem; }
+.lx-devis .lx-ligne:nth-child(1) > span { animation-delay: 0.75s; }
+.lx-devis .lx-ligne:nth-child(2) > span { animation-delay: 0.87s; }
+.lx-devis__intro {
+  max-width: 30rem; color: rgba(255, 255, 255, 0.82); margin: 0 0 2.5rem;
+  opacity: 0; animation: lx-apparition 0.9s ease 1.15s forwards;
+}
+.lx-devis__suite-bloc {
+  border-top: 1px solid rgba(255, 255, 255, 0.16); padding-top: 1.75rem;
+  opacity: 0; animation: lx-apparition 0.9s ease 1.35s forwards;
+}
+.lx-devis__suite-titre { font-size: 0.9375rem; font-weight: 600; margin: 0 0 1.25rem; color: var(--laiton-clair); }
+.lx-devis__suite { list-style: none; padding: 0; margin: 0 0 2rem; display: grid; gap: 1rem; }
+.lx-devis__suite li { display: grid; grid-template-columns: 2rem 1fr; gap: 0.75rem; font-size: 0.9375rem; color: rgba(255, 255, 255, 0.78); line-height: 1.55; }
+.lx-devis__suite span { font-family: var(--font-instrument-serif), Georgia, serif; font-size: 1.5rem; line-height: 1; color: var(--laiton-clair); }
+.lx-devis__email { font-size: 0.9375rem; color: rgba(255, 255, 255, 0.72); margin: 0; }
+.lx-devis__email a { color: var(--blanc); }
+/* Bloc « Et ensuite ? » : dans la colonne photo sur grand écran, sous le formulaire sur mobile */
+.lx-devis__suite-bloc--aside { display: none; }
+.lx-devis__suite-bloc--bas { margin-top: 4rem; border-top-color: var(--pierre); opacity: 1; animation: none; }
+.lx-devis__suite-bloc--bas .lx-devis__suite-titre { color: var(--laiton); }
+.lx-devis__suite-bloc--bas .lx-devis__suite li, .lx-devis__suite-bloc--bas .lx-devis__email { color: var(--gris); }
+.lx-devis__suite-bloc--bas .lx-devis__suite span { color: var(--laiton); }
+.lx-devis__suite-bloc--bas .lx-devis__email a { color: var(--robe); }
+@media (min-width: 1024px) {
+  .lx-devis__suite-bloc--aside { display: block; }
+  .lx-devis__suite-bloc--bas { display: none; }
+}
+@media (max-width: 1023px) { .lx-devis__aside { min-height: 26rem; } .lx-devis__intro { margin-bottom: 0; } }
+
+.lx-devis__corps { padding: 4rem 1.5rem 5rem; }
+@media (min-width: 768px) { .lx-devis__corps { padding: 5rem 3rem 6rem; } }
+@media (min-width: 1024px) { .lx-devis__corps { padding: 9rem 5rem 6rem; } }
+.lx-devis__corps-inner { max-width: 40rem; opacity: 0; animation: lx-apparition 0.9s ease 0.5s forwards; }
+.lx-devis__h2 { font-family: var(--font-instrument-serif), Georgia, serif; font-weight: 400; font-size: clamp(1.875rem, 3vw, 2.5rem); line-height: 1.1; letter-spacing: -0.01em; margin: 0 0 0.75rem; }
+.lx-devis__chapo { color: var(--gris); margin: 0 0 3rem; }
+
+/* Champs : fond pierre, trait laiton qui se trace au focus */
+.lx-form { display: grid; gap: 1.75rem; }
+.lx-form__duo { display: grid; gap: 1.75rem; }
+@media (min-width: 640px) { .lx-form__duo { grid-template-columns: 1fr 1fr; } }
+.lx-champ { position: relative; }
+.lx-champ label { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.9375rem; font-weight: 500; color: var(--encre); margin-bottom: 0.5rem; }
+.lx-champ__facultatif { font-weight: 400; font-size: 0.8125rem; color: var(--gris); }
+.lx-champ input, .lx-champ select, .lx-champ textarea {
+  width: 100%; display: block;
+  font: inherit; font-size: 1rem; color: var(--encre);
+  background: var(--pierre-clair);
+  border: 0; border-bottom: 1px solid var(--pierre);
+  border-radius: 2px 2px 0 0;
+  padding: 0.875rem 1rem;
+  outline: none;
+  transition: background-color 0.3s var(--ease);
+}
+.lx-champ textarea { resize: vertical; min-height: 9rem; }
+.lx-champ select {
+  appearance: none; cursor: pointer; padding-right: 2.5rem;
+  background-image: linear-gradient(45deg, transparent 50%, var(--robe) 50%), linear-gradient(-45deg, transparent 50%, var(--robe) 50%);
+  background-position: calc(100% - 1.25rem) 50%, calc(100% - 0.9rem) 50%;
+  background-size: 0.35rem 0.35rem; background-repeat: no-repeat;
+}
+.lx-champ input::placeholder, .lx-champ textarea::placeholder { color: #9A9EA8; }
+.lx-champ__trait {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+  background: var(--laiton);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.5s var(--ease);
+  pointer-events: none;
+}
+.lx-champ:focus-within .lx-champ__trait { transform: scaleX(1); }
+.lx-champ:focus-within input, .lx-champ:focus-within select, .lx-champ:focus-within textarea { background-color: var(--pierre); }
+
+.lx-form__accord { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.9375rem; color: var(--gris); }
+.lx-form__accord input { width: 1.125rem; height: 1.125rem; margin-top: 0.2rem; flex: none; accent-color: var(--robe); }
+.lx-form__accord a { color: var(--robe); text-decoration: underline; text-underline-offset: 3px; }
+.lx-form__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; }
+.lx-form__actions .lx-btn:disabled { opacity: 0.6; cursor: wait; }
+.lx-form__note { font-size: 0.8125rem; color: var(--gris); margin: 0; }
+.lx-form__erreur { border-left: 3px solid #A33A3A; background: #FBF1F0; color: #7A2020; padding: 0.875rem 1rem; font-size: 0.9375rem; }
+
+.lx-envoye { background: var(--pierre-clair); padding: 3rem 2rem; border-top: 2px solid var(--laiton); }
+.lx-envoye__titre { font-family: var(--font-instrument-serif), Georgia, serif; font-size: 2rem; line-height: 1.1; margin: 0 0 0.75rem; }
+.lx-envoye p { color: var(--gris); margin: 0 0 1.75rem; }
+
 /* ─── Mouvement réduit : tout est affiché d'emblée ───────────── */
 @media (prefers-reduced-motion: reduce) {
   .lx *, .lx *::before, .lx *::after { animation-duration: 0.01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-  .lx-hero__media { clip-path: none; }
+  .lx-hero__media, .lx-devis__photo { clip-path: none; }
+  .lx-devis__photo img { transform: none; }
   .lx-hero__media img { transform: scale(1.04); }
   .lx-reveal { opacity: 1; transform: none; }
   .lx-reveal-image::after { display: none; }

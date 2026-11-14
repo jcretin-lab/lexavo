@@ -1,35 +1,13 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 
-const NAVY = '#0F2247'
-const INK  = '#0F0E0C'
-const MID  = '#6E6860'
-const RULE = '#D0CBC0'
-const GOLD = '#B8872A'
-
-const inputStyle = {
-  width: '100%',
-  fontSize: '0.875rem',
-  color: INK,
-  border: `1px solid ${RULE}`,
-  borderRadius: 0,
-  padding: '0.625rem 0.875rem',
-  background: '#FAF8F3',
-  outline: 'none',
-  fontFamily: 'inherit',
-}
-
-const labelStyle = {
-  display: 'block',
-  fontFamily: 'var(--font-jetbrains-mono)',
-  fontSize: '10px',
-  letterSpacing: '0.15em',
-  color: MID,
-  marginBottom: '0.5rem',
-}
-
 type ForfaitOption = { id: string; nom: string }
+
+function Facultatif() {
+  return <span className="lx-champ__facultatif">facultatif</span>
+}
 
 export function ContactForm({ forfaitInitial = '', forfaits }: { forfaitInitial?: string; forfaits: ForfaitOption[] }) {
   const vide = { nom: '', email: '', cabinet: '', forfait: forfaitInitial, siteActuel: '', message: '', privacy: false }
@@ -61,7 +39,7 @@ export function ContactForm({ forfaitInitial = '', forfaits }: { forfaitInitial?
       setSuccess(true)
       setForm(vide)
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Erreur lors de l'envoi")
+      setError(err instanceof Error ? err.message : "La demande n'a pas pu être envoyée. Réessayez ou écrivez-nous directement.")
     } finally {
       setLoading(false)
     }
@@ -69,83 +47,75 @@ export function ContactForm({ forfaitInitial = '', forfaits }: { forfaitInitial?
 
   if (success) {
     return (
-      <div style={{ border: `1px solid ${GOLD}`, padding: '2rem', textAlign: 'center' }}>
-        <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', fontStyle: 'italic', color: INK, marginBottom: '0.5rem' }}>Demande envoyée.</p>
-        <p style={{ fontSize: '0.875rem', color: MID }}>Nous revenons vers vous sous 48 h ouvrées.</p>
+      <div className="lx-envoye" role="status">
+        <p className="lx-envoye__titre">Demande envoyée.</p>
+        <p>Merci. Nous revenons vers vous sous 48 h ouvrées pour convenir d&apos;un échange.</p>
+        <Link href="/" className="lx-btn lx-btn--ligne">Retour à l&apos;accueil</Link>
       </div>
     )
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      {error && (
-        <div style={{ border: '1px solid #d97070', padding: '0.75rem 1rem', fontSize: '0.875rem', color: '#7a2020' }}>{error}</div>
-      )}
+    <form onSubmit={handleSubmit} className="lx-form">
+      {error && <div className="lx-form__erreur" role="alert">{error}</div>}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label htmlFor="nom" style={labelStyle}>NOM ET PRÉNOM <span style={{ color: GOLD }}>*</span></label>
-          <input id="nom" name="nom" type="text" required value={form.nom} onChange={handleChange} style={inputStyle} placeholder="Jean Dupont" />
+      <div className="lx-form__duo">
+        <div className="lx-champ">
+          <label htmlFor="nom">Nom et prénom</label>
+          <input id="nom" name="nom" type="text" required autoComplete="name" value={form.nom} onChange={handleChange} placeholder="Jean Dupont" />
+          <span className="lx-champ__trait" />
         </div>
-        <div>
-          <label htmlFor="email" style={labelStyle}>EMAIL <span style={{ color: GOLD }}>*</span></label>
-          <input id="email" name="email" type="email" required value={form.email} onChange={handleChange} style={inputStyle} placeholder="jean@cabinet.fr" />
+        <div className="lx-champ">
+          <label htmlFor="email">E-mail</label>
+          <input id="email" name="email" type="email" required autoComplete="email" value={form.email} onChange={handleChange} placeholder="jean@cabinet.fr" />
+          <span className="lx-champ__trait" />
         </div>
       </div>
 
-      <div>
-        <label htmlFor="cabinet" style={labelStyle}>NOM DU CABINET <span style={{ color: RULE }}>— OPTIONNEL</span></label>
-        <input id="cabinet" name="cabinet" type="text" value={form.cabinet} onChange={handleChange} style={inputStyle} placeholder="Cabinet Dupont & Associés" />
+      <div className="lx-champ">
+        <label htmlFor="cabinet">Nom du cabinet <Facultatif /></label>
+        <input id="cabinet" name="cabinet" type="text" autoComplete="organization" value={form.cabinet} onChange={handleChange} placeholder="Cabinet Dupont & Associés" />
+        <span className="lx-champ__trait" />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label htmlFor="forfait" style={labelStyle}>FORFAIT ENVISAGÉ</label>
-          <select id="forfait" name="forfait" value={form.forfait} onChange={handleChange} style={{ ...inputStyle, cursor: 'pointer' }}>
+      <div className="lx-form__duo">
+        <div className="lx-champ">
+          <label htmlFor="forfait">Forfait envisagé</label>
+          <select id="forfait" name="forfait" value={form.forfait} onChange={handleChange}>
             <option value="">Je ne sais pas encore</option>
             {forfaits.map((f) => (
               <option key={f.id} value={f.id}>{f.nom}</option>
             ))}
           </select>
+          <span className="lx-champ__trait" />
         </div>
-        <div>
-          <label htmlFor="siteActuel" style={labelStyle}>SITE ACTUEL <span style={{ color: RULE }}>— OPTIONNEL</span></label>
-          <input id="siteActuel" name="siteActuel" type="text" value={form.siteActuel} onChange={handleChange} style={inputStyle} placeholder="www.cabinet-dupont.fr" />
+        <div className="lx-champ">
+          <label htmlFor="siteActuel">Site actuel <Facultatif /></label>
+          <input id="siteActuel" name="siteActuel" type="text" autoComplete="url" value={form.siteActuel} onChange={handleChange} placeholder="www.cabinet-dupont.fr" />
+          <span className="lx-champ__trait" />
         </div>
       </div>
 
-      <div>
-        <label htmlFor="message" style={labelStyle}>VOTRE PROJET <span style={{ color: GOLD }}>*</span></label>
-        <textarea id="message" name="message" required rows={5} value={form.message} onChange={handleChange} style={{ ...inputStyle, resize: 'none' }} placeholder="Votre barreau, vos domaines d'intervention, ce que vous attendez du site, un délai souhaité…" />
+      <div className="lx-champ">
+        <label htmlFor="message">Votre projet</label>
+        <textarea id="message" name="message" required rows={6} value={form.message} onChange={handleChange} placeholder="Votre barreau, vos domaines d'intervention, ce que vous attendez du site, un délai souhaité…" />
+        <span className="lx-champ__trait" />
       </div>
 
-      <div className="flex items-start gap-3">
-        <input id="privacy" name="privacy" type="checkbox" required checked={form.privacy} onChange={handleChange} style={{ marginTop: '0.125rem', accentColor: NAVY, width: '16px', height: '16px', flexShrink: 0 }} />
-        <label htmlFor="privacy" style={{ fontSize: '0.8125rem', color: MID }}>
-          J&apos;accepte la{' '}
-          <a href="/politique-confidentialite" style={{ color: GOLD, textDecoration: 'none' }} className="hover:underline" target="_blank">politique de confidentialité</a>
-          {' '}<span style={{ color: GOLD }}>*</span>
-        </label>
-      </div>
+      <label className="lx-form__accord" htmlFor="privacy">
+        <input id="privacy" name="privacy" type="checkbox" required checked={form.privacy} onChange={handleChange} />
+        <span>
+          J&apos;accepte la <a href="/politique-confidentialite" target="_blank">politique de confidentialité</a>.
+        </span>
+      </label>
 
-      <button
-        type="submit"
-        disabled={loading}
-        style={{
-          padding: '0.75rem 2rem',
-          background: loading ? MID : NAVY,
-          color: '#F3EFE5',
-          fontFamily: 'var(--font-jetbrains-mono)',
-          fontSize: '11px',
-          letterSpacing: '0.15em',
-          border: 'none',
-          borderRadius: 0,
-          cursor: loading ? 'not-allowed' : 'pointer',
-          transition: 'background 0.2s',
-        }}
-      >
-        {loading ? 'ENVOI EN COURS…' : 'ENVOYER MA DEMANDE'}
-      </button>
+      <div className="lx-form__actions">
+        <button type="submit" disabled={loading} className="lx-btn lx-btn--robe">
+          {loading ? 'Envoi en cours…' : 'Envoyer ma demande'}
+          {!loading && <span className="lx-btn__trait" aria-hidden="true" />}
+        </button>
+        <p className="lx-form__note">Réponse sous 48 h ouvrées.</p>
+      </div>
     </form>
   )
 }
