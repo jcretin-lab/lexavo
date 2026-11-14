@@ -139,7 +139,7 @@ html[data-scrolled='true'] .lx-nav,
 /* ─── Hero : la photo s'ouvre comme une fenêtre ──────────────── */
 .lx-hero {
   position: relative;
-  min-height: calc(100svh - clamp(3.5rem, 6.2vw, 5.75rem)); /* les sceaux restent entiers à l'écran */
+  min-height: calc(100svh - clamp(2.875rem, 4.5vw, 4.25rem) - 1rem); /* les sceaux restent entiers à l'écran */
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -212,7 +212,8 @@ html[data-scrolled='true'] .lx-nav,
 @media (max-width: 767px) {
   .lx-hero__voile { background: linear-gradient(0deg, rgba(20, 33, 61, 0.95) 0%, rgba(20, 33, 61, 0.78) 55%, rgba(20, 33, 61, 0.55) 100%); }
 }
-.lx-hero__contenu { position: relative; z-index: 1; padding-top: 7rem; padding-bottom: 3rem; text-align: center; margin-block: auto; }
+/* Le titre en haut ; le sous-texte au milieu de l'espace restant, à égale distance du titre et des sceaux */
+.lx-hero__contenu { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; padding-top: clamp(6.5rem, 17vh, 10rem); padding-bottom: 0; text-align: center; }
 .lx-hero__contenu h1 { margin-left: auto; margin-right: auto; }
 .lx-hero__accroche {
   font-size: 1rem; color: var(--laiton-fonce); margin: 0 0 1.5rem;
@@ -221,7 +222,7 @@ html[data-scrolled='true'] .lx-nav,
 .lx-hero h1 {
   font-size: clamp(2.5rem, 6.4vw, 6.25rem);
   line-height: 1.02;
-  margin: 0 0 2.25rem;
+  margin: 0;
 }
 /* Ligne des avantages : un peu plus petite, en laiton ; hauteur réservée pour que la page ne saute pas */
 .lx-frappe__ligne--rotation {
@@ -242,7 +243,7 @@ html[data-scrolled='true'] .lx-nav,
 .lx-ligne:nth-child(2) > span { animation-delay: 1.17s; }
 .lx-ligne:nth-child(3) > span { animation-delay: 1.29s; }
 .lx-hero__texte {
-  max-width: 34rem; font-size: 1.125rem; color: var(--gris); margin: 0 auto 2.5rem;
+  max-width: 34rem; font-size: 1.125rem; color: var(--gris); margin: auto; padding-block: 1.5rem;
   opacity: 0; animation: lx-apparition 0.9s ease 2.4s forwards;
 }
 .lx-hero__actions {
@@ -250,7 +251,7 @@ html[data-scrolled='true'] .lx-nav,
   opacity: 0; animation: lx-apparition 0.9s ease 2.6s forwards;
 }
 /* Pied du hero : réserve la moitié haute des sceaux, l'autre moitié déborde sur la section suivante */
-.lx-hero__pied { position: relative; z-index: 3; height: clamp(3.75rem, 6vw, 5.5rem); }
+.lx-hero__pied { position: relative; z-index: 3; height: clamp(2.875rem, 4.5vw, 4.25rem); } /* = moitié d'un sceau */
 .lx-sceaux {
   position: absolute; left: 0; right: 0; bottom: 0; transform: translateY(50%);
   display: flex; justify-content: center; gap: clamp(0.75rem, 5vw, 4.5rem); padding: 0 1rem;
