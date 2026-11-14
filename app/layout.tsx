@@ -1,17 +1,21 @@
 import type { Metadata } from 'next'
-import { Inter, Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
+import { Bodoni_Moda, Hanken_Grotesk, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const inter = Inter({
+// Les noms de variables historiques (--font-inter, --font-instrument-serif) sont conservés
+// pour que les pages existantes (contact, pages légales) héritent des nouvelles polices.
+const inter = Hanken_Grotesk({
   subsets: ['latin'],
   variable: '--font-inter',
+  display: 'swap',
 })
 
-const instrumentSerif = Plus_Jakarta_Sans({
-  weight: ['400', '500', '600', '700'],
+const instrumentSerif = Bodoni_Moda({
   subsets: ['latin'],
+  style: ['normal', 'italic'],
   variable: '--font-instrument-serif',
+  display: 'swap',
 })
 
 const jetbrainsMono = JetBrains_Mono({

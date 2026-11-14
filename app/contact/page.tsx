@@ -27,7 +27,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
 
   return (
     <div style={{ background: PAPER, minHeight: '100vh', color: INK }}>
-      <LandingNav />
+      <LandingNav solide />
 
       <div className="max-w-3xl mx-auto px-6" style={{ paddingTop: '6rem', paddingBottom: '5rem' }}>
 

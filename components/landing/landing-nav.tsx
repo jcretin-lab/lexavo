@@ -1,32 +1,24 @@
 import Link from 'next/link'
+import './landing.css'
 
-const PAPER = '#F3EFE5'
-const GOLD  = '#B8872A'
-
-export function LandingNav() {
+// `solide` : fond bleu dès le départ (pages sans grande photo en tête).
+// Sur la landing, la barre est transparente au-dessus du hero puis devient opaque au défilement.
+export function LandingNav({ solide = false }: { solide?: boolean }) {
   return (
-    <nav
-      className="fixed top-0 left-0 right-0 z-50"
-      style={{
-        background: 'rgba(15,34,71,0.72)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        borderBottom: '1px solid rgba(255,255,255,0.07)',
-      }}
-    >
-      <div className="max-w-6xl mx-auto px-6 h-12 flex items-center justify-between">
-        <Link href="/" style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', color: PAPER, letterSpacing: '-0.02em', textDecoration: 'none' }}>
-          Lex<em>avo</em><span style={{ color: GOLD }}>.</span>
+    <nav className={`lx-nav${solide ? ' lx-nav--solide' : ''}`} aria-label="Navigation principale">
+      <div className="lx-wrap lx-nav__inner">
+        <Link href="/" className="lx-nav__logo">
+          Lexavo<span>.</span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-8" style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(255,255,255,0.85)' }}>
-          <Link href="/#methode" className="hover:text-white transition-colors" style={{ color: 'inherit', textDecoration: 'none' }}>MÉTHODE</Link>
-          <Link href="/#deontologie" className="hover:text-white transition-colors" style={{ color: 'inherit', textDecoration: 'none' }}>DÉONTOLOGIE</Link>
-          <Link href="/#tarifs" className="hover:text-white transition-colors" style={{ color: 'inherit', textDecoration: 'none' }}>FORFAITS</Link>
-          <Link href="/#faq" className="hover:text-white transition-colors" style={{ color: 'inherit', textDecoration: 'none' }}>FAQ</Link>
+        <div className="lx-nav__liens">
+          <Link href="/#realisations" className="lx-lien">Réalisations</Link>
+          <Link href="/#methode" className="lx-lien">Méthode</Link>
+          <Link href="/#forfaits" className="lx-lien">Forfaits</Link>
+          <Link href="/#questions" className="lx-lien">Questions</Link>
         </div>
 
-        <Link href="/contact" className="landing-nav-cta">
+        <Link href="/contact" className="lx-btn lx-btn--laiton">
           Demander un devis
         </Link>
       </div>

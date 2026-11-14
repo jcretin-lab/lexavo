@@ -1,39 +1,39 @@
 import Link from 'next/link'
-
-const NAVY  = '#0F2247'
-const PAPER = '#F3EFE5'
-const GOLD  = '#B8872A'
+import './landing.css'
+import { EMAIL_CONTACT } from '@/lib/offre'
+import { URL_VEILLE } from './veille-encart'
 
 export function LandingFooter() {
   return (
-    <footer style={{ background: NAVY, padding: '2.5rem 1.5rem' }}>
-      <div
-        className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start justify-between gap-10"
-        style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '2.5rem' }}
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <span style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', color: PAPER, letterSpacing: '-0.02em' }}>
-            Lex<em>avo</em><span style={{ color: GOLD }}>.</span>
-          </span>
-          <p style={{ fontFamily: 'var(--font-instrument-serif)', fontSize: '1.25rem', color: PAPER, lineHeight: 1.2, letterSpacing: '-0.015em' }}>
-            Un site à la hauteur<br />
-            <em>de votre cabinet</em><span style={{ color: GOLD }}>.</span>
-          </p>
-          <p style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, maxWidth: '22rem' }}>
-            Création de sites internet pour avocats et cabinets d&apos;avocats.
-          </p>
+    <footer className="lx-pied">
+      <div className="lx-wrap">
+        <div className="lx-pied__haut">
+          <div>
+            <p className="lx-pied__logo">Lexavo<span>.</span></p>
+            <p style={{ maxWidth: '22rem', margin: 0 }}>
+              Création de sites internet pour avocats et cabinets d&apos;avocats.
+            </p>
+          </div>
+          <div>
+            <h3>Le studio</h3>
+            <ul>
+              <li><Link href="/#realisations" className="lx-lien">Réalisations</Link></li>
+              <li><Link href="/#forfaits" className="lx-lien">Forfaits</Link></li>
+              <li><Link href="/contact" className="lx-lien">Demander un devis</Link></li>
+              <li><a href={URL_VEILLE} className="lx-lien">La veille juridique</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Informations</h3>
+            <ul>
+              <li><a href={`mailto:${EMAIL_CONTACT}`} className="lx-lien">{EMAIL_CONTACT}</a></li>
+              <li><Link href="/mentions-legales" className="lx-lien">Mentions légales</Link></li>
+              <li><Link href="/cgv" className="lx-lien">Conditions générales de vente</Link></li>
+              <li><Link href="/politique-confidentialite" className="lx-lien">Confidentialité</Link></li>
+            </ul>
+          </div>
         </div>
-
-        <div className="flex flex-wrap gap-6" style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.85)' }}>
-          <Link href="/mentions-legales" className="hover:text-white transition-colors" style={{ textDecoration: 'none', color: 'inherit' }}>MENTIONS LÉGALES</Link>
-          <Link href="/cgv" className="hover:text-white transition-colors" style={{ textDecoration: 'none', color: 'inherit' }}>CGV</Link>
-          <Link href="/politique-confidentialite" className="hover:text-white transition-colors" style={{ textDecoration: 'none', color: 'inherit' }}>CONFIDENTIALITÉ</Link>
-          <Link href="/contact" className="hover:text-white transition-colors" style={{ textDecoration: 'none', color: 'inherit' }}>CONTACT</Link>
-        </div>
-
-        <p style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '9px', letterSpacing: '0.12em', color: 'rgba(255,255,255,0.4)' }}>
-          © 2026 LEXAVO
-        </p>
+        <p className="lx-pied__bas">© Lexavo. Photographies : Unsplash.</p>
       </div>
     </footer>
   )

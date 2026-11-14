@@ -9,7 +9,7 @@ export const metadata = {
 export default function PolitiqueConfidentialitePage() {
   return (
     <div className="min-h-screen ed-legal-page">
-      <LandingNav />
+      <LandingNav solide />
       <div className="max-w-3xl mx-auto px-6" style={{ paddingTop: '6rem', paddingBottom: '5rem' }}>
         <Link href="/" style={{ fontFamily: 'var(--font-jetbrains-mono)', fontSize: '10px', letterSpacing: '0.15em', color: '#6E6860', textDecoration: 'none', display: 'inline-block', marginBottom: '2.5rem' }} className="hover:text-black transition-colors">← ACCUEIL</Link>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Politique de confidentialité</h1>
