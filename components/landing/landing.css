@@ -216,9 +216,18 @@ html[data-scrolled='true'] .lx-nav,
   opacity: 0; animation: lx-apparition 0.9s ease 0.2s forwards;
 }
 .lx-hero h1 {
-  font-size: clamp(3.25rem, 11vw, 10rem);
-  line-height: 0.95;
+  font-size: clamp(2.5rem, 6.4vw, 6.25rem);
+  line-height: 1.02;
   margin: 0 0 2.25rem;
+}
+/* Ligne des avantages : un peu plus petite, en laiton ; hauteur réservée pour que la page ne saute pas */
+.lx-frappe__ligne--rotation {
+  font-size: 0.82em; color: var(--laiton-clair); font-style: italic;
+  min-height: 1.1em; margin-top: 0.08em;
+}
+@media (max-width: 640px) {
+  .lx-hero .lx-frappe__ligne { white-space: normal; }
+  .lx-frappe__ligne--rotation { min-height: 2.2em; }
 }
 .lx-ligne { display: block; overflow: hidden; padding-bottom: 0.06em; }
 .lx-ligne > span {

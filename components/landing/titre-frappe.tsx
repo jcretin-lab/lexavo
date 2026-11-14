@@ -2,50 +2,78 @@
 
 import { useEffect, useState } from 'react'
 
-// Titre « tapé » lettre à lettre, avec un curseur de traitement de texte.
-// Le texte complet est toujours présent pour les lecteurs d'écran et les moteurs ;
-// la partie pas encore tapée est seulement masquée (visibility), donc la mise en page ne bouge pas.
-export function TitreFrappe({ lignes, className }: { lignes: string[]; className?: string }) {
-  const total = lignes.reduce((n, l) => n + l.length, 0)
-  const [tape, setTape] = useState(0)
+// Titre « tapé » avec un curseur de traitement de texte :
+// la première ligne s'écrit une fois, puis la seconde fait défiler les avantages
+// (écrit, pause, efface, suivant…).
+// Le texte complet est dans un span masqué visuellement, pour les lecteurs d'écran et les moteurs.
+type Etat = { f: number; r: number; c: number; pause: boolean }
+
+export function TitreFrappe({ fixe, rotation, className }: { fixe: string; rotation: string[]; className?: string }) {
+  const [etat, setEtat] = useState<Etat>({ f: 0, r: 0, c: 0, pause: false })
 
   useEffect(() => {
-    let minuteur: number
+    let minuteur = 0
+    const planifier = (fn: () => void, ms: number) => { minuteur = window.setTimeout(fn, ms) }
+    const frappe = () => 55 + Math.random() * 45
+
+    // Mouvement réduit : tout est affiché, les avantages changent sans animation de frappe
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      minuteur = window.setTimeout(() => setTape(total), 0)
+      let r = 0
+      const suivant = () => {
+        setEtat({ f: fixe.length, r, c: rotation[r].length + 1, pause: true })
+        r = (r + 1) % rotation.length
+        planifier(suivant, 3500)
+      }
+      planifier(suivant, 0)
       return () => window.clearTimeout(minuteur)
     }
-    let n = 0
-    const finsDeLigne = new Set(lignes.slice(0, -1).map((_, i) => lignes.slice(0, i + 1).join('').length))
-    const suivant = () => {
-      n += 1
-      setTape(n)
-      if (n >= total) return
-      // rythme humain : léger aléa, pause après une ligne ou une espace
-      const pause = finsDeLigne.has(n) ? 380 : lignes.join('')[n - 1] === ' ' ? 120 : 0
-      minuteur = window.setTimeout(suivant, 58 + Math.random() * 46 + pause)
-    }
-    minuteur = window.setTimeout(suivant, 650)
-    return () => window.clearTimeout(minuteur)
-  }, [lignes, total])
 
-  // position de départ de chaque ligne dans le texte complet
-  const departs = lignes.map((_, i) => lignes.slice(0, i).join('').length)
+    let f = 0, r = 0, c = 0
+    const taperFixe = () => {
+      f += 1
+      setEtat({ f, r, c, pause: false })
+      if (f < fixe.length) planifier(taperFixe, frappe() + (fixe[f - 1] === ' ' ? 90 : 0))
+      else planifier(taperAvantage, 420)
+    }
+    const taperAvantage = () => {
+      c += 1
+      setEtat({ f, r, c, pause: false })
+      if (c < rotation[r].length + 1) planifier(taperAvantage, frappe())
+      else {
+        setEtat({ f, r, c, pause: true })
+        planifier(effacer, 2400)
+      }
+    }
+    const effacer = () => {
+      c -= 1
+      setEtat({ f, r, c, pause: false })
+      if (c > 0) planifier(effacer, 28)
+      else {
+        r = (r + 1) % rotation.length
+        setEtat({ f, r, c, pause: true })
+        planifier(taperAvantage, 380)
+      }
+    }
+    planifier(taperFixe, 650)
+    return () => window.clearTimeout(minuteur)
+  }, [fixe, rotation])
+
+  const { f, r, c, pause } = etat
+  const fixeFini = f >= fixe.length
+  const curseur = <span className={`lx-frappe__curseur${pause ? ' is-fini' : ''}`} />
+
   return (
-    <h1 className={className} aria-label={lignes.join(' ')}>
-      {lignes.map((ligne, i) => {
-        const avant = departs[i]
-        const debut = avant + ligne.length
-        const visibles = Math.max(0, Math.min(ligne.length, tape - avant))
-        const curseurIci = tape < total ? tape >= avant && tape <= debut && (tape < debut || i === lignes.length - 1) : i === lignes.length - 1
-        return (
-          <span key={ligne} className="lx-frappe__ligne" aria-hidden="true">
-            {ligne.slice(0, visibles)}
-            {curseurIci && <span className={`lx-frappe__curseur${tape >= total ? ' is-fini' : ''}`} />}
-            <span className="lx-frappe__reste">{ligne.slice(visibles)}</span>
-          </span>
-        )
-      })}
+    <h1 className={className}>
+      <span className="sr-only">{fixe} {rotation.join(', ')}.</span>
+      <span className="lx-frappe__ligne" aria-hidden="true">
+        {fixe.slice(0, f)}
+        {!fixeFini && curseur}
+        <span className="lx-frappe__reste">{fixe.slice(f)}</span>
+      </span>
+      <span className="lx-frappe__ligne lx-frappe__ligne--rotation" aria-hidden="true">
+        {fixeFini && `${rotation[r]}.`.slice(0, c)}
+        {fixeFini && curseur}
+      </span>
     </h1>
   )
 }

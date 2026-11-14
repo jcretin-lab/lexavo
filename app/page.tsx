@@ -207,7 +207,11 @@ export default function HomePage() {
 
         <div className="lx-wrap lx-hero__contenu">
           <p className="lx-hero__accroche">Création de sites internet pour avocats</p>
-          <TitreFrappe className="lx-display" lignes={['Plaidez aussi', 'en ligne.']} />
+          <TitreFrappe
+            className="lx-display"
+            fixe="Le site de votre cabinet,"
+            rotation={['sans abonnement', 'prêt pour Google et les IA', 'modifiable en quelques clics']}
+          />
           <p className="lx-hero__texte">
             Nous créons le site de votre cabinet. Ensuite, c&apos;est vous qui le faites vivre&nbsp;: textes, blog, référencement SEO et GEO, en quelques clics.
           </p>
