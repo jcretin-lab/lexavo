@@ -23,16 +23,20 @@ import photoRue from '@/public/photos/rue-paris.jpg'
 /* ── Contenus ────────────────────────────────────────── */
 const CONSTATS = [
   {
-    titre: 'On vous cherche avant de vous appeler',
-    texte: "Recommandé par un proche ou trouvé sur Google, un futur client commence toujours par votre site. S'il est absent, daté ou illisible sur téléphone, il continue sa recherche ailleurs.",
+    titre: 'Un module conçu pour vous',
+    texte: "Nous avons développé notre propre outil d'administration. Vous modifiez vos pages, vos horaires ou vos honoraires en quelques clics, et vous réglez le référencement SEO et GEO de chaque page. Sans abonnement, sans webmaster.",
   },
   {
-    titre: 'Votre communication est encadrée',
-    texte: "Nom de domaine, mentions obligatoires, spécialisations, honoraires : le RIN encadre la communication de l'avocat. Une agence généraliste ne connaît pas toujours ces règles.",
+    titre: 'Votre cabinet, trouvé et compris',
+    texte: "Avant d'appeler un avocat, beaucoup de clients consultent son site. Un site clair, rapide et lisible sur téléphone leur dit qui vous êtes, ce que vous faites et comment vous joindre.",
   },
   {
-    titre: 'Votre temps est compté',
-    texte: "Une heure d'entretien et quelques relectures : c'est tout ce que nous vous demandons. Nous nous occupons de tout le reste, de la maquette à la mise en ligne.",
+    titre: 'Un blog pour montrer votre expertise',
+    texte: 'Commenter une réforme, expliquer une procédure, réagir à une décision : publier régulièrement démontre votre compétence, sans démarchage, et nourrit votre référencement.',
+  },
+  {
+    titre: 'Des options selon vos besoins',
+    texte: 'Site traduit en plusieurs langues, paiement de consultation en ligne, prise de rendez-vous, espace documents : nous ajoutons ce dont votre cabinet a besoin.',
   },
 ]
 
@@ -217,7 +221,7 @@ export default function HomePage() {
         <div className="lx-wrap lx-constat__mise">
           <div className="lx-constat__texte">
             <p className="lx-constat__phrase lx-reveal">
-              Un client ne choisit jamais un avocat qu&apos;il n&apos;a jamais vu. Votre site est <em>souvent la première rencontre</em> avec votre cabinet.
+              L&apos;IA accélère notre travail. Nous gardons la main sur chaque détail. Vous payez <em>le juste prix</em>.
             </p>
             <div className="lx-constat__grille">
               {CONSTATS.map(({ titre, texte }) => (

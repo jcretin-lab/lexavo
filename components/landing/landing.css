@@ -349,6 +349,7 @@ html[data-scrolled='true'] .lx-nav,
 .lx-constat__photo img { object-fit: cover; object-position: 30% 50%; }
 @media (min-width: 1024px) { .lx-constat__photo { aspect-ratio: 4 / 5; position: sticky; top: 6.5rem; } }
 .lx-constat__grille { display: grid; gap: 2rem; }
+@media (min-width: 700px) { .lx-constat__grille { grid-template-columns: 1fr 1fr; column-gap: 2.5rem; row-gap: 2.5rem; } }
 /* Mobile : phrase, puis photo, puis les trois points */
 @media (max-width: 1023px) {
   .lx-constat__mise { display: flex; flex-direction: column; gap: 2.75rem; }
