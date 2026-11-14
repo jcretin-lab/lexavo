@@ -193,14 +193,6 @@ export default function HomePage() {
           <p className="lx-hero__texte">
             Nous créons le site de votre cabinet. Ensuite, c&apos;est vous qui le faites vivre&nbsp;: textes, blog, référencement SEO et GEO, en quelques clics.
           </p>
-          <div className="lx-hero__actions">
-            <Link href="/contact" className="lx-btn lx-btn--laiton">
-              Demander un devis <span className="lx-btn__trait" aria-hidden />
-            </Link>
-            <Link href="#realisations" className="lx-btn lx-btn--ligne">
-              Voir un exemple de site
-            </Link>
-          </div>
         </div>
 
         <div className="lx-hero__pied">
