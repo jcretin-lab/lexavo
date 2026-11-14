@@ -18,22 +18,6 @@ import photoPalais from '@/public/photos/palais-justice.jpg'
 import photoRue from '@/public/photos/rue-paris.jpg'
 
 /* ── Contenus ────────────────────────────────────────── */
-// Filigrane du hero : le droit et le code, mêlés. Citations exactes (Code civil, DDHC).
-const FILIGRANE: { texte: string; code?: boolean }[] = [
-  { texte: 'Art. 1103 — Les contrats légalement formés tiennent lieu de loi à ceux qui les ont faits.' },
-  { texte: '<title>Cabinet Delmas — Avocat au barreau de Lyon</title>', code: true },
-  { texte: 'Art. 9 — Chacun a droit au respect de sa vie privée.' },
-  { texte: '"@type": "LegalService", "areaServed": "Lyon"', code: true },
-  { texte: 'Art. 1104 — Les contrats doivent être négociés, formés et exécutés de bonne foi.' },
-  { texte: '<meta name="description" content="Droit de la famille, droit du travail…">', code: true },
-  { texte: 'DDHC, art. 11 — La libre communication des pensées et des opinions est un des droits les plus précieux de l’Homme.' },
-  { texte: '<h2>Domaines d’intervention</h2>', code: true },
-  { texte: 'Art. 1240 — Tout fait quelconque de l’homme, qui cause à autrui un dommage, oblige celui par la faute duquel il est arrivé à le réparer.' },
-  { texte: '<article class="blog"> <time datetime="…">', code: true },
-  { texte: 'Art. 544 — La propriété est le droit de jouir et disposer des choses de la manière la plus absolue…' },
-  { texte: 'llms.txt · sitemap.xml · robots.txt', code: true },
-]
-
 const CONSTATS = [
   {
     titre: 'On vous cherche avant de vous appeler',
@@ -188,22 +172,12 @@ export default function HomePage() {
   return (
     <div className="lx">
       <LandingEffets />
-      <LandingNav />
+      <LandingNav solide />
 
       {/* ══ Hero ═══════════════════════════════════════════ */}
       <section className="lx-hero">
-        {/* Filigrane : articles de loi et lignes de code qui défilent lentement */}
-        <div className="lx-filigrane" aria-hidden="true">
-          <div className="lx-filigrane__piste">
-            {[0, 1].map((copie) => (
-              <div key={copie} className="lx-filigrane__bloc">
-                {FILIGRANE.map((l, i) => (
-                  <p key={i} className={l.code ? 'lx-filigrane__code' : 'lx-filigrane__loi'}>{l.texte}</p>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* La feuille d'acte : papier, lignes réglées et double marge dorée */}
+        <div className="lx-acte" aria-hidden="true" />
 
         <div className="lx-wrap lx-hero__contenu">
           <p className="lx-hero__accroche">Création de sites internet pour avocats</p>
@@ -223,7 +197,7 @@ export default function HomePage() {
             <Link href="/contact" className="lx-btn lx-btn--laiton">
               Demander un devis <span className="lx-btn__trait" aria-hidden />
             </Link>
-            <Link href="#realisations" className="lx-btn lx-btn--clair">
+            <Link href="#realisations" className="lx-btn lx-btn--ligne">
               Voir un exemple de site
             </Link>
           </div>
