@@ -12,7 +12,6 @@ export function LandingNav({ solide = false }: { solide?: boolean }) {
         </Link>
 
         <div className="lx-nav__liens">
-          <Link href="/#realisations" className="lx-lien">Réalisations</Link>
           <Link href="/#methode" className="lx-lien">Méthode</Link>
           <Link href="/#forfaits" className="lx-lien">Forfaits</Link>
           <Link href="/#questions" className="lx-lien">Questions</Link>

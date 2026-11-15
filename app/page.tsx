@@ -16,7 +16,6 @@ import photoBustes from '@/public/photos/bibliotheque-bustes.jpg'
 import photoFacade from '@/public/photos/facade-haussmann.jpg'
 import photoBibliotheque from '@/public/photos/bibliotheque.jpg'
 import photoAvocat from '@/public/photos/avocat-bureau.jpg'
-import photoStylo from '@/public/photos/stylo-plume.jpg'
 import photoPalais from '@/public/photos/palais-justice.jpg'
 import photoRue from '@/public/photos/rue-paris.jpg'
 
@@ -88,13 +87,6 @@ const ARBORESCENCE: { page: string; inclus: boolean; sous?: string[] }[] = [
   { page: 'Blog', inclus: true },
   { page: 'Contact et rendez-vous', inclus: true },
   { page: 'Espace documents', inclus: false },
-]
-
-const ETAPES = [
-  { titre: 'Entretien', texte: "Trente minutes au téléphone pour comprendre votre cabinet, votre clientèle et vos domaines d'intervention. Vous recevez un devis ferme sous 48 heures." },
-  { titre: 'Maquette', texte: 'Une première version de la page d’accueil, à vos couleurs. Vous commentez, nous ajustons jusqu’à ce qu’elle vous ressemble.' },
-  { titre: 'Contenus', texte: 'Nous rédigeons ou reprenons vos textes. Vous relisez et validez chaque page avant sa mise en ligne.' },
-  { titre: 'Mise en ligne', texte: 'Nom de domaine, HTTPS, référencement, formulaire : tout est branché. Nous préparons les éléments à transmettre à votre Ordre.' },
 ]
 
 const DEONTOLOGIE = [
@@ -347,12 +339,12 @@ export default function HomePage() {
       </section>
 
       {/* ══ Défilement horizontal : de la collaboration au module ══ */}
-      <section id="realisations" className="lx-defile">
+      <section id="methode" className="lx-defile">
         <div className="lx-defile__colle">
           <div className="lx-defile__piste">
             <div className="lx-defile__panneau lx-defile__panneau--intro">
               <h2 className="lx-h2">À quoi ressemblera votre site.</h2>
-              <p className="lx-lead">Du premier échange à la mise en ligne, puis au quotidien. L’exemple d’un cabinet fictif en droit immobilier.</p>
+              <p className="lx-lead">Du premier échange à la mise en ligne, puis au quotidien.</p>
               <p className="lx-defile__indice">Faites défiler <span aria-hidden>→</span></p>
             </div>
             {DEFILE.map(({ titre, texte, points }, i) => (
@@ -389,30 +381,6 @@ export default function HomePage() {
             <p>La compétence se prouve au cabinet. La confiance commence en ligne.</p>
             <footer>Avant de prendre rendez-vous, vos futurs clients lisent ce que vous dites de votre cabinet. Faites en sorte qu&apos;ils aient envie d&apos;aller plus loin.</footer>
           </blockquote>
-        </div>
-      </section>
-
-      {/* ══ Méthode ════════════════════════════════════════ */}
-      <section id="methode" className="lx-methode">
-        <div className="lx-wrap lx-methode__grille">
-          <div className="lx-methode__photo lx-reveal-image">
-            <Image src={photoStylo} alt="Stylo plume posé sur une lettre manuscrite" fill sizes="(min-width: 1024px) 40vw, 100vw" placeholder="blur" />
-          </div>
-          <div>
-            <h2 className="lx-h2 lx-reveal">Quatre étapes, une heure de votre temps.</h2>
-            <p className="lx-lead lx-reveal">Un seul interlocuteur du premier appel à la mise en ligne. Vous validez chaque étape avant que nous passions à la suivante.</p>
-            <ol className="lx-etapes">
-              {ETAPES.map(({ titre, texte }, i) => (
-                <li key={titre}>
-                  <span className="lx-etapes__num" aria-hidden>{i + 1}</span>
-                  <div>
-                    <h3>{titre}</h3>
-                    <p>{texte}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
         </div>
       </section>
 

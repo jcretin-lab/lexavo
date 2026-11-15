@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 
 // Tous les effets de la landing, en un seul composant sans rendu :
 // - navigation opaque dès qu'on a défilé (html[data-scrolled])
-// - apparition unique des éléments .lx-reveal / .lx-reveal-image / .lx-etapes li
+// - apparition unique des éléments .lx-reveal / .lx-reveal-image
 // - parallaxe des images [data-parallax]
 // - défilement horizontal de la section « À quoi ressemblera votre site »
 export function LandingEffets() {
@@ -24,7 +24,7 @@ export function LandingEffets() {
       },
       { threshold: 0.15, rootMargin: '0px 0px -8% 0px' },
     )
-    document.querySelectorAll('.lx-reveal, .lx-reveal-image, .lx-etapes li').forEach((el) => apparition.observe(el))
+    document.querySelectorAll('.lx-reveal, .lx-reveal-image').forEach((el) => apparition.observe(el))
 
     // Défilement horizontal (« À quoi ressemblera votre site ») :
     // sur grand écran, la hauteur de la section = longueur de la piste ; le défilement vertical la fait glisser.

@@ -567,27 +567,6 @@ html[data-scrolled='true'] .lx-nav,
 }
 .lx-bandeau blockquote footer { color: rgba(255, 255, 255, 0.75); font-size: 1rem; max-width: 32rem; }
 
-/* ─── Méthode ────────────────────────────────────────────────── */
-.lx-methode { padding: 8rem 0; }
-.lx-methode__grille { display: grid; gap: 3.5rem; }
-@media (min-width: 1024px) { .lx-methode__grille { grid-template-columns: 0.9fr 1.1fr; gap: 6rem; align-items: start; } }
-.lx-methode__photo { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 2px; }
-@media (min-width: 1024px) { .lx-methode__photo { position: sticky; top: 7rem; } }
-.lx-methode__photo img { object-fit: cover; }
-.lx-etapes { list-style: none; padding: 0; margin: 3rem 0 0; counter-reset: etape; }
-.lx-etapes li { display: grid; grid-template-columns: 4.5rem 1fr; gap: 1rem; padding: 2rem 0; position: relative; }
-.lx-etapes li::before {
-  content: ''; position: absolute; top: 0; left: 0; height: 1px; width: 100%; background: var(--pierre);
-}
-.lx-etapes li::after {
-  content: ''; position: absolute; top: 0; left: 0; height: 1px; width: 0; background: var(--laiton);
-  transition: width 1.2s var(--ease) 0.2s;
-}
-.lx-etapes li.is-visible::after { width: 100%; }
-.lx-etapes__num { font-family: var(--font-instrument-serif), Georgia, serif; font-size: 3rem; line-height: 0.9; color: var(--laiton); }
-.lx-etapes h3 { margin: 0 0 0.5rem; font-size: 1.1875rem; font-weight: 600; color: var(--robe); }
-.lx-etapes p { margin: 0; color: var(--gris); font-size: 1rem; }
-
 /* ─── Déontologie ────────────────────────────────────────────── */
 .lx-deonto { background: var(--robe); color: var(--blanc); }
 .lx-deonto__grille { display: grid; }

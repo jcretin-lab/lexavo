@@ -17,7 +17,7 @@ export function LandingFooter() {
           <div>
             <h3>Le studio</h3>
             <ul>
-              <li><Link href="/#realisations" className="lx-lien">Réalisations</Link></li>
+              <li><Link href="/#methode" className="lx-lien">Méthode</Link></li>
               <li><Link href="/#forfaits" className="lx-lien">Forfaits</Link></li>
               <li><Link href="/contact" className="lx-lien">Demander un devis</Link></li>
               <li><a href={URL_VEILLE} className="lx-lien">La veille juridique</a></li>
