@@ -1,6 +1,6 @@
 // Encart de la page d'accueil qui renvoie vers la newsletter « Veille Lexavo » (site veille.lexavo.fr).
 
-export const URL_VEILLE = 'https://veille.lexavo.fr/baux-copropriete'
+export const URL_VEILLE = 'https://veille.lexavo.fr/'
 
 export function VeilleEncart() {
   return (
