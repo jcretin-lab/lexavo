@@ -92,7 +92,7 @@ export default function CGVPage() {
         <section className="mb-10">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">9. Après la mise en ligne</h2>
           <p className="text-gray-700 leading-relaxed">
-            La prestation ne comporte aucun abonnement. Le site est livré avec un espace d&apos;administration permettant au Client de modifier lui-même ses contenus. Les éventuels frais d&apos;hébergement et de nom de domaine sont précisés au devis. Sur simple demande, LEXAVO remet au Client les fichiers du site et les accès au nom de domaine dans un délai de 15 jours. Toute intervention ultérieure demandée par le Client fait l&apos;objet d&apos;un devis séparé.
+            La prestation ne comporte aucun abonnement. Le site est livré avec un espace d&apos;administration permettant au Client de modifier lui-même ses contenus. L&apos;hébergement et le nom de domaine sont souscrits au nom du Client. Sur simple demande, LEXAVO remet au Client les fichiers du site et les accès au nom de domaine dans un délai de 15 jours. Toute intervention ultérieure demandée par le Client fait l&apos;objet d&apos;un devis séparé.
           </p>
         </section>
 
