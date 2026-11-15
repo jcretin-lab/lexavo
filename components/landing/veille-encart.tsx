@@ -9,8 +9,8 @@ export function VeilleEncart() {
         <div>
           <h2 id="veille-titre">Recevez aussi notre veille juridique, gratuitement.</h2>
           <p>
-            Tous les quinze jours, les arrêts récents de la Cour de cassation en baux d&apos;habitation et copropriété : un court résumé, l&apos;extrait
-            officiel et le lien vers la décision.
+            Tous les quinze jours, les arrêts récents de la Cour de cassation selon votre domaine : un court résumé, l&apos;extrait officiel et le
+            lien vers la décision.
           </p>
         </div>
         <a href={URL_VEILLE} rel="noopener" className="lx-btn lx-btn--ligne">
