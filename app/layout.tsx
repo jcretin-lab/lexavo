@@ -26,11 +26,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.lexavo.fr'),
   title: {
-    default: 'Création de site internet pour avocat | Lexavo',
+    default: 'Site internet pour avocat, sans abonnement | Lexavo',
     template: '%s | Lexavo',
   },
-  description: "Lexavo conçoit et met en ligne le site de votre cabinet d'avocats, dans le respect des règles de communication de la profession. Devis sous 48 h.",
-  keywords: ['création site internet avocat', 'site avocat', 'site cabinet avocat', 'agence web avocat', 'refonte site avocat', 'référencement avocat', 'déontologie communication avocat'],
+  description: "Création du site de votre cabinet d'avocat, sans abonnement : module pour modifier vos textes, SEO et GEO pour Google et les IA. Dès 890 €, devis sous 48 h.",
+  keywords: ['création site internet avocat', 'site avocat', 'site cabinet avocat', 'agence web avocat', 'refonte site avocat', 'référencement avocat', 'site avocat sans abonnement', 'GEO avocat'],
   authors: [{ name: 'Lexavo' }],
   creator: 'Lexavo',
   openGraph: {
@@ -38,13 +38,13 @@ export const metadata: Metadata = {
     locale: 'fr_FR',
     url: 'https://www.lexavo.fr',
     siteName: 'Lexavo',
-    title: 'Création de site internet pour avocat | Lexavo',
-    description: "Lexavo conçoit et met en ligne le site de votre cabinet d'avocats, dans le respect des règles de communication de la profession. Devis sous 48 h.",
+    title: 'Le site de votre cabinet, sans abonnement | Lexavo',
+    description: "Création du site de votre cabinet d'avocat, sans abonnement : module pour modifier vos textes, SEO et GEO pour Google et les IA. Dès 890 €, devis sous 48 h.",
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Création de site internet pour avocat | Lexavo',
-    description: "Lexavo conçoit et met en ligne le site de votre cabinet d'avocats, dans le respect des règles de communication de la profession. Devis sous 48 h.",
+    title: 'Le site de votre cabinet, sans abonnement | Lexavo',
+    description: "Création du site de votre cabinet d'avocat, sans abonnement : module pour modifier vos textes, SEO et GEO pour Google et les IA. Dès 890 €, devis sous 48 h.",
   },
   robots: {
     index: true,
