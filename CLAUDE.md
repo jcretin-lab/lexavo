@@ -25,7 +25,7 @@ les routes `/api/veille/*` de ce projet.
 
 ## Arborescence
 
-- `app/page.tsx` — landing (hero, pourquoi, méthode, déontologie, forfaits,
+- `app/page.tsx` — landing (hero, constat, méthode, vidéo, forfaits,
   FAQ, encart veille, CTA).
 - `app/contact/` — formulaire de demande de devis (`?forfait=<id>`
   présélectionne un forfait) → `app/api/contact/route.ts` (Resend vers

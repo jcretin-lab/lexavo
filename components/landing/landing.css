@@ -329,7 +329,6 @@ html[data-scrolled='true'] .lx-nav,
 .lx-reveal-image.is-visible::after { transform: scaleY(0); }
 .lx-reveal-image img { transform: scale(1.12); transition: transform 2s var(--ease-out); }
 .lx-reveal-image.is-visible img { transform: none; }
-.lx-deonto { --voile: var(--robe); }
 
 /* ─── Constat ────────────────────────────────────────────────── */
 .lx-constat { padding: 8rem 0 6rem; }
@@ -582,19 +581,6 @@ html[data-scrolled='true'] .lx-nav,
 .lx-video__bouton:hover { border-color: var(--blanc); }
 .lx-video__bouton:focus-visible { outline: 2px solid var(--laiton-clair); outline-offset: 3px; }
 .lx-video__bouton svg { width: 14px; height: 14px; fill: currentColor; }
-
-/* ─── Déontologie ────────────────────────────────────────────── */
-.lx-deonto { background: var(--robe); color: var(--blanc); }
-.lx-deonto__grille { display: grid; }
-@media (min-width: 1024px) { .lx-deonto__grille { grid-template-columns: 1fr 1fr; min-height: 90vh; } }
-.lx-deonto__photo { position: relative; min-height: 26rem; }
-.lx-deonto__photo img { object-fit: cover; }
-.lx-deonto__texte { padding: 5rem 1.5rem; display: flex; flex-direction: column; justify-content: center; }
-@media (min-width: 768px) { .lx-deonto__texte { padding: 6rem 4rem; } }
-.lx-deonto .lx-lead { color: rgba(255, 255, 255, 0.72); }
-.lx-deonto ul { list-style: none; padding: 0; margin: 2.5rem 0 0; }
-.lx-deonto li { display: flex; gap: 1rem; padding: 0.875rem 0; border-top: 1px solid rgba(255, 255, 255, 0.12); font-size: 1rem; color: rgba(255, 255, 255, 0.88); }
-.lx-deonto li::before { content: ''; flex: none; width: 1.25rem; height: 1px; background: var(--laiton-clair); margin-top: 0.8em; }
 
 /* ─── Forfaits ───────────────────────────────────────────────── */
 .lx-forfaits { padding: 8rem 0; background: var(--pierre-clair); }

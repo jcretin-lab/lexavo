@@ -16,7 +16,6 @@ import gravureJustice from '@/public/photos/justitia.webp'
 import photoFacade from '@/public/photos/facade-haussmann.jpg'
 import photoBibliotheque from '@/public/photos/bibliotheque.jpg'
 import photoAvocat from '@/public/photos/avocat-bureau.jpg'
-import photoPalais from '@/public/photos/palais-justice.jpg'
 import photoRue from '@/public/photos/rue-paris.jpg'
 
 /* ── Contenus ────────────────────────────────────────── */
@@ -87,15 +86,6 @@ const ARBORESCENCE: { page: string; inclus: boolean; sous?: string[] }[] = [
   { page: 'Blog', inclus: true },
   { page: 'Contact et rendez-vous', inclus: true },
   { page: 'Espace documents', inclus: false },
-]
-
-const DEONTOLOGIE = [
-  'Un nom de domaine construit sur votre nom ou celui du cabinet',
-  'Les mentions obligatoires : barreau, structure d’exercice, médiateur',
-  'Des spécialisations affichées seulement si elles sont certifiées',
-  'Une information sur les honoraires, sans promesse de résultat',
-  'Aucune publicité tierce sur votre site',
-  'Un formulaire conforme au RGPD et au secret professionnel',
 ]
 
 const FAQ_LANDING = [
@@ -373,24 +363,6 @@ export default function HomePage() {
 
       {/* ══ Vidéo d'ambiance (rendez-vous avocate / client, de jour, générée par IA) + citation ══ */}
       <VideoCitation src="/videos/rendez-vous.mp4" poster="/videos/rendez-vous.jpg" />
-
-      {/* ══ Déontologie ═══════════════════════════════════ */}
-      <section id="deontologie" className="lx-deonto">
-        <div className="lx-deonto__grille">
-          <div className="lx-deonto__photo lx-reveal-image">
-            <Image src={photoPalais} alt="Galerie à colonnes du Palais de justice de Bruxelles" fill sizes="(min-width: 1024px) 50vw, 100vw" placeholder="blur" />
-          </div>
-          <div className="lx-deonto__texte">
-            <h2 className="lx-h2 lx-reveal">Pensé pour la profession, pas adapté après coup.</h2>
-            <p className="lx-lead lx-reveal">
-              Nous travaillons pour les avocats et publions une veille de jurisprudence. Les règles de communication de la profession sont prises en compte dès la maquette.
-            </p>
-            <ul>
-              {DEONTOLOGIE.map((item) => <li key={item} className="lx-reveal">{item}</li>)}
-            </ul>
-          </div>
-        </div>
-      </section>
 
       {/* ══ Forfaits ═══════════════════════════════════════ */}
       <section id="forfaits" className="lx-forfaits">
