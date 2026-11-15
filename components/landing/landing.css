@@ -635,13 +635,61 @@ html[data-scrolled='true'] .lx-nav,
 .lx-faq__reponse > div { overflow: hidden; }
 .lx-faq__reponse p { margin: 0; padding: 0 2.5rem 1.75rem 0; color: var(--gris); font-size: 1rem; }
 
-/* ─── Veille ─────────────────────────────────────────────────── */
-.lx-veille { background: var(--pierre); padding: 4rem 0; }
-.lx-veille__inner { display: grid; gap: 1.75rem; align-items: center; }
-@media (min-width: 900px) { .lx-veille__inner { grid-template-columns: 1fr auto; gap: 4rem; } }
-.lx-veille h2 { font-family: var(--font-instrument-serif), Georgia, serif; font-weight: 400; font-size: clamp(1.5rem, 2.6vw, 2.125rem); line-height: 1.1; margin: 0 0 0.75rem; color: var(--robe); }
-.lx-veille p { margin: 0; color: var(--gris); max-width: 42rem; font-size: 1rem; }
-.lx-partenaire + .lx-veille { border-top: 1px solid rgba(20, 33, 61, 0.12); }
+/* ─── Compléments : vidéo/photo et veille, sous les tarifs ─────── */
+.lx-complements { background: var(--pierre); padding: 6rem 0; }
+.lx-complements__titre { font-family: var(--font-instrument-serif), Georgia, serif; font-weight: 400; font-size: clamp(1.75rem, 3vw, 2.5rem); line-height: 1.1; color: var(--robe); margin: 0 0 2.5rem; }
+.lx-complements__grille { display: grid; gap: 1.5rem; }
+@media (min-width: 900px) { .lx-complements__grille { grid-template-columns: 1fr 1fr; } }
+.lx-compl { display: flex; flex-direction: column; overflow: hidden; }
+.lx-compl--video { background: var(--robe); color: var(--blanc); }
+.lx-compl--veille { background: var(--pierre-clair); }
+.lx-compl__visuel { position: relative; aspect-ratio: 16 / 10; overflow: hidden; }
+.lx-compl__corps { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; padding: 2rem; }
+@media (min-width: 768px) { .lx-compl__corps { padding: 2.5rem; } }
+.lx-compl h3 { margin: 0; font-family: var(--font-instrument-serif), Georgia, serif; font-weight: 400; font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.12; color: var(--robe); }
+.lx-compl p { margin: 0 0 0.5rem; font-size: 1rem; color: var(--gris); max-width: 34rem; }
+.lx-compl .lx-btn { margin-top: auto; }
+.lx-compl--video h3 { color: var(--blanc); }
+.lx-compl--video p { color: rgba(255, 255, 255, 0.74); }
+
+/* Viseur de caméra */
+.lx-viseur img { object-fit: cover; transform: scale(1.04); transition: transform 14s linear; }
+.lx-complements.is-actif .lx-viseur img { transform: scale(1.16); }
+.lx-viseur::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20, 33, 61, 0.35) 0%, transparent 30%, transparent 75%, rgba(20, 33, 61, 0.45) 100%); }
+.lx-viseur__tiers { position: absolute; inset: 0; z-index: 1; opacity: 0.22;
+  background:
+    linear-gradient(90deg, transparent calc(33.33% - 0.5px), #fff calc(33.33% - 0.5px), #fff calc(33.33% + 0.5px), transparent calc(33.33% + 0.5px), transparent calc(66.66% - 0.5px), #fff calc(66.66% - 0.5px), #fff calc(66.66% + 0.5px), transparent calc(66.66% + 0.5px)),
+    linear-gradient(180deg, transparent calc(33.33% - 0.5px), #fff calc(33.33% - 0.5px), #fff calc(33.33% + 0.5px), transparent calc(33.33% + 0.5px), transparent calc(66.66% - 0.5px), #fff calc(66.66% - 0.5px), #fff calc(66.66% + 0.5px), transparent calc(66.66% + 0.5px)); }
+.lx-viseur__coin { --m: 0.5rem; position: absolute; z-index: 2; width: 1.75rem; height: 1.75rem; border: 0 solid var(--laiton-clair); opacity: 0.4;
+  transition: top 1s var(--ease-out) 0.3s, right 1s var(--ease-out) 0.3s, bottom 1s var(--ease-out) 0.3s, left 1s var(--ease-out) 0.3s, opacity 1s ease 0.3s; }
+.lx-viseur__coin--hg { top: var(--m); left: var(--m); border-top-width: 2px; border-left-width: 2px; }
+.lx-viseur__coin--hd { top: var(--m); right: var(--m); border-top-width: 2px; border-right-width: 2px; }
+.lx-viseur__coin--bg { bottom: var(--m); left: var(--m); border-bottom-width: 2px; border-left-width: 2px; }
+.lx-viseur__coin--bd { bottom: var(--m); right: var(--m); border-bottom-width: 2px; border-right-width: 2px; }
+.lx-complements.is-actif .lx-viseur__coin { --m: 1.5rem; opacity: 1; }
+.lx-viseur__rec, .lx-viseur__tc { position: absolute; z-index: 3; top: 1.6rem; font-size: 0.75rem; letter-spacing: 0.08em; color: var(--blanc); text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5); }
+.lx-viseur__rec { left: 3.75rem; display: flex; align-items: center; gap: 0.4rem; font-weight: 600; }
+.lx-viseur__rec i { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: #D4442E; }
+.lx-complements.is-actif .lx-viseur__rec i { animation: lx-rec 1.2s steps(1, end) infinite; }
+@keyframes lx-rec { 50% { opacity: 0.15; } }
+.lx-viseur__tc { right: 3.75rem; font-family: var(--font-jetbrains-mono), ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+
+/* Fiches de veille qui défilent */
+.lx-fiches { -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 78%, transparent 100%); mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 78%, transparent 100%);
+  background-image: radial-gradient(rgba(20, 33, 61, 0.09) 1px, transparent 1px); background-size: 18px 18px; }
+.lx-fiche { --pos: 0; position: absolute; left: 50%; top: 50%; width: min(82%, 26rem); display: flex; flex-direction: column; gap: 0.3rem;
+  padding: 1rem 1.25rem; background: var(--blanc); border-left: 3px solid var(--laiton); box-shadow: 0 10px 30px -18px rgba(20, 33, 61, 0.45);
+  transform: translate(-50%, calc(-50% + var(--pos) * 112%)) scale(calc(1 - min(1, max(var(--pos), -1 * var(--pos))) * 0.08));
+  opacity: calc(1 - max(var(--pos), -1 * var(--pos)) * 0.55);
+  transition: transform 0.7s var(--ease-out), opacity 0.7s var(--ease-out); }
+.lx-fiche__nom { font-family: var(--font-instrument-serif), Georgia, serif; font-size: 1.2rem; line-height: 1.2; color: var(--robe); }
+.lx-fiche__detail { font-size: 0.8125rem; color: var(--gris); }
+.lx-fiche.is-courante { border-left-color: var(--laiton-fonce); }
+
+@media (prefers-reduced-motion: reduce) {
+  .lx-viseur img, .lx-viseur__coin, .lx-fiche { transition: none; }
+  .lx-viseur__coin { --m: 1.5rem; opacity: 1; }
+}
 
 /* ─── Appel final ────────────────────────────────────────────── */
 .lx-final { position: relative; min-height: 80vh; display: flex; align-items: center; color: var(--blanc); overflow: hidden; }

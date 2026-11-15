@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import './landing.css'
 import { EMAIL_CONTACT } from '@/lib/offre'
-import { URL_VEILLE } from './veille-encart'
+import { URL_VEILLE } from '@/lib/offre'
 
 export function LandingFooter() {
   return (

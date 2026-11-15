@@ -65,4 +65,6 @@ export const FORFAITS: Forfait[] = [
 
 export const MENTION_TVA = 'TVA non applicable, art. 293 B du CGI.'
 
+export const URL_VEILLE = 'https://veille.lexavo.fr/'
+
 export const EMAIL_CONTACT = 'contact@lexavo.fr'

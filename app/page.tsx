@@ -5,8 +5,7 @@ import { LandingNav } from '@/components/landing/landing-nav'
 import { LandingFooter } from '@/components/landing/landing-footer'
 import { LandingEffets } from '@/components/landing/landing-effets'
 import { FaqAccordion } from '@/components/landing/faq-accordion'
-import { VeilleEncart } from '@/components/landing/veille-encart'
-import { PartenaireEncart } from '@/components/landing/partenaire-encart'
+import { Complements } from '@/components/landing/complements'
 import { TitreFrappe } from '@/components/landing/titre-frappe'
 import { Sceau } from '@/components/landing/sceau'
 import { VideoCitation } from '@/components/landing/video-citation'
@@ -388,6 +387,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ══ Compléments : vidéo/photo (BipBip Productions) et veille ══ */}
+      <Complements />
+
       {/* ══ FAQ ════════════════════════════════════════════ */}
       <section id="questions" className="lx-faq">
         <div className="lx-wrap lx-faq__grille">
@@ -401,8 +403,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      <PartenaireEncart />
-      <VeilleEncart />
 
       {/* ══ Appel final ════════════════════════════════════ */}
       <section className="lx-final">
