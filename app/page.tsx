@@ -371,8 +371,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ══ Vidéo d'ambiance (bureau d'avocat de nuit, générée par IA) + citation ══ */}
-      <VideoCitation src="/videos/bureau-nuit.mp4" poster="/videos/bureau-nuit.jpg" />
+      {/* ══ Vidéo d'ambiance (rendez-vous avocate / client, de jour, générée par IA) + citation ══ */}
+      <VideoCitation src="/videos/rendez-vous.mp4" poster="/videos/rendez-vous.jpg" />
 
       {/* ══ Déontologie ═══════════════════════════════════ */}
       <section id="deontologie" className="lx-deonto">

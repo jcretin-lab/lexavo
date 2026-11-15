@@ -556,13 +556,22 @@ html[data-scrolled='true'] .lx-nav,
 .lx-demo__creneaux span.is-choisi { background: var(--robe); color: var(--blanc); border-color: var(--robe); }
 
 /* ─── Vidéo d'ambiance + citation ───────────────────────────── */
-.lx-video { position: relative; height: clamp(32rem, 88vh, 52rem); overflow: hidden; color: var(--blanc); display: flex; align-items: center; background: var(--robe); }
+.lx-video { position: relative; height: clamp(32rem, 88vh, 52rem); overflow: hidden; color: var(--blanc); display: flex; align-items: flex-end; background: var(--robe); }
 .lx-video__media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.lx-video__voile { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20, 33, 61, 0.86) 0%, rgba(20, 33, 61, 0.5) 55%, rgba(20, 33, 61, 0.25) 100%); }
-@media (max-width: 767px) { .lx-video__voile { background: rgba(20, 33, 61, 0.62); } }
-.lx-video__contenu { position: relative; z-index: 1; }
+/* Mobile : la vidéo entière en 16:9 (les deux visages), la citation dessous sur fond bleu nuit */
+@media (max-width: 767px) {
+  .lx-video { height: auto; display: block; }
+  .lx-video__media { position: relative; inset: auto; aspect-ratio: 16 / 9; height: auto; }
+  .lx-video__voile { display: none; }
+  .lx-video__contenu { padding-top: 2rem; padding-bottom: 3.5rem; }
+  .lx-video__bouton { top: calc(100vw * 9 / 16 - 3.5rem); bottom: auto; right: 0.75rem; }
+}
+/* dégradé par le bas seulement : les visages restent dans la lumière du jour */
+.lx-video__voile { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(20, 33, 61, 0.9) 0%, rgba(20, 33, 61, 0.55) 28%, rgba(20, 33, 61, 0) 55%); }
+@media (max-width: 767px) { .lx-video__voile { background: linear-gradient(0deg, rgba(20, 33, 61, 0.92) 0%, rgba(20, 33, 61, 0.6) 40%, rgba(20, 33, 61, 0) 70%); } }
+.lx-video__contenu { position: relative; z-index: 1; padding-bottom: clamp(3rem, 8vh, 5rem); }
 .lx-video blockquote { margin: 0; }
-.lx-video blockquote p { margin: 0; font-family: var(--font-instrument-serif), Georgia, serif; font-size: clamp(2rem, 5vw, 4.25rem); line-height: 1.08; letter-spacing: -0.015em; max-width: 18ch; }
+.lx-video blockquote p { margin: 0; font-family: var(--font-instrument-serif), Georgia, serif; font-size: clamp(1.75rem, 3.6vw, 3.25rem); line-height: 1.1; letter-spacing: -0.015em; max-width: 26ch; text-shadow: 0 2px 24px rgba(20, 33, 61, 0.45); }
 .lx-video__filet { display: block; width: 4rem; height: 1px; background: var(--laiton-clair); margin-top: 2rem; }
 .lx-video__bouton {
   position: absolute; z-index: 2; right: clamp(1rem, 4vw, 2.5rem); bottom: clamp(1rem, 4vw, 2.5rem);
