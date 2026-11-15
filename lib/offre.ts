@@ -24,7 +24,7 @@ export const FORFAITS: Forfait[] = [
     inclus: [
       'Jusqu’à 3 pages',
       'Design adapté et travaillé avec vous',
-      'Référencement SEO et GEO de base (balises, données structurées, sitemap)',
+      'Formulaire de contact inclus',
       'Module : édition des textes',
       'Hébergement et nom de domaine à votre nom',
     ],
@@ -39,6 +39,7 @@ export const FORFAITS: Forfait[] = [
     inclus: [
       'Jusqu’à 10 pages, une page par domaine d’intervention',
       'Design adapté et travaillé avec vous',
+      'Formulaire de contact inclus',
       'Référencement SEO et GEO travaillé page par page, et référencement local',
       'Module : édition des textes + blog + SEO/GEO',
       'Hébergement et nom de domaine à votre nom',
