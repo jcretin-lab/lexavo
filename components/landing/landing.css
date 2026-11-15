@@ -555,17 +555,75 @@ html[data-scrolled='true'] .lx-nav,
 .lx-demo__creneaux span { text-align: center; font-size: 0.625rem; padding: 0.3rem 0; border: 1px solid var(--pierre); background: var(--blanc); border-radius: 2px; }
 .lx-demo__creneaux span.is-choisi { background: var(--robe); color: var(--blanc); border-color: var(--robe); }
 
-/* ─── Bandeau photo en parallaxe ─────────────────────────────── */
-.lx-bandeau { position: relative; height: 88vh; min-height: 32rem; overflow: hidden; color: var(--blanc); display: flex; align-items: center; }
-.lx-bandeau__image { position: absolute; inset: -15% 0; will-change: transform; }
-.lx-bandeau__image img { object-fit: cover; }
-.lx-bandeau::after { content: ''; position: absolute; inset: 0; background: rgba(20, 33, 61, 0.55); }
-.lx-bandeau blockquote { position: relative; z-index: 1; margin: 0; }
-.lx-bandeau blockquote p {
-  font-family: var(--font-instrument-serif), Georgia, serif;
-  font-size: clamp(2rem, 5vw, 4.25rem); line-height: 1.06; letter-spacing: -0.02em; max-width: 20ch; margin: 0 0 1.5rem;
+/* ─── « Une même phrase, quatre façons de la dire » ───────────── */
+.lx-styles { background: var(--blanc); padding: 7rem 0 0; }
+.lx-styles__entete { display: grid; gap: 2rem; margin-bottom: 2.5rem; }
+@media (min-width: 1024px) { .lx-styles__entete { grid-template-columns: 1fr auto; align-items: end; gap: 4rem; } }
+.lx-styles__titre {
+  font-family: var(--font-instrument-serif), Georgia, serif; font-weight: 400;
+  font-size: clamp(2rem, 3.8vw, 3.25rem); line-height: 1.08; letter-spacing: -0.015em; margin: 0 0 0.75rem; color: var(--robe); max-width: 20ch;
 }
-.lx-bandeau blockquote footer { color: rgba(255, 255, 255, 0.75); font-size: 1rem; max-width: 32rem; }
+.lx-styles__chapo { margin: 0; color: var(--gris); max-width: 34rem; }
+.lx-styles__commandes { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.lx-styles__choix { display: flex; flex-wrap: wrap; gap: 0.25rem; padding: 0.25rem; border: 1px solid var(--pierre); border-radius: 999px; }
+.lx-styles__choix button {
+  position: relative; overflow: hidden; min-height: 44px; padding: 0 1.1rem; border: 0; border-radius: 999px;
+  background: transparent; color: var(--gris); font: inherit; font-size: 0.9375rem; font-weight: 500; cursor: pointer;
+  transition: background-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+.lx-styles__choix button:hover { color: var(--robe); }
+.lx-styles__choix button.is-actif { background: var(--robe); color: var(--blanc); }
+.lx-styles__choix button:focus-visible, .lx-styles__lecture:focus-visible { outline: 2px solid var(--laiton); outline-offset: 2px; }
+/* fine jauge dorée sous le style courant : temps restant avant le suivant */
+.lx-styles__minuteur { position: absolute; left: 1.1rem; right: 1.1rem; bottom: 8px; height: 1px; background: var(--laiton-clair); transform-origin: left; animation: lx-minuteur linear forwards; }
+@keyframes lx-minuteur { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.lx-styles__lecture { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--pierre); background: transparent; color: var(--robe); display: grid; place-items: center; cursor: pointer; }
+.lx-styles__lecture svg { width: 14px; height: 14px; fill: currentColor; }
+@media (max-width: 640px) {
+  .lx-styles__commandes { flex-wrap: nowrap; align-items: stretch; }
+  .lx-styles__choix { flex: 1; display: grid; grid-template-columns: 1fr 1fr; border-radius: 14px; }
+  .lx-styles__choix button { border-radius: 10px; padding: 0 0.5rem; }
+  .lx-styles__lecture { align-self: center; flex: none; }
+}
+
+.lx-styles__scene { position: relative; height: clamp(30rem, 78vh, 46rem); overflow: hidden; }
+.lx-style {
+  position: absolute; inset: 0; display: flex; align-items: center;
+  opacity: 0; visibility: hidden; transform: scale(1.015);
+  transition: opacity 0.8s var(--ease), transform 1.1s var(--ease), visibility 0s linear 0.8s;
+}
+.lx-style.is-actif { opacity: 1; visibility: visible; transform: none; transition: opacity 0.8s var(--ease), transform 1.1s var(--ease), visibility 0s; }
+.lx-style blockquote { position: relative; z-index: 1; margin: 0; width: 100%; max-width: 76rem; margin-inline: auto; padding: 0 1.5rem; }
+@media (min-width: 768px) { .lx-style blockquote { padding: 0 2.5rem; } }
+.lx-style p { margin: 0; }
+
+/* 1. Classique */
+.lx-style--classique { color: var(--blanc); }
+.lx-style--classique img { object-fit: cover; }
+.lx-style--classique::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20, 33, 61, 0.88), rgba(20, 33, 61, 0.45)); }
+.lx-style--classique p { font-family: var(--font-instrument-serif), Georgia, serif; font-size: clamp(2rem, 5vw, 4.25rem); line-height: 1.08; letter-spacing: -0.015em; max-width: 18ch; }
+.lx-style__filet { display: block; width: 4rem; height: 1px; background: var(--laiton-clair); margin-top: 2rem; }
+
+/* 2. Suisse */
+.lx-style--suisse { background: #FFFFFF; color: #0A0A0A; }
+.lx-style__grille { position: absolute; inset: 0; background-image: linear-gradient(90deg, rgba(10, 10, 10, 0.06) 1px, transparent 1px); background-size: calc(100% / 12) 100%; }
+.lx-style__carre { position: absolute; top: 12%; right: 10%; width: clamp(3rem, 7vw, 6rem); aspect-ratio: 1; background: var(--laiton); }
+.lx-style--suisse p { font-family: var(--font-inter), system-ui, sans-serif; font-weight: 700; font-size: clamp(2rem, 5.4vw, 4.75rem); line-height: 1; letter-spacing: -0.045em; max-width: 14ch; }
+.lx-style--suisse p span { display: block; }
+.lx-style--suisse p span + span { margin-top: 0.35em; color: #6B6B6B; }
+
+/* 3. Éditorial */
+.lx-style--editorial { background: #F6F3EC; color: var(--encre); }
+.lx-style--editorial blockquote { display: grid; justify-items: center; text-align: center; }
+.lx-style__guillemet { font-family: var(--font-instrument-serif), Georgia, serif; font-size: clamp(6rem, 14vw, 11rem); line-height: 0.6; color: var(--laiton); height: 0.5em; }
+.lx-style--editorial p { font-family: var(--font-instrument-serif), Georgia, serif; font-style: italic; font-size: clamp(1.875rem, 4.2vw, 3.5rem); line-height: 1.15; max-width: 22ch; }
+.lx-style--editorial footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(27, 33, 48, 0.25); font-size: 0.875rem; letter-spacing: 0.02em; color: var(--gris); }
+
+/* 4. Contemporain */
+.lx-style--contemporain { background: #0B0D12; color: #FFFFFF; }
+.lx-style__petit { font-family: var(--font-inter), system-ui, sans-serif; font-size: clamp(1rem, 1.6vw, 1.25rem); color: rgba(255, 255, 255, 0.6); margin-bottom: 1.25rem !important; }
+.lx-style__geant { font-family: var(--font-inter), system-ui, sans-serif; font-weight: 800; font-size: clamp(2.75rem, 8.5vw, 8rem); line-height: 0.92; letter-spacing: -0.055em; max-width: 12ch; }
+.lx-style__geant em { font-style: normal; color: var(--laiton-clair); }
 
 /* ─── Déontologie ────────────────────────────────────────────── */
 .lx-deonto { background: var(--robe); color: var(--blanc); }
@@ -789,5 +847,5 @@ html[data-scrolled='true'] .lx-nav,
   .lx-reveal { opacity: 1; transform: none; }
   .lx-reveal-image::after { display: none; }
   .lx-reveal-image img { transform: none; }
-  .lx-bandeau__image, .lx-final__image { transform: none !important; }
+  .lx-final__image { transform: none !important; }
 }

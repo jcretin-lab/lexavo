@@ -8,6 +8,7 @@ import { FaqAccordion } from '@/components/landing/faq-accordion'
 import { VeilleEncart } from '@/components/landing/veille-encart'
 import { TitreFrappe } from '@/components/landing/titre-frappe'
 import { Sceau } from '@/components/landing/sceau'
+import { CitationStyles } from '@/components/landing/citation-styles'
 import { FORFAITS, MENTION_TVA } from '@/lib/offre'
 
 import photoHologramme from '@/public/photos/colonnes-hologramme.jpg'
@@ -371,18 +372,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ══ Bandeau photo ═════════════════════════════════ */}
-      <section className="lx-bandeau" aria-label="Citation">
-        <div className="lx-bandeau__image" data-parallax="0.18">
-          <Image src={photoBustes} alt="" fill sizes="100vw" placeholder="blur" />
-        </div>
-        <div className="lx-wrap">
-          <blockquote className="lx-reveal">
-            <p>La compétence se prouve au cabinet. La confiance commence en ligne.</p>
-            <footer>Avant de prendre rendez-vous, vos futurs clients lisent ce que vous dites de votre cabinet. Faites en sorte qu&apos;ils aient envie d&apos;aller plus loin.</footer>
-          </blockquote>
-        </div>
-      </section>
+      {/* ══ Une même phrase, quatre styles ═══════════════ */}
+      <CitationStyles photo={photoBustes} />
 
       {/* ══ Déontologie ═══════════════════════════════════ */}
       <section id="deontologie" className="lx-deonto">
