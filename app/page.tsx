@@ -57,8 +57,8 @@ const DEFILE = [
   },
   {
     titre: 'Une page pour chaque domaine.',
-    texte: "Divorce, licenciement, bail commercial : vos clients cherchent une réponse à leur problème. Chaque domaine d'intervention a sa page, rédigée pour être comprise et trouvée.",
-    points: ['Textes rédigés avec vous, sans jargon', 'Référencement local : ville et barreau'],
+    texte: "Divorce, licenciement, bail commercial : vos clients cherchent une réponse à leur problème. Chaque domaine d'intervention a sa page, construite pour être comprise et trouvée.",
+    points: ['Pages structurées pour Google et les IA', 'Référencement local : ville et barreau'],
   },
   {
     titre: 'Un contact sans friction.',

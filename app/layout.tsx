@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     default: 'Création de site internet pour avocat | Lexavo',
     template: '%s | Lexavo',
   },
-  description: "Lexavo conçoit, rédige et met en ligne le site de votre cabinet d'avocats, dans le respect des règles de communication de la profession. Devis sous 48 h.",
+  description: "Lexavo conçoit et met en ligne le site de votre cabinet d'avocats, dans le respect des règles de communication de la profession. Devis sous 48 h.",
   keywords: ['création site internet avocat', 'site avocat', 'site cabinet avocat', 'agence web avocat', 'refonte site avocat', 'référencement avocat', 'déontologie communication avocat'],
   authors: [{ name: 'Lexavo' }],
   creator: 'Lexavo',
@@ -39,12 +39,12 @@ export const metadata: Metadata = {
     url: 'https://www.lexavo.fr',
     siteName: 'Lexavo',
     title: 'Création de site internet pour avocat | Lexavo',
-    description: "Lexavo conçoit, rédige et met en ligne le site de votre cabinet d'avocats, dans le respect des règles de communication de la profession. Devis sous 48 h.",
+    description: "Lexavo conçoit et met en ligne le site de votre cabinet d'avocats, dans le respect des règles de communication de la profession. Devis sous 48 h.",
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Création de site internet pour avocat | Lexavo',
-    description: "Lexavo conçoit, rédige et met en ligne le site de votre cabinet d'avocats, dans le respect des règles de communication de la profession. Devis sous 48 h.",
+    description: "Lexavo conçoit et met en ligne le site de votre cabinet d'avocats, dans le respect des règles de communication de la profession. Devis sous 48 h.",
   },
   robots: {
     index: true,
