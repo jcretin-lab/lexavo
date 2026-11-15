@@ -103,7 +103,7 @@ const FAQ_LANDING = [
   },
   {
     q: 'Pourrai-je modifier le site moi-même ?',
-    r: "Oui. Votre site est livré avec un espace d'administration simple : vous modifiez vos textes, publiez des articles de blog et réglez le référencement SEO et GEO de chaque page, quand vous le souhaitez.",
+    r: "Oui. Votre site est livré avec un espace d'administration simple : vous modifiez vos textes et, avec le forfait Cabinet, publiez des articles de blog et réglez le référencement SEO et GEO de chaque page, quand vous le souhaitez.",
   },
   {
     q: 'J’ai déjà un site. Pouvez-vous le refaire ?',
