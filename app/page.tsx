@@ -330,7 +330,8 @@ export default function HomePage() {
             ]}
           />
           <p className="lx-hero__texte">
-            Nous créons le site de votre cabinet. Ensuite, c&apos;est vous qui le faites vivre&nbsp;: textes, blog, référencement SEO et GEO, en quelques clics.
+            Nous créons le site de votre cabinet. Ensuite,<br />{' '}
+            c&apos;est vous qui le faites vivre&nbsp;: textes, blog, référencement SEO et GEO, en&nbsp;quelques&nbsp;clics.
           </p>
         </div>
 

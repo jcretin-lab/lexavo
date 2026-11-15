@@ -231,7 +231,7 @@ html[data-scrolled='true'] .lx-nav,
 .lx-hero__contenu { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; padding-top: clamp(6.5rem, 17vh, 10rem); padding-bottom: 0; text-align: center; }
 .lx-hero__contenu h1 { margin-left: auto; margin-right: auto; }
 .lx-hero__accroche {
-  font-size: 1rem; color: var(--laiton-fonce); margin: 0 0 1.5rem;
+  font-size: clamp(1.125rem, 1.6vw, 1.375rem); color: var(--laiton-fonce); margin: 0 0 1.5rem;
   opacity: 0; animation: lx-apparition 0.9s ease 0.2s forwards;
 }
 .lx-hero h1 {
@@ -258,9 +258,10 @@ html[data-scrolled='true'] .lx-nav,
 .lx-ligne:nth-child(2) > span { animation-delay: 1.17s; }
 .lx-ligne:nth-child(3) > span { animation-delay: 1.29s; }
 .lx-hero__texte {
-  max-width: 34rem; font-size: 1.125rem; color: var(--gris); margin: auto; padding-block: 1.5rem;
+  max-width: 58rem; font-size: clamp(1.1875rem, 1.5vw, 1.375rem); line-height: 1.55; color: var(--gris); margin: auto; padding-block: 1.5rem;
   opacity: 0; animation: lx-apparition 0.9s ease 2.4s forwards;
 }
+@media (max-width: 767px) { .lx-hero__texte br { display: none; } }
 .lx-hero__actions {
   display: flex; flex-wrap: wrap; justify-content: center; gap: 0.875rem;
   opacity: 0; animation: lx-apparition 0.9s ease 2.6s forwards;
