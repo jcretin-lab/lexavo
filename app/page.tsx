@@ -40,22 +40,54 @@ const CONSTATS = [
   },
 ]
 
-const VITRINE = [
+// Défilement horizontal « À quoi ressemblera votre site » : de la collaboration au module.
+const DEFILE = [
+  {
+    titre: 'Ensemble, on choisit le design.',
+    texte: "Lors d'un premier échange, nous définissons l'allure de votre site : couleurs, typographies, photographies. Nous vous proposons plusieurs pistes graphiques, vous choisissez, nous affinons.",
+    points: ['Plusieurs pistes graphiques au choix', 'Vos couleurs, vos photos, votre ton'],
+  },
+  {
+    titre: 'Vous choisissez vos pages.',
+    texte: "Accueil, cabinet, domaines d'intervention, honoraires, blog, contact : nous construisons ensemble l'arborescence de votre site, page par page, selon votre activité.",
+    points: ['Une arborescence pensée pour vos clients', 'Des pages ajoutées à tout moment'],
+  },
   {
     titre: 'Une page d’accueil qui inspire confiance.',
-    texte: "En quelques secondes, le visiteur sait qui vous êtes, où vous exercez et comment vous joindre. Une grande photo, un titre clair, un seul bouton.",
-    points: ['Photographie et typographie choisies pour le cabinet', 'Lisible sur téléphone avant tout', 'Chargement en moins de deux secondes'],
+    texte: 'En quelques secondes, le visiteur sait qui vous êtes, où vous exercez et comment vous joindre. Une grande photo, un titre clair, un seul bouton.',
+    points: ['Lisible sur téléphone avant tout', 'Photographie et typographie choisies pour le cabinet'],
   },
   {
     titre: 'Une page pour chaque domaine.',
-    texte: "Divorce, licenciement, bail commercial : vos clients cherchent une réponse à leur problème. Chaque domaine d'intervention a sa page, rédigée pour être comprise et trouvée sur Google.",
-    points: ['Textes rédigés avec vous, sans jargon', 'Référencement local : ville et barreau', 'Aucune promesse de résultat'],
+    texte: "Divorce, licenciement, bail commercial : vos clients cherchent une réponse à leur problème. Chaque domaine d'intervention a sa page, rédigée pour être comprise et trouvée.",
+    points: ['Textes rédigés avec vous, sans jargon', 'Référencement local : ville et barreau'],
   },
   {
     titre: 'Un contact sans friction.',
-    texte: "Formulaire court, numéro cliquable, prise de rendez-vous en ligne si vous le souhaitez. Les demandes arrivent directement dans votre boîte mail.",
-    points: ['Prise de rendez-vous en ligne', 'Formulaire conforme au RGPD', 'Plan d’accès et horaires'],
+    texte: 'Formulaire court, numéro cliquable, prise de rendez-vous en ligne si vous le souhaitez. Les demandes arrivent directement dans votre boîte mail.',
+    points: ['Prise de rendez-vous en ligne', 'Formulaire conforme au RGPD'],
   },
+  {
+    titre: 'Et c’est vous qui le faites vivre.',
+    texte: 'Une fois en ligne, votre site vous appartient. Depuis votre module, vous modifiez une page, publiez un article ou réglez le référencement, sans attendre personne.',
+    points: ['Modifiable en quelques clics', 'Blog prêt à publier', 'SEO et GEO réglables page par page'],
+  },
+]
+
+const PISTES = [
+  { nom: 'Classique', couleurs: ['#14213D', '#A8824A', '#F2EFEA'], police: 'serif' },
+  { nom: 'Contemporain', couleurs: ['#1B2130', '#5C6270', '#FFFFFF'], police: 'sans' },
+  { nom: 'Épuré', couleurs: ['#2E3D33', '#B9A27A', '#FAF8F3'], police: 'serif' },
+]
+
+const ARBORESCENCE: { page: string; inclus: boolean; sous?: string[] }[] = [
+  { page: 'Accueil', inclus: true },
+  { page: 'Le cabinet', inclus: true },
+  { page: 'Domaines d’intervention', inclus: true, sous: ['Copropriété', 'Baux d’habitation', 'Vente immobilière'] },
+  { page: 'Honoraires', inclus: true },
+  { page: 'Blog', inclus: true },
+  { page: 'Contact et rendez-vous', inclus: true },
+  { page: 'Espace documents', inclus: false },
 ]
 
 const ETAPES = [
@@ -174,6 +206,76 @@ function PageDemo({ index }: { index: number }) {
   )
 }
 
+function VisuelPistes() {
+  return (
+    <div className="lx-pistes" aria-hidden>
+      {PISTES.map((p, i) => (
+        <div key={p.nom} className={`lx-piste${i === 0 ? ' is-choisie' : ''}`}>
+          <div className="lx-piste__apercu" style={{ background: p.couleurs[2] }}>
+            <span className={`lx-piste__aa lx-piste__aa--${p.police}`} style={{ color: p.couleurs[0] }}>Aa</span>
+            <span className="lx-piste__barre" style={{ background: p.couleurs[0] }} />
+            <span className="lx-piste__barre lx-piste__barre--courte" style={{ background: p.couleurs[1] }} />
+          </div>
+          <div className="lx-piste__pied">
+            <span>{p.nom}</span>
+            <span className="lx-piste__nuancier">{p.couleurs.map((c) => <i key={c} style={{ background: c }} />)}</span>
+          </div>
+          {i === 0 && <span className="lx-piste__choix">Retenue</span>}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function VisuelArborescence() {
+  return (
+    <div className="lx-arbo" aria-hidden>
+      <p className="lx-arbo__site">delmas-avocat.fr</p>
+      <ul>
+        {ARBORESCENCE.map((n) => (
+          <li key={n.page} className={n.inclus ? '' : 'is-option'}>
+            <span className="lx-arbo__case">{n.inclus ? '✓' : '+'}</span>
+            {n.page}
+            {!n.inclus && <em>option</em>}
+            {n.sous && (
+              <ul>{n.sous.map((x) => <li key={x}><span className="lx-arbo__case">✓</span>{x}</li>)}</ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+function VisuelModule() {
+  return (
+    <div className="lx-module" aria-hidden>
+      <div className="lx-module__barre">
+        <span className="lx-cadre__points"><i /><i /><i /></span>
+        <span>Module Lexavo · Cabinet Delmas</span>
+      </div>
+      <div className="lx-module__corps">
+        <nav className="lx-module__menu">
+          <span className="is-actif">Pages</span><span>Blog</span><span>Référencement</span><span>Médias</span>
+        </nav>
+        <div className="lx-module__contenu">
+          <p className="lx-module__fil">Pages / Accueil</p>
+          <span className="lx-module__label">Titre de la page</span>
+          <div className="lx-module__champ">Droit immobilier et copropriété.</div>
+          <span className="lx-module__label">Texte d’introduction</span>
+          <div className="lx-module__champ"><span className="lx-module__frappe">Maître Delmas vous accompagne à Paris.</span></div>
+          <div className="lx-module__seo">
+            <div><span className="lx-module__label">Titre SEO</span><div className="lx-module__champ lx-module__champ--remplit">Avocat droit immobilier Paris | Cabinet Delmas</div></div>
+            <div><span className="lx-module__label">Résumé GEO pour les assistants IA</span><div className="lx-module__champ lx-module__champ--remplit lx-module__champ--d2">Avocate en droit immobilier à Paris : copropriété, baux, vente.</div></div>
+          </div>
+          <div className="lx-module__article"><span>Article · « Ce que change la réforme de la copropriété »</span><b>Publié</b></div>
+          <span className="lx-module__toast">Modifications enregistrées</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 /* ── Page ────────────────────────────────────────────── */
 export default function HomePage() {
   return (
@@ -244,35 +346,35 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ══ Vitrine ════════════════════════════════════════ */}
-      <section id="realisations" className="lx-vitrine">
-        <div className="lx-wrap">
-          <h2 className="lx-h2 lx-reveal">À quoi ressemblera votre site.</h2>
-          <p className="lx-lead lx-reveal">Un exemple de site réalisé pour un cabinet fictif en droit immobilier. Faites défiler pour le parcourir.</p>
-
-          <div className="lx-vitrine__grille">
-            <div>
-              {VITRINE.map(({ titre, texte, points }, i) => (
-                <article key={titre} className={`lx-vitrine__etape${i === 0 ? ' is-active' : ''}`} data-etape={i}>
+      {/* ══ Défilement horizontal : de la collaboration au module ══ */}
+      <section id="realisations" className="lx-defile">
+        <div className="lx-defile__colle">
+          <div className="lx-defile__piste">
+            <div className="lx-defile__panneau lx-defile__panneau--intro">
+              <h2 className="lx-h2">À quoi ressemblera votre site.</h2>
+              <p className="lx-lead">Du premier échange à la mise en ligne, puis au quotidien. L’exemple d’un cabinet fictif en droit immobilier.</p>
+              <p className="lx-defile__indice">Faites défiler <span aria-hidden>→</span></p>
+            </div>
+            {DEFILE.map(({ titre, texte, points }, i) => (
+              <article key={titre} className="lx-defile__panneau" data-panneau={i + 1}>
+                <div className="lx-defile__texte">
+                  <span className="lx-defile__num">{String(i + 1).padStart(2, '0')}</span>
                   <h3>{titre}</h3>
                   <p>{texte}</p>
-                  <ul>{points.map((p) => <li key={p}>{p}</li>)}</ul>
-                  <div className="lx-ecran-mobile">
-                    <CadreNavigateur><div className="lx-page"><PageDemo index={i} /></div></CadreNavigateur>
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            <div className="lx-vitrine__colle" aria-hidden>
-              <CadreNavigateur>
-                {VITRINE.map((_, i) => (
-                  <div key={i} className={`lx-page${i === 0 ? ' is-active' : ''}`} data-page={i}>
-                    <PageDemo index={i} />
-                  </div>
-                ))}
-              </CadreNavigateur>
-            </div>
+                  <ul>{points.map((pt) => <li key={pt}>{pt}</li>)}</ul>
+                </div>
+                <div className="lx-defile__visuel">
+                  {i === 0 && <VisuelPistes />}
+                  {i === 1 && <VisuelArborescence />}
+                  {i >= 2 && i <= 4 && <CadreNavigateur><PageDemo index={i - 2} /></CadreNavigateur>}
+                  {i === 5 && <VisuelModule />}
+                </div>
+              </article>
+            ))}
+          </div>
+          <div className="lx-defile__progression" aria-hidden>
+            <span className="lx-defile__compteur"><b>01</b> / {String(DEFILE.length + 1).padStart(2, '0')}</span>
+            <span className="lx-defile__jauge"><i /></span>
           </div>
         </div>
       </section>
