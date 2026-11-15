@@ -641,6 +641,7 @@ html[data-scrolled='true'] .lx-nav,
 @media (min-width: 900px) { .lx-veille__inner { grid-template-columns: 1fr auto; gap: 4rem; } }
 .lx-veille h2 { font-family: var(--font-instrument-serif), Georgia, serif; font-weight: 400; font-size: clamp(1.5rem, 2.6vw, 2.125rem); line-height: 1.1; margin: 0 0 0.75rem; color: var(--robe); }
 .lx-veille p { margin: 0; color: var(--gris); max-width: 42rem; font-size: 1rem; }
+.lx-partenaire + .lx-veille { border-top: 1px solid rgba(20, 33, 61, 0.12); }
 
 /* ─── Appel final ────────────────────────────────────────────── */
 .lx-final { position: relative; min-height: 80vh; display: flex; align-items: center; color: var(--blanc); overflow: hidden; }
