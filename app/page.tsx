@@ -8,12 +8,11 @@ import { FaqAccordion } from '@/components/landing/faq-accordion'
 import { VeilleEncart } from '@/components/landing/veille-encart'
 import { TitreFrappe } from '@/components/landing/titre-frappe'
 import { Sceau } from '@/components/landing/sceau'
-import { CitationStyles } from '@/components/landing/citation-styles'
+import { VideoCitation } from '@/components/landing/video-citation'
 import { FORFAITS, MENTION_TVA } from '@/lib/offre'
 
 import photoHologramme from '@/public/photos/colonnes-hologramme.jpg'
 import gravureJustice from '@/public/photos/justitia.webp'
-import photoBustes from '@/public/photos/bibliotheque-bustes.jpg'
 import photoFacade from '@/public/photos/facade-haussmann.jpg'
 import photoBibliotheque from '@/public/photos/bibliotheque.jpg'
 import photoAvocat from '@/public/photos/avocat-bureau.jpg'
@@ -372,8 +371,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ══ Une même phrase, quatre styles ═══════════════ */}
-      <CitationStyles photo={photoBustes} />
+      {/* ══ Vidéo d'ambiance (bureau d'avocat de nuit, générée par IA) + citation ══ */}
+      <VideoCitation src="/videos/bureau-nuit.mp4" poster="/videos/bureau-nuit.jpg" />
 
       {/* ══ Déontologie ═══════════════════════════════════ */}
       <section id="deontologie" className="lx-deonto">
