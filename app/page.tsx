@@ -91,19 +91,15 @@ const ARBORESCENCE: { page: string; inclus: boolean; sous?: string[] }[] = [
 const FAQ_LANDING = [
   {
     q: 'Combien de temps faut-il pour avoir mon site ?',
-    r: "Comptez trois semaines pour le forfait Essentiel et quatre à cinq semaines pour le forfait Cabinet, à partir de l'entretien de lancement. Le délai dépend surtout de vos relectures : le devis comprend un calendrier précis.",
+    r: "Comptez deux semaines pour le forfait Essentiel et trois à quatre semaines pour le forfait Cabinet, à partir de l'entretien de lancement. Le délai dépend surtout de vos relectures : le devis comprend un calendrier précis.",
   },
   {
     q: 'Le site respectera-t-il les règles de la profession ?',
     r: "Chaque site tient compte des règles de communication de l'avocat (RIN, article 10) : nom de domaine, mentions, spécialisations, honoraires. Vous validez chaque page avant la mise en ligne et vous restez responsable de votre communication auprès de votre Ordre.",
   },
   {
-    q: 'Je n’ai ni textes ni photos. Est-ce un problème ?',
-    r: "Non. Avec le forfait Cabinet, nous rédigeons les textes à partir d'un entretien. Pour les visuels, nous sélectionnons des photographies libres de droits, ou nous vous orientons vers un photographe pour un portrait.",
-  },
-  {
     q: 'Le site m’appartient-il ?',
-    r: "Oui. Le nom de domaine est enregistré à votre nom et le site vous appartient une fois réglé. Vous n'avez aucun abonnement à payer pour le garder.",
+    r: "Oui. Le nom de domaine est enregistré à votre nom et le site vous appartient une fois réglé. Vous n'avez aucun abonnement à payer pour le garder, excepté l'abonnement d'hébergement du site et le nom de domaine.",
   },
   {
     q: 'Pourrai-je modifier le site moi-même ?',
