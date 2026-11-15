@@ -9,7 +9,7 @@ import { Complements } from '@/components/landing/complements'
 import { TitreFrappe } from '@/components/landing/titre-frappe'
 import { Sceau } from '@/components/landing/sceau'
 import { VideoCitation } from '@/components/landing/video-citation'
-import { FORFAITS, MENTION_TVA } from '@/lib/offre'
+import { EMAIL_CONTACT, FORFAITS, MENTION_TVA } from '@/lib/offre'
 
 import photoHologramme from '@/public/photos/colonnes-hologramme.jpg'
 import gravureJustice from '@/public/photos/justitia.webp'
@@ -254,10 +254,58 @@ function VisuelModule() {
   )
 }
 
+/* ── Données structurées (schema.org) pour Google et les IA ── */
+const prixEnNombre = (prix: string) => Number(prix.replace(/[^\d]/g, ''))
+
+const DONNEES_STRUCTUREES = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'ProfessionalService',
+      '@id': 'https://www.lexavo.fr/#lexavo',
+      name: 'Lexavo',
+      url: 'https://www.lexavo.fr',
+      email: EMAIL_CONTACT,
+      description:
+        "Création de sites internet pour avocats, sans abonnement : design travaillé avec le cabinet, module pour modifier les textes, référencement SEO et GEO, hébergement et nom de domaine au nom de l'avocat.",
+      areaServed: { '@type': 'Country', name: 'France' },
+      knowsAbout: ['Création de site internet pour avocat', 'Référencement SEO', 'GEO (référencement dans les IA)', "Règles de communication de l'avocat"],
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Forfaits de création de site pour avocat',
+        itemListElement: FORFAITS.filter((f) => prixEnNombre(f.prix) > 0).map((f) => ({
+          '@type': 'Offer',
+          name: `Forfait ${f.nom}`,
+          description: `${f.accroche} ${f.inclus.join(' ; ')}.`,
+          url: `https://www.lexavo.fr/contact?forfait=${f.id}`,
+          priceSpecification: {
+            '@type': 'PriceSpecification',
+            [f.aPartirDe ? 'minPrice' : 'price']: prixEnNombre(f.prix),
+            priceCurrency: 'EUR',
+          },
+          itemOffered: { '@type': 'Service', name: `Site internet pour avocat, forfait ${f.nom}`, provider: { '@id': 'https://www.lexavo.fr/#lexavo' } },
+        })),
+      },
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: FAQ_LANDING.map((item) => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: { '@type': 'Answer', text: item.r },
+      })),
+    },
+  ],
+}
+
 /* ── Page ────────────────────────────────────────────── */
 export default function HomePage() {
   return (
     <div className="lx">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(DONNEES_STRUCTUREES).replace(/</g, '\\u003c') }}
+      />
       <LandingEffets />
       <LandingNav solide />
 
